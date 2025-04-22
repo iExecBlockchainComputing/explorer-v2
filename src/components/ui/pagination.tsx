@@ -59,7 +59,7 @@ function PaginationLink({
           size,
         }),
         isActive ? "border-accent" : "",
-        className
+        className,
       )}
       {...props}
     />
