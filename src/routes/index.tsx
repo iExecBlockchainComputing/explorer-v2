@@ -11,7 +11,13 @@ export const Route = createFileRoute('/')({
 
 function Index() {
   return (
-    <div className="">
+    <div className="flex flex-col items-center mt-8 gap-20">
+      <div className="radial-bg before:bg-grey-800 border-secondary relative z-0 h-80 w-full max-w-7xl overflow-hidden rounded-2xl border">
+        <div className="absolute inset-0 -z-10 blur-2xl sm:blur-[100px] lg:blur-[150px]">
+          <div className="absolute top-3/4 right-0 aspect-[23/30] w-1/2 rounded-full bg-orange-400/40" />
+          <div className="absolute top-0 right-0 hidden aspect-square h-full translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-100/50 sm:block" />
+        </div>
+      </div>
       <div className="grid grid-cols-6 gap-x-6 gap-y-10">
         <div className="col-span-3">
           <DealsPreviewTable />
