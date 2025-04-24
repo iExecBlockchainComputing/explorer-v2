@@ -3,7 +3,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 
 export const Route = createRootRoute({
   component: () => (
-    <div className="mx-auto w-full px-6 md:px-10 lg:px-20">
+    <div className="mx-auto w-full px-6 md:px-10 lg:px-20 mb-20">
       <Outlet />
       <TanStackRouterDevtools />
     </div>
