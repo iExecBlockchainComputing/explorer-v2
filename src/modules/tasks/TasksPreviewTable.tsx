@@ -1,7 +1,7 @@
-import { PREVIEW_TABLE_LENGTH } from '@/config';
+import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Terminal } from 'lucide-react';
+import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { CircularLoader } from '@/components/CircularLoader';
 import CopyButton from '@/components/CopyButton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -23,6 +23,7 @@ export function TasksPreviewTable() {
     queryKey: ['tasks_preview'],
     queryFn: () =>
       execute(taskQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+    refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 
   return (
@@ -31,6 +32,9 @@ export function TasksPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest tasks
+          {tasks.isFetching && !tasks.isPending && (
+            <LoaderCircle className="animate-spin" />
+          )}
         </h2>
         <Button variant="link" className="-mr-4">
           View all
@@ -45,10 +49,10 @@ export function TasksPreviewTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tasks.isLoading || tasks.isError || !tasks.data?.tasks.length ? (
+          {tasks.isPending || tasks.isError || !tasks.data?.tasks.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
-                {tasks.isLoading ? (
+                {tasks.isPending ? (
                   <CircularLoader />
                 ) : tasks.isError ? (
                   <Alert

@@ -1,7 +1,7 @@
-import { PREVIEW_TABLE_LENGTH } from '@/config';
+import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
-import { Box, Terminal } from 'lucide-react';
+import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { CircularLoader } from '@/components/CircularLoader';
 import CopyButton from '@/components/CopyButton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -24,6 +24,7 @@ export function DealsPreviewTable() {
     queryKey: ['deals_preview'],
     queryFn: () =>
       execute(dealsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+    refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 
   return (
@@ -32,6 +33,9 @@ export function DealsPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest deals
+          {deals.isFetching && !deals.isPending && (
+            <LoaderCircle className="animate-spin" />
+          )}
         </h2>
         <Button variant="link" className="-mr-4">
           View all
@@ -50,10 +54,10 @@ export function DealsPreviewTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {deals.isLoading || deals.isError || !deals.data?.deals.length ? (
+          {deals.isPending || deals.isError || !deals.data?.deals.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
-                {deals.isLoading ? (
+                {deals.isPending ? (
                   <CircularLoader />
                 ) : deals.isError ? (
                   <Alert
