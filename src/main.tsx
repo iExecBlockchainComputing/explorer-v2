@@ -18,12 +18,6 @@ import {
 
 const router = createRouter({ routeTree });
 
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: typeof router;
-  }
-}
-
 const { rollbar, rollbarConfig } = initRollbarAlerting();
 
 const queryClient = initQueryClient({ rollbar });
