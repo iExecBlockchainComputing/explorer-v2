@@ -1,4 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { PREVIEW_TABLE_LENGTH } from '@/config';
+import { execute } from '@/graphql/execute';
+import { useQuery } from '@tanstack/react-query';
+import { Box, Terminal } from 'lucide-react';
+import { CircularLoader } from '@/components/CircularLoader';
+import CopyButton from '@/components/CopyButton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -6,21 +13,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Box, Terminal } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { execute } from "@/graphql/execute";
-import { CircularLoader } from "@/components/CircularLoader";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { PREVIEW_TABLE_LENGTH } from "@/config";
-import CopyButton from "@/components/CopyButton";
-import { truncateAddress } from "@/utils/truncateAddress";
-import { workerpoolsQuery } from "./workerpoolsQuery";
-import { formatElapsedTime } from "@/utils/formatElapsedTime";
+} from '@/components/ui/table';
+import { formatElapsedTime } from '@/utils/formatElapsedTime';
+import { truncateAddress } from '@/utils/truncateAddress';
+import { workerpoolsQuery } from './workerpoolsQuery';
 
 export function WorkerpoolsPreviewTable() {
   const workerpools = useQuery({
-    queryKey: ["workerpools_preview"],
+    queryKey: ['workerpools_preview'],
     queryFn: () =>
       execute(workerpoolsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
   });
@@ -33,7 +33,7 @@ export function WorkerpoolsPreviewTable() {
           Latest workerpools deployed
         </h2>
         <Button variant="link" className="-mr-4">
-          View all deployed workerpools
+          View all
         </Button>
       </div>
       <Table>
@@ -51,7 +51,7 @@ export function WorkerpoolsPreviewTable() {
           workerpools.isError ||
           !workerpools.data?.workerpools.length ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8">
+              <TableCell colSpan={7} className="py-8 text-center">
                 {workerpools.isLoading ? (
                   <CircularLoader />
                 ) : workerpools.isError ? (
@@ -74,7 +74,7 @@ export function WorkerpoolsPreviewTable() {
             workerpools.data.workerpools.map((workerpool) => (
               <TableRow
                 key={workerpool.address}
-                className="[&>td]:min-w-24 [&>td]:overflow-ellipsis [&>td]:overflow-hidden"
+                className="[&>td]:min-w-24 [&>td]:overflow-hidden [&>td]:overflow-ellipsis"
               >
                 <TableCell>
                   <CopyButton
@@ -104,7 +104,7 @@ export function WorkerpoolsPreviewTable() {
                       workerpool.transfers[0].transaction.txHash,
                       {
                         startLen: 8,
-                      },
+                      }
                     )}
                     textToCopy={workerpool.transfers[0].transaction.txHash}
                   />

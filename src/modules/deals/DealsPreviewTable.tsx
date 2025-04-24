@@ -1,4 +1,11 @@
-import { Button } from "@/components/ui/button";
+import { PREVIEW_TABLE_LENGTH } from '@/config';
+import { execute } from '@/graphql/execute';
+import { useQuery } from '@tanstack/react-query';
+import { Box, Terminal } from 'lucide-react';
+import { CircularLoader } from '@/components/CircularLoader';
+import CopyButton from '@/components/CopyButton';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -6,22 +13,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import { Box, Terminal } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { execute } from "@/graphql/execute";
-import { CircularLoader } from "@/components/CircularLoader";
-import { dealsQuery } from "./dealsQuery";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { formatElapsedTime } from "@/utils/formatElapsedTime";
-import { SuccessCell } from "./SuccessCell";
-import { PREVIEW_TABLE_LENGTH } from "@/config";
-import CopyButton from "@/components/CopyButton";
-import { truncateAddress } from "@/utils/truncateAddress";
+} from '@/components/ui/table';
+import { formatElapsedTime } from '@/utils/formatElapsedTime';
+import { truncateAddress } from '@/utils/truncateAddress';
+import { SuccessCell } from './SuccessCell';
+import { dealsQuery } from './dealsQuery';
 
 export function DealsPreviewTable() {
   const deals = useQuery({
-    queryKey: ["deals_preview"],
+    queryKey: ['deals_preview'],
     queryFn: () =>
       execute(dealsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
   });
@@ -34,7 +34,7 @@ export function DealsPreviewTable() {
           Latest deals
         </h2>
         <Button variant="link" className="-mr-4">
-          View all deals
+          View all
         </Button>
       </div>
       <Table>
@@ -52,7 +52,7 @@ export function DealsPreviewTable() {
         <TableBody>
           {deals.isLoading || deals.isError || !deals.data?.deals.length ? (
             <TableRow>
-              <TableCell colSpan={7} className="text-center py-8">
+              <TableCell colSpan={7} className="py-8 text-center">
                 {deals.isLoading ? (
                   <CircularLoader />
                 ) : deals.isError ? (
@@ -75,7 +75,7 @@ export function DealsPreviewTable() {
             deals.data.deals.map((deal) => (
               <TableRow
                 key={deal.dealid}
-                className="[&>td]:min-w-24 [&>td]:overflow-ellipsis [&>td]:overflow-hidden"
+                className="[&>td]:min-w-24 [&>td]:overflow-hidden [&>td]:overflow-ellipsis"
               >
                 <TableCell>
                   <CopyButton
@@ -124,7 +124,7 @@ export function DealsPreviewTable() {
                   ).toLocaleString(undefined, {
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 10,
-                  })}{" "}
+                  })}{' '}
                   xRLC
                 </TableCell>
                 <TableCell>
