@@ -1,5 +1,5 @@
-import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
-import Rollbar from "rollbar";
+import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
+import Rollbar from 'rollbar';
 
 export function initQueryClient({ rollbar }: { rollbar: Rollbar | undefined }) {
   return new QueryClient({
@@ -17,7 +17,7 @@ export function initQueryClient({ rollbar }: { rollbar: Rollbar | undefined }) {
         }
         rollbar?.error(
           `Query ${query.queryKey[0]} ERROR ${(err.cause as Error)?.message || err.message}`,
-          err.cause || err,
+          err.cause || err
         );
       },
     }),
@@ -27,9 +27,9 @@ export function initQueryClient({ rollbar }: { rollbar: Rollbar | undefined }) {
         let mutationKey = mutation.options.mutationKey;
         if (!mutationKey?.[0]) {
           console.warn(
-            "Please consider adding a mutationKey to your mutations",
+            'Please consider adding a mutationKey to your mutations'
           );
-          mutationKey = ["Unknown mutation"];
+          mutationKey = ['Unknown mutation'];
         }
         console.error(`[${mutationKey}] ERROR`, err);
         if (err.cause) {
@@ -37,7 +37,7 @@ export function initQueryClient({ rollbar }: { rollbar: Rollbar | undefined }) {
         }
         rollbar?.error(
           `Mutation ${mutationKey} ERROR ${(err.cause as Error)?.message || err.message}`,
-          err.cause || err,
+          err.cause || err
         );
       },
     }),

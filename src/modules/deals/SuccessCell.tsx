@@ -13,11 +13,11 @@ export function SuccessCell({ deal }: { deal: any }) {
   const timeout = timeoutTimestamp && timeoutTimestamp < Date.now();
   let color;
   if (successRate === 1) {
-    color = "#11B15E";
+    color = '#11B15E';
   } else if (!timeout) {
-    color = "#F4C503";
+    color = '#F4C503';
   } else {
-    color = "#EF5353";
+    color = '#EF5353';
   }
 
   return (

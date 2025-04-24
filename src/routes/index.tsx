@@ -1,11 +1,11 @@
-import { AppsPreviewTable } from "@/modules/apps/AppsPreviewTable";
-import { DatasetsPreviewTable } from "@/modules/datasets/DatasetsPreviewTable";
-import { DealsPreviewTable } from "@/modules/deals/DealsPreviewTable";
-import { TasksPreviewTable } from "@/modules/tasks/TasksPreviewTable";
-import { WorkerpoolsPreviewTable } from "@/modules/workerpools/workerpoolsPreviewTable";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from '@tanstack/react-router';
+import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
+import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
+import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';
+import { TasksPreviewTable } from '@/modules/tasks/TasksPreviewTable';
+import { WorkerpoolsPreviewTable } from '@/modules/workerpools/workerpoolsPreviewTable';
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute('/')({
   component: Index,
 });
 
