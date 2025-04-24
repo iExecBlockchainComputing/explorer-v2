@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/gql'
+import { graphql } from "@/graphql/gql";
 
 export const datasetsQuery = graphql(`
   query Datasets($length: Int = 20, $skip: Int = 0) {

@@ -1,1 +1,1 @@
-export const PREVIEW_TABLE_LENGTH = 5
+export const PREVIEW_TABLE_LENGTH = 5;
