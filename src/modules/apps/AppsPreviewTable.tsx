@@ -32,7 +32,9 @@ export function AppsPreviewTable() {
           <Box size="16" className="text-secondary" />
           Latest apps deployed
         </h2>
-        <Button variant="link">View all deployed apps</Button>
+        <Button variant="link" className="-mr-4">
+          View all deployed apps
+        </Button>
       </div>
       <Table>
         <TableHeader>
@@ -97,7 +99,7 @@ export function AppsPreviewTable() {
                       app.transfers[0].transaction.txHash,
                       {
                         startLen: 8,
-                      }
+                      },
                     )}
                     textToCopy={app.transfers[0].transaction.txHash}
                   />

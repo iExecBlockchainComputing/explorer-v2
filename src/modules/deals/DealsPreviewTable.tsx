@@ -33,7 +33,9 @@ export function DealsPreviewTable() {
           <Box size="16" className="text-secondary" />
           Latest deals
         </h2>
-        <Button variant="link">View all deals</Button>
+        <Button variant="link" className="-mr-4">
+          View all deals
+        </Button>
       </div>
       <Table>
         <TableHeader>

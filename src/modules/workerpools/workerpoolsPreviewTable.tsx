@@ -32,7 +32,9 @@ export function WorkerpoolsPreviewTable() {
           <Box size="16" className="text-secondary" />
           Latest workerpools deployed
         </h2>
-        <Button variant="link">View all deployed workerpools</Button>
+        <Button variant="link" className="-mr-4">
+          View all deployed workerpools
+        </Button>
       </div>
       <Table>
         <TableHeader>
@@ -102,7 +104,7 @@ export function WorkerpoolsPreviewTable() {
                       workerpool.transfers[0].transaction.txHash,
                       {
                         startLen: 8,
-                      }
+                      },
                     )}
                     textToCopy={workerpool.transfers[0].transaction.txHash}
                   />

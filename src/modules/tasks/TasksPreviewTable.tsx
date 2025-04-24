@@ -32,7 +32,9 @@ export function TasksPreviewTable() {
           <Box size="16" className="text-secondary" />
           Latest tasks
         </h2>
-        <Button variant="link">View all tasks</Button>
+        <Button variant="link" className="-mr-4">
+          View all tasks
+        </Button>
       </div>
       <Table>
         <TableHeader>

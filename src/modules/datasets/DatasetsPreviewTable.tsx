@@ -32,7 +32,9 @@ export function DatasetsPreviewTable() {
           <Box size="16" className="text-secondary" />
           Latest datasets deployed
         </h2>
-        <Button variant="link">View all deployed datasets</Button>
+        <Button variant="link" className="-mr-4">
+          View all deployed datasets
+        </Button>
       </div>
       <Table>
         <TableHeader>
@@ -102,7 +104,7 @@ export function DatasetsPreviewTable() {
                       dataset.transfers[0].transaction.txHash,
                       {
                         startLen: 8,
-                      }
+                      },
                     )}
                     textToCopy={dataset.transfers[0].transaction.txHash}
                   />
