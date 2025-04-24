@@ -73,12 +73,12 @@ export function DealsPreviewTable() {
             deals.data.deals.map((deal) => (
               <TableRow
                 key={deal.dealid}
-                className="[&>td]:min-w-24 [&>td]:max-w-48 [&>td]:overflow-ellipsis [&>td]:overflow-hidden"
+                className="[&>td]:min-w-24 [&>td]:overflow-ellipsis [&>td]:overflow-hidden"
               >
                 <TableCell>
                   <CopyButton
                     displayText={truncateAddress(deal.dealid, {
-                      startLen: 10,
+                      startLen: 8,
                     })}
                     textToCopy={deal.dealid}
                   />
@@ -86,7 +86,7 @@ export function DealsPreviewTable() {
                 <TableCell>
                   <CopyButton
                     displayText={truncateAddress(deal.app?.address, {
-                      startLen: 10,
+                      startLen: 8,
                     })}
                     textToCopy={deal.app?.address}
                   />
@@ -95,7 +95,7 @@ export function DealsPreviewTable() {
                 <TableCell>
                   <CopyButton
                     displayText={truncateAddress(deal.workerpool?.address, {
-                      startLen: 10,
+                      startLen: 8,
                     })}
                     textToCopy={deal.workerpool?.address}
                   />
@@ -104,7 +104,7 @@ export function DealsPreviewTable() {
                   {deal.dataset?.address ? (
                     <CopyButton
                       displayText={truncateAddress(deal.dataset?.address, {
-                        startLen: 10,
+                        startLen: 8,
                       })}
                       textToCopy={deal.dataset?.address}
                     />

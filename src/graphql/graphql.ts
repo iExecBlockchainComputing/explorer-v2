@@ -8356,6 +8356,22 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type AppsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type AppsQuery = { __typename?: 'Query', apps: Array<{ __typename?: 'App', timestamp: any, name: string, type: string, multiaddr: any, checksum: any, mrenclave: any, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'AppTransfer', transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> }> };
+
+export type DatasetsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type DatasetsQuery = { __typename?: 'Query', datasets: Array<{ __typename?: 'Dataset', timestamp: any, name: string, multiaddr: any, checksum: any, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'DatasetTransfer', transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> }> };
+
 export type DealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8363,6 +8379,22 @@ export type DealsQueryVariables = Exact<{
 
 
 export type DealsQuery = { __typename?: 'Query', deals: Array<{ __typename?: 'Deal', timestamp: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, botSize: any, trust: any, completedTasksCount: any, claimedTasksCount: any, dealid: string, requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, callback: { __typename?: 'Account', address: string }, app: { __typename?: 'App', address: string }, dataset?: { __typename?: 'Dataset', address: string } | null, workerpool: { __typename?: 'Workerpool', address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } }> };
+
+export type TasksQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type TasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', index: any, finalDeadline: any, status: TaskStatus, timestamp: any, taskid: string, deal: { __typename?: 'Deal', requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, app: { __typename?: 'App', address: string }, dataset?: { __typename?: 'Dataset', address: string } | null, workerpool: { __typename?: 'Workerpool', address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } } }> };
+
+export type WorkerpoolsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type WorkerpoolsQuery = { __typename?: 'Query', workerpools: Array<{ __typename?: 'Workerpool', timestamp: any, description: string, workerStakeRatio: any, schedulerRewardRatio: any, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'WorkerpoolTransfer', transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> }> };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -8383,6 +8415,50 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const AppsDocument = new TypedDocumentString(`
+    query Apps($length: Int = 20, $skip: Int = 0) {
+  apps(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    address: id
+    owner {
+      address: id
+    }
+    timestamp
+    name
+    type
+    multiaddr
+    checksum
+    mrenclave
+    transfers(orderBy: timestamp, orderDirection: desc) {
+      transaction {
+        txHash: id
+        timestamp
+        blockNumber
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AppsQuery, AppsQueryVariables>;
+export const DatasetsDocument = new TypedDocumentString(`
+    query Datasets($length: Int = 20, $skip: Int = 0) {
+  datasets(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    address: id
+    owner {
+      address: id
+    }
+    timestamp
+    name
+    multiaddr
+    checksum
+    transfers(orderBy: timestamp, orderDirection: desc) {
+      transaction {
+        txHash: id
+        timestamp
+        blockNumber
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<DatasetsQuery, DatasetsQueryVariables>;
 export const DealsDocument = new TypedDocumentString(`
     query Deals($length: Int = 20, $skip: Int = 0) {
   deals(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
@@ -8421,3 +8497,61 @@ export const DealsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DealsQuery, DealsQueryVariables>;
+export const TasksDocument = new TypedDocumentString(`
+    query Tasks($length: Int = 20, $skip: Int = 0) {
+  tasks(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    taskid: id
+    index
+    finalDeadline
+    status
+    timestamp
+    deal {
+      requester {
+        address: id
+      }
+      beneficiary {
+        address: id
+      }
+      app {
+        address: id
+      }
+      dataset {
+        address: id
+      }
+      workerpool {
+        address: id
+      }
+      category {
+        catid: id
+        workClockTimeRef
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<TasksQuery, TasksQueryVariables>;
+export const WorkerpoolsDocument = new TypedDocumentString(`
+    query Workerpools($length: Int = 20, $skip: Int = 0) {
+  workerpools(
+    first: $length
+    skip: $skip
+    orderBy: timestamp
+    orderDirection: desc
+  ) {
+    address: id
+    owner {
+      address: id
+    }
+    timestamp
+    description
+    workerStakeRatio
+    schedulerRewardRatio
+    transfers(orderBy: timestamp, orderDirection: desc) {
+      transaction {
+        txHash: id
+        timestamp
+        blockNumber
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<WorkerpoolsQuery, WorkerpoolsQueryVariables>;
