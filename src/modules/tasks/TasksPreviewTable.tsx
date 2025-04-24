@@ -32,6 +32,11 @@ export function TasksPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest tasks
+          {tasks.data && tasks.isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
           {tasks.isFetching && !tasks.isPending && (
             <LoaderCircle className="animate-spin" />
           )}
@@ -49,7 +54,9 @@ export function TasksPreviewTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {tasks.isPending || tasks.isError || !tasks.data?.tasks.length ? (
+          {tasks.isPending ||
+          (tasks.isError && !tasks.data) ||
+          !tasks.data?.tasks.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
                 {tasks.isPending ? (

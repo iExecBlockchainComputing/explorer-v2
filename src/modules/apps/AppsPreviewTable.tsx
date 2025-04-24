@@ -32,6 +32,11 @@ export function AppsPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest apps deployed
+          {apps.data && apps.isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
           {apps.isFetching && !apps.isPending && (
             <LoaderCircle className="animate-spin" />
           )}
@@ -51,7 +56,9 @@ export function AppsPreviewTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {apps.isPending || apps.isError || !apps.data?.apps.length ? (
+          {apps.isPending ||
+          (apps.isError && !apps.data) ||
+          !apps.data?.apps.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
                 {apps.isPending ? (
@@ -108,7 +115,9 @@ export function AppsPreviewTable() {
                     textToCopy={app.transfers[0].transaction.txHash}
                   />
                 </TableCell>
-                <TableCell>{formatElapsedTime(app.timestamp)}</TableCell>
+                <TableCell className="min-w-42!">
+                  {formatElapsedTime(app.timestamp)}
+                </TableCell>
               </TableRow>
             ))
           )}

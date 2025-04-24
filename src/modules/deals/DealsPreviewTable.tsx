@@ -33,6 +33,11 @@ export function DealsPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest deals
+          {deals.data && deals.isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
           {deals.isFetching && !deals.isPending && (
             <LoaderCircle className="animate-spin" />
           )}
@@ -54,7 +59,9 @@ export function DealsPreviewTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {deals.isPending || deals.isError || !deals.data?.deals.length ? (
+          {deals.isPending ||
+          (deals.isError && !deals.data) ||
+          !deals.data?.deals.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
                 {deals.isPending ? (
@@ -97,7 +104,9 @@ export function DealsPreviewTable() {
                     textToCopy={deal.app?.address}
                   />
                 </TableCell>
-                <TableCell>{formatElapsedTime(deal.timestamp)}</TableCell>
+                <TableCell className="min-w-42!">
+                  {formatElapsedTime(deal.timestamp)}
+                </TableCell>
                 <TableCell>
                   <CopyButton
                     displayText={truncateAddress(deal.workerpool?.address, {

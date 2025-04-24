@@ -32,6 +32,11 @@ export function WorkerpoolsPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest workerpools deployed
+          {workerpools.data && workerpools.isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
           {workerpools.isFetching && !workerpools.isPending && (
             <LoaderCircle className="animate-spin" />
           )}
@@ -52,7 +57,7 @@ export function WorkerpoolsPreviewTable() {
         </TableHeader>
         <TableBody>
           {workerpools.isPending ||
-          workerpools.isError ||
+          (workerpools.isError && !workerpools.data) ||
           !workerpools.data?.workerpools.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
@@ -113,7 +118,9 @@ export function WorkerpoolsPreviewTable() {
                     textToCopy={workerpool.transfers[0].transaction.txHash}
                   />
                 </TableCell>
-                <TableCell>{formatElapsedTime(workerpool.timestamp)}</TableCell>
+                <TableCell className="min-w-42!">
+                  {formatElapsedTime(workerpool.timestamp)}
+                </TableCell>
               </TableRow>
             ))
           )}

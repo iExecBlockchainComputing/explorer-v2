@@ -32,6 +32,11 @@ export function DatasetsPreviewTable() {
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
           Latest datasets deployed
+          {datasets.data && datasets.isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
           {datasets.isFetching && !datasets.isPending && (
             <LoaderCircle className="animate-spin" />
           )}
@@ -52,7 +57,7 @@ export function DatasetsPreviewTable() {
         </TableHeader>
         <TableBody>
           {datasets.isPending ||
-          datasets.isError ||
+          (datasets.isError && !datasets.data) ||
           !datasets.data?.datasets.length ? (
             <TableRow>
               <TableCell colSpan={7} className="py-8 text-center">
@@ -113,7 +118,9 @@ export function DatasetsPreviewTable() {
                     textToCopy={dataset.transfers[0].transaction.txHash}
                   />
                 </TableCell>
-                <TableCell>{formatElapsedTime(dataset.timestamp)}</TableCell>
+                <TableCell className="min-w-42!">
+                  {formatElapsedTime(dataset.timestamp)}
+                </TableCell>
               </TableRow>
             ))
           )}
