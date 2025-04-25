@@ -19,21 +19,11 @@ function Index() {
         </div>
       </div>
       <div className="flex flex-col gap-x-6 gap-y-10 lg:grid lg:grid-cols-12">
-        <div className="lg:col-span-7">
-          <DealsPreviewTable />
-        </div>
-        <div className="lg:col-span-5">
-          <TasksPreviewTable />
-        </div>
-        <div className="lg:col-span-4">
-          <AppsPreviewTable />
-        </div>
-        <div className="lg:col-span-4">
-          <DatasetsPreviewTable />
-        </div>
-        <div className="lg:col-span-4">
-          <WorkerpoolsPreviewTable />
-        </div>
+        <DealsPreviewTable className="lg:col-span-7" />
+        <TasksPreviewTable className="lg:col-span-5" />
+        <AppsPreviewTable className="lg:col-span-4" />
+        <DatasetsPreviewTable className="lg:col-span-4" />
+        <WorkerpoolsPreviewTable className="lg:col-span-4" />{' '}
       </div>
     </div>
   );

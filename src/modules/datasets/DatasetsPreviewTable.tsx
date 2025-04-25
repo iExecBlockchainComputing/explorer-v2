@@ -1,5 +1,6 @@
 import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
+import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { CircularLoader } from '@/components/CircularLoader';
@@ -18,7 +19,7 @@ import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { datasetsQuery } from './datasetsQuery';
 
-export function DatasetsPreviewTable() {
+export function DatasetsPreviewTable({ className }: { className?: string }) {
   const datasets = useQuery({
     queryKey: ['datasets_preview'],
     queryFn: () =>
@@ -27,7 +28,7 @@ export function DatasetsPreviewTable() {
   });
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className={cn(className, 'flex flex-col gap-2')}>
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
