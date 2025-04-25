@@ -1,13 +1,14 @@
 {
   "name": "explorer",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "format": "prettier --write src",
+    "check-format": "prettier --check src",
     "preview": "vite preview",
     "codegen": "npm run codegen:poco",
     "watch:codegen": "npm run watch:codegen:poco",
