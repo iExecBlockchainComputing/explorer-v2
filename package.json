@@ -54,7 +54,7 @@
     "@graphql-codegen/cli": "^5.0.5",
     "@graphql-codegen/schema-ast": "^4.1.0",
     "@parcel/watcher": "^2.5.1",
-    "@tanstack/router-plugin": "^1.116.1",
+    "@tanstack/router-plugin": "^1.117.2",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
     "@types/node": "^22.14.1",
     "@types/react": "^19.0.10",

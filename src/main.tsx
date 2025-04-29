@@ -4,13 +4,13 @@ import {
   ErrorBoundary as RollbarErrorBoundary,
   Provider as RollbarProvider,
 } from '@rollbar/react';
-import { QueryClientProvider } from '@tanstack/react-query';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { WagmiProvider } from 'wagmi';
 import './index.css';
-import { routeTree } from './routeTree.gen';
+import { initRouter } from './initRouter.ts';
 import { initQueryClient } from './utils/initQueryClient.ts';
 import {
   initRollbarAlerting,
@@ -18,11 +18,11 @@ import {
 } from './utils/initRollbarAlerting.ts';
 import { wagmiAdapter } from './utils/wagmiConfig.ts';
 
-const router = createRouter({ routeTree });
-
 const { rollbar, rollbarConfig } = initRollbarAlerting();
 
 const queryClient = initQueryClient({ rollbar });
+
+const router = initRouter(queryClient);
 
 const rootElement = document.getElementById('root')!;
 if (!rootElement.innerHTML) {

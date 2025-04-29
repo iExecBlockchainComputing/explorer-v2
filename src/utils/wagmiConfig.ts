@@ -70,12 +70,12 @@ preservedAvailableProviderDetails.forEach((providerDetails) => {
 
 export const wagmiAdapter = new WagmiAdapter({
   networks: [bellecour],
-  // multiInjectedProviderDiscovery: false,
+  multiInjectedProviderDiscovery: false,
   transports: {
     [bellecour.id]: http(),
   },
   projectId,
-  // connectors,
+  connectors,
 });
 
 // Force some wallets to be displayed even if not detected in user's browser
