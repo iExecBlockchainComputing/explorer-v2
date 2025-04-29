@@ -8,6 +8,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { WagmiProvider } from 'wagmi';
 import './index.css';
 import { routeTree } from './routeTree.gen';
 import { initQueryClient } from './utils/initQueryClient.ts';
@@ -15,6 +16,7 @@ import {
   initRollbarAlerting,
   isRollbarActivated,
 } from './utils/initRollbarAlerting.ts';
+import { wagmiAdapter } from './utils/wagmiConfig.ts';
 
 const router = createRouter({ routeTree });
 
@@ -27,15 +29,17 @@ if (!rootElement.innerHTML) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RollbarProvider
-          config={isRollbarActivated ? rollbarConfig : undefined}
-        >
-          <RollbarErrorBoundary>
-            <RouterProvider router={router} />
-          </RollbarErrorBoundary>
-        </RollbarProvider>
-      </QueryClientProvider>
+      <WagmiProvider config={wagmiAdapter.wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <RollbarProvider
+            config={isRollbarActivated ? rollbarConfig : undefined}
+          >
+            <RollbarErrorBoundary>
+              <RouterProvider router={router} />
+            </RollbarErrorBoundary>
+          </RollbarProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
     </StrictMode>
   );
 }
