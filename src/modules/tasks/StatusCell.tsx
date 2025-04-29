@@ -1,4 +1,21 @@
-const StatusCell = ({ statusEnum, timeoutTimestamp = 0 }) => {
+type StatusEnumType =
+  | 'INACTIVE'
+  | 'ACTIVE'
+  | 'REVEALING'
+  | 'COMPLETED'
+  | 'FAILLED'
+  | 'CONTRIBUTED'
+  | 'PROVED'
+  | 'REJECTED'
+  | 'UNSET';
+
+const StatusCell = ({
+  statusEnum,
+  timeoutTimestamp = 0,
+}: {
+  statusEnum: StatusEnumType;
+  timeoutTimestamp?: number;
+}) => {
   let status, color;
   const timeout = timeoutTimestamp && timeoutTimestamp < Date.now();
   switch (statusEnum) {

@@ -2,7 +2,7 @@ export function formatElapsedTime(timestamp: string): string {
   if (!timestamp) {
     return '?';
   }
-  const elapsedTime = Date.now() - new Date(timestamp * 1000).getTime();
+  const elapsedTime = Date.now() - new Date(Number(timestamp) * 1000).getTime();
   if (elapsedTime < 0) {
     if (elapsedTime / 1000 > -60) {
       return 'in a few seconds';
@@ -32,7 +32,7 @@ export function readableDate(timestamp: string): string {
   if (!timestamp) {
     return '?';
   }
-  const date = new Date(timestamp * 1000);
+  const date = new Date(Number(timestamp) * 1000);
   return date.toLocaleDateString('en-US', {
     // weekday: 'long',
     year: 'numeric',
