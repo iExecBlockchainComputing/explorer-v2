@@ -1,6 +1,5 @@
 'use client';
 
-import { Link } from '@tanstack/react-router';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
