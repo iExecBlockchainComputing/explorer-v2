@@ -47,7 +47,11 @@ export const columns: ColumnDef<App>[] = [
     header: 'Name',
     cell: ({ row }) => {
       const name = row.getValue('name');
-      return <CopyButton displayText={name} textToCopy={name} />;
+      return (
+        <div className="w-36">
+          <CopyButton displayText={name} textToCopy={name} />
+        </div>
+      );
     },
   },
   {
@@ -85,7 +89,7 @@ export const columns: ColumnDef<App>[] = [
     header: 'Time',
     cell: ({ row }) => {
       const timestamp = row.original.timestamp;
-      return formatElapsedTime(timestamp);
+      return <span className="min-w-42">{formatElapsedTime(timestamp)}</span>;
     },
   },
 ];
