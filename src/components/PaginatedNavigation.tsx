@@ -43,8 +43,19 @@ const generatePaginationItems = (
 ) => {
   const items: JSX.Element[] = [];
 
-  if (currentPage <= 3) {
-    for (let i = 0; i < Math.min(5, totalPages); i++) {
+  const maxVisiblePages = 5; // nombre de pages à afficher autour de la page actuelle
+  const boundaryThreshold = 3; // nombre de pages à partir du début ou de la fin pour n'afficher que les premières/dernières pages
+  const minimumPagesForEllipsis = 6; // nombre de pages requis pour que les ellipses apparaissent
+
+  const firstPage = 0;
+  const lastPage = totalPages - 1;
+
+  const showStartEllipsis = currentPage > boundaryThreshold;
+  const showEndEllipsis = currentPage < totalPages - boundaryThreshold - 1;
+
+  if (!showStartEllipsis) {
+    const endPage = Math.min(maxVisiblePages, totalPages);
+    for (let i = 0; i < endPage; i++) {
       items.push(
         <PaginationItemLink
           key={i}
@@ -54,7 +65,8 @@ const generatePaginationItems = (
         />
       );
     }
-    if (totalPages > 5) {
+
+    if (totalPages > maxVisiblePages) {
       items.push(
         <PaginationItem key="ellipsis-end">
           <PaginationEllipsis />
@@ -62,21 +74,21 @@ const generatePaginationItems = (
       );
       items.push(
         <PaginationItemLink
-          key={totalPages - 1}
-          page={totalPages - 1}
+          key={lastPage}
+          page={lastPage}
           isActive={false}
-          onClick={() => onPageChange(totalPages - 1)}
+          onClick={() => onPageChange(lastPage)}
         />
       );
     }
-  } else if (currentPage >= totalPages - 3) {
-    if (totalPages >= 6) {
+  } else if (!showEndEllipsis) {
+    if (totalPages >= minimumPagesForEllipsis) {
       items.push(
         <PaginationItemLink
-          key={0}
-          page={0}
+          key={firstPage}
+          page={firstPage}
           isActive={false}
-          onClick={() => onPageChange(0)}
+          onClick={() => onPageChange(firstPage)}
         />
       );
       items.push(
@@ -85,7 +97,7 @@ const generatePaginationItems = (
         </PaginationItem>
       );
     }
-    for (let i = totalPages - 5; i < totalPages; i++) {
+    for (let i = totalPages - maxVisiblePages; i < totalPages; i++) {
       items.push(
         <PaginationItemLink
           key={i}
@@ -96,12 +108,18 @@ const generatePaginationItems = (
       );
     }
   } else {
+    const middlePages = [
+      currentPage - 1,
+      currentPage,
+      currentPage + 1,
+    ].filter(p => p >= 0 && p < totalPages);
+
     items.push(
       <PaginationItemLink
-        key={0}
-        page={0}
+        key={firstPage}
+        page={firstPage}
         isActive={false}
-        onClick={() => onPageChange(0)}
+        onClick={() => onPageChange(firstPage)}
       />
     );
     items.push(
@@ -109,18 +127,18 @@ const generatePaginationItems = (
         <PaginationEllipsis />
       </PaginationItem>
     );
-    for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-      if (i >= 0 && i < totalPages) {
-        items.push(
-          <PaginationItemLink
-            key={i}
-            page={i}
-            isActive={currentPage === i}
-            onClick={() => onPageChange(i)}
-          />
-        );
-      }
-    }
+
+    middlePages.forEach((page) => {
+      items.push(
+        <PaginationItemLink
+          key={page}
+          page={page}
+          isActive={currentPage === page}
+          onClick={() => onPageChange(page)}
+        />
+      );
+    });
+
     items.push(
       <PaginationItem key="ellipsis-end">
         <PaginationEllipsis />
@@ -128,10 +146,10 @@ const generatePaginationItems = (
     );
     items.push(
       <PaginationItemLink
-        key={totalPages - 1}
-        page={totalPages - 1}
+        key={lastPage}
+        page={lastPage}
         isActive={false}
-        onClick={() => onPageChange(totalPages - 1)}
+        onClick={() => onPageChange(lastPage)}
       />
     );
   }
