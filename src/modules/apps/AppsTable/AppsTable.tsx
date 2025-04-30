@@ -7,10 +7,12 @@ import { DataTable } from '../../../components/data-table';
 import { appsQuery } from '../appsQuery';
 import { App, columns } from './columns.tsx';
 
-function useAppsData(): App[] {
+function useAppsData(currentPage: number): App[] {
+  const skip = currentPage * TABLE_LENGTH;
+
   const { data } = useQuery({
-    queryKey: ['apps_preview'],
-    queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip: 0 }),
+    queryKey: ['apps_preview', currentPage],
+    queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
@@ -23,12 +25,12 @@ function useAppsData(): App[] {
 }
 
 export default function AppsTable() {
-  const data = useAppsData();
   const [currentPage, setCurrentPage] = useState(0);
+  const data = useAppsData(currentPage);
 
   return (
     <>
-      <DataTable columns={columns} data={data} />;
+      <DataTable columns={columns} data={data} />
       <PaginatedNavigation
         currentPage={currentPage}
         totalPages={currentPage + 2}
