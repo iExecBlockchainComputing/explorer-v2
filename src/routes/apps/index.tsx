@@ -1,12 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { Box, LoaderCircle } from 'lucide-react';
-import { SearcherBar } from '@/modules/SearcherBar';
-import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { DataTable } from '@/components/data-table';
+import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { createFileRoute } from '@tanstack/react-router';
+import { Box, LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
+import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { DataTable } from '@/components/data-table';
+import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
 
@@ -49,9 +49,7 @@ function AppsRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && (
-          <LoaderCircle className="animate-spin" />
-        )}
+        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />

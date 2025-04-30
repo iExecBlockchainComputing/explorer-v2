@@ -1,12 +1,12 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useState } from 'react';
-import { SearcherBar } from '@/modules/SearcherBar';
-import { Box, LoaderCircle } from 'lucide-react';
-import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
-import { DataTable } from '@/components/data-table';
+import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { createFileRoute } from '@tanstack/react-router';
+import { Box, LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
+import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
+import { DataTable } from '@/components/data-table';
+import { SearcherBar } from '@/modules/SearcherBar';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
 
@@ -49,9 +49,7 @@ function DealsRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && (
-          <LoaderCircle className="animate-spin" />
-        )}
+        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />
