@@ -2,6 +2,7 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
+import { Link } from '@tanstack/react-router';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { CircularLoader } from '@/components/CircularLoader';
 import CopyButton from '@/components/CopyButton';
@@ -42,8 +43,8 @@ export function AppsPreviewTable({ className }: { className?: string }) {
             <LoaderCircle className="animate-spin" />
           )}
         </h2>
-        <Button variant="link" className="-mr-4">
-          View all
+        <Button variant="link" className="-mr-4" asChild>
+          <Link to="/apps">View all</Link>
         </Button>
       </div>
       <Table>
