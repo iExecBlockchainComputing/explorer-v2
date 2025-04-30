@@ -43,9 +43,9 @@ const generatePaginationItems = (
 ) => {
   const items: JSX.Element[] = [];
 
-  const maxVisiblePages = 5; // nombre de pages à afficher autour de la page actuelle
-  const boundaryThreshold = 3; // nombre de pages à partir du début ou de la fin pour n'afficher que les premières/dernières pages
-  const minimumPagesForEllipsis = 6; // nombre de pages requis pour que les ellipses apparaissent
+  const maxVisiblePages = 3;
+  const boundaryThreshold = 1;
+  const minimumPagesForEllipsis = 3;
 
   const firstPage = 0;
   const lastPage = totalPages - 1;
@@ -54,7 +54,11 @@ const generatePaginationItems = (
   const showEndEllipsis = currentPage < totalPages - boundaryThreshold - 1;
 
   if (!showStartEllipsis) {
-    const endPage = Math.min(maxVisiblePages, totalPages);
+    const isFirstPage = currentPage === firstPage;
+    let endPage = Math.min(maxVisiblePages, totalPages);
+    if (isFirstPage) {
+      endPage++;
+    }
     for (let i = 0; i < endPage; i++) {
       items.push(
         <PaginationItemLink
@@ -82,7 +86,7 @@ const generatePaginationItems = (
       );
     }
   } else if (!showEndEllipsis) {
-    if (totalPages >= minimumPagesForEllipsis) {
+    if (totalPages >= minimumPagesForEllipsis && currentPage !== 2) {
       items.push(
         <PaginationItemLink
           key={firstPage}
@@ -108,11 +112,9 @@ const generatePaginationItems = (
       );
     }
   } else {
-    const middlePages = [
-      currentPage - 1,
-      currentPage,
-      currentPage + 1,
-    ].filter(p => p >= 0 && p < totalPages);
+    const middlePages = [currentPage - 1, currentPage, currentPage + 1].filter(
+      (p) => p >= 0 && p < totalPages
+    );
 
     items.push(
       <PaginationItemLink
@@ -168,7 +170,7 @@ export function PaginatedNavigation({
       <PaginationContent>
         <PaginationItem>
           <PaginationPrevious
-            className="hidden rounded-lg md:flex"
+            className="rounded-lg"
             disabled={currentPage <= 0}
             onClick={() => currentPage > 0 && onPageChange(currentPage - 1)}
           />
@@ -176,7 +178,7 @@ export function PaginatedNavigation({
         {generatePaginationItems(totalPages, currentPage, onPageChange)}
         <PaginationItem>
           <PaginationNext
-            className="hidden rounded-lg md:flex"
+            className="rounded-lg"
             disabled={currentPage >= totalPages - 1}
             onClick={() =>
               currentPage < totalPages - 1 && onPageChange(currentPage + 1)
