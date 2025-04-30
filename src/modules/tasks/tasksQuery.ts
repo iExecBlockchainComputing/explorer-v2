@@ -1,6 +1,6 @@
 import { graphql } from '@/graphql/gql';
 
-export const taskQuery = graphql(`
+export const tasksQuery = graphql(`
   query Tasks($length: Int = 20, $skip: Int = 0) {
     tasks(
       first: $length

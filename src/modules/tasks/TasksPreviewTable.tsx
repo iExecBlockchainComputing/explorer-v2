@@ -17,13 +17,13 @@ import {
 } from '@/components/ui/table';
 import { truncateAddress } from '@/utils/truncateAddress';
 import StatusCell from './StatusCell';
-import { taskQuery } from './tasksQuery';
+import { tasksQuery } from './tasksQuery';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
   const tasks = useQuery({
     queryKey: ['tasks_preview'],
     queryFn: () =>
-      execute(taskQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(tasksQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 
