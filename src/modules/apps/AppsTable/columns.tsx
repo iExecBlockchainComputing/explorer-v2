@@ -5,8 +5,6 @@ import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type App = {
   timestamp: any;
   name: string;
@@ -89,7 +87,7 @@ export const columns: ColumnDef<App>[] = [
     header: 'Time',
     cell: ({ row }) => {
       const timestamp = row.original.timestamp;
-      return <span className="min-w-42">{formatElapsedTime(timestamp)}</span>;
+      return <div className="min-w-32">{formatElapsedTime(timestamp)}</div>;
     },
   },
 ];

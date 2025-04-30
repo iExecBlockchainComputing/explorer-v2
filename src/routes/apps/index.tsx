@@ -1,21 +1,65 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Box } from 'lucide-react';
+import { useState } from 'react';
+import { Box, LoaderCircle } from 'lucide-react';
 import { SearcherBar } from '@/modules/SearcherBar';
-import AppsTable from '@/modules/apps/appsTable/AppsTable';
+import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { DataTable } from '@/components/data-table';
+import { execute } from '@/graphql/execute';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { appsQuery } from '@/modules/apps/appsQuery';
+import { columns } from '@/modules/apps/appsTable/columns';
 
 export const Route = createFileRoute('/apps/')({
-  component: RouteComponent,
+  component: AppsRoute,
 });
 
-function RouteComponent() {
+function useAppsData(currentPage: number) {
+  const skip = currentPage * TABLE_LENGTH;
+
+  const { data, isFetching, isPending, isError } = useQuery({
+    queryKey: ['apps', currentPage],
+    queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: keepPreviousData,
+  });
+
+  const formattedData =
+    data?.apps.map((app) => ({
+      ...app,
+      destination: `/apps/${app.address}`,
+    })) ?? [];
+
+  return { data: formattedData, isFetching, isPending, isError };
+}
+
+function AppsRoute() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data, isFetching, isPending, isError } = useAppsData(currentPage);
+
   return (
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-16" />
+
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
         Apps deployed
+        {data.length > 0 && isError && (
+          <span className="text-muted-foreground text-sm font-light">
+            (outdated)
+          </span>
+        )}
+        {isFetching && isPending && (
+          <LoaderCircle className="animate-spin" />
+        )}
       </h1>
-      <AppsTable />
+
+      <DataTable columns={columns} data={data} />
+      <PaginatedNavigation
+        currentPage={currentPage}
+        totalPages={currentPage + 2}
+        onPageChange={setCurrentPage}
+      />
     </div>
   );
 }
