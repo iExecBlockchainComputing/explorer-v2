@@ -1,0 +1,65 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
+import { SearcherBar } from '@/modules/SearcherBar';
+import { Box, LoaderCircle } from 'lucide-react';
+import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
+import { DataTable } from '@/components/data-table';
+import { execute } from '@/graphql/execute';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { dealsQuery } from '@/modules/deals/dealsQuery';
+import { columns } from '@/modules/deals/dealsTable/columns';
+
+export const Route = createFileRoute('/deals/')({
+  component: DealsRoute,
+});
+
+function useDealsData(currentPage: number) {
+  const skip = currentPage * TABLE_LENGTH;
+
+  const { data, isFetching, isPending, isError } = useQuery({
+    queryKey: ['deals', currentPage],
+    queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: keepPreviousData,
+  });
+
+  const formattedData =
+    data?.deals.map((deal) => ({
+      ...deal,
+      destination: `/deals/${deal.dealid}`,
+    })) ?? [];
+
+  return { data: formattedData, isFetching, isPending, isError };
+}
+
+function DealsRoute() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const { data, isFetching, isPending, isError } = useDealsData(currentPage);
+
+  return (
+    <div className="mt-8 grid gap-6">
+      <SearcherBar className="py-16" />
+
+      <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+        <Box size="20" />
+        Deals
+        {data.length > 0 && isError && (
+          <span className="text-muted-foreground text-sm font-light">
+            (outdated)
+          </span>
+        )}
+        {isFetching && isPending && (
+          <LoaderCircle className="animate-spin" />
+        )}
+      </h1>
+
+      <DataTable columns={columns} data={data} />
+      <PaginatedNavigation
+        currentPage={currentPage}
+        totalPages={currentPage + 2}
+        onPageChange={setCurrentPage}
+      />
+    </div>
+  );
+}

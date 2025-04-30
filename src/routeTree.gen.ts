@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as DealsIndexImport } from './routes/deals/index'
 import { Route as AppsIndexImport } from './routes/apps/index'
 
 // Create/Update Routes
@@ -19,6 +20,12 @@ import { Route as AppsIndexImport } from './routes/apps/index'
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DealsIndexRoute = DealsIndexImport.update({
+  id: '/deals/',
+  path: '/deals/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +53,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/deals/': {
+      id: '/deals/'
+      path: '/deals'
+      fullPath: '/deals'
+      preLoaderRoute: typeof DealsIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -54,36 +68,41 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apps': typeof AppsIndexRoute
+  '/deals': typeof DealsIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/apps': typeof AppsIndexRoute
+  '/deals': typeof DealsIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/apps/': typeof AppsIndexRoute
+  '/deals/': typeof DealsIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/apps'
+  fullPaths: '/' | '/apps' | '/deals'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/apps'
-  id: '__root__' | '/' | '/apps/'
+  to: '/' | '/apps' | '/deals'
+  id: '__root__' | '/' | '/apps/' | '/deals/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppsIndexRoute: typeof AppsIndexRoute
+  DealsIndexRoute: typeof DealsIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppsIndexRoute: AppsIndexRoute,
+  DealsIndexRoute: DealsIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -97,7 +116,8 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/apps/"
+        "/apps/",
+        "/deals/"
       ]
     },
     "/": {
@@ -105,6 +125,9 @@ export const routeTree = rootRoute
     },
     "/apps/": {
       "filePath": "apps/index.tsx"
+    },
+    "/deals/": {
+      "filePath": "deals/index.tsx"
     }
   }
 }
