@@ -56,8 +56,8 @@ function PaginationLink({
         buttonVariants({
           variant: isActive ? 'outline' : 'ghost',
           size,
+          className: isActive ? 'border-accent' : 'border-transparent',
         }),
-        isActive ? 'border-accent' : '',
         className
       )}
       {...props}
