@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { DataTable } from '../../../components/data-table';
@@ -14,6 +14,7 @@ function useAppsData(currentPage: number): App[] {
     queryKey: ['apps_preview', currentPage],
     queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: keepPreviousData,
   });
 
   return (
