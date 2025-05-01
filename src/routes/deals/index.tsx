@@ -17,7 +17,7 @@ export const Route = createFileRoute('/deals/')({
 function useDealsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isFetching, isPending, isError } = useQuery({
+  const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['deals', currentPage],
     queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -30,12 +30,12 @@ function useDealsData(currentPage: number) {
       destination: `/deals/${deal.dealid}`,
     })) ?? [];
 
-  return { data: formattedData, isFetching, isPending, isError };
+  return { data: formattedData, isLoading, isRefetching, isError };
 }
 
 function DealsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isFetching, isPending, isError } = useDealsData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useDealsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -49,7 +49,7 @@ function DealsRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
+        {(isLoading || isRefetching) && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />

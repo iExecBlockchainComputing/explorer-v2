@@ -17,7 +17,7 @@ export const Route = createFileRoute('/datasets/')({
 function useDatasetsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isFetching, isPending, isError } = useQuery({
+  const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['datasets', currentPage],
     queryFn: () => execute(datasetsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -30,12 +30,12 @@ function useDatasetsData(currentPage: number) {
       destination: `/datasets/${dataset.address}`,
     })) ?? [];
 
-  return { data: formattedData, isFetching, isPending, isError };
+  return { data: formattedData, isLoading, isRefetching, isError };
 }
 
 function DatasetsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isFetching, isPending, isError } = useDatasetsData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useDatasetsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -49,7 +49,7 @@ function DatasetsRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
+        {(isLoading && isRefetching) && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />

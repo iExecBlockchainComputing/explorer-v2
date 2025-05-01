@@ -17,7 +17,7 @@ export const Route = createFileRoute('/apps/')({
 function useAppsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isFetching, isPending, isError } = useQuery({
+  const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['apps', currentPage],
     queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -30,12 +30,12 @@ function useAppsData(currentPage: number) {
       destination: `/apps/${app.address}`,
     })) ?? [];
 
-  return { data: formattedData, isFetching, isPending, isError };
+  return { data: formattedData, isLoading, isRefetching, isError };
 }
 
 function AppsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isFetching, isPending, isError } = useAppsData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useAppsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -49,7 +49,7 @@ function AppsRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
+        {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />

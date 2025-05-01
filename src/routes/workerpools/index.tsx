@@ -17,7 +17,7 @@ export const Route = createFileRoute('/workerpools/')({
 function useWorkerpoolsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isFetching, isPending, isError } = useQuery({
+  const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['workerpools', currentPage],
     queryFn: () => execute(workerpoolsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -30,12 +30,12 @@ function useWorkerpoolsData(currentPage: number) {
       destination: `/workerpools/${workerpool.address}`,
     })) ?? [];
 
-  return { data: formattedData, isFetching, isPending, isError };
+  return { data: formattedData, isLoading, isRefetching, isError };
 }
 
 function WorkerpoolsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isFetching, isPending, isError } =
+  const { data, isLoading, isRefetching, isError } =
     useWorkerpoolsData(currentPage);
 
   return (
@@ -50,7 +50,7 @@ function WorkerpoolsRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
+        {(isLoading && isRefetching) && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />

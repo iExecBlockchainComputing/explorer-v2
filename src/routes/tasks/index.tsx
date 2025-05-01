@@ -17,7 +17,7 @@ export const Route = createFileRoute('/tasks/')({
 function useTasksData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isFetching, isPending, isError } = useQuery({
+  const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['tasks', currentPage],
     queryFn: () => execute(tasksQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -30,12 +30,12 @@ function useTasksData(currentPage: number) {
       destination: `/tasks/${task.taskid}`,
     })) ?? [];
 
-  return { data: formattedData, isFetching, isPending, isError };
+  return { data: formattedData, isLoading, isRefetching, isError };
 }
 
 function TasksRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isFetching, isPending, isError } = useTasksData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useTasksData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -49,7 +49,7 @@ function TasksRoute() {
             (outdated)
           </span>
         )}
-        {isFetching && isPending && <LoaderCircle className="animate-spin" />}
+        {(isLoading || isRefetching) && <LoaderCircle className="animate-spin" />}
       </h1>
 
       <DataTable columns={columns} data={data} />
