@@ -1,28 +1,12 @@
 'use client';
 
+import { AppsQuery } from '@/graphql/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 
-export type App = {
-  timestamp: any;
-  name: string;
-  type: string;
-  multiaddr: any;
-  checksum: any;
-  mrenclave: any;
-  address: string;
-  owner: { address: string };
-  transfers: Array<{
-    transaction: {
-      timestamp: any;
-      blockNumber: any;
-      txHash: string;
-    };
-  }>;
-  destination: string;
-};
+type App = AppsQuery['apps'][number];
 
 export const columns: ColumnDef<App>[] = [
   {

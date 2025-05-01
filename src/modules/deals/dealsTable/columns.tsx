@@ -1,45 +1,13 @@
 'use client';
 
+import { DealsQuery } from '@/graphql/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { SuccessCell } from '../SuccessCell';
 
-export type Deal = {
-  timestamp: any;
-  startTime: any;
-  appPrice: any;
-  datasetPrice: any;
-  workerpoolPrice: any;
-  botSize: any;
-  trust: any;
-  completedTasksCount: any;
-  claimedTasksCount: any;
-  dealid: string;
-  requester: {
-    address: string;
-  };
-  beneficiary: {
-    address: string;
-  };
-  callback: {
-    address: string;
-  };
-  app: {
-    address: string;
-  };
-  dataset?: {
-    address: string;
-  } | null;
-  workerpool: {
-    address: string;
-  };
-  category: {
-    workClockTimeRef: any;
-    catid: string;
-  };
-};
+type Deal = DealsQuery['deals'][number];
 
 export const columns: ColumnDef<Deal>[] = [
   {
