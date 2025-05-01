@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as TasksIndexImport } from './routes/tasks/index'
 import { Route as DealsIndexImport } from './routes/deals/index'
 import { Route as AppsIndexImport } from './routes/apps/index'
 
@@ -20,6 +21,12 @@ import { Route as AppsIndexImport } from './routes/apps/index'
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TasksIndexRoute = TasksIndexImport.update({
+  id: '/tasks/',
+  path: '/tasks/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -60,6 +67,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DealsIndexImport
       parentRoute: typeof rootRoute
     }
+    '/tasks/': {
+      id: '/tasks/'
+      path: '/tasks'
+      fullPath: '/tasks'
+      preLoaderRoute: typeof TasksIndexImport
+      parentRoute: typeof rootRoute
+    }
   }
 }
 
@@ -69,12 +83,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apps': typeof AppsIndexRoute
   '/deals': typeof DealsIndexRoute
+  '/tasks': typeof TasksIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/apps': typeof AppsIndexRoute
   '/deals': typeof DealsIndexRoute
+  '/tasks': typeof TasksIndexRoute
 }
 
 export interface FileRoutesById {
@@ -82,14 +98,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/apps/': typeof AppsIndexRoute
   '/deals/': typeof DealsIndexRoute
+  '/tasks/': typeof TasksIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/apps' | '/deals'
+  fullPaths: '/' | '/apps' | '/deals' | '/tasks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/apps' | '/deals'
-  id: '__root__' | '/' | '/apps/' | '/deals/'
+  to: '/' | '/apps' | '/deals' | '/tasks'
+  id: '__root__' | '/' | '/apps/' | '/deals/' | '/tasks/'
   fileRoutesById: FileRoutesById
 }
 
@@ -97,12 +114,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppsIndexRoute: typeof AppsIndexRoute
   DealsIndexRoute: typeof DealsIndexRoute
+  TasksIndexRoute: typeof TasksIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppsIndexRoute: AppsIndexRoute,
   DealsIndexRoute: DealsIndexRoute,
+  TasksIndexRoute: TasksIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -117,7 +136,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/apps/",
-        "/deals/"
+        "/deals/",
+        "/tasks/"
       ]
     },
     "/": {
@@ -128,6 +148,9 @@ export const routeTree = rootRoute
     },
     "/deals/": {
       "filePath": "deals/index.tsx"
+    },
+    "/tasks/": {
+      "filePath": "tasks/index.tsx"
     }
   }
 }
