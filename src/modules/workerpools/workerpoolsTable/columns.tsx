@@ -29,7 +29,11 @@ export const columns: ColumnDef<Workerpool>[] = [
     header: 'Description',
     cell: ({ row }) => {
       const workerpoolDescription = row.original.description;
-      return <div className="w-42 overflow-ellipsis overflow-hidden">{workerpoolDescription}</div>;
+      return (
+        <div className="w-42 overflow-hidden overflow-ellipsis">
+          {workerpoolDescription}
+        </div>
+      );
     },
   },
   {

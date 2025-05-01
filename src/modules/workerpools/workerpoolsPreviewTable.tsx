@@ -95,7 +95,11 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
                     textToCopy={workerpool.address}
                   />
                 </TableCell>
-                <TableCell>{workerpool.description}</TableCell>
+                <TableCell>
+                  <div className="w-42 overflow-hidden overflow-ellipsis">
+                    {workerpool.description}
+                  </div>
+                </TableCell>
                 <TableCell>
                   <CopyButton
                     displayText={truncateAddress(workerpool.owner.address, {
