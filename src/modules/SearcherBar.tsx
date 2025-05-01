@@ -23,10 +23,7 @@ export function SearcherBar({ className }: { className?: string }) {
         </Button>
       </div>
 
-      <Button
-        variant="outline"
-        className="mx-auto mt-4 flex w-auto sm:hidden"
-      >
+      <Button variant="outline" className="mx-auto mt-4 flex w-auto sm:hidden">
         My activity
       </Button>
     </div>
