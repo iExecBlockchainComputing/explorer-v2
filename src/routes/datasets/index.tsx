@@ -35,7 +35,8 @@ function useDatasetsData(currentPage: number) {
 
 function DatasetsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } = useDatasetsData(currentPage);
+  const { data, isLoading, isRefetching, isError } =
+    useDatasetsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -49,7 +50,9 @@ function DatasetsRoute() {
             (outdated)
           </span>
         )}
-        {(isLoading && isRefetching) && <LoaderCircle className="animate-spin" />}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
       </h1>
 
       <DataTable columns={columns} data={data} />

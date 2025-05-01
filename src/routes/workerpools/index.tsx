@@ -50,7 +50,9 @@ function WorkerpoolsRoute() {
             (outdated)
           </span>
         )}
-        {(isLoading && isRefetching) && <LoaderCircle className="animate-spin" />}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
       </h1>
 
       <DataTable columns={columns} data={data} />
