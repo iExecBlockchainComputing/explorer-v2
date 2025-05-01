@@ -96,7 +96,9 @@ export function AppsPreviewTable({ className }: { className?: string }) {
                   />
                 </TableCell>
                 <TableCell>
-                  <CopyButton displayText={app.name} textToCopy={app.name} />
+                  <div className="w-36">
+                    <CopyButton displayText={app.name} textToCopy={app.name} />
+                  </div>
                 </TableCell>
                 <TableCell>
                   <CopyButton
