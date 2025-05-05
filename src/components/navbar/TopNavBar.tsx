@@ -12,7 +12,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select.tsx';
-import { AddressChip } from './AddressChip.tsx';
 import { IexecAccount } from './IexecAccount.tsx';
 
 export function TopNavBar() {
@@ -29,7 +28,7 @@ export function TopNavBar() {
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
       </Link>
-      <div className="mr-10 flex items-center gap-2 md:mr-0">
+      <div className="mr-6 flex items-center gap-2 md:mr-0">
         <div className="content hidden md:flex">
           <Select value="bellecour">
             <SelectTrigger className="">
@@ -48,7 +47,7 @@ export function TopNavBar() {
 
             <button
               type="button"
-              className="hover:drop-shadow-link-hover -mr-1 ml-2 p-1"
+              className="hover:drop-shadow-link-hover p-1"
               onClick={() => logout()}
             >
               <LogOut size="20" />
@@ -63,7 +62,7 @@ export function TopNavBar() {
 
       <div className="group pointer-events-none absolute inset-0 md:hidden">
         <label
-          className="group/checkbox pointer-events-auto fixed top-7 right-6 z-30 flex size-5 w-[26px] origin-center transform flex-col justify-between"
+          className="group/checkbox pointer-events-auto fixed top-8.5 right-6 z-30 flex size-4 origin-center transform flex-col justify-between"
           htmlFor="menu"
           onClick={handleMenuToggle}
         >
@@ -75,29 +74,38 @@ export function TopNavBar() {
             checked={isMenuOpen}
             readOnly
           />
-          <span className="pointer-events-none block h-0.5 w-[26px] origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:-rotate-45"></span>
-          <span className="pointer-events-none block h-0.5 w-[26px] origin-top-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
-          <span className="pointer-events-none block h-0.5 w-[26px] origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:rotate-45"></span>
+          <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
+          <span className="pointer-events-none block h-0.5 w-4.5 origin-top-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
+          <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
         </label>
 
-        <div className="border-grey-600 bg-grey-900 fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-5 pt-5 duration-300 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
-          <Link
-            to="/"
-            className="-m-2 flex items-center gap-2 p-2 font-mono"
-            onClick={handleMenuToggle}
-          >
-            <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
-            iExec Explorer
-          </Link>
+        <div className="border-grey-600 bg-grey-900 pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-300 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
+          <div className="-m-2 mr-6 flex items-center justify-between gap-2 py-2 pl-2">
+            <Link to="/" className="font-mono" onClick={handleMenuToggle}>
+              <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
+            </Link>
+            {isConnected ? (
+              <div className="flex max-w-[1260px] items-center gap-2">
+                <IexecAccount address={address!} />
 
-          <div className="left-navbar text-grey-400 mt-10 flex grow flex-col gap-10">
-            {isConnected && (
-              <Button variant="link" className="text-accent-foreground w-max">
-                iExec Account
+                <button
+                  type="button"
+                  className="hover:drop-shadow-link-hover p-1"
+                  onClick={() => logout()}
+                >
+                  <LogOut size="20" />
+                </button>
+              </div>
+            ) : (
+              <Button onClick={login}>
+                <span className="text-base font-semibold">Connect Wallet</span>
               </Button>
             )}
+          </div>
+
+          <div className="left-navbar border-muted -mx-6 mt-6 flex grow flex-col gap-10 border-t px-6 pt-2">
             <Select value="bellecour">
-              <SelectTrigger className="">
+              <SelectTrigger className="w-full border-none">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -106,8 +114,6 @@ export function TopNavBar() {
                 </SelectItem>
               </SelectContent>
             </Select>
-
-            <div className="mb-16"></div>
           </div>
         </div>
       </div>
