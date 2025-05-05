@@ -28,8 +28,8 @@ export function TopNavBar() {
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
       </Link>
-      <div className="mr-6 flex items-center gap-2 sm:mr-0">
-        <div className="content hidden sm:flex">
+      <div className="mr-6 flex items-center gap-2 md:mr-0">
+        <div className="content hidden md:flex">
           <Select value="bellecour">
             <SelectTrigger className="">
               <SelectValue />
@@ -60,7 +60,7 @@ export function TopNavBar() {
         )}
       </div>
 
-      <div className="group pointer-events-none absolute inset-0 sm:hidden">
+      <div className="group pointer-events-none absolute inset-0 md:hidden">
         <label
           className="group/checkbox pointer-events-auto fixed top-8.5 right-6 z-30 flex size-4 origin-center transform flex-col justify-between"
           htmlFor="menu"
