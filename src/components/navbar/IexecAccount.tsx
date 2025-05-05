@@ -35,7 +35,10 @@ export function IexecAccount({ address }: { address: string }) {
     setShowTooltip(false);
   };
   return (
-    <Button className="bg-grey-800 hover:bg-muted text-primary ml-2" variant="secondary">
+    <Button
+      className="bg-grey-800 hover:bg-muted text-primary ml-2"
+      variant="secondary"
+    >
       iExec Account
       <TooltipProvider delayDuration={0}>
         <Tooltip open={showTooltip}>
