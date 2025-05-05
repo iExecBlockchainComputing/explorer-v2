@@ -13,6 +13,7 @@ import {
   SelectValue,
 } from '../ui/select.tsx';
 import { AddressChip } from './AddressChip.tsx';
+import { IexecAccount } from './IexecAccount.tsx';
 
 export function TopNavBar() {
   const { isConnected, address } = useUserStore();
@@ -30,11 +31,6 @@ export function TopNavBar() {
       </Link>
       <div className="mr-10 flex items-center gap-2 md:mr-0">
         <div className="content hidden md:flex">
-          {isConnected && (
-            <Button variant="link" className="text-accent-foreground">
-              iExec Account
-            </Button>
-          )}
           <Select value="bellecour">
             <SelectTrigger className="">
               <SelectValue />
@@ -48,7 +44,7 @@ export function TopNavBar() {
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
-            <AddressChip address={address!} className="ml-2" />
+            <IexecAccount address={address!} />
 
             <button
               type="button"
