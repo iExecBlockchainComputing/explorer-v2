@@ -1,6 +1,6 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { TopNavBar } from '@/components/navbar/TopNavBar';
+import { TopNavBar } from '@/components/navbar/NavBar';
 import { useWatchAccount } from '@/hooks/useWatchAccount';
 
 export const Route = createRootRoute({
