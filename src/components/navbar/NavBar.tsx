@@ -14,7 +14,7 @@ import {
 } from '../ui/select.tsx';
 import { IexecAccount } from './IexecAccount.tsx';
 
-export function TopNavBar() {
+export function Navbar() {
   const { isConnected, address } = useUserStore();
   const { logout, login } = useLoginLogout();
   const [isMenuOpen, setMenuOpen] = useState(false);
