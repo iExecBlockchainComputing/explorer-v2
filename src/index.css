@@ -222,8 +222,7 @@
 }
 
 .dark {
-  /* --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0); */
+  /* TODO support light and dark theme */
 }
 
 @layer base {
