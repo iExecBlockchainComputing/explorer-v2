@@ -14,7 +14,7 @@ import { Button } from './ui/button';
 export function Footer({ className }: { className?: string }) {
   const navLinks = [
     { href: 'https://www.iex.ec/', label: 'iExec Website' },
-    { href: 'https://blockscout-bellecour.iex.ec/', label: 'Blockscout' },
+    { href: 'https://blockscout-bellecour.iex.ec/', label: 'Block explorer' }, // TODO import it from protocol data list
     { href: 'https://www.iex.ec/contact', label: 'Contact Us' },
   ];
 
