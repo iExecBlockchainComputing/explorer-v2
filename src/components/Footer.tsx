@@ -33,7 +33,7 @@ export function Footer({ className }: { className?: string }) {
     { href: 'https://medium.com/iex-ec', icon: <SiMedium size={16} /> },
   ];
 
-  const startYear = 2025;
+  const startYear = 2017;
   const currentYear = new Date().getFullYear();
   const displayYear =
     currentYear > startYear
