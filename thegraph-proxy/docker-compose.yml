@@ -1,0 +1,12 @@
+services:
+  thegraph-proxy:
+    image: thegraph-proxy
+    build:
+      context: ./docker
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - '8080:80'
+    environment:
+      THEGRAPH_GATEWAY_DOMAIN: ${THEGRAPH_GATEWAY_DOMAIN}
+      THEGRAPH_API_KEY: ${THEGRAPH_API_KEY}
