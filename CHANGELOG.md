@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.2.0...iexec-explorer-v1.3.0) (2025-05-07)
+
+
+### 🚀 Features
+
+* **thegraph-proxy:** add minimal thegraph proxy server for development ([#7](https://github.com/iExecBlockchainComputing/explorer-v2/issues/7)) ([614a4a1](https://github.com/iExecBlockchainComputing/explorer-v2/commit/614a4a12fea1e68a294b063399652d9ae620845b))
+
 ## [1.2.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.1.0...iexec-explorer-v1.2.0) (2025-04-25)
 
 
