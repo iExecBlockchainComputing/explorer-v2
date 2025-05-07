@@ -6,12 +6,12 @@ import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 const SUPPORTED_CHAIN_IDS = SUPPORTED_CHAINS.map((chain) => chain.id);
 
 export function UnsupportedChain() {
-  const { chainId } = useUserStore();
+  const { isConnected, chainId } = useUserStore();
 
   const isChainSupported =
     chainId !== undefined && SUPPORTED_CHAIN_IDS.includes(chainId);
 
-  if (isChainSupported) {
+  if (isChainSupported || !isConnected) {
     return null;
   }
 
