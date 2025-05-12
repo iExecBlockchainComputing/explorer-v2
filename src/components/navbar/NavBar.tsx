@@ -28,7 +28,15 @@ export function Navbar() {
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
       </Link>
-      <div className="mr-6 flex items-center gap-2 md:mr-0">
+      <div className="mr-6 flex items-center gap-4 md:mr-0">
+        {isConnected && (
+          <div className="hidden md:flex">
+            <Button variant="link" asChild className="text-white">
+              <Link to="/account">iExec Account</Link>
+            </Button>
+            <span className="border-secondary border-l" />
+          </div>
+        )}
         <div className="content hidden md:flex">
           <Select value="bellecour">
             <SelectTrigger className="">
@@ -103,7 +111,14 @@ export function Navbar() {
             )}
           </div>
 
-          <div className="left-navbar border-muted -mx-6 mt-6 flex grow flex-col gap-10 border-t px-6 pt-2">
+          <div className="left-navbar border-muted -mx-6 mt-6 flex grow flex-col gap-4 border-t px-6 pt-2">
+            <Button
+              variant="link"
+              asChild
+              className="justify-baseline px-3 text-white"
+            >
+              <Link to="/account">iExec Account</Link>
+            </Button>
             <Select value="bellecour">
               <SelectTrigger className="w-full border-none">
                 <SelectValue />
