@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select.tsx';
-import { IexecAccount } from './IexecAccount.tsx';
+import { AddressChip } from './AddressChip.tsx';
 
 export function Navbar() {
   const { isConnected, address } = useUserStore();
@@ -43,7 +43,7 @@ export function Navbar() {
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
-            <IexecAccount address={address!} />
+            <AddressChip address={address!} />
 
             <button
               type="button"
@@ -86,7 +86,7 @@ export function Navbar() {
             </Link>
             {isConnected ? (
               <div className="flex max-w-[1260px] items-center gap-2">
-                <IexecAccount address={address!} />
+                <AddressChip address={address!} />
 
                 <button
                   type="button"
