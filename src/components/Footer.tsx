@@ -43,7 +43,7 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'bg-grey-800 border-muted text-grey-200 rounded-3xl border p-10 sm:p-20',
+        'bg-grey-800 border-muted text-grey-200 rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
         className
       )}
     >
