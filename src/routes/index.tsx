@@ -18,22 +18,12 @@ function Index() {
           <div className="absolute top-0 right-0 hidden aspect-square h-full translate-x-1/2 -translate-y-1/2 rounded-full bg-yellow-100/50 md:block" />
         </div>
       </div>
-      <div className="flex flex-col gap-x-6 gap-y-10 lg:grid lg:grid-cols-6">
-        <div className="lg:col-span-3">
-          <DealsPreviewTable />
-        </div>
-        <div className="lg:col-span-3">
-          <TasksPreviewTable />
-        </div>
-        <div className="lg:col-span-2">
-          <AppsPreviewTable />
-        </div>
-        <div className="lg:col-span-2">
-          <DatasetsPreviewTable />
-        </div>
-        <div className="lg:col-span-2">
-          <WorkerpoolsPreviewTable />
-        </div>
+      <div className="flex flex-col gap-x-6 gap-y-10 lg:grid lg:grid-cols-12">
+        <DealsPreviewTable className="lg:col-span-7" />
+        <TasksPreviewTable className="lg:col-span-5" />
+        <AppsPreviewTable className="lg:col-span-4" />
+        <DatasetsPreviewTable className="lg:col-span-4" />
+        <WorkerpoolsPreviewTable className="lg:col-span-4" />{' '}
       </div>
     </div>
   );

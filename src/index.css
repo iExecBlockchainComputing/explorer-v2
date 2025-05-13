@@ -181,8 +181,8 @@
   --card: oklch(0.208 0.042 265.755);
   --card-foreground: oklch(0.984 0.003 247.858);
 
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
+  --popover: var(--color-grey-800);
+  --popover-foreground: var(--color-grey-50);
 
   --tooltip: var(--color-grey-800);
   --tooltip-foreground: var(--color-grey-50);
@@ -222,8 +222,7 @@
 }
 
 .dark {
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  /* TODO support light and dark theme */
 }
 
 @layer base {
