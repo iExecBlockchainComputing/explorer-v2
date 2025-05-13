@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.3.0...iexec-explorer-v1.4.0) (2025-05-13)
+
+
+### 🚀 Features
+
+* add navbar and footer ([#6](https://github.com/iExecBlockchainComputing/explorer-v2/issues/6)) ([25d7c44](https://github.com/iExecBlockchainComputing/explorer-v2/commit/25d7c44c347d76325ed02cce1c2f49097e56d000))
+
 ## [1.3.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.2.0...iexec-explorer-v1.3.0) (2025-05-07)
 
 
