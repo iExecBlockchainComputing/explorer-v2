@@ -1,4 +1,4 @@
-import { useNavigate } from '@tanstack/react-router';
+import { Link } from '@tanstack/react-router';
 import {
   ColumnDef,
   flexRender,
@@ -32,7 +32,7 @@ export function DataTable<TData extends { destination: string }, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
-  const navigate = useNavigate();
+
   return (
     <Table>
       <TableHeader>
@@ -55,14 +55,15 @@ export function DataTable<TData extends { destination: string }, TValue>({
       </TableHeader>
       <TableBody>
         {table.getRowModel().rows.map((row) => (
-          <TableRow
-            key={row.id}
-            data-state={row.getIsSelected() && 'selected'}
-            onClick={() => navigate({ to: row.original.destination })}
-          >
+          <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              <TableCell key={cell.id} className="p-0">
+                <Link
+                  className="block px-5 py-6"
+                  to={cell.row.original.destination}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Link>
               </TableCell>
             ))}
           </TableRow>
