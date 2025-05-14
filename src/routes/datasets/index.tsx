@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -21,7 +21,6 @@ function useDatasetsData(currentPage: number) {
     queryKey: ['datasets', currentPage],
     queryFn: () => execute(datasetsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: keepPreviousData,
   });
 
   const formattedData =
@@ -55,7 +54,12 @@ function DatasetsRoute() {
         )}
       </h1>
 
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        data={data}
+        tableLength={TABLE_LENGTH}
+        isLoading={isLoading || isRefetching}
+      />
       <PaginatedNavigation
         currentPage={currentPage}
         totalPages={currentPage + 2}

@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -21,7 +21,6 @@ function useAppsData(currentPage: number) {
     queryKey: ['apps', currentPage],
     queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: keepPreviousData,
   });
 
   const formattedData =
@@ -52,7 +51,12 @@ function AppsRoute() {
         {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
       </h1>
 
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        data={data}
+        tableLength={TABLE_LENGTH}
+        isLoading={isLoading || isRefetching}
+      />
       <PaginatedNavigation
         currentPage={currentPage}
         totalPages={currentPage + 2}

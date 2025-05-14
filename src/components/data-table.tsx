@@ -17,11 +17,15 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  tableLength?: number;
+  isLoading?: boolean;
 }
 
 export function DataTable<TData extends { destination: string }, TValue>({
   columns,
   data,
+  tableLength = 10,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -50,27 +54,40 @@ export function DataTable<TData extends { destination: string }, TValue>({
         ))}
       </TableHeader>
       <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && 'selected'}
-              onClick={() => navigate({ to: row.original.destination })}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))
-        ) : (
+        {table.getRowModel().rows.map((row) => (
+          <TableRow
+            key={row.id}
+            data-state={row.getIsSelected() && 'selected'}
+            onClick={() => navigate({ to: row.original.destination })}
+          >
+            {row.getVisibleCells().map((cell) => (
+              <TableCell key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
+        {data.length === 0 && !isLoading && (
           <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              No results.
+            <TableCell colSpan={columns.length} className="text-center">
+              <span>No results.</span>
             </TableCell>
           </TableRow>
         )}
+        {Array.from({
+          length:
+            tableLength -
+            data.length -
+            (data.length === 0 && !isLoading ? 1 : 0),
+        }).map((_, index) => (
+          <TableRow key={`empty-${index}`}>
+            {columns.map((_, colIndex) => (
+              <TableCell key={colIndex} className="h-12">
+                &nbsp;
+              </TableCell>
+            ))}
+          </TableRow>
+        ))}
       </TableBody>
     </Table>
   );
