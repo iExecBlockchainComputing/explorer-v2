@@ -7,34 +7,34 @@ import { useState } from 'react';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { DataTable } from '@/components/data-table';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { dealsQuery } from '@/modules/deals/dealsQuery';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { tasksQuery } from '@/modules/tasks/tasksQuery';
+import { columns } from '@/modules/tasks/tasksTable/columns';
 
-export const Route = createFileRoute('/deals/')({
-  component: DealsRoute,
+export const Route = createFileRoute('/task')({
+  component: TasksRoute,
 });
 
-function useDealsData(currentPage: number) {
+function useTasksData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['deals', currentPage],
-    queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
+    queryKey: ['tasks', currentPage],
+    queryFn: () => execute(tasksQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const formattedData =
-    data?.deals.map((deal) => ({
-      ...deal,
-      destination: `/deals/${deal.dealid}`,
+    data?.tasks.map((task) => ({
+      ...task,
+      destination: `/tasks/${task.taskid}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };
 }
 
-function DealsRoute() {
+function TasksRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } = useDealsData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useTasksData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -42,7 +42,7 @@ function DealsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Deals
+        Tasks
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)

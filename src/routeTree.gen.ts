@@ -11,48 +11,48 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as WorkerpoolImport } from './routes/workerpool'
+import { Route as TaskImport } from './routes/task'
+import { Route as DealImport } from './routes/deal'
+import { Route as DatasetImport } from './routes/dataset'
+import { Route as AppsImport } from './routes/apps'
 import { Route as IndexImport } from './routes/index'
-import { Route as WorkerpoolsIndexImport } from './routes/workerpools/index'
-import { Route as TasksIndexImport } from './routes/tasks/index'
-import { Route as DealsIndexImport } from './routes/deals/index'
-import { Route as DatasetsIndexImport } from './routes/datasets/index'
-import { Route as AppsIndexImport } from './routes/apps/index'
 
 // Create/Update Routes
+
+const WorkerpoolRoute = WorkerpoolImport.update({
+  id: '/workerpool',
+  path: '/workerpool',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const TaskRoute = TaskImport.update({
+  id: '/task',
+  path: '/task',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DealRoute = DealImport.update({
+  id: '/deal',
+  path: '/deal',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DatasetRoute = DatasetImport.update({
+  id: '/dataset',
+  path: '/dataset',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AppsRoute = AppsImport.update({
+  id: '/apps',
+  path: '/apps',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const WorkerpoolsIndexRoute = WorkerpoolsIndexImport.update({
-  id: '/workerpools/',
-  path: '/workerpools/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const TasksIndexRoute = TasksIndexImport.update({
-  id: '/tasks/',
-  path: '/tasks/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DealsIndexRoute = DealsIndexImport.update({
-  id: '/deals/',
-  path: '/deals/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const DatasetsIndexRoute = DatasetsIndexImport.update({
-  id: '/datasets/',
-  path: '/datasets/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AppsIndexRoute = AppsIndexImport.update({
-  id: '/apps/',
-  path: '/apps/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -67,39 +67,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/apps/': {
-      id: '/apps/'
+    '/apps': {
+      id: '/apps'
       path: '/apps'
       fullPath: '/apps'
-      preLoaderRoute: typeof AppsIndexImport
+      preLoaderRoute: typeof AppsImport
       parentRoute: typeof rootRoute
     }
-    '/datasets/': {
-      id: '/datasets/'
-      path: '/datasets'
-      fullPath: '/datasets'
-      preLoaderRoute: typeof DatasetsIndexImport
+    '/dataset': {
+      id: '/dataset'
+      path: '/dataset'
+      fullPath: '/dataset'
+      preLoaderRoute: typeof DatasetImport
       parentRoute: typeof rootRoute
     }
-    '/deals/': {
-      id: '/deals/'
-      path: '/deals'
-      fullPath: '/deals'
-      preLoaderRoute: typeof DealsIndexImport
+    '/deal': {
+      id: '/deal'
+      path: '/deal'
+      fullPath: '/deal'
+      preLoaderRoute: typeof DealImport
       parentRoute: typeof rootRoute
     }
-    '/tasks/': {
-      id: '/tasks/'
-      path: '/tasks'
-      fullPath: '/tasks'
-      preLoaderRoute: typeof TasksIndexImport
+    '/task': {
+      id: '/task'
+      path: '/task'
+      fullPath: '/task'
+      preLoaderRoute: typeof TaskImport
       parentRoute: typeof rootRoute
     }
-    '/workerpools/': {
-      id: '/workerpools/'
-      path: '/workerpools'
-      fullPath: '/workerpools'
-      preLoaderRoute: typeof WorkerpoolsIndexImport
+    '/workerpool': {
+      id: '/workerpool'
+      path: '/workerpool'
+      fullPath: '/workerpool'
+      preLoaderRoute: typeof WorkerpoolImport
       parentRoute: typeof rootRoute
     }
   }
@@ -109,64 +109,64 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/apps': typeof AppsIndexRoute
-  '/datasets': typeof DatasetsIndexRoute
-  '/deals': typeof DealsIndexRoute
-  '/tasks': typeof TasksIndexRoute
-  '/workerpools': typeof WorkerpoolsIndexRoute
+  '/apps': typeof AppsRoute
+  '/dataset': typeof DatasetRoute
+  '/deal': typeof DealRoute
+  '/task': typeof TaskRoute
+  '/workerpool': typeof WorkerpoolRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/apps': typeof AppsIndexRoute
-  '/datasets': typeof DatasetsIndexRoute
-  '/deals': typeof DealsIndexRoute
-  '/tasks': typeof TasksIndexRoute
-  '/workerpools': typeof WorkerpoolsIndexRoute
+  '/apps': typeof AppsRoute
+  '/dataset': typeof DatasetRoute
+  '/deal': typeof DealRoute
+  '/task': typeof TaskRoute
+  '/workerpool': typeof WorkerpoolRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/apps/': typeof AppsIndexRoute
-  '/datasets/': typeof DatasetsIndexRoute
-  '/deals/': typeof DealsIndexRoute
-  '/tasks/': typeof TasksIndexRoute
-  '/workerpools/': typeof WorkerpoolsIndexRoute
+  '/apps': typeof AppsRoute
+  '/dataset': typeof DatasetRoute
+  '/deal': typeof DealRoute
+  '/task': typeof TaskRoute
+  '/workerpool': typeof WorkerpoolRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/apps' | '/datasets' | '/deals' | '/tasks' | '/workerpools'
+  fullPaths: '/' | '/apps' | '/dataset' | '/deal' | '/task' | '/workerpool'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/apps' | '/datasets' | '/deals' | '/tasks' | '/workerpools'
+  to: '/' | '/apps' | '/dataset' | '/deal' | '/task' | '/workerpool'
   id:
     | '__root__'
     | '/'
-    | '/apps/'
-    | '/datasets/'
-    | '/deals/'
-    | '/tasks/'
-    | '/workerpools/'
+    | '/apps'
+    | '/dataset'
+    | '/deal'
+    | '/task'
+    | '/workerpool'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AppsIndexRoute: typeof AppsIndexRoute
-  DatasetsIndexRoute: typeof DatasetsIndexRoute
-  DealsIndexRoute: typeof DealsIndexRoute
-  TasksIndexRoute: typeof TasksIndexRoute
-  WorkerpoolsIndexRoute: typeof WorkerpoolsIndexRoute
+  AppsRoute: typeof AppsRoute
+  DatasetRoute: typeof DatasetRoute
+  DealRoute: typeof DealRoute
+  TaskRoute: typeof TaskRoute
+  WorkerpoolRoute: typeof WorkerpoolRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AppsIndexRoute: AppsIndexRoute,
-  DatasetsIndexRoute: DatasetsIndexRoute,
-  DealsIndexRoute: DealsIndexRoute,
-  TasksIndexRoute: TasksIndexRoute,
-  WorkerpoolsIndexRoute: WorkerpoolsIndexRoute,
+  AppsRoute: AppsRoute,
+  DatasetRoute: DatasetRoute,
+  DealRoute: DealRoute,
+  TaskRoute: TaskRoute,
+  WorkerpoolRoute: WorkerpoolRoute,
 }
 
 export const routeTree = rootRoute
@@ -180,30 +180,30 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/apps/",
-        "/datasets/",
-        "/deals/",
-        "/tasks/",
-        "/workerpools/"
+        "/apps",
+        "/dataset",
+        "/deal",
+        "/task",
+        "/workerpool"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/apps/": {
-      "filePath": "apps/index.tsx"
+    "/apps": {
+      "filePath": "apps.tsx"
     },
-    "/datasets/": {
-      "filePath": "datasets/index.tsx"
+    "/dataset": {
+      "filePath": "dataset.tsx"
     },
-    "/deals/": {
-      "filePath": "deals/index.tsx"
+    "/deal": {
+      "filePath": "deal.tsx"
     },
-    "/tasks/": {
-      "filePath": "tasks/index.tsx"
+    "/task": {
+      "filePath": "task.tsx"
     },
-    "/workerpools/": {
-      "filePath": "workerpools/index.tsx"
+    "/workerpool": {
+      "filePath": "workerpool.tsx"
     }
   }
 }
