@@ -41,6 +41,7 @@ const CopyButton = ({
           <button
             onClick={(e) => {
               e.stopPropagation();
+              e.preventDefault();
               handleCopy();
             }}
             onMouseEnter={handleMouseEnter}
