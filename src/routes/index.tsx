@@ -4,7 +4,7 @@ import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
 import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';
 import { TasksPreviewTable } from '@/modules/tasks/TasksPreviewTable';
-import { WorkerpoolsPreviewTable } from '@/modules/workerpools/WorkerpoolsPreviewTable_rennaming';
+import { WorkerpoolsPreviewTable } from '@/modules/workerpools/workerpoolsPreviewTable';
 
 export const Route = createFileRoute('/')({
   component: Index,
