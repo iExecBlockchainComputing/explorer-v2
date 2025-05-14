@@ -1,5 +1,3 @@
-'use client';
-
 import { DealsQuery } from '@/graphql/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
