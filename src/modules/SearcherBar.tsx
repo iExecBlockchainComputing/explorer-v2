@@ -15,7 +15,7 @@ export function SearcherBar({ className }: { className?: string }) {
             'bg-input border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32'
           )}
-          placeholder="Search address or id or txHash"
+          placeholder="Search address or id or transaction"
         />
         <Search
           size="18"
