@@ -26,7 +26,7 @@ function useAppsData(currentPage: number) {
   const formattedData =
     data?.apps.map((app) => ({
       ...app,
-      destination: `/apps/${app.address}`,
+      destination: `/app/${app.address}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };

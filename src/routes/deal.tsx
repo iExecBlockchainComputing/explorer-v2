@@ -26,7 +26,7 @@ function useDealsData(currentPage: number) {
   const formattedData =
     data?.deals.map((deal) => ({
       ...deal,
-      destination: `/deals/${deal.dealid}`,
+      destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };

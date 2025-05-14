@@ -26,7 +26,7 @@ function useWorkerpoolsData(currentPage: number) {
   const formattedData =
     data?.workerpools.map((workerpool) => ({
       ...workerpool,
-      destination: `/workerpools/${workerpool.address}`,
+      destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };

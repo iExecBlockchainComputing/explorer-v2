@@ -26,7 +26,7 @@ function useDatasetsData(currentPage: number) {
   const formattedData =
     data?.datasets.map((dataset) => ({
       ...dataset,
-      destination: `/datasets/${dataset.address}`,
+      destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };

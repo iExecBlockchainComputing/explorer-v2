@@ -26,7 +26,7 @@ function useTasksData(currentPage: number) {
   const formattedData =
     data?.tasks.map((task) => ({
       ...task,
-      destination: `/tasks/${task.taskid}`,
+      destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };
