@@ -9,6 +9,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
+import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
 
 export const Route = createFileRoute('/deals')({
   component: DealsRoute,
@@ -23,18 +24,39 @@ function useDealsData(currentPage: number) {
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
+  const { data: nextData } = useQuery({
+    queryKey: ['deals-next', currentPage],
+    queryFn: () =>
+      execute(nextDealsQuery, {
+        length: TABLE_LENGTH * 2,
+        skip: (currentPage + 1) * TABLE_LENGTH,
+      }),
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+  });
+
+  const nextDeals = nextData?.deals ?? [];
+
+  const additionalPages = Math.ceil(nextDeals.length / TABLE_LENGTH);
+
   const formattedData =
     data?.deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
-  return { data: formattedData, isLoading, isRefetching, isError };
+  return {
+    data: formattedData,
+    isLoading,
+    isRefetching,
+    isError,
+    additionalPages,
+  };
 }
 
 function DealsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } = useDealsData(currentPage);
+  const { data, isLoading, isRefetching, isError, additionalPages } =
+    useDealsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -61,7 +83,7 @@ function DealsRoute() {
       />
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + 2}
+        totalPages={currentPage + additionalPages}
         onPageChange={setCurrentPage}
       />
     </div>

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { SearcherBar } from '@/modules/SearcherBar';
+import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
 import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 
@@ -23,18 +24,38 @@ function useWorkerpoolsData(currentPage: number) {
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
+  const { data: nextData } = useQuery({
+    queryKey: ['workerpools-next', currentPage],
+    queryFn: () =>
+      execute(nextWorkerpoolsQuery, {
+        length: TABLE_LENGTH * 2,
+        skip: (currentPage + 1) * TABLE_LENGTH,
+      }),
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+  });
+
+  const nextWorkerpools = nextData?.workerpools ?? [];
+
+  const additionalPages = Math.ceil(nextWorkerpools.length / TABLE_LENGTH);
+
   const formattedData =
     data?.workerpools.map((workerpool) => ({
       ...workerpool,
       destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
-  return { data: formattedData, isLoading, isRefetching, isError };
+  return {
+    data: formattedData,
+    isLoading,
+    isRefetching,
+    isError,
+    additionalPages,
+  };
 }
 
 function WorkerpoolsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } =
+  const { data, isLoading, isRefetching, isError, additionalPages } =
     useWorkerpoolsData(currentPage);
 
   return (
@@ -62,7 +83,7 @@ function WorkerpoolsRoute() {
       />
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + 2}
+        totalPages={currentPage + additionalPages}
         onPageChange={setCurrentPage}
       />
     </div>

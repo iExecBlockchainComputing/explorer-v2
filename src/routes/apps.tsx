@@ -9,6 +9,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
+import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
 
 export const Route = createFileRoute('/apps')({
   component: AppsRoute,
@@ -23,18 +24,39 @@ function useAppsData(currentPage: number) {
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
+  const { data: nextData } = useQuery({
+    queryKey: ['apps-next', currentPage],
+    queryFn: () =>
+      execute(nextAppsQuery, {
+        length: TABLE_LENGTH * 2,
+        skip: (currentPage + 1) * TABLE_LENGTH,
+      }),
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+  });
+
+  const nextApps = nextData?.apps ?? [];
+
+  const additionalPages = Math.ceil(nextApps.length / TABLE_LENGTH);
+
   const formattedData =
     data?.apps.map((app) => ({
       ...app,
       destination: `/app/${app.address}`,
     })) ?? [];
 
-  return { data: formattedData, isLoading, isRefetching, isError };
+  return {
+    data: formattedData,
+    isLoading,
+    isRefetching,
+    isError,
+    additionalPages,
+  };
 }
 
 function AppsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } = useAppsData(currentPage);
+  const { data, isLoading, isRefetching, isError, additionalPages } =
+    useAppsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -59,7 +81,7 @@ function AppsRoute() {
       />
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + 2}
+        totalPages={currentPage + additionalPages}
         onPageChange={setCurrentPage}
       />
     </div>

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { SearcherBar } from '@/modules/SearcherBar';
+import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
 import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 
@@ -23,18 +24,39 @@ function useTasksData(currentPage: number) {
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
+  const { data: nextData } = useQuery({
+    queryKey: ['tasks-next', currentPage],
+    queryFn: () =>
+      execute(nextTasksQuery, {
+        length: TABLE_LENGTH * 2,
+        skip: (currentPage + 1) * TABLE_LENGTH,
+      }),
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+  });
+
+  const nextTasks = nextData?.tasks ?? [];
+
+  const additionalPages = Math.ceil(nextTasks.length / TABLE_LENGTH);
+
   const formattedData =
     data?.tasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];
 
-  return { data: formattedData, isLoading, isRefetching, isError };
+  return {
+    data: formattedData,
+    isLoading,
+    isRefetching,
+    isError,
+    additionalPages,
+  };
 }
 
 function TasksRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } = useTasksData(currentPage);
+  const { data, isLoading, isRefetching, isError, additionalPages } =
+    useTasksData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -61,7 +83,7 @@ function TasksRoute() {
       />
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + 2}
+        totalPages={currentPage + additionalPages}
         onPageChange={setCurrentPage}
       />
     </div>
