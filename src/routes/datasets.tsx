@@ -7,34 +7,35 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { dealsQuery } from '@/modules/deals/dealsQuery';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
+import { columns } from '@/modules/datasets/datasetsTable/columns';
 
-export const Route = createFileRoute('/deal')({
-  component: DealsRoute,
+export const Route = createFileRoute('/datasets')({
+  component: DatasetsRoute,
 });
 
-function useDealsData(currentPage: number) {
+function useDatasetsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['deals', currentPage],
-    queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
+    queryKey: ['datasets', currentPage],
+    queryFn: () => execute(datasetsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const formattedData =
-    data?.deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
+    data?.datasets.map((dataset) => ({
+      ...dataset,
+      destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };
 }
 
-function DealsRoute() {
+function DatasetsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } = useDealsData(currentPage);
+  const { data, isLoading, isRefetching, isError } =
+    useDatasetsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -42,7 +43,7 @@ function DealsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Deals
+        Datasets
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)

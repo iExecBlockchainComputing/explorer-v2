@@ -7,35 +7,34 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
-import { columns } from '@/modules/datasets/datasetsTable/columns';
+import { tasksQuery } from '@/modules/tasks/tasksQuery';
+import { columns } from '@/modules/tasks/tasksTable/columns';
 
-export const Route = createFileRoute('/dataset')({
-  component: DatasetsRoute,
+export const Route = createFileRoute('/tasks')({
+  component: TasksRoute,
 });
 
-function useDatasetsData(currentPage: number) {
+function useTasksData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['datasets', currentPage],
-    queryFn: () => execute(datasetsQuery, { length: TABLE_LENGTH, skip }),
+    queryKey: ['tasks', currentPage],
+    queryFn: () => execute(tasksQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const formattedData =
-    data?.datasets.map((dataset) => ({
-      ...dataset,
-      destination: `/dataset/${dataset.address}`,
+    data?.tasks.map((task) => ({
+      ...task,
+      destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };
 }
 
-function DatasetsRoute() {
+function TasksRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } =
-    useDatasetsData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useTasksData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -43,7 +42,7 @@ function DatasetsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Datasets
+        Tasks
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)

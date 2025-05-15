@@ -7,35 +7,34 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
-import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
+import { dealsQuery } from '@/modules/deals/dealsQuery';
+import { columns } from '@/modules/deals/dealsTable/columns';
 
-export const Route = createFileRoute('/workerpool')({
-  component: WorkerpoolsRoute,
+export const Route = createFileRoute('/deals')({
+  component: DealsRoute,
 });
 
-function useWorkerpoolsData(currentPage: number) {
+function useDealsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['workerpools', currentPage],
-    queryFn: () => execute(workerpoolsQuery, { length: TABLE_LENGTH, skip }),
+    queryKey: ['deals', currentPage],
+    queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const formattedData =
-    data?.workerpools.map((workerpool) => ({
-      ...workerpool,
-      destination: `/workerpool/${workerpool.address}`,
+    data?.deals.map((deal) => ({
+      ...deal,
+      destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return { data: formattedData, isLoading, isRefetching, isError };
 }
 
-function WorkerpoolsRoute() {
+function DealsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError } =
-    useWorkerpoolsData(currentPage);
+  const { data, isLoading, isRefetching, isError } = useDealsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -43,7 +42,7 @@ function WorkerpoolsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Workerpools
+        Deals
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
