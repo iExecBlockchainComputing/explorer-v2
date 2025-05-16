@@ -5,7 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
-import { PaginatedNavigation } from '@/components/PaginatedNavigation.tsx';
+import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
@@ -82,9 +82,9 @@ function DealsRoute() {
         isLoading={isLoading || isRefetching}
       />
       <PaginatedNavigation
-        currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
-        onPageChange={setCurrentPage}
+        currentPage={currentPage + 1}
+        totalPages={currentPage + 1 + additionalPages}
+        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
       />
     </div>
   );

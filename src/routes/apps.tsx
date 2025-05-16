@@ -80,9 +80,9 @@ function AppsRoute() {
         isLoading={isLoading || isRefetching}
       />
       <PaginatedNavigation
-        currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
-        onPageChange={setCurrentPage}
+        currentPage={currentPage + 1}
+        totalPages={currentPage + 1 + additionalPages}
+        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
       />
     </div>
   );
