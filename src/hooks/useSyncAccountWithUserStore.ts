@@ -1,4 +1,5 @@
 import { SUPPORTED_CHAINS } from '@/config';
+import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { useAccount } from 'wagmi';
 import useUserStore from '@/stores/useUser.store';
@@ -12,6 +13,7 @@ export function useSyncAccountWithUserStore() {
     setChainId,
     setSubgraphUrl,
   } = useUserStore();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     // Update userStore
@@ -22,6 +24,7 @@ export function useSyncAccountWithUserStore() {
     const currentChain = SUPPORTED_CHAINS.find((c) => c.id === chain?.id);
     if (currentChain) {
       setSubgraphUrl(currentChain?.subgraphUrl);
+      queryClient.invalidateQueries({ queryKey: [] });
     }
   }, [
     connector,
@@ -34,5 +37,6 @@ export function useSyncAccountWithUserStore() {
     setAddress,
     setChainId,
     setSubgraphUrl,
+    queryClient,
   ]);
 }
