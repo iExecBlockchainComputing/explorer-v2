@@ -13,7 +13,7 @@ export async function execute<TResult, TVariables>(
       Accept: 'application/graphql-response+json'
     },
     body: JSON.stringify({
-      queery,
+      query,
       variables
     })
   })
