@@ -51,15 +51,22 @@ function useTasksData(currentPage: number) {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError: isError || errorUpdateCount > 0,
+    isError: isError,
+    hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
 function TasksRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError, additionalPages } =
-    useTasksData(currentPage);
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError,
+    additionalPages,
+  } = useTasksData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -78,12 +85,12 @@ function TasksRoute() {
         )}
       </h1>
 
-      {isError && !data.length ? (
+      {hasPastError && !data.length ? (
         <Alert variant="destructive" className="mx-auto w-fit text-left">
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during deals loading.
+            A error occurred during tasks loading.
           </AlertDescription>
         </Alert>
       ) : (

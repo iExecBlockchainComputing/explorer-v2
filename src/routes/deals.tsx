@@ -51,15 +51,22 @@ function useDealsData(currentPage: number) {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError: isError || errorUpdateCount > 0,
+    isError: isError,
+    hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
 function DealsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError, additionalPages } =
-    useDealsData(currentPage);
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError,
+    additionalPages,
+  } = useDealsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -77,7 +84,7 @@ function DealsRoute() {
           <LoaderCircle className="animate-spin" />
         )}
       </h1>
-      {isError && !data.length ? (
+      {hasPastError && !data.length ? (
         <Alert variant="destructive" className="mx-auto w-fit text-left">
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
