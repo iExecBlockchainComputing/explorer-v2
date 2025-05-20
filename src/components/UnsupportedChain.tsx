@@ -1,5 +1,5 @@
 import { SUPPORTED_CHAINS } from '@/config';
-import { Terminal } from 'lucide-react';
+import { AlertOctagon } from 'lucide-react';
 import useUserStore from '@/stores/useUser.store';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
@@ -17,7 +17,7 @@ export function UnsupportedChain() {
 
   return (
     <Alert variant="destructive" className="mx-auto mt-8 text-left">
-      <Terminal className="h-4 w-4" />
+      <AlertOctagon className="h-4 w-4" />
       <AlertTitle>Error</AlertTitle>
       <AlertDescription>
         It seems that you are using a chain that is not supported.
