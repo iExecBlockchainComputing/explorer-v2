@@ -7,6 +7,7 @@ export const SUPPORTED_CHAINS = [
   {
     id: 134,
     name: 'Bellecour',
+    color: '#F4942566',
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
@@ -14,6 +15,7 @@ export const SUPPORTED_CHAINS = [
   {
     id: 421614,
     name: 'Arbitrum Sepolia',
+    color: '#28A0F080',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl: 'http://localhost:8080',
