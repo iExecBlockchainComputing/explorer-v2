@@ -10,24 +10,27 @@ import { SearcherBar } from '@/modules/SearcherBar';
 import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
 import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
+import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute('/workerpools')({
   component: WorkerpoolsRoute,
 });
 
 function useWorkerpoolsData(currentPage: number) {
+  const { subgraphUrl } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['workerpools', currentPage],
-    queryFn: () => execute(workerpoolsQuery, { length: TABLE_LENGTH, skip }),
+    queryFn: () =>
+      execute(workerpoolsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
     queryKey: ['workerpools-next', currentPage],
     queryFn: () =>
-      execute(nextWorkerpoolsQuery, {
+      execute(nextWorkerpoolsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),

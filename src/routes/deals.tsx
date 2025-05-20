@@ -10,24 +10,27 @@ import { SearcherBar } from '@/modules/SearcherBar';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
+import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute('/deals')({
   component: DealsRoute,
 });
 
 function useDealsData(currentPage: number) {
+  const { subgraphUrl } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['deals', currentPage],
-    queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
+    queryFn: () =>
+      execute(dealsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
     queryKey: ['deals-next', currentPage],
     queryFn: () =>
-      execute(nextDealsQuery, {
+      execute(nextDealsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),

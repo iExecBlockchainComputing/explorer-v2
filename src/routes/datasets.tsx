@@ -10,24 +10,27 @@ import { SearcherBar } from '@/modules/SearcherBar';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { nextDatasetsQuery } from '@/modules/datasets/nextDatasetsQuery';
+import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute('/datasets')({
   component: DatasetsRoute,
 });
 
 function useDatasetsData(currentPage: number) {
+  const { subgraphUrl } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['datasets', currentPage],
-    queryFn: () => execute(datasetsQuery, { length: TABLE_LENGTH, skip }),
+    queryFn: () =>
+      execute(datasetsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
     queryKey: ['datasets-next', currentPage],
     queryFn: () =>
-      execute(nextDatasetsQuery, {
+      execute(nextDatasetsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),

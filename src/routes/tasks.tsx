@@ -10,24 +10,27 @@ import { SearcherBar } from '@/modules/SearcherBar';
 import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
 import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';
+import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute('/tasks')({
   component: TasksRoute,
 });
 
 function useTasksData(currentPage: number) {
+  const { subgraphUrl } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['tasks', currentPage],
-    queryFn: () => execute(tasksQuery, { length: TABLE_LENGTH, skip }),
+    queryFn: () =>
+      execute(tasksQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
     queryKey: ['tasks-next', currentPage],
     queryFn: () =>
-      execute(nextTasksQuery, {
+      execute(nextTasksQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),

@@ -10,24 +10,27 @@ import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
 import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
+import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute('/apps')({
   component: AppsRoute,
 });
 
 function useAppsData(currentPage: number) {
+  const { subgraphUrl } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['apps', currentPage],
-    queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
+    queryFn: () =>
+      execute(appsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
     queryKey: ['apps-next', currentPage],
     queryFn: () =>
-      execute(nextAppsQuery, {
+      execute(nextAppsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
