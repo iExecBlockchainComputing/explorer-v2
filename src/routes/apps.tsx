@@ -2,10 +2,11 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
@@ -18,11 +19,13 @@ export const Route = createFileRoute('/apps')({
 function useAppsData(currentPage: number) {
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['apps', currentPage],
-    queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-  });
+  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
+    {
+      queryKey: ['apps', currentPage],
+      queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
+      refetchInterval: TABLE_REFETCH_INTERVAL,
+    }
+  );
 
   const { data: nextData } = useQuery({
     queryKey: ['apps-next', currentPage],
@@ -48,7 +51,7 @@ function useAppsData(currentPage: number) {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError,
+    isError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
@@ -73,12 +76,22 @@ function AppsRoute() {
         {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
       </h1>
 
-      <DataTable
-        columns={columns}
-        data={data}
-        tableLength={TABLE_LENGTH}
-        isLoading={isLoading || isRefetching}
-      />
+      {isError && !data.length ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during deals loading.
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={data}
+          tableLength={TABLE_LENGTH}
+          isLoading={isLoading || isRefetching}
+        />
+      )}
       <PaginatedNavigation
         currentPage={currentPage + 1}
         totalPages={currentPage + 1 + additionalPages}
