@@ -8,9 +8,9 @@ import { CircularLoader } from '@/components/CircularLoader';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/useUser.store';
 import { tasksQuery } from './tasksQuery';
 import { columns } from './tasksTable/columns';
-import useUserStore from '@/stores/useUser.store';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
   const { subgraphUrl } = useUserStore();
