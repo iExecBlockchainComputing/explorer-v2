@@ -15,15 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import useUserStore from '@/stores/useUser.store';
 import { truncateAddress } from '@/utils/truncateAddress';
 import StatusCell from './StatusCell';
 import { taskQuery } from './tasksQuery';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
+  const { subgraphUrl } = useUserStore();
   const tasks = useQuery({
     queryKey: ['tasks_preview'],
     queryFn: () =>
-      execute(taskQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(taskQuery, subgraphUrl, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 

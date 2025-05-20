@@ -15,16 +15,21 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import useUserStore from '@/stores/useUser.store';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { SuccessCell } from './SuccessCell';
 import { dealsQuery } from './dealsQuery';
 
 export function DealsPreviewTable({ className }: { className?: string }) {
+  const { subgraphUrl } = useUserStore();
   const deals = useQuery({
     queryKey: ['deals_preview'],
     queryFn: () =>
-      execute(dealsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(dealsQuery, subgraphUrl, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 

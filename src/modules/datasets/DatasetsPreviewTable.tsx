@@ -15,15 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import useUserStore from '@/stores/useUser.store';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { datasetsQuery } from './datasetsQuery';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
+  const { subgraphUrl } = useUserStore();
   const datasets = useQuery({
     queryKey: ['datasets_preview'],
     queryFn: () =>
-      execute(datasetsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(datasetsQuery, subgraphUrl, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 

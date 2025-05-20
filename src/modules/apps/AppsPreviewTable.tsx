@@ -15,15 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import useUserStore from '@/stores/useUser.store';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { appsQuery } from './appsQuery';
 
 export function AppsPreviewTable({ className }: { className?: string }) {
+  const { subgraphUrl } = useUserStore();
   const apps = useQuery({
     queryKey: ['apps_preview'],
     queryFn: () =>
-      execute(appsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(appsQuery, subgraphUrl, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 

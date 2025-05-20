@@ -15,15 +15,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import useUserStore from '@/stores/useUser.store';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { workerpoolsQuery } from './workerpoolsQuery';
 
 export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
+  const { subgraphUrl } = useUserStore();
   const workerpools = useQuery({
     queryKey: ['workerpools_preview'],
     queryFn: () =>
-      execute(workerpoolsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(workerpoolsQuery, subgraphUrl, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 

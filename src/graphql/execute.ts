@@ -2,10 +2,9 @@ import type { TypedDocumentString } from './graphql'
  
 export async function execute<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
+  subgraphUrl: string,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {
-  const subgraphUrl = import.meta.env.VITE_POCO_SUBGRAPH_URL;
-
   const response = await fetch(subgraphUrl, {
     method: 'POST',
     headers: {

@@ -1,3 +1,4 @@
+import { SUPPORTED_CHAINS } from '@/config';
 import { Address } from '@/types';
 import type { Connector } from 'wagmi';
 import { create } from 'zustand';
@@ -13,6 +14,8 @@ type UserState = {
   setAddress: (param: Address | undefined) => void;
   chainId: number | undefined;
   setChainId: (param: number | undefined) => void;
+  subgraphUrl: string;
+  setSubgraphUrl: (param: string) => void;
 };
 
 const useUserStore = create<UserState>((set) => ({
@@ -30,6 +33,8 @@ const useUserStore = create<UserState>((set) => ({
   setChainId: (chainId: number | undefined) => {
     set({ chainId: chainId });
   },
+  subgraphUrl: SUPPORTED_CHAINS[0].subgraphUrl,
+  setSubgraphUrl: (subgraphUrl: string) => set({ subgraphUrl }),
 }));
 
 export default useUserStore;
