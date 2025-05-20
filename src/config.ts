@@ -1,5 +1,4 @@
 import arbitrumSepoliaIcon from './assets/chain-icons/arbitrum-sepolia.svg';
-import avalancheFujiIcon from './assets/chain-icons/avalanche-fuji.svg';
 import iexecLogo from './assets/iexec-logo.svg';
 
 export const PREVIEW_TABLE_LENGTH = 5;
@@ -18,12 +17,5 @@ export const SUPPORTED_CHAINS = [
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl: 'http://localhost:8080',
-  },
-  {
-    id: 43113,
-    name: 'Avalanche Fuji',
-    icon: avalancheFujiIcon,
-    blockExplorerUrl: 'https://subnets-test.avax.network/c-chain',
-    subgraphUrl: '',
   },
 ];
