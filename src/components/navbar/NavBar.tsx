@@ -5,14 +5,8 @@ import { useLoginLogout } from '@/hooks/useLoginLogout';
 import useUserStore from '@/stores/useUser.store';
 import iExecLogo from '../../assets/iexec-logo.svg';
 import { Button } from '../ui/button.tsx';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select.tsx';
 import { AddressChip } from './AddressChip.tsx';
+import { ChainSelector } from './ChainSelector.tsx';
 
 export function Navbar() {
   const { isConnected, address } = useUserStore();
@@ -38,16 +32,7 @@ export function Navbar() {
           </div>
         )}
         <div className="content hidden md:flex">
-          <Select value="bellecour">
-            <SelectTrigger className="">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="bellecour">
-                <img src={iExecLogo} className="size-4" alt="" /> Bellecour
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <ChainSelector />
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
@@ -119,16 +104,7 @@ export function Navbar() {
             >
               <Link to="/account">iExec Account</Link>
             </Button>
-            <Select value="bellecour">
-              <SelectTrigger className="w-full border-none">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="bellecour">
-                  <img src={iExecLogo} className="size-4" alt="" /> Bellecour
-                </SelectItem>
-              </SelectContent>
-            </Select>
+            <ChainSelector />
           </div>
         </div>
       </div>
