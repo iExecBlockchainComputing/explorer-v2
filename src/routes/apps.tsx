@@ -17,18 +17,18 @@ export const Route = createFileRoute('/apps')({
 });
 
 function useAppsData(currentPage: number) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['apps', currentPage],
+    queryKey: [chainId, 'apps', currentPage],
     queryFn: () =>
       execute(appsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
-    queryKey: ['apps-next', currentPage],
+    queryKey: [chainId, 'apps-next', currentPage],
     queryFn: () =>
       execute(nextAppsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,

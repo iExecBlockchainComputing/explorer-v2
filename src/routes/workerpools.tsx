@@ -17,18 +17,18 @@ export const Route = createFileRoute('/workerpools')({
 });
 
 function useWorkerpoolsData(currentPage: number) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['workerpools', currentPage],
+    queryKey: [chainId, 'workerpools', currentPage],
     queryFn: () =>
       execute(workerpoolsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
-    queryKey: ['workerpools-next', currentPage],
+    queryKey: [chainId, 'workerpools-next', currentPage],
     queryFn: () =>
       execute(nextWorkerpoolsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,

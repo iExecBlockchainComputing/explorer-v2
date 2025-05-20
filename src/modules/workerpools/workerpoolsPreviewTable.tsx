@@ -13,9 +13,9 @@ import { workerpoolsQuery } from './workerpoolsQuery';
 import { columns } from './workerpoolsTable/columns';
 
 export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const workerpools = useQuery({
-    queryKey: ['workerpools_preview'],
+    queryKey: [chainId, 'workerpools_preview'],
     queryFn: () =>
       execute(workerpoolsQuery, subgraphUrl, {
         length: PREVIEW_TABLE_LENGTH,

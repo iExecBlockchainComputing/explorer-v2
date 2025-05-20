@@ -11,6 +11,7 @@ export function useSyncAccountWithUserStore() {
     setIsConnected,
     setAddress,
     setChainId,
+    chainId,
     setSubgraphUrl,
   } = useUserStore();
   const queryClient = useQueryClient();
@@ -20,12 +21,12 @@ export function useSyncAccountWithUserStore() {
     setConnector(connector);
     setIsConnected(isConnected);
     setAddress(address);
-    setChainId(chain?.id);
     const currentChain = SUPPORTED_CHAINS.find((c) => c.id === chain?.id);
     if (currentChain) {
       setSubgraphUrl(currentChain?.subgraphUrl);
-      queryClient.invalidateQueries({ queryKey: [] });
+      queryClient.invalidateQueries({ queryKey: [chainId] });
     }
+    setChainId(chain?.id);
   }, [
     connector,
     status,
@@ -38,5 +39,6 @@ export function useSyncAccountWithUserStore() {
     setChainId,
     setSubgraphUrl,
     queryClient,
+    chainId,
   ]);
 }

@@ -13,9 +13,9 @@ import { appsQuery } from './appsQuery';
 import { columns } from './appsTable/columns';
 
 export function AppsPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const apps = useQuery({
-    queryKey: ['apps_preview'],
+    queryKey: [chainId, 'apps_preview'],
     queryFn: () =>
       execute(appsQuery, subgraphUrl, {
         length: PREVIEW_TABLE_LENGTH,

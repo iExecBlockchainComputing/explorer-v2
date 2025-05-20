@@ -17,18 +17,18 @@ export const Route = createFileRoute('/deals')({
 });
 
 function useDealsData(currentPage: number) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['deals', currentPage],
+    queryKey: [chainId, 'deals', currentPage],
     queryFn: () =>
       execute(dealsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
-    queryKey: ['deals-next', currentPage],
+    queryKey: [chainId, 'deals-next', currentPage],
     queryFn: () =>
       execute(nextDealsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,

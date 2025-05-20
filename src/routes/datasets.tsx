@@ -17,18 +17,18 @@ export const Route = createFileRoute('/datasets')({
 });
 
 function useDatasetsData(currentPage: number) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['datasets', currentPage],
+    queryKey: [chainId, 'datasets', currentPage],
     queryFn: () =>
       execute(datasetsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
-    queryKey: ['datasets-next', currentPage],
+    queryKey: [chainId, 'datasets-next', currentPage],
     queryFn: () =>
       execute(nextDatasetsQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,

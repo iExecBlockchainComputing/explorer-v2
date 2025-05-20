@@ -17,18 +17,18 @@ export const Route = createFileRoute('/tasks')({
 });
 
 function useTasksData(currentPage: number) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['tasks', currentPage],
+    queryKey: [chainId, 'tasks', currentPage],
     queryFn: () =>
       execute(tasksQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
   const { data: nextData } = useQuery({
-    queryKey: ['tasks-next', currentPage],
+    queryKey: [chainId, 'tasks-next', currentPage],
     queryFn: () =>
       execute(nextTasksQuery, subgraphUrl, {
         length: TABLE_LENGTH * 2,

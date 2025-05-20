@@ -13,9 +13,9 @@ import { tasksQuery } from './tasksQuery';
 import { columns } from './tasksTable/columns';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl } = useUserStore();
+  const { subgraphUrl, chainId } = useUserStore();
   const tasks = useQuery({
-    queryKey: ['tasks_preview'],
+    queryKey: [chainId, 'tasks_preview'],
     queryFn: () =>
       execute(tasksQuery, subgraphUrl, {
         length: PREVIEW_TABLE_LENGTH,
