@@ -152,9 +152,9 @@
   --color-success-foreground: var(--color-green-600);
   --color-success-border: var(--color-green-600);
 
-  --color-danger: var(--color-red-100);
-  --color-danger-foreground: var(--color-red-600);
-  --color-danger-border: var(--color-red-600);
+  --color-danger: var(--color-red-900);
+  --color-danger-foreground: var(--color-red-100);
+  --color-danger-border: var(--color-red-500);
 
   --color-warning: var(--color-orange-100);
   --color-warning-foreground: var(--color-orange-600);
