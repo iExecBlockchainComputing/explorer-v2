@@ -36,30 +36,20 @@ export function TasksPreviewTable({ className }: { className?: string }) {
               (outdated)
             </span>
           )}
-          {tasks.isFetching && !tasks.isPending && (
-            <LoaderCircle className="animate-spin" />
-          )}
+          {tasks.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
           <Link to="/tasks">View all</Link>
         </Button>
       </div>
-      {tasks.isPending ||
-      (tasks.isError && !tasks.data) ||
-      !tasks.data?.tasks.length ? (
-        tasks.isPending ? (
-          <CircularLoader />
-        ) : tasks.isError ? (
-          <Alert variant="destructive" className="mx-auto w-fit text-left">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              A error occurred during tasks loading.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <p>No tasks to display.</p>
-        )
+      {(tasks.isError || tasks.errorUpdateCount > 0) && !tasks.data ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during tasks loading.
+          </AlertDescription>
+        </Alert>
       ) : (
         <DataTable
           columns={columns}

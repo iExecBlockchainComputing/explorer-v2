@@ -36,30 +36,20 @@ export function DealsPreviewTable({ className }: { className?: string }) {
               (outdated)
             </span>
           )}
-          {deals.isFetching && !deals.isPending && (
-            <LoaderCircle className="animate-spin" />
-          )}
+          {deals.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
           <Link to="/deals">View all</Link>
         </Button>
       </div>
-      {deals.isPending ||
-      (deals.isError && !deals.data) ||
-      !deals.data?.deals.length ? (
-        deals.isPending ? (
-          <CircularLoader />
-        ) : deals.isError ? (
-          <Alert variant="destructive" className="mx-auto w-fit text-left">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              A error occurred during deals loading.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <p>No deals to display.</p>
-        )
+      {(deals.isError || deals.errorUpdateCount > 0) && !deals.data ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during deals loading.
+          </AlertDescription>
+        </Alert>
       ) : (
         <DataTable
           columns={columns}

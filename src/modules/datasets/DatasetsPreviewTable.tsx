@@ -36,30 +36,20 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
               (outdated)
             </span>
           )}
-          {datasets.isFetching && !datasets.isPending && (
-            <LoaderCircle className="animate-spin" />
-          )}
+          {datasets.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
           <Link to="/datasets">View all</Link>
         </Button>
       </div>
-      {datasets.isPending ||
-      (datasets.isError && !datasets.data) ||
-      !datasets.data?.datasets.length ? (
-        datasets.isPending ? (
-          <CircularLoader />
-        ) : datasets.isError ? (
-          <Alert variant="destructive" className="mx-auto w-fit text-left">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              A error occurred during datasets loading.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <p>No datasets to display.</p>
-        )
+      {(datasets.isError || datasets.errorUpdateCount > 0) && !datasets.data ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during datasets loading.
+          </AlertDescription>
+        </Alert>
       ) : (
         <DataTable
           columns={columns}

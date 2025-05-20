@@ -36,30 +36,21 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
               (outdated)
             </span>
           )}
-          {workerpools.isFetching && !workerpools.isPending && (
-            <LoaderCircle className="animate-spin" />
-          )}
+          {workerpools.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
           <Link to="/workerpools">View all</Link>
         </Button>
       </div>
-      {workerpools.isPending ||
-      (workerpools.isError && !workerpools.data) ||
-      !workerpools.data?.workerpools.length ? (
-        workerpools.isPending ? (
-          <CircularLoader />
-        ) : workerpools.isError ? (
-          <Alert variant="destructive" className="mx-auto w-fit text-left">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              A error occurred during workerpools loading.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <p>No workerpools to display.</p>
-        )
+      {(workerpools.isError || workerpools.errorUpdateCount > 0) &&
+      !workerpools.data ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during workerpools loading.
+          </AlertDescription>
+        </Alert>
       ) : (
         <DataTable
           columns={columns}

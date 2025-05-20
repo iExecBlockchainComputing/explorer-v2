@@ -36,30 +36,20 @@ export function AppsPreviewTable({ className }: { className?: string }) {
               (outdated)
             </span>
           )}
-          {apps.isFetching && !apps.isPending && (
-            <LoaderCircle className="animate-spin" />
-          )}
+          {apps.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
           <Link to="/apps">View all</Link>
         </Button>
       </div>
-      {apps.isPending ||
-      (apps.isError && !apps.data) ||
-      !apps.data?.apps.length ? (
-        apps.isPending ? (
-          <CircularLoader />
-        ) : apps.isError ? (
-          <Alert variant="destructive" className="mx-auto w-fit text-left">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              A error occurred during apps loading.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <p>No apps to display.</p>
-        )
+      {(apps.isError || apps.errorUpdateCount > 0) && !apps.data ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during apps loading.
+          </AlertDescription>
+        </Alert>
       ) : (
         <DataTable
           columns={columns}
