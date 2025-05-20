@@ -39,7 +39,11 @@ const CopyButton = ({
       <Tooltip open={showTooltip}>
         <TooltipTrigger asChild>
           <button
-            onClick={handleCopy}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              handleCopy();
+            }}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className="hover:before:bg-grey-700 active:before:bg-grey-600 relative z-0 -mx-2 -my-1 flex w-fit items-center gap-1 px-2 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-150 active:before:scale-x-[0.98] active:before:scale-y-[0.94]"

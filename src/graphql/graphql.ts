@@ -8364,6 +8364,14 @@ export type AppsQueryVariables = Exact<{
 
 export type AppsQuery = { __typename?: 'Query', apps: Array<{ __typename?: 'App', timestamp: any, name: string, type: string, multiaddr: any, checksum: any, mrenclave: any, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'AppTransfer', transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> }> };
 
+export type NextAppsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type NextAppsQuery = { __typename?: 'Query', apps: Array<{ __typename?: 'App', address: string }> };
+
 export type DatasetsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8371,6 +8379,14 @@ export type DatasetsQueryVariables = Exact<{
 
 
 export type DatasetsQuery = { __typename?: 'Query', datasets: Array<{ __typename?: 'Dataset', timestamp: any, name: string, multiaddr: any, checksum: any, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'DatasetTransfer', transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> }> };
+
+export type NextDatasetsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type NextDatasetsQuery = { __typename?: 'Query', datasets: Array<{ __typename?: 'Dataset', address: string }> };
 
 export type DealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
@@ -8380,6 +8396,22 @@ export type DealsQueryVariables = Exact<{
 
 export type DealsQuery = { __typename?: 'Query', deals: Array<{ __typename?: 'Deal', timestamp: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, botSize: any, trust: any, completedTasksCount: any, claimedTasksCount: any, dealid: string, requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, callback: { __typename?: 'Account', address: string }, app: { __typename?: 'App', address: string }, dataset?: { __typename?: 'Dataset', address: string } | null, workerpool: { __typename?: 'Workerpool', address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } }> };
 
+export type NextDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type NextDealsQuery = { __typename?: 'Query', deals: Array<{ __typename?: 'Deal', dealid: string }> };
+
+export type NextTasksQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type NextTasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', taskid: string }> };
+
 export type TasksQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8387,6 +8419,14 @@ export type TasksQueryVariables = Exact<{
 
 
 export type TasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', index: any, finalDeadline: any, status: TaskStatus, timestamp: any, taskid: string, deal: { __typename?: 'Deal', requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, app: { __typename?: 'App', address: string }, dataset?: { __typename?: 'Dataset', address: string } | null, workerpool: { __typename?: 'Workerpool', address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } } }> };
+
+export type NextWorkerpoolsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type NextWorkerpoolsQuery = { __typename?: 'Query', workerpools: Array<{ __typename?: 'Workerpool', address: string }> };
 
 export type WorkerpoolsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
@@ -8438,6 +8478,13 @@ export const AppsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AppsQuery, AppsQueryVariables>;
+export const NextAppsDocument = new TypedDocumentString(`
+    query NextApps($length: Int = 20, $skip: Int = 0) {
+  apps(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    address: id
+  }
+}
+    `) as unknown as TypedDocumentString<NextAppsQuery, NextAppsQueryVariables>;
 export const DatasetsDocument = new TypedDocumentString(`
     query Datasets($length: Int = 20, $skip: Int = 0) {
   datasets(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
@@ -8459,6 +8506,13 @@ export const DatasetsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DatasetsQuery, DatasetsQueryVariables>;
+export const NextDatasetsDocument = new TypedDocumentString(`
+    query NextDatasets($length: Int = 20, $skip: Int = 0) {
+  datasets(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    address: id
+  }
+}
+    `) as unknown as TypedDocumentString<NextDatasetsQuery, NextDatasetsQueryVariables>;
 export const DealsDocument = new TypedDocumentString(`
     query Deals($length: Int = 20, $skip: Int = 0) {
   deals(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
@@ -8497,6 +8551,20 @@ export const DealsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<DealsQuery, DealsQueryVariables>;
+export const NextDealsDocument = new TypedDocumentString(`
+    query NextDeals($length: Int = 20, $skip: Int = 0) {
+  deals(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    dealid: id
+  }
+}
+    `) as unknown as TypedDocumentString<NextDealsQuery, NextDealsQueryVariables>;
+export const NextTasksDocument = new TypedDocumentString(`
+    query NextTasks($length: Int = 20, $skip: Int = 0) {
+  tasks(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
+    taskid: id
+  }
+}
+    `) as unknown as TypedDocumentString<NextTasksQuery, NextTasksQueryVariables>;
 export const TasksDocument = new TypedDocumentString(`
     query Tasks($length: Int = 20, $skip: Int = 0) {
   tasks(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {
@@ -8529,6 +8597,18 @@ export const TasksDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<TasksQuery, TasksQueryVariables>;
+export const NextWorkerpoolsDocument = new TypedDocumentString(`
+    query NextWorkerpools($length: Int = 20, $skip: Int = 0) {
+  workerpools(
+    first: $length
+    skip: $skip
+    orderBy: timestamp
+    orderDirection: desc
+  ) {
+    address: id
+  }
+}
+    `) as unknown as TypedDocumentString<NextWorkerpoolsQuery, NextWorkerpoolsQueryVariables>;
 export const WorkerpoolsDocument = new TypedDocumentString(`
     query Workerpools($length: Int = 20, $skip: Int = 0) {
   workerpools(
