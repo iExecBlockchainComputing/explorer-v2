@@ -25,8 +25,8 @@ export function useSyncAccountWithUserStore() {
     if (currentChain) {
       setSubgraphUrl(currentChain?.subgraphUrl);
       queryClient.invalidateQueries({ queryKey: [chainId] });
+      setChainId(chain!.id);
     }
-    setChainId(chain?.id);
   }, [
     connector,
     status,
