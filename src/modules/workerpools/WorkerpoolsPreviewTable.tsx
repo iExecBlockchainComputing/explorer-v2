@@ -8,21 +8,21 @@ import { CircularLoader } from '@/components/CircularLoader';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { appsQuery } from './appsQuery';
-import { columns } from './appsTable/columns';
+import { workerpoolsQuery } from './workerpoolsQuery';
+import { columns } from './workerpoolsTable/columns';
 
-export function AppsPreviewTable({ className }: { className?: string }) {
-  const apps = useQuery({
-    queryKey: ['apps_preview'],
+export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
+  const workerpools = useQuery({
+    queryKey: ['workerpools_preview'],
     queryFn: () =>
-      execute(appsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(workerpoolsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 
   const formattedData =
-    apps.data?.apps.map((app) => ({
-      ...app,
-      destination: `/app/${app.address}`,
+    workerpools.data?.workerpools.map((workerpool) => ({
+      ...workerpool,
+      destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return (
@@ -30,24 +30,25 @@ export function AppsPreviewTable({ className }: { className?: string }) {
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
           <Box size="16" className="text-secondary" />
-          Latest apps deployed
-          {apps.data && apps.isError && (
+          Latest workerpools deployed
+          {workerpools.data && workerpools.isError && (
             <span className="text-muted-foreground text-sm font-light">
               (outdated)
             </span>
           )}
-          {apps.isFetching && <LoaderCircle className="animate-spin" />}
+          {workerpools.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <Link to="/apps">View all</Link>
+          <Link to="/workerpools">View all</Link>
         </Button>
       </div>
-      {(apps.isError || apps.errorUpdateCount > 0) && !apps.data ? (
+      {(workerpools.isError || workerpools.errorUpdateCount > 0) &&
+      !workerpools.data ? (
         <Alert variant="destructive" className="mx-auto w-fit text-left">
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during apps loading.
+            A error occurred during workerpools loading.
           </AlertDescription>
         </Alert>
       ) : (
@@ -55,7 +56,7 @@ export function AppsPreviewTable({ className }: { className?: string }) {
           columns={columns}
           data={formattedData}
           tableLength={PREVIEW_TABLE_LENGTH}
-          isLoading={apps.isLoading || apps.isRefetching}
+          isLoading={workerpools.isLoading || workerpools.isRefetching}
         />
       )}
     </div>
