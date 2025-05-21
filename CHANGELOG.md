@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.4.0...iexec-explorer-v1.5.0) (2025-05-21)
+
+
+### 🚀 Features
+
+* add main pages ([#9](https://github.com/iExecBlockchainComputing/explorer-v2/issues/9)) ([d8fcb93](https://github.com/iExecBlockchainComputing/explorer-v2/commit/d8fcb93f5922d92bee2d5be2d15767bf4661f183))
+
 ## [1.4.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.3.0...iexec-explorer-v1.4.0) (2025-05-13)
 
 
