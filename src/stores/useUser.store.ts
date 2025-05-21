@@ -12,8 +12,8 @@ type UserState = {
   setInitialized: (isInitialized: boolean) => void;
   address: Address | undefined;
   setAddress: (param: Address | undefined) => void;
-  chainId: number | undefined;
-  setChainId: (param: number | undefined) => void;
+  chainId: number;
+  setChainId: (param: number) => void;
   subgraphUrl: string;
   setSubgraphUrl: (param: string) => void;
 };
@@ -29,7 +29,7 @@ const useUserStore = create<UserState>((set) => ({
   setAddress: (address: Address | undefined) => {
     set({ address: address?.toLowerCase() as Address });
   },
-  chainId: undefined,
+  chainId: SUPPORTED_CHAINS[0].id,
   setChainId: (chainId: number | undefined) => {
     set({ chainId: chainId });
   },

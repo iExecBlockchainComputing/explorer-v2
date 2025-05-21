@@ -13,8 +13,8 @@ import {
 
 export function ChainSelector() {
   const { chainId } = useUserStore();
-  const [selectedChainId, setSelectedChainId] = useState<string | undefined>(
-    chainId?.toString()
+  const [selectedChainId, setSelectedChainId] = useState<string>(
+    chainId.toString(),
   );
 
   useEffect(() => {
