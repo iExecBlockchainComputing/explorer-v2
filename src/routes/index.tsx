@@ -5,7 +5,7 @@ import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
 import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';
 import { TasksPreviewTable } from '@/modules/tasks/TasksPreviewTable';
-import { WorkerpoolsPreviewTable } from '@/modules/workerpools/WorkerpoolsPreviewTable';
+import { WorkerpoolsPreviewTable } from '@/modules/workerpools/WorkerpoolsPreviewTable(temp)';
 import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute('/')({
