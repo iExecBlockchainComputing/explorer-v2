@@ -2,10 +2,11 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
 import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
@@ -20,12 +21,14 @@ function useWorkerpoolsData(currentPage: number) {
   const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: [chainId, 'workerpools', currentPage],
+  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
+    {
+      queryKey: [chainId, 'workerpools', currentPage],
     queryFn: () =>
       execute(workerpoolsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
-  });
+    }
+  );
 
   const { data: nextData } = useQuery({
     queryKey: [chainId, 'workerpools-next', currentPage],
@@ -51,15 +54,22 @@ function useWorkerpoolsData(currentPage: number) {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError,
+    isError: isError,
+    hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
 function WorkerpoolsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError, additionalPages } =
-    useWorkerpoolsData(currentPage);
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError,
+    additionalPages,
+  } = useWorkerpoolsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -78,12 +88,22 @@ function WorkerpoolsRoute() {
         )}
       </h1>
 
-      <DataTable
-        columns={columns}
-        data={data}
-        tableLength={TABLE_LENGTH}
-        isLoading={isLoading || isRefetching}
-      />
+      {hasPastError && !data.length ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during workerpool loading.
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={data}
+          tableLength={TABLE_LENGTH}
+          isLoading={isLoading || isRefetching}
+        />
+      )}
       <PaginatedNavigation
         currentPage={currentPage + 1}
         totalPages={currentPage + 1 + additionalPages}

@@ -1,6 +1,7 @@
 import { SUPPORTED_CHAINS } from '@/config';
 import { createFileRoute } from '@tanstack/react-router';
 import { SearcherBar } from '@/modules/SearcherBar';
+import { SearcherBar } from '@/modules/SearcherBar';
 import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
 import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';

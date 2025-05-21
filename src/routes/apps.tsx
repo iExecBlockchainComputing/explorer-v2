@@ -6,6 +6,7 @@ import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
@@ -20,7 +21,7 @@ function useAppsData(currentPage: number) {
   const { subgraphUrl, chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
-  const { data, isLoading, isRefetching, isError } = useQuery({
+  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery({
     queryKey: [chainId, 'apps', currentPage],
     queryFn: () =>
       execute(appsQuery, subgraphUrl, { length: TABLE_LENGTH, skip }),
@@ -52,14 +53,21 @@ function useAppsData(currentPage: number) {
     isLoading,
     isRefetching,
     isError,
+    hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
 function AppsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
-  const { data, isLoading, isRefetching, isError, additionalPages } =
-    useAppsData(currentPage);
+  const {
+    data,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError,
+    additionalPages,
+  } = useAppsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -76,12 +84,22 @@ function AppsRoute() {
         {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
       </h1>
 
-      <DataTable
-        columns={columns}
-        data={data}
-        tableLength={TABLE_LENGTH}
-        isLoading={isLoading || isRefetching}
-      />
+      {hasPastError && !data.length ? (
+        <Alert variant="destructive" className="mx-auto w-fit text-left">
+          <Terminal className="h-4 w-4" />
+          <AlertTitle>Error</AlertTitle>
+          <AlertDescription>
+            A error occurred during apps loading.
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <DataTable
+          columns={columns}
+          data={data}
+          tableLength={TABLE_LENGTH}
+          isLoading={isLoading || isRefetching}
+        />
+      )}
       <PaginatedNavigation
         currentPage={currentPage + 1}
         totalPages={currentPage + 1 + additionalPages}
