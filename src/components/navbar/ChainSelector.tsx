@@ -1,6 +1,5 @@
 import { SUPPORTED_CHAINS } from '@/config.ts';
 import { switchChain } from '@wagmi/core';
-import { useEffect, useState } from 'react';
 import useUserStore from '@/stores/useUser.store.ts';
 import { wagmiAdapter } from '@/utils/wagmiConfig.ts';
 import {
@@ -10,27 +9,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select.tsx';
-
 export function ChainSelector() {
-  const { chainId } = useUserStore();
-  const [selectedChainId, setSelectedChainId] = useState<string>(
-    chainId.toString()
-  );
-
-  useEffect(() => {
-    if (chainId) {
-      setSelectedChainId(chainId.toString());
-    }
-  }, [chainId]);
-
+  const { chainId, isConnected, setChainId } = useUserStore();
   const handleChainChange = async (value: string) => {
-    setSelectedChainId(value);
-
-    switchChain(wagmiAdapter.wagmiConfig, { chainId: Number(value) });
+    if (isConnected) {
+      switchChain(wagmiAdapter.wagmiConfig, { chainId: Number(value) });
+    } else {
+      setChainId(Number(value));
+    }
   };
-
   return (
-    <Select value={selectedChainId} onValueChange={handleChainChange}>
+    <Select value={chainId.toString()} onValueChange={handleChainChange}>
       <SelectTrigger>
         <SelectValue placeholder="Select Chain" />
       </SelectTrigger>
