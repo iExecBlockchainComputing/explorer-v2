@@ -13,7 +13,7 @@ import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { nextDatasetsQuery } from '@/modules/datasets/nextDatasetsQuery';
 import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/datasets')({
+export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
   component: DatasetsRoute,
 });
 

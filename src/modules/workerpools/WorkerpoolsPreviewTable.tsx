@@ -2,8 +2,8 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,7 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
           {workerpools.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <Link to="/workerpools">View all</Link>
+          <ChainLink to="/workerpools">View all</ChainLink>
         </Button>
       </div>
       {(workerpools.isError || workerpools.errorUpdateCount > 0) &&

@@ -2,65 +2,65 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { appsQuery } from '@/modules/apps/appsQuery';
-import { columns } from '@/modules/apps/appsTable/columns';
-import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
+import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
+import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
+import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/apps')({
-  component: AppsRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/workerpools')({
+  component: WorkerpoolsRoute,
 });
 
-function useAppsData(currentPage: number) {
+function useWorkerpoolsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'apps', currentPage],
+      queryKey: [chainId, 'workerpools', currentPage],
       queryFn: () =>
-        execute(appsQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(workerpoolsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
     }
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'apps-next', currentPage],
+    queryKey: [chainId, 'workerpools-next', currentPage],
     queryFn: () =>
-      execute(nextAppsQuery, chainId, {
+      execute(nextWorkerpoolsQuery, chainId, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
-  const nextApps = nextData?.apps ?? [];
+  const nextWorkerpools = nextData?.workerpools ?? [];
 
-  const additionalPages = Math.ceil(nextApps.length / TABLE_LENGTH);
+  const additionalPages = Math.ceil(nextWorkerpools.length / TABLE_LENGTH);
 
   const formattedData =
-    data?.apps.map((app) => ({
-      ...app,
-      destination: `/app/${app.address}`,
+    data?.workerpools.map((workerpool) => ({
+      ...workerpool,
+      destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError,
+    isError: isError,
     hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
-function AppsRoute() {
+function WorkerpoolsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data,
@@ -69,7 +69,7 @@ function AppsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useAppsData(currentPage);
+  } = useWorkerpoolsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -77,13 +77,15 @@ function AppsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Apps deployed
+        Workerpools
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
           </span>
         )}
-        {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
       </h1>
 
       {hasPastError && !data.length ? (
@@ -91,7 +93,7 @@ function AppsRoute() {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during apps loading.
+            A error occurred during workerpool loading.
           </AlertDescription>
         </Alert>
       ) : (

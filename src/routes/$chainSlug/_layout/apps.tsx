@@ -2,65 +2,65 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
-import { tasksQuery } from '@/modules/tasks/tasksQuery';
-import { columns } from '@/modules/tasks/tasksTable/columns';
+import { appsQuery } from '@/modules/apps/appsQuery';
+import { columns } from '@/modules/apps/appsTable/columns';
+import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
 import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/tasks')({
-  component: TasksRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/apps')({
+  component: AppsRoute,
 });
 
-function useTasksData(currentPage: number) {
+function useAppsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'tasks', currentPage],
+      queryKey: [chainId, 'apps', currentPage],
       queryFn: () =>
-        execute(tasksQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(appsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
     }
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'tasks-next', currentPage],
+    queryKey: [chainId, 'apps-next', currentPage],
     queryFn: () =>
-      execute(nextTasksQuery, chainId, {
+      execute(nextAppsQuery, chainId, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
-  const nextTasks = nextData?.tasks ?? [];
+  const nextApps = nextData?.apps ?? [];
 
-  const additionalPages = Math.ceil(nextTasks.length / TABLE_LENGTH);
+  const additionalPages = Math.ceil(nextApps.length / TABLE_LENGTH);
 
   const formattedData =
-    data?.tasks.map((task) => ({
-      ...task,
-      destination: `/task/${task.taskid}`,
+    data?.apps.map((app) => ({
+      ...app,
+      destination: `/app/${app.address}`,
     })) ?? [];
 
   return {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError: isError,
+    isError,
     hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
-function TasksRoute() {
+function AppsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data,
@@ -69,7 +69,7 @@ function TasksRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useTasksData(currentPage);
+  } = useAppsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -77,15 +77,13 @@ function TasksRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Tasks
+        Apps deployed
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
           </span>
         )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
+        {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
       </h1>
 
       {hasPastError && !data.length ? (
@@ -93,7 +91,7 @@ function TasksRoute() {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during tasks loading.
+            A error occurred during apps loading.
           </AlertDescription>
         </Alert>
       ) : (

@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router';
 import {
   ColumnDef,
   flexRender,
@@ -13,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { ChainLink } from './ChainLink';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -58,12 +58,12 @@ export function DataTable<TData extends { destination: string }, TValue>({
           <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
             {row.getVisibleCells().map((cell) => (
               <TableCell key={cell.id} className="p-0">
-                <Link
+                <ChainLink
                   className="block px-5 py-6"
                   to={cell.row.original.destination}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Link>
+                </ChainLink>
               </TableCell>
             ))}
           </TableRow>

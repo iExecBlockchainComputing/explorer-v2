@@ -1,7 +1,6 @@
 import { SUPPORTED_CHAINS } from '@/config.ts';
-import { switchChain } from '@wagmi/core';
+import { useRouter } from '@tanstack/react-router';
 import useUserStore from '@/stores/useUser.store.ts';
-import { wagmiAdapter } from '@/utils/wagmiConfig.ts';
 import {
   Select,
   SelectContent,
@@ -9,15 +8,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select.tsx';
+
 export function ChainSelector() {
-  const { chainId, isConnected, setChainId } = useUserStore();
+  const { chainId } = useUserStore();
+  const { navigate } = useRouter();
+
   const handleChainChange = async (value: string) => {
-    if (isConnected) {
-      switchChain(wagmiAdapter.wagmiConfig, { chainId: Number(value) });
-    } else {
-      setChainId(Number(value));
-    }
+    const newChainSlug = SUPPORTED_CHAINS.find(
+      (chain) => chain.id === Number(value)
+    )?.slug;
+    const pathParts = location.pathname.split('/').filter(Boolean);
+    const newPath =
+      pathParts.length > 1
+        ? `/${newChainSlug}/${pathParts.slice(1).join('/')}`
+        : `/${newChainSlug}`;
+
+    navigate({ to: newPath });
   };
+
   return (
     <Select value={chainId.toString()} onValueChange={handleChainChange}>
       <SelectTrigger>

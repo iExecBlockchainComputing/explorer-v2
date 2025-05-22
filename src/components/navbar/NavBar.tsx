@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
 import useUserStore from '@/stores/useUser.store';
 import iExecLogo from '../../assets/iexec-logo.svg';
+import { ChainLink } from '../ChainLink.tsx';
 import { Button } from '../ui/button.tsx';
 import { AddressChip } from './AddressChip.tsx';
 import { ChainSelector } from './ChainSelector.tsx';
@@ -18,15 +19,15 @@ export function Navbar() {
 
   return (
     <div className="flex items-center justify-between pt-6 lg:pt-3">
-      <Link to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
+      <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
-      </Link>
+      </ChainLink>
       <div className="mr-6 flex items-center gap-4 md:mr-0">
         {isConnected && (
           <div className="hidden md:flex">
             <Button variant="link" asChild className="text-white">
-              <Link to="/account">iExec Account</Link>
+              <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
             <span className="border-secondary border-l" />
           </div>
@@ -74,9 +75,9 @@ export function Navbar() {
 
         <div className="border-grey-600 bg-grey-900 pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-300 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
           <div className="-m-2 mr-6 flex items-center justify-between gap-2 py-2 pl-2">
-            <Link to="/" className="font-mono" onClick={handleMenuToggle}>
+            <ChainLink to="/" className="font-mono" onClick={handleMenuToggle}>
               <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
-            </Link>
+            </ChainLink>
             {isConnected ? (
               <div className="flex max-w-[1260px] items-center gap-2">
                 <AddressChip address={address!} />
@@ -102,7 +103,7 @@ export function Navbar() {
               asChild
               className="justify-baseline px-3 text-white"
             >
-              <Link to="/account">iExec Account</Link>
+              <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
             <ChainSelector />
           </div>

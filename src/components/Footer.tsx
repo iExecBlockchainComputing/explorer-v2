@@ -6,15 +6,19 @@ import {
   SiX,
   SiYoutube,
 } from '@icons-pack/react-simple-icons';
-import { Link } from '@tanstack/react-router';
 import { Linkedin } from 'lucide-react';
+import useUserStore from '@/stores/useUser.store';
+import { getBlockExplorerUrl } from '@/utils/chain.utils';
 import iExecLogo from '../assets/iexec-logo.svg';
+import { ChainLink } from './ChainLink';
 import { Button } from './ui/button';
 
 export function Footer({ className }: { className?: string }) {
+  const { chainId } = useUserStore();
+
   const navLinks = [
     { href: 'https://www.iex.ec/', label: 'iExec Website' },
-    { href: 'https://blockscout-bellecour.iex.ec/', label: 'Block explorer' }, // TODO import it from protocol data list
+    { href: getBlockExplorerUrl(chainId), label: 'Block explorer' },
     { href: 'https://www.iex.ec/contact', label: 'Contact Us' },
   ];
 
@@ -48,10 +52,10 @@ export function Footer({ className }: { className?: string }) {
       )}
     >
       <div className="grid place-items-center justify-center gap-10 xl:grid-cols-3 xl:place-items-stretch">
-        <Link to="/" className="flex items-center gap-2 font-mono">
+        <ChainLink to="/" className="flex items-center gap-2 font-mono">
           <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
           <span className="hidden sm:block">iExec Explorer</span>
-        </Link>
+        </ChainLink>
 
         <nav className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-4">
           {navLinks.map(({ href, label }, idx) => (

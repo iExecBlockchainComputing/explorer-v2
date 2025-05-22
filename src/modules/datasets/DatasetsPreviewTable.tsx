@@ -2,8 +2,8 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,7 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
           {datasets.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <Link to="/datasets">View all</Link>
+          <ChainLink to="/datasets">View all</ChainLink>
         </Button>
       </div>
       {(datasets.isError || datasets.errorUpdateCount > 0) && !datasets.data ? (

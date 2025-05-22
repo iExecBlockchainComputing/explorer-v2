@@ -1,4 +1,4 @@
-import { getSubgraphUrl } from '@/utils/getSubgraphURL';
+import { getSubgraphUrl } from '@/utils/chain.utils';
 import type { TypedDocumentString } from './graphql'
  
 export async function execute<TResult, TVariables>(
