@@ -1,10 +1,12 @@
+import { getSubgraphUrl } from '@/utils/getSubgraphURL';
 import type { TypedDocumentString } from './graphql'
  
 export async function execute<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
-  subgraphUrl: string,
+  chainId: number,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {
+  const subgraphUrl = getSubgraphUrl(chainId);
   const response = await fetch(subgraphUrl, {
     method: 'POST',
     headers: {

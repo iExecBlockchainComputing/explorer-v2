@@ -12,11 +12,11 @@ import { datasetsQuery } from './datasetsQuery';
 import { columns } from './datasetsTable/columns';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl, chainId } = useUserStore();
+  const { chainId } = useUserStore();
   const datasets = useQuery({
     queryKey: [chainId, 'datasets_preview'],
     queryFn: () =>
-      execute(datasetsQuery, subgraphUrl, {
+      execute(datasetsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
         skip: 0,
       }),

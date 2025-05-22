@@ -6,14 +6,8 @@ import useUserStore from '@/stores/useUser.store';
 
 export function useSyncAccountWithUserStore() {
   const { connector, status, address, chain, isConnected } = useAccount();
-  const {
-    setConnector,
-    setIsConnected,
-    setAddress,
-    setChainId,
-    chainId,
-    setSubgraphUrl,
-  } = useUserStore();
+  const { setConnector, setIsConnected, setAddress, setChainId, chainId } =
+    useUserStore();
   const queryClient = useQueryClient();
 
   useEffect(() => {
@@ -23,7 +17,6 @@ export function useSyncAccountWithUserStore() {
     setAddress(address);
     const currentChain = SUPPORTED_CHAINS.find((c) => c.id === chain?.id);
     if (currentChain) {
-      setSubgraphUrl(currentChain?.subgraphUrl);
       queryClient.invalidateQueries({ queryKey: [chainId] });
       setChainId(chain!.id);
     }
@@ -37,7 +30,6 @@ export function useSyncAccountWithUserStore() {
     setIsConnected,
     setAddress,
     setChainId,
-    setSubgraphUrl,
     queryClient,
     chainId,
   ]);

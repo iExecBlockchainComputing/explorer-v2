@@ -14,8 +14,6 @@ type UserState = {
   setAddress: (param: Address | undefined) => void;
   chainId: number;
   setChainId: (param: number) => void;
-  subgraphUrl: string;
-  setSubgraphUrl: (param: string) => void;
 };
 
 const useUserStore = create<UserState>((set) => ({
@@ -33,8 +31,6 @@ const useUserStore = create<UserState>((set) => ({
   setChainId: (chainId: number | undefined) => {
     set({ chainId: chainId });
   },
-  subgraphUrl: SUPPORTED_CHAINS[0].subgraphUrl,
-  setSubgraphUrl: (subgraphUrl: string) => set({ subgraphUrl }),
 }));
 
 export default useUserStore;

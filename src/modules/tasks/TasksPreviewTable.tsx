@@ -12,11 +12,11 @@ import { tasksQuery } from './tasksQuery';
 import { columns } from './tasksTable/columns';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl, chainId } = useUserStore();
+  const { chainId } = useUserStore();
   const tasks = useQuery({
     queryKey: [chainId, 'tasks_preview'],
     queryFn: () =>
-      execute(tasksQuery, subgraphUrl, {
+      execute(tasksQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
         skip: 0,
       }),

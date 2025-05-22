@@ -7,16 +7,19 @@ import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/useUser.store';
 import { workerpoolsQuery } from './workerpoolsQuery';
 import { columns } from './workerpoolsTable/columns';
-import useUserStore from '@/stores/useUser.store';
 
 export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl, chainId } = useUserStore();
+  const { chainId } = useUserStore();
   const workerpools = useQuery({
     queryKey: [chainId, 'workerpools_preview'],
     queryFn: () =>
-      execute(workerpoolsQuery, subgraphUrl, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(workerpoolsQuery, chainId, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
   });
 

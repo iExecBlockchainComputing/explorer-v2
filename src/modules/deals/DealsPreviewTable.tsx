@@ -12,11 +12,11 @@ import { dealsQuery } from './dealsQuery';
 import { columns } from './dealsTable/columns';
 
 export function DealsPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl, chainId } = useUserStore();
+  const { chainId } = useUserStore();
   const deals = useQuery({
     queryKey: [chainId, 'deals_preview'],
     queryFn: () =>
-      execute(dealsQuery, subgraphUrl, {
+      execute(dealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
         skip: 0,
       }),

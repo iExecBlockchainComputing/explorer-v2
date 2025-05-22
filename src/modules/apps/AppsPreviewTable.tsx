@@ -12,11 +12,11 @@ import { appsQuery } from './appsQuery';
 import { columns } from './appsTable/columns';
 
 export function AppsPreviewTable({ className }: { className?: string }) {
-  const { subgraphUrl, chainId } = useUserStore();
+  const { chainId } = useUserStore();
   const apps = useQuery({
     queryKey: [chainId, 'apps_preview'],
     queryFn: () =>
-      execute(appsQuery, subgraphUrl, {
+      execute(appsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
         skip: 0,
       }),
