@@ -20,6 +20,6 @@ export const SUPPORTED_CHAINS = [
     color: '#28A0F080',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
-    subgraphUrl: 'http://localhost:8080',
+    subgraphUrl: 'http://localhost:8080/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
   },
 ];
