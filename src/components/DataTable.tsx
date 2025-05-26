@@ -57,9 +57,8 @@ export function DataTable<TData extends { destination: string }, TValue>({
         {table.getRowModel().rows.map((row) => (
           <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
             {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id} className="p-0">
+              <TableCell key={cell.id}>
                 <ChainLink
-                  className="block px-5 py-6"
                   to={cell.row.original.destination}
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
