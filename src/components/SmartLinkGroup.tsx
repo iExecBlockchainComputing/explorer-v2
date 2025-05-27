@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from './ui/tooltip';
 
-const blockExplorerUrl = 'https://blockscout.iex.ec'; // adapte selon ton environnement
+const blockExplorerUrl = 'https://blockscout.iex.ec';
 
 type LinkType =
   | 'deal'
