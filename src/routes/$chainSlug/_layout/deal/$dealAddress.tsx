@@ -17,9 +17,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
   component: DealsRoute,
 });
 
-function useDealData(dealAddress: string) {
-  const { chainId } = useUserStore();
-
+function useDealData(dealAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError } = useQuery({
     queryKey: ['deal', dealAddress],
     queryFn: () =>
@@ -33,14 +31,14 @@ function useDealData(dealAddress: string) {
 
 function DealsRoute() {
   const [currentTab, setCurrentTab] = useState(0);
+  const { chainId, isConnected } = useUserStore();
   const { dealAddress } = Route.useParams();
   const {
     data: deal,
     isLoading,
     isRefetching,
     isError,
-  } = useDealData(dealAddress);
-  const isConnected = true;
+  } = useDealData(dealAddress, chainId);
 
   if (!deal) {
     return <p>Hum there is nothing here..</p>;

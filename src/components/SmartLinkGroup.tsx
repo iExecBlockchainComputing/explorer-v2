@@ -2,6 +2,8 @@ import { Link } from '@tanstack/react-router';
 import { ExternalLink } from 'lucide-react';
 import CopyButton from '@/components/CopyButton';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/useUser.store';
+import { getBlockExplorerUrl, getChainFromId } from '@/utils/chain.utils';
 import { truncateAddress } from '@/utils/truncateAddress';
 import {
   Tooltip,
@@ -9,8 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from './ui/tooltip';
-
-const blockExplorerUrl = 'https://blockscout.iex.ec';
 
 type LinkType =
   | 'deal'
@@ -24,16 +24,19 @@ interface SmartLinkGroupProps {
   type: LinkType;
   addressOrId: string;
   label?: string;
+  isCurrentPage?: boolean;
 }
 
 export default function SmartLinkGroup({
   type,
   addressOrId,
   label,
+  isCurrentPage = false,
 }: SmartLinkGroupProps) {
+  const { chainId } = useUserStore();
   const basePath = {
     deal: 'deals',
-    dataset: 'datasets',
+    dataset: 'dataset',
     workerpool: 'workerpool',
     app: 'apps',
     address: 'address',
@@ -51,18 +54,29 @@ export default function SmartLinkGroup({
 
   return (
     <div className="content flex items-center gap-1">
-      <Button
-        variant="link"
-        className="h-auto p-0 text-sm text-orange-200"
-        asChild
-      >
-        <Link to={`/${basePath[type]}/${addressOrId}`}>
+      {!isCurrentPage ? (
+        <Button
+          variant="link"
+          className="h-auto p-0 text-sm text-orange-200"
+          asChild
+        >
+          <Link
+            to={`/${getChainFromId(chainId)?.slug}/${basePath[type]}/${addressOrId}`}
+          >
+            <span className="hidden md:inline">{label ?? addressOrId}</span>
+            <span className="inline md:hidden">
+              {(label ? truncateAddress(label) : '') ?? addressOrId}
+            </span>
+          </Link>
+        </Button>
+      ) : (
+        <div>
           <span className="hidden md:inline">{label ?? addressOrId}</span>
           <span className="inline md:hidden">
             {(label ? truncateAddress(label) : '') ?? addressOrId}
           </span>
-        </Link>
-      </Button>
+        </div>
+      )}
 
       <TooltipProvider delayDuration={0}>
         <Tooltip>
@@ -73,7 +87,7 @@ export default function SmartLinkGroup({
               asChild
             >
               <a
-                href={`${blockExplorerUrl}/${blockExplorerPath[type]}`}
+                href={`${getBlockExplorerUrl(chainId)}/${blockExplorerPath[type]}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >

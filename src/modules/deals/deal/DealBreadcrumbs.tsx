@@ -1,3 +1,4 @@
+import { ChainLink } from '@/components/ChainLink';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,11 +18,15 @@ export function DealBreadcrumbs({ dealId }: DealBreadcrumbsProps) {
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Homepage</BreadcrumbLink>
+          <BreadcrumbLink asChild>
+            <ChainLink to="/">Homepage</ChainLink>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbLink href="/deals">All deals</BreadcrumbLink>
+          <BreadcrumbLink asChild>
+            <ChainLink to="/deals">All deals</ChainLink>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
