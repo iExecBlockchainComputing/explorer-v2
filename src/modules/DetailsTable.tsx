@@ -11,7 +11,7 @@ export function DetailsTable({ details }: DealDetailsTableProps) {
         {Object.entries(details).map(([key, value], i) => (
           <TableRow key={i}>
             <TableCell className="min-w-32 text-pretty! whitespace-normal">
-              {key} :
+              <p>{key} :</p>
             </TableCell>
             <TableCell className="relative overflow-x-auto">
               {Array.isArray(value)

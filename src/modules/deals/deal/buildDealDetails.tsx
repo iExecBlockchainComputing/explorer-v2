@@ -48,16 +48,16 @@ export function buildDealDetails({
     ...(deal.category.catid !== undefined &&
       deal.category.workClockTimeRef !== undefined && {
         Category: (
-          <>
+          <p>
             {deal.category.catid} ({deal.category.workClockTimeRef * 10} sec)
-          </>
+          </p>
         ),
       }),
     ...(deal.tag && {
       Tag: <Bytes>{deal.tag}</Bytes>,
     }),
     ...(deal.trust && {
-      Trust: deal.trust,
+      Trust: <p>{deal.trust}</p>,
     }),
     ...(deal.app && {
       App: (
@@ -70,7 +70,7 @@ export function buildDealDetails({
           />
         </div>
       ),
-      'App price': deal.appPrice,
+      'App price': <p>{deal.appPrice}</p>,
     }),
     ...(deal.dataset && {
       Dataset: (
@@ -83,7 +83,7 @@ export function buildDealDetails({
           />
         </div>
       ),
-      'Dataset price': deal.datasetPrice,
+      'Dataset price': <p>{deal.datasetPrice}</p>,
     }),
     ...(deal.workerpool && {
       Workerpool: (
@@ -96,7 +96,7 @@ export function buildDealDetails({
           />
         </div>
       ),
-      'Workerpool price': deal.workerpoolPrice,
+      'Workerpool price': <p>{deal.workerpoolPrice}</p>,
     }),
     ...(deal.requester && {
       Requester: (
@@ -170,27 +170,27 @@ export function buildDealDetails({
       ),
     }),
     ...(deal.botSize && {
-      'Tasks count': deal.botSize,
+      'Tasks count': <p>{deal.botSize}</p>,
     }),
     ...(deal.completedTasksCount && {
-      'Completed tasks count': deal.completedTasksCount,
+      'Completed tasks count': <p>{deal.completedTasksCount}</p>,
     }),
     ...(deal.claimedTasksCount && {
-      'Claimed tasks count': deal.claimedTasksCount,
+      'Claimed tasks count': <p>{deal.claimedTasksCount}</p>,
     }),
     ...(deal.startTime && {
       'Start time': (
-        <>
+        <p>
           {formatElapsedTime(deal.startTime)} (
           {formatDateCompact(deal.startTime)})
-        </>
+        </p>
       ),
     }),
     ...(dealDeadline && {
       Deadline: (
-        <>
+        <p>
           {formatElapsedTime(dealDeadline)} ({formatDateCompact(dealDeadline)})
-        </>
+        </p>
       ),
     }),
     ...(Array.isArray(deal?.dealEvents) && {
