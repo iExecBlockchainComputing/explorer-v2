@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { DataTable } from '@/components/DataTable';
 import useUserStore from '@/stores/useUser.store';
 import { columns } from './dealTaskColumns';
-import { dealTasksQuery } from './dealTaskQuery';
+import { dealTasksQuery } from './dealTasksQuery';
 
 function useDealTasksData({ dealAddress }: { dealAddress: string }) {
   const { chainId } = useUserStore();
