@@ -8388,6 +8388,20 @@ export type NextDatasetsQueryVariables = Exact<{
 
 export type NextDatasetsQuery = { __typename?: 'Query', datasets: Array<{ __typename?: 'Dataset', address: string }> };
 
+export type DealQueryVariables = Exact<{
+  dealAddress: Scalars['ID']['input'];
+}>;
+
+
+export type DealQuery = { __typename?: 'Query', deal?: { __typename?: 'Deal', timestamp: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, params: string, tag: any, trust: any, botSize: any, botFirst: any, completedTasksCount: any, claimedTasksCount: any, dealid: string, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string }, beneficiary: { __typename?: 'Account', address: string }, callback: { __typename?: 'Account', address: string }, category: { __typename?: 'Category', name: string, workClockTimeRef: any, description: string, catid: string }, requester: { __typename?: 'Account', address: string }, dealEvents: Array<{ __typename?: 'OrdersMatched', timestamp: any, id: string, type: 'OrdersMatched', transaction: { __typename?: 'Transaction', txHash: string } }> } | null };
+
+export type DealTasksQueryVariables = Exact<{
+  dealAddress: Scalars['ID']['input'];
+}>;
+
+
+export type DealTasksQuery = { __typename?: 'Query', deal?: { __typename?: 'Deal', tasks: Array<{ __typename?: 'Task', index: any, status: TaskStatus, finalDeadline: any, taskid: string }> } | null };
+
 export type DealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8513,6 +8527,72 @@ export const NextDatasetsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<NextDatasetsQuery, NextDatasetsQueryVariables>;
+export const DealDocument = new TypedDocumentString(`
+    query Deal($dealAddress: ID!) {
+  deal(id: $dealAddress) {
+    dealid: id
+    timestamp
+    startTime
+    app {
+      address: id
+      name
+    }
+    dataset {
+      address: id
+      name
+    }
+    workerpool {
+      address: id
+      description
+    }
+    beneficiary {
+      address: id
+    }
+    callback {
+      address: id
+    }
+    appPrice
+    datasetPrice
+    workerpoolPrice
+    params
+    tag
+    trust
+    category {
+      catid: id
+      name
+      workClockTimeRef
+      description
+    }
+    botSize
+    botFirst
+    completedTasksCount
+    claimedTasksCount
+    requester {
+      address: id
+    }
+    dealEvents: events(orderBy: timestamp, orderDirection: asc) {
+      timestamp
+      id
+      type: __typename
+      transaction {
+        txHash: id
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<DealQuery, DealQueryVariables>;
+export const DealTasksDocument = new TypedDocumentString(`
+    query DealTasks($dealAddress: ID!) {
+  deal(id: $dealAddress) {
+    tasks(orderBy: index, orderDirection: asc) {
+      taskid: id
+      index
+      status
+      finalDeadline
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<DealTasksQuery, DealTasksQueryVariables>;
 export const DealsDocument = new TypedDocumentString(`
     query Deals($length: Int = 20, $skip: Int = 0) {
   deals(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {

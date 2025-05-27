@@ -1,0 +1,211 @@
+import { Deal } from '@/graphql/graphql';
+import CopyButton from '@/components/CopyButton';
+import SmartLinkGroup from '@/components/SmartLinkGroup';
+import {
+  formatDateCompact,
+  formatElapsedTime,
+} from '@/utils/formatElapsedTime';
+import { truncateAddress } from '@/utils/truncateAddress';
+import Bytes from './Bytes';
+
+export function buildDealDetails({
+  deal,
+  isConnected,
+}: {
+  deal: Deal;
+  isConnected: boolean;
+}) {
+  const dealDeadline =
+    deal?.startTime &&
+    deal?.category.workClockTimeRef &&
+    parseInt(deal?.startTime) + parseInt(deal?.category.workClockTimeRef) * 10;
+
+  const tasksCount = parseInt(deal?.botSize) || 1;
+  const completedTasksCount = parseInt(deal?.completedTasksCount) || 0;
+  const claimedTasksCount = parseInt(deal?.claimedTasksCount) || 0;
+  const pendingTasksCount =
+    tasksCount - (completedTasksCount + claimedTasksCount);
+
+  const completedRatio = completedTasksCount / tasksCount;
+  const claimedRatio = claimedTasksCount / tasksCount;
+  const pendingRatio = pendingTasksCount / tasksCount;
+
+  const isClaimable =
+    dealDeadline * 1000 < Date.now() && isConnected && pendingRatio > 0;
+
+  return {
+    ...(deal.dealid && {
+      Dealid: (
+        <div className="flex flex-wrap items-center gap-1">
+          <span className="hidden md:inline">{deal.dealid}</span>
+          <span className="inline md:hidden">
+            {truncateAddress(deal.dealid)}
+          </span>
+          <CopyButton textToCopy={deal.dealid} />
+        </div>
+      ),
+    }),
+    ...(deal.category.catid !== undefined &&
+      deal.category.workClockTimeRef !== undefined && {
+        Category: (
+          <>
+            {deal.category.catid} ({deal.category.workClockTimeRef * 10} sec)
+          </>
+        ),
+      }),
+    ...(deal.tag && {
+      Tag: <Bytes>{deal.tag}</Bytes>,
+    }),
+    ...(deal.trust && {
+      Trust: deal.trust,
+    }),
+    ...(deal.app && {
+      App: (
+        <div className="flex flex-wrap items-center gap-1">
+          {deal.app?.name}{' '}
+          <SmartLinkGroup
+            type="app"
+            addressOrId={deal.app?.address}
+            label={deal.app.address}
+          />
+        </div>
+      ),
+      'App price': deal.appPrice,
+    }),
+    ...(deal.dataset && {
+      Dataset: (
+        <div className="flex flex-wrap items-center gap-1">
+          {deal.app.name}{' '}
+          <SmartLinkGroup
+            type="dataset"
+            addressOrId={deal.dataset.address}
+            label={deal.dataset.name}
+          />
+        </div>
+      ),
+      'Dataset price': deal.datasetPrice,
+    }),
+    ...(deal.workerpool && {
+      Workerpool: (
+        <div className="flex flex-wrap items-center gap-1">
+          {deal.workerpool.description}{' '}
+          <SmartLinkGroup
+            type="workerpool"
+            addressOrId={deal.workerpool.address}
+            label={deal.workerpool.address}
+          />
+        </div>
+      ),
+      'Workerpool price': deal.workerpoolPrice,
+    }),
+    ...(deal.requester && {
+      Requester: (
+        <SmartLinkGroup
+          type="address"
+          addressOrId={deal.requester.address}
+          label={deal.requester.address}
+        />
+      ),
+    }),
+    ...(deal.beneficiary && {
+      Beneficiary: (
+        <SmartLinkGroup
+          type="address"
+          addressOrId={deal.beneficiary.address}
+          label={deal.beneficiary.address}
+        />
+      ),
+    }),
+    ...(deal.callback && {
+      'Callback contract': (
+        <SmartLinkGroup
+          type="address"
+          addressOrId={deal.callback.address}
+          label={deal.callback.address}
+        />
+      ),
+    }),
+    ...(deal.params && {
+      Params: (
+        <div className="flex min-w-0 items-center gap-1">
+          <code className="min-w-0 overflow-x-auto text-sm whitespace-pre">
+            {JSON.stringify(JSON.parse(deal.params), null, 2)}
+          </code>
+          <CopyButton textToCopy={deal.params} />
+        </div>
+      ),
+    }),
+    ...((pendingRatio || completedRatio || claimedRatio) && {
+      Status: (
+        <span>
+          <span className="flex flex-wrap items-center gap-2 text-xs font-medium">
+            {completedRatio > 0 && (
+              <span className="bg-success-foreground/10 border-success-border text-success-foreground rounded-full border px-2 py-1">
+                {Math.round(completedRatio * 100)}% COMPLETED
+              </span>
+            )}
+
+            {claimedRatio > 0 && (
+              <span className="bg-info-foreground/10 border-info-border text-info-foreground rounded-full border px-2 py-1">
+                {Math.round(claimedRatio * 100)}% CLAIMED
+              </span>
+            )}
+
+            {pendingRatio > 0 && (
+              <span
+                className={`rounded-full border px-2 py-1 ${
+                  isClaimable
+                    ? 'bg-info-foreground/10 border-info-border text-info-foreground'
+                    : 'bg-warning-foreground/10 border-warning-border text-warning-foreground'
+                }`}
+              >
+                {Math.round(pendingRatio * 100)}%{' '}
+                {isClaimable ? 'CLAIMABLE' : 'PENDING'}
+              </span>
+            )}
+          </span>
+
+          {/* {isClaimable && <ClaimFailedDeal taskId="" />} // TODO  */}
+        </span>
+      ),
+    }),
+    ...(deal.botSize && {
+      'Tasks count': deal.botSize,
+    }),
+    ...(deal.completedTasksCount && {
+      'Completed tasks count': deal.completedTasksCount,
+    }),
+    ...(deal.claimedTasksCount && {
+      'Claimed tasks count': deal.claimedTasksCount,
+    }),
+    ...(deal.startTime && {
+      'Start time': (
+        <>
+          {formatElapsedTime(deal.startTime)} (
+          {formatDateCompact(deal.startTime)})
+        </>
+      ),
+    }),
+    ...(dealDeadline && {
+      Deadline: (
+        <>
+          {formatElapsedTime(dealDeadline)} ({formatDateCompact(dealDeadline)})
+        </>
+      ),
+    }),
+    ...(Array.isArray(deal?.dealEvents) && {
+      Events: deal.dealEvents.map((dealEvent, i) => (
+        <div className="flex flex-wrap items-center gap-1" key={i}>
+          {dealEvent.type && dealEvent.type}
+          {dealEvent.transaction.txHash && (
+            <SmartLinkGroup
+              type="address"
+              addressOrId={dealEvent.transaction.txHash}
+              label={dealEvent.transaction.txHash}
+            />
+          )}
+        </div>
+      )),
+    }),
+  };
+}
