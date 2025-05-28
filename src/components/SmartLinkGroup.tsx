@@ -38,7 +38,7 @@ export default function SmartLinkGroup({
     deal: 'deals',
     dataset: 'dataset',
     workerpool: 'workerpool',
-    app: 'apps',
+    app: 'app',
     address: 'address',
     transaction: 'transaction',
   };

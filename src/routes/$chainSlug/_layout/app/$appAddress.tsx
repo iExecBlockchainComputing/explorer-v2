@@ -1,0 +1,85 @@
+import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { execute } from '@/graphql/execute';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
+import { Box, LoaderCircle } from 'lucide-react';
+import { DetailsTable } from '@/modules/DetailsTable';
+import { ErrorAlert } from '@/modules/ErrorAlert';
+import { SearcherBar } from '@/modules/SearcherBar';
+import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
+import { AppDealsTable } from '@/modules/apps/app/AppDealsTable';
+import { appQuery } from '@/modules/apps/app/appQuery';
+import { buildAppDetails } from '@/modules/apps/app/buildAppDetails';
+import useUserStore from '@/stores/useUser.store';
+
+export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')(
+  {
+    component: AppsRoute,
+  }
+);
+
+function useAppData(appAddress: string, chainId: number) {
+  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
+    {
+      queryKey: ['app', appAddress],
+      queryFn: () =>
+        execute(appQuery, chainId, {
+          length: TABLE_LENGTH,
+          appAddress,
+          appAddressString: appAddress,
+        }),
+      refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: keepPreviousData,
+    }
+  );
+
+  return {
+    data: data?.app,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError: isError || errorUpdateCount > 0,
+  };
+}
+
+function AppsRoute() {
+  const { chainId } = useUserStore();
+  const { appAddress } = Route.useParams();
+  const {
+    data: app,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError,
+  } = useAppData(appAddress, chainId);
+
+  const appDetails = app ? buildAppDetails({ app }) : undefined;
+
+  return (
+    <div className="mt-8 flex flex-col gap-6">
+      <SearcherBar className="py-10" />
+
+      <h1 className="flex items-center gap-2 text-2xl font-extrabold">
+        <Box size="20" />
+        App details
+        {app && isError && (
+          <span className="text-muted-foreground text-sm font-light">
+            (outdated)
+          </span>
+        )}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
+      </h1>
+      <AppBreadcrumbs appId={appAddress} />
+      <div className="space-y-10">
+        {hasPastError && !appDetails ? (
+          <ErrorAlert message="An error occurred during deal details  loading." />
+        ) : (
+          <DetailsTable details={appDetails} zebra={false} />
+        )}
+        <AppDealsTable appAddress={appAddress} />
+      </div>
+    </div>
+  );
+}
