@@ -21,6 +21,7 @@ export function AppsPreviewTable({ className }: { className?: string }) {
         skip: 0,
       }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const formattedData =

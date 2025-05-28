@@ -27,6 +27,7 @@ function useWorkerpoolsData(currentPage: number) {
       queryFn: () =>
         execute(workerpoolsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      enabled: !!chainId,
     }
   );
 
@@ -38,6 +39,7 @@ function useWorkerpoolsData(currentPage: number) {
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const nextWorkerpools = nextData?.workerpools ?? [];
