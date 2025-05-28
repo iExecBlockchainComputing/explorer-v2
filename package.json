@@ -41,6 +41,7 @@
     "graphql": "^16.10.0",
     "iexec": "^8.15.0",
     "lucide-react": "^0.487.0",
+    "multiaddr": "^10.0.1",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

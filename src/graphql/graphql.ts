@@ -8372,6 +8372,32 @@ export type NextAppsQueryVariables = Exact<{
 
 export type NextAppsQuery = { __typename?: 'Query', apps: Array<{ __typename?: 'App', address: string }> };
 
+export type DatasetDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  datasetAddress: Scalars['ID']['input'];
+}>;
+
+
+export type DatasetDealsQuery = { __typename?: 'Query', dataset?: { __typename?: 'Dataset', address: string, deals: Array<{ __typename?: 'Deal', timestamp: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, botSize: any, trust: any, completedTasksCount: any, claimedTasksCount: any, dealid: string, requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, callback: { __typename?: 'Account', address: string }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } }> } | null };
+
+export type DatasetQueryVariables = Exact<{
+  datasetAddress: Scalars['ID']['input'];
+  datasetAddressString: Scalars['String']['input'];
+}>;
+
+
+export type DatasetQuery = { __typename?: 'Query', dataset?: { __typename?: 'Dataset', name: string, multiaddr: any, checksum: any, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'DatasetTransfer', dataset: { __typename?: 'Dataset', address: string }, from: { __typename?: 'Account', address: string }, to: { __typename?: 'Account', address: string }, transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> } | null };
+
+export type NextDatasetDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  datasetAddress: Scalars['ID']['input'];
+}>;
+
+
+export type NextDatasetDealsQuery = { __typename?: 'Query', dataset?: { __typename?: 'Dataset', address: string, deals: Array<{ __typename?: 'Deal', dealid: string }> } | null };
+
 export type DatasetsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8499,6 +8525,103 @@ export const NextAppsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<NextAppsQuery, NextAppsQueryVariables>;
+export const DatasetDealsDocument = new TypedDocumentString(`
+    query DatasetDeals($length: Int = 20, $skip: Int = 0, $datasetAddress: ID!) {
+  dataset(id: $datasetAddress) {
+    address: id
+    deals: usages(
+      first: $length
+      skip: $skip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      dealid: id
+      timestamp
+      requester {
+        address: id
+      }
+      beneficiary {
+        address: id
+      }
+      callback {
+        address: id
+      }
+      app {
+        address: id
+        name
+      }
+      dataset {
+        address: id
+        name
+      }
+      workerpool {
+        address: id
+        description
+      }
+      category {
+        catid: id
+        workClockTimeRef
+      }
+      startTime
+      appPrice
+      datasetPrice
+      workerpoolPrice
+      botSize
+      trust
+      completedTasksCount
+      claimedTasksCount
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<DatasetDealsQuery, DatasetDealsQueryVariables>;
+export const DatasetDocument = new TypedDocumentString(`
+    query Dataset($datasetAddress: ID!, $datasetAddressString: String!) {
+  dataset(id: $datasetAddress) {
+    address: id
+    name
+    owner {
+      address: id
+    }
+    multiaddr
+    checksum
+    transfers(
+      where: {dataset: $datasetAddressString}
+      orderBy: timestamp
+      orderDirection: asc
+    ) {
+      dataset {
+        address: id
+      }
+      from {
+        address: id
+      }
+      to {
+        address: id
+      }
+      transaction {
+        txHash: id
+        timestamp
+        blockNumber
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<DatasetQuery, DatasetQueryVariables>;
+export const NextDatasetDealsDocument = new TypedDocumentString(`
+    query NextDatasetDeals($length: Int = 20, $skip: Int = 0, $datasetAddress: ID!) {
+  dataset(id: $datasetAddress) {
+    address: id
+    deals: usages(
+      first: $length
+      skip: $skip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      dealid: id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextDatasetDealsQuery, NextDatasetDealsQueryVariables>;
 export const DatasetsDocument = new TypedDocumentString(`
     query Datasets($length: Int = 20, $skip: Int = 0) {
   datasets(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {

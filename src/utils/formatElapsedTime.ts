@@ -52,6 +52,6 @@ export function readableDate(timestamp: string | number): string {
 export function formatDateCompact(timestamp: string | number): string {
   const date = new Date(Number(Number(timestamp)) * 1000);
   const dateStr = date.toString();
-  const trimmed = dateStr.replace(/\s\([^)]*\)$/, ''); // Supprime le nom du fuseau horaire
+  const trimmed = dateStr.replace(/\s\([^)]*\)$/, '');
   return `(${trimmed})`;
 }

@@ -26,12 +26,20 @@ function TableHeader({ className, ...props }: React.ComponentProps<'thead'>) {
   );
 }
 
-function TableBody({ className, ...props }: React.ComponentProps<'tbody'>) {
+function TableBody({
+  className,
+  zebra = true,
+  ...props
+}: {
+  className?: string;
+  zebra?: boolean;
+} & React.ComponentProps<'tbody'> & {}) {
   return (
     <tbody
       data-slot="table-body"
       className={cn(
-        '[&_tr]:border-muted [&_tr]:odd:*:bg-grey-800 [&_tr:last-child]:border-0',
+        '[&_tr]:border-muted [&_tr:last-child]:border-0',
+        zebra && '[&_tr]:odd:*:bg-grey-800',
         className
       )}
       {...props}
