@@ -8468,6 +8468,32 @@ export type NextWorkerpoolsQueryVariables = Exact<{
 
 export type NextWorkerpoolsQuery = { __typename?: 'Query', workerpools: Array<{ __typename?: 'Workerpool', address: string }> };
 
+export type NextWorkerpoolDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  workerpoolAddress: Scalars['ID']['input'];
+}>;
+
+
+export type NextWorkerpoolDealsQuery = { __typename?: 'Query', workerpool?: { __typename?: 'Workerpool', address: string, deals: Array<{ __typename?: 'Deal', dealid: string }> } | null };
+
+export type WorkerpoolDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  workerpoolAddress: Scalars['ID']['input'];
+}>;
+
+
+export type WorkerpoolDealsQuery = { __typename?: 'Query', workerpool?: { __typename?: 'Workerpool', address: string, deals: Array<{ __typename?: 'Deal', timestamp: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, botSize: any, trust: any, completedTasksCount: any, claimedTasksCount: any, dealid: string, requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, callback: { __typename?: 'Account', address: string }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } }> } | null };
+
+export type WorkerpoolQueryVariables = Exact<{
+  workerpoolAddress: Scalars['ID']['input'];
+  workerpoolAddressString: Scalars['String']['input'];
+}>;
+
+
+export type WorkerpoolQuery = { __typename?: 'Query', workerpool?: { __typename?: 'Workerpool', description: string, address: string, owner: { __typename?: 'Account', address: string }, transfers: Array<{ __typename?: 'WorkerpoolTransfer', workerpool: { __typename?: 'Workerpool', address: string }, from: { __typename?: 'Account', address: string }, to: { __typename?: 'Account', address: string }, transaction: { __typename?: 'Transaction', timestamp: any, blockNumber: any, txHash: string } }> } | null };
+
 export type WorkerpoolsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8812,6 +8838,101 @@ export const NextWorkerpoolsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<NextWorkerpoolsQuery, NextWorkerpoolsQueryVariables>;
+export const NextWorkerpoolDealsDocument = new TypedDocumentString(`
+    query NextWorkerpoolDeals($length: Int = 20, $skip: Int = 0, $workerpoolAddress: ID!) {
+  workerpool(id: $workerpoolAddress) {
+    address: id
+    deals: usages(
+      first: $length
+      skip: $skip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      dealid: id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextWorkerpoolDealsQuery, NextWorkerpoolDealsQueryVariables>;
+export const WorkerpoolDealsDocument = new TypedDocumentString(`
+    query WorkerpoolDeals($length: Int = 20, $skip: Int = 0, $workerpoolAddress: ID!) {
+  workerpool(id: $workerpoolAddress) {
+    address: id
+    deals: usages(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      dealid: id
+      timestamp
+      requester {
+        address: id
+      }
+      beneficiary {
+        address: id
+      }
+      callback {
+        address: id
+      }
+      app {
+        address: id
+        name
+      }
+      dataset {
+        address: id
+        name
+      }
+      workerpool {
+        address: id
+        description
+      }
+      category {
+        catid: id
+        workClockTimeRef
+      }
+      startTime
+      appPrice
+      datasetPrice
+      workerpoolPrice
+      botSize
+      trust
+      completedTasksCount
+      claimedTasksCount
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<WorkerpoolDealsQuery, WorkerpoolDealsQueryVariables>;
+export const WorkerpoolDocument = new TypedDocumentString(`
+    query Workerpool($workerpoolAddress: ID!, $workerpoolAddressString: String!) {
+  workerpool(id: $workerpoolAddress) {
+    address: id
+    owner {
+      address: id
+    }
+    description
+    transfers(
+      where: {workerpool: $workerpoolAddressString}
+      orderBy: timestamp
+      orderDirection: asc
+    ) {
+      workerpool {
+        address: id
+      }
+      from {
+        address: id
+      }
+      to {
+        address: id
+      }
+      transaction {
+        txHash: id
+        timestamp
+        blockNumber
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<WorkerpoolQuery, WorkerpoolQueryVariables>;
 export const WorkerpoolsDocument = new TypedDocumentString(`
     query Workerpools($length: Int = 20, $skip: Int = 0) {
   workerpools(

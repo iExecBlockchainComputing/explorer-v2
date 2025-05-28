@@ -21,6 +21,7 @@ import { Route as ChainSlugLayoutTasksImport } from './routes/$chainSlug/_layout
 import { Route as ChainSlugLayoutDealsImport } from './routes/$chainSlug/_layout/deals'
 import { Route as ChainSlugLayoutDatasetsImport } from './routes/$chainSlug/_layout/datasets'
 import { Route as ChainSlugLayoutAppsImport } from './routes/$chainSlug/_layout/apps'
+import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
 import { Route as ChainSlugLayoutDealDealAddressImport } from './routes/$chainSlug/_layout/deal/$dealAddress'
 import { Route as ChainSlugLayoutDatasetDatasetAddressImport } from './routes/$chainSlug/_layout/dataset/$datasetAddress'
 
@@ -84,6 +85,13 @@ const ChainSlugLayoutAppsRoute = ChainSlugLayoutAppsImport.update({
   path: '/apps',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
+
+const ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute =
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressImport.update({
+    id: '/workerpool/$workerpoolAddress',
+    path: '/workerpool/$workerpoolAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
 
 const ChainSlugLayoutDealDealAddressRoute =
   ChainSlugLayoutDealDealAddressImport.update({
@@ -180,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChainSlugLayoutDealDealAddressImport
       parentRoute: typeof ChainSlugLayoutImport
     }
+    '/$chainSlug/_layout/workerpool/$workerpoolAddress': {
+      id: '/$chainSlug/_layout/workerpool/$workerpoolAddress'
+      path: '/workerpool/$workerpoolAddress'
+      fullPath: '/$chainSlug/workerpool/$workerpoolAddress'
+      preLoaderRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
   }
 }
 
@@ -194,6 +209,7 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutIndexRoute: typeof ChainSlugLayoutIndexRoute
   ChainSlugLayoutDatasetDatasetAddressRoute: typeof ChainSlugLayoutDatasetDatasetAddressRoute
   ChainSlugLayoutDealDealAddressRoute: typeof ChainSlugLayoutDealDealAddressRoute
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
@@ -206,6 +222,8 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
   ChainSlugLayoutDatasetDatasetAddressRoute:
     ChainSlugLayoutDatasetDatasetAddressRoute,
   ChainSlugLayoutDealDealAddressRoute: ChainSlugLayoutDealDealAddressRoute,
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
+    ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
 }
 
 const ChainSlugLayoutRouteWithChildren = ChainSlugLayoutRoute._addFileChildren(
@@ -235,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/': typeof ChainSlugLayoutIndexRoute
   '/$chainSlug/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
   '/$chainSlug/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
+  '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 export interface FileRoutesByTo {
@@ -247,6 +266,7 @@ export interface FileRoutesByTo {
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
   '/$chainSlug/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
+  '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 export interface FileRoutesById {
@@ -262,6 +282,7 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/': typeof ChainSlugLayoutIndexRoute
   '/$chainSlug/_layout/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
   '/$chainSlug/_layout/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
+  '/$chainSlug/_layout/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 export interface FileRouteTypes {
@@ -277,6 +298,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/'
     | '/$chainSlug/dataset/$datasetAddress'
     | '/$chainSlug/deal/$dealAddress'
+    | '/$chainSlug/workerpool/$workerpoolAddress'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -288,6 +310,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/workerpools'
     | '/$chainSlug/dataset/$datasetAddress'
     | '/$chainSlug/deal/$dealAddress'
+    | '/$chainSlug/workerpool/$workerpoolAddress'
   id:
     | '__root__'
     | '/'
@@ -301,6 +324,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/'
     | '/$chainSlug/_layout/dataset/$datasetAddress'
     | '/$chainSlug/_layout/deal/$dealAddress'
+    | '/$chainSlug/_layout/workerpool/$workerpoolAddress'
   fileRoutesById: FileRoutesById
 }
 
@@ -348,7 +372,8 @@ export const routeTree = rootRoute
         "/$chainSlug/_layout/workerpools",
         "/$chainSlug/_layout/",
         "/$chainSlug/_layout/dataset/$datasetAddress",
-        "/$chainSlug/_layout/deal/$dealAddress"
+        "/$chainSlug/_layout/deal/$dealAddress",
+        "/$chainSlug/_layout/workerpool/$workerpoolAddress"
       ]
     },
     "/$chainSlug/_layout/apps": {
@@ -381,6 +406,10 @@ export const routeTree = rootRoute
     },
     "/$chainSlug/_layout/deal/$dealAddress": {
       "filePath": "$chainSlug/_layout/deal/$dealAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/workerpool/$workerpoolAddress": {
+      "filePath": "$chainSlug/_layout/workerpool/$workerpoolAddress.tsx",
       "parent": "/$chainSlug/_layout"
     }
   }
