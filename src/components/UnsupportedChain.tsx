@@ -1,17 +1,16 @@
 import { SUPPORTED_CHAINS } from '@/config';
 import { AlertOctagon } from 'lucide-react';
-import useUserStore from '@/stores/useUser.store';
+import { useAccount } from 'wagmi';
 import { Alert, AlertDescription, AlertTitle } from './ui/alert';
 
 const SUPPORTED_CHAIN_IDS = SUPPORTED_CHAINS.map((chain) => chain.id);
 
 export function UnsupportedChain() {
-  const { isConnected, chainId } = useUserStore();
-
+  const { isConnected, chainId } = useAccount();
   const isChainSupported =
     chainId !== undefined && SUPPORTED_CHAIN_IDS.includes(chainId);
 
-  if (isChainSupported || !isConnected) {
+  if (!isConnected || isChainSupported) {
     return null;
   }
 

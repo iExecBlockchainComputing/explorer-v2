@@ -1,5 +1,5 @@
 import { SUPPORTED_CHAINS } from '@/config.ts';
-import { useRouter } from '@tanstack/react-router';
+import { useChainSwitch } from '@/hooks/useChainSwitch.ts';
 import useUserStore from '@/stores/useUser.store.ts';
 import {
   Select,
@@ -11,23 +11,17 @@ import {
 
 export function ChainSelector() {
   const { chainId } = useUserStore();
-  const { navigate } = useRouter();
-
+  const { requestChainChange } = useChainSwitch();
   const handleChainChange = async (value: string) => {
-    const newChainSlug = SUPPORTED_CHAINS.find(
-      (chain) => chain.id === Number(value)
-    )?.slug;
-    const pathParts = location.pathname.split('/').filter(Boolean);
-    const newPath =
-      pathParts.length > 1
-        ? `/${newChainSlug}/${pathParts.slice(1).join('/')}`
-        : `/${newChainSlug}`;
-
-    navigate({ to: newPath });
+    requestChainChange(Number(value));
   };
 
   return (
-    <Select value={chainId.toString()} onValueChange={handleChainChange}>
+    <Select
+      value={chainId?.toString()}
+      onValueChange={handleChainChange}
+      defaultValue="-1"
+    >
       <SelectTrigger>
         <SelectValue placeholder="Select Chain" />
       </SelectTrigger>

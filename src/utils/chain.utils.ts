@@ -22,3 +22,10 @@ export function getBlockExplorerUrl(chainId: number) {
   const chain = getChainFromId(chainId);
   return chain?.blockExplorerUrl ?? 'https://blockscout.com/';
 }
+
+/**
+ * initial chain evaluated once against the current location when the app loads
+ */
+export const INITIAL_CHAIN =
+  getChainFromSlug(new URL(window.location.href).pathname.split('/')[1]) ||
+  SUPPORTED_CHAINS[0];
