@@ -1,11 +1,11 @@
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
-import { AppKitNetwork, arbitrumSepolia } from '@reown/appkit/networks';
+import { AppKitNetwork } from '@reown/appkit/networks';
 import { createAppKit } from '@reown/appkit/react';
 import { http, CreateConnectorFn } from 'wagmi';
 import { injected, walletConnect } from 'wagmi/connectors';
-import { bellecour } from './bellecourChainConfig.ts';
 import { InjectedWalletProvider } from './injected-wallet-provider/injected-wallet-provider.ts';
 import { EIP6963ProviderDetail } from './injected-wallet-provider/types.ts';
+import wagmiNetworks from './wagmiNetworks.ts';
 
 // Wagmi Client initialization
 if (!import.meta.env.VITE_REOWN_PROJECT_ID) {
@@ -69,18 +69,17 @@ preservedAvailableProviderDetails.forEach((providerDetails) => {
   );
 });
 
-const networks: [AppKitNetwork, ...AppKitNetwork[]] = [
-  bellecour,
-  arbitrumSepolia,
+const networks = Object.values(wagmiNetworks) as [
+  AppKitNetwork,
+  ...AppKitNetwork[],
 ];
 
 export const wagmiAdapter = new WagmiAdapter({
   networks: networks,
   multiInjectedProviderDiscovery: false,
-  transports: {
-    [bellecour.id]: http(),
-    [arbitrumSepolia.id]: http(),
-  },
+  transports: Object.fromEntries(
+    Object.values(wagmiNetworks).map((network) => [network.id, http()])
+  ),
   projectId,
   connectors,
 });
@@ -94,12 +93,10 @@ const featuredWalletIds = [
   'ecc4036f814562b41a5268adc86270fba1365471402006302e70169465b7ac18', // Zerion
 ];
 
-// Create modal
 createAppKit({
   adapters: [wagmiAdapter],
   networks: networks,
   projectId,
-  defaultNetwork: bellecour,
   featuredWalletIds,
   features: {
     email: false,

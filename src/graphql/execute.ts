@@ -3,9 +3,12 @@ import type { TypedDocumentString } from './graphql'
  
 export async function execute<TResult, TVariables>(
   query: TypedDocumentString<TResult, TVariables>,
-  chainId: number,
+  chainId?: number,
   ...[variables]: TVariables extends Record<string, never> ? [] : [TVariables]
 ) {
+  if (!chainId) {
+    throw Error('Missing chainId')
+  }
   const subgraphUrl = getSubgraphUrl(chainId);
   const response = await fetch(subgraphUrl, {
     method: 'POST',

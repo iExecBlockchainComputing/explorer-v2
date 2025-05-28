@@ -1,5 +1,6 @@
 import arbitrumSepoliaIcon from './assets/chain-icons/arbitrum-sepolia.svg';
 import iexecLogo from './assets/iexec-logo.svg';
+import { bellecour, arbitrumSepolia } from './utils/wagmiNetworks';
 
 export const PREVIEW_TABLE_LENGTH = 5;
 export const TABLE_LENGTH = 16;
@@ -14,6 +15,7 @@ export const SUPPORTED_CHAINS = [
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+    wagmiNetwork: bellecour,
   },
   {
     id: 421614,
@@ -24,5 +26,6 @@ export const SUPPORTED_CHAINS = [
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl:
       'http://localhost:8080/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+    wagmiNetwork: arbitrumSepolia,
   },
 ];
