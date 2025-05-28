@@ -6,7 +6,7 @@ import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
@@ -87,13 +87,7 @@ function AppsRoute() {
       </h1>
 
       {hasPastError && !data.length ? (
-        <Alert variant="destructive" className="mx-auto w-fit text-left">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            A error occurred during apps loading.
-          </AlertDescription>
-        </Alert>
+        <ErrorAlert message="An error occurred during apps loading." />
       ) : (
         <DataTable
           columns={columns}

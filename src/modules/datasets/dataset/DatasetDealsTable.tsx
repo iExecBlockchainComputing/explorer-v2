@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { datasetDealsQuery } from './datasetDealsQuery';
@@ -94,13 +95,7 @@ export function DatasetDealsTable({
         )}
       </h2>
       {hasPastError && !deals.length ? (
-        <Alert variant="destructive" className="mx-auto w-fit text-left">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            A error occurred during dataset deals loading.
-          </AlertDescription>
-        </Alert>
+        <ErrorAlert message="A error occurred during dataset deals loading." />
       ) : (
         <DataTable
           columns={columns}

@@ -2,9 +2,9 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle, Terminal } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
@@ -74,13 +74,7 @@ function DatasetsRoute() {
       <DatasetBreadcrumbs datasetId={datasetAddress} />
       <div className="space-y-10">
         {hasPastError && !datasetDetails ? (
-          <Alert variant="destructive" className="mx-auto w-fit text-left">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              An error occurred during dataset details loading.
-            </AlertDescription>
-          </Alert>
+          <ErrorAlert message="An error occurred during deal details  loading." />
         ) : (
           <DetailsTable details={datasetDetails} zebra={false} />
         )}

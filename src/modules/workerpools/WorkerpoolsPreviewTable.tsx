@@ -2,12 +2,12 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { Box, LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
+import { ErrorAlert } from '../ErrorAlert';
 import { workerpoolsQuery } from './workerpoolsQuery';
 import { columns } from './workerpoolsTable/columns';
 
@@ -48,13 +48,7 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
       </div>
       {(workerpools.isError || workerpools.errorUpdateCount > 0) &&
       !workerpools.data ? (
-        <Alert variant="destructive" className="mx-auto w-fit text-left">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            A error occurred during workerpools loading.
-          </AlertDescription>
-        </Alert>
+        <ErrorAlert message="An error occurred during workerpools loading." />
       ) : (
         <DataTable
           columns={columns}

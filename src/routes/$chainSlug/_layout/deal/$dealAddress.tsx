@@ -2,10 +2,10 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { DetailsTable } from '@/modules/DetailsTable';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { Tabs } from '@/modules/Tabs';
 import { DealBreadcrumbs } from '@/modules/deals/deal/DealBreadcrumbs';
@@ -82,13 +82,7 @@ function DealsRoute() {
       <div>
         {currentTab === 0 &&
           (hasPastError && !dealDetails ? (
-            <Alert variant="destructive" className="mx-auto w-fit text-left">
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>
-                An error occurred during deal details loading.
-              </AlertDescription>
-            </Alert>
+            <ErrorAlert message="An error occurred during deal details  loading." />
           ) : (
             <DetailsTable details={dealDetails} />
           ))}
