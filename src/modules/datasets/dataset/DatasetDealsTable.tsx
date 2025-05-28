@@ -81,6 +81,8 @@ export function DatasetDealsTable({
     hasPastError,
   } = useDatasetDealsData({ datasetAddress, currentPage });
 
+  const filteredColumns = columns.filter((col) => col.accessorKey !== 'dealid');
+
   return (
     <div className="space-y-6">
       <h2 className="flex items-center gap-2 font-extrabold">
@@ -98,7 +100,7 @@ export function DatasetDealsTable({
         <ErrorAlert message="A error occurred during dataset deals loading." />
       ) : (
         <DataTable
-          columns={columns}
+          columns={filteredColumns}
           data={deals}
           tableLength={DETAIL_TABLE_LENGTH}
         />
