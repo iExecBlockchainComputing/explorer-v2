@@ -2,6 +2,7 @@ import arbitrumSepoliaIcon from './assets/chain-icons/arbitrum-sepolia.svg';
 import iexecLogo from './assets/iexec-logo.svg';
 
 export const PREVIEW_TABLE_LENGTH = 5;
+export const DETAIL_TABLE_LENGTH = 8;
 export const TABLE_LENGTH = 16;
 export const PREVIEW_TABLE_REFETCH_INTERVAL = 10_000;
 export const TABLE_REFETCH_INTERVAL = 10_000;

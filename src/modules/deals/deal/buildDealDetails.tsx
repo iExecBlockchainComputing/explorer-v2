@@ -180,15 +180,15 @@ export function buildDealDetails({
     ...(deal.startTime && {
       'Start time': (
         <p>
-          {formatElapsedTime(deal.startTime)} (
-          {formatDateCompact(deal.startTime)})
+          {formatElapsedTime(deal.startTime)}{' '}
+          {formatDateCompact(deal.startTime)}
         </p>
       ),
     }),
     ...(dealDeadline && {
       Deadline: (
         <p>
-          {formatElapsedTime(dealDeadline)} ({formatDateCompact(dealDeadline)})
+          {formatElapsedTime(dealDeadline)} {formatDateCompact(dealDeadline)}
         </p>
       ),
     }),

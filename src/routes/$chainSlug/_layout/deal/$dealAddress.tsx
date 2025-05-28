@@ -2,8 +2,9 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { Tabs } from '@/modules/Tabs';
@@ -18,15 +19,23 @@ export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
 });
 
 function useDealData(dealAddress: string, chainId: number) {
-  const { data, isLoading, isRefetching, isError } = useQuery({
-    queryKey: ['deal', dealAddress],
-    queryFn: () =>
-      execute(dealQuery, chainId, { length: TABLE_LENGTH, dealAddress }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: keepPreviousData,
-  });
+  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
+    {
+      queryKey: ['deal', dealAddress],
+      queryFn: () =>
+        execute(dealQuery, chainId, { length: TABLE_LENGTH, dealAddress }),
+      refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: keepPreviousData,
+    }
+  );
 
-  return { data: data?.deal, isLoading, isRefetching, isError };
+  return {
+    data: data?.deal,
+    isLoading,
+    isRefetching,
+    isError,
+    hasPastError: isError || errorUpdateCount > 0,
+  };
 }
 
 function DealsRoute() {
@@ -38,12 +47,15 @@ function DealsRoute() {
     isLoading,
     isRefetching,
     isError,
+    hasPastError,
   } = useDealData(dealAddress, chainId);
 
-  if (!deal) {
-    return <p>Hum there is nothing here..</p>;
-  }
-  const dealDetails = buildDealDetails({ deal, isConnected });
+  // if (!deal) {
+  //   return <p>Hum there is nothing here..</p>;
+  // }
+  const dealDetails = deal
+    ? buildDealDetails({ deal, isConnected })
+    : undefined;
 
   return (
     <div className="mt-8 flex flex-col gap-6">
@@ -61,14 +73,25 @@ function DealsRoute() {
           <LoaderCircle className="animate-spin" />
         )}
       </h1>
-      <DealBreadcrumbs dealId={deal.dealid} />
+      <DealBreadcrumbs dealId={dealAddress} />
       <Tabs
         currentTab={currentTab}
         tabLabels={['DETAILS', 'TASKS']}
         onTabChange={setCurrentTab}
       />
       <div>
-        {currentTab === 0 && <DetailsTable details={dealDetails} />}
+        {currentTab === 0 &&
+          (hasPastError && !dealDetails ? (
+            <Alert variant="destructive" className="mx-auto w-fit text-left">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                An error occurred during deal details loading.
+              </AlertDescription>
+            </Alert>
+          ) : (
+            <DetailsTable details={dealDetails} />
+          ))}
         {currentTab === 1 && <DealTasksTable dealAddress={dealAddress} />}
       </div>
     </div>
