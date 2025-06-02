@@ -1,12 +1,12 @@
 import { Deal } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
+import Bytes from '@/modules/Bytes';
 import {
   formatDateCompact,
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
-import Bytes from './Bytes';
 
 export function buildDealDetails({
   deal,

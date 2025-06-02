@@ -8478,6 +8478,13 @@ export type NextTasksQueryVariables = Exact<{
 
 export type NextTasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', taskid: string }> };
 
+export type TaskQueryVariables = Exact<{
+  taskAddress: Scalars['ID']['input'];
+}>;
+
+
+export type TaskQuery = { __typename?: 'Query', task?: { __typename?: 'Task', timestamp: any, index: any, status: TaskStatus, contributionDeadline: any, revealDeadline?: any | null, finalDeadline: any, consensus?: any | null, resultDigest?: any | null, results?: string | null, resultsCallback?: string | null, taskid: string, deal: { __typename?: 'Deal', tag: any, trust: any, botSize: any, botFirst: any, dealid: string, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string }, beneficiary: { __typename?: 'Account', address: string }, callback: { __typename?: 'Account', address: string }, category: { __typename?: 'Category', name: string, workClockTimeRef: any, description: string, catid: string } }, requester: { __typename?: 'Account', address: string }, taskEvents: Array<{ __typename?: 'TaskClaimed', timestamp: any, id: string, type: 'TaskClaimed', transaction: { __typename?: 'Transaction', txHash: string } } | { __typename?: 'TaskConsensus', consensus: any, timestamp: any, id: string, type: 'TaskConsensus', transaction: { __typename?: 'Transaction', txHash: string } } | { __typename?: 'TaskContribute', hash: any, timestamp: any, id: string, type: 'TaskContribute', worker: { __typename?: 'Account', address: string }, transaction: { __typename?: 'Transaction', txHash: string } } | { __typename?: 'TaskFinalize', results: any, timestamp: any, id: string, type: 'TaskFinalize', transaction: { __typename?: 'Transaction', txHash: string } } | { __typename?: 'TaskInitialize', timestamp: any, id: string, type: 'TaskInitialize', transaction: { __typename?: 'Transaction', txHash: string } } | { __typename?: 'TaskReopen', timestamp: any, id: string, type: 'TaskReopen', transaction: { __typename?: 'Transaction', txHash: string } } | { __typename?: 'TaskReveal', digest: any, timestamp: any, id: string, type: 'TaskReveal', worker: { __typename?: 'Account', address: string }, transaction: { __typename?: 'Transaction', txHash: string } }> } | null };
+
 export type TasksQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8918,6 +8925,83 @@ export const NextTasksDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<NextTasksQuery, NextTasksQueryVariables>;
+export const TaskDocument = new TypedDocumentString(`
+    query Task($taskAddress: ID!) {
+  task(id: $taskAddress) {
+    taskid: id
+    timestamp
+    deal {
+      dealid: id
+      app {
+        address: id
+        name
+      }
+      dataset {
+        address: id
+        name
+      }
+      workerpool {
+        address: id
+        description
+      }
+      beneficiary {
+        address: id
+      }
+      callback {
+        address: id
+      }
+      tag
+      trust
+      category {
+        catid: id
+        name
+        workClockTimeRef
+        description
+      }
+      botSize
+      botFirst
+    }
+    requester {
+      address: id
+    }
+    index
+    status
+    contributionDeadline
+    revealDeadline
+    finalDeadline
+    consensus
+    resultDigest
+    results
+    resultsCallback
+    taskEvents: events(orderBy: timestamp, orderDirection: asc) {
+      timestamp
+      id
+      type: __typename
+      transaction {
+        txHash: id
+      }
+      ... on TaskContribute {
+        worker {
+          address: id
+        }
+        hash
+      }
+      ... on TaskConsensus {
+        consensus
+      }
+      ... on TaskReveal {
+        digest
+        worker {
+          address: id
+        }
+      }
+      ... on TaskFinalize {
+        results
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<TaskQuery, TaskQueryVariables>;
 export const TasksDocument = new TypedDocumentString(`
     query Tasks($length: Int = 20, $skip: Int = 0) {
   tasks(first: $length, skip: $skip, orderBy: timestamp, orderDirection: desc) {

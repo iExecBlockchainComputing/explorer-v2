@@ -35,7 +35,7 @@ export default function SmartLinkGroup({
 }: SmartLinkGroupProps) {
   const { chainId } = useUserStore();
   const basePath = {
-    deal: 'deals',
+    deal: 'deal',
     dataset: 'dataset',
     workerpool: 'workerpool',
     app: 'app',
