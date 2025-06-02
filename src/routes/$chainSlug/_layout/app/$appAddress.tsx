@@ -12,11 +12,9 @@ import { appQuery } from '@/modules/apps/app/appQuery';
 import { buildAppDetails } from '@/modules/apps/app/buildAppDetails';
 import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')(
-  {
-    component: AppsRoute,
-  }
-);
+export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')({
+  component: AppsRoute,
+});
 
 function useAppData(appAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
