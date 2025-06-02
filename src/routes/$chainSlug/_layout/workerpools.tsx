@@ -6,45 +6,50 @@ import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { dealsQuery } from '@/modules/deals/dealsQuery';
-import { columns } from '@/modules/deals/dealsTable/columns';
-import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
+import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
+import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
+import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
+import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/deals')({
-  component: DealsRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/workerpools')({
+  component: WorkerpoolsRoute,
 });
 
-function useDealsData(currentPage: number) {
+function useWorkerpoolsData(currentPage: number) {
+  const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['deals', currentPage],
-      queryFn: () => execute(dealsQuery, { length: TABLE_LENGTH, skip }),
+      queryKey: [chainId, 'workerpools', currentPage],
+      queryFn: () =>
+        execute(workerpoolsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      enabled: !!chainId,
     }
   );
 
   const { data: nextData } = useQuery({
-    queryKey: ['deals-next', currentPage],
+    queryKey: [chainId, 'workerpools-next', currentPage],
     queryFn: () =>
-      execute(nextDealsQuery, {
+      execute(nextWorkerpoolsQuery, chainId, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
-  const nextDeals = nextData?.deals ?? [];
+  const nextWorkerpools = nextData?.workerpools ?? [];
 
-  const additionalPages = Math.ceil(nextDeals.length / TABLE_LENGTH);
+  const additionalPages = Math.ceil(nextWorkerpools.length / TABLE_LENGTH);
 
   const formattedData =
-    data?.deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
+    data?.workerpools.map((workerpool) => ({
+      ...workerpool,
+      destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return {
@@ -57,7 +62,7 @@ function useDealsData(currentPage: number) {
   };
 }
 
-function DealsRoute() {
+function WorkerpoolsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data,
@@ -66,7 +71,7 @@ function DealsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useDealsData(currentPage);
+  } = useWorkerpoolsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -74,7 +79,7 @@ function DealsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Deals
+        Workerpools
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
@@ -84,12 +89,13 @@ function DealsRoute() {
           <LoaderCircle className="animate-spin" />
         )}
       </h1>
+
       {hasPastError && !data.length ? (
         <Alert variant="destructive" className="mx-auto w-fit text-left">
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during deals loading.
+            A error occurred during workerpool loading.
           </AlertDescription>
         </Alert>
       ) : (

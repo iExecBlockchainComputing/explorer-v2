@@ -8,43 +8,48 @@ import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
-import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
-import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
+import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
+import { columns } from '@/modules/datasets/datasetsTable/columns';
+import { nextDatasetsQuery } from '@/modules/datasets/nextDatasetsQuery';
+import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/workerpools')({
-  component: WorkerpoolsRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
+  component: DatasetsRoute,
 });
 
-function useWorkerpoolsData(currentPage: number) {
+function useDatasetsData(currentPage: number) {
+  const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['workerpools', currentPage],
-      queryFn: () => execute(workerpoolsQuery, { length: TABLE_LENGTH, skip }),
+      queryKey: [chainId, 'datasets', currentPage],
+      queryFn: () =>
+        execute(datasetsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      enabled: !!chainId,
     }
   );
 
   const { data: nextData } = useQuery({
-    queryKey: ['workerpools-next', currentPage],
+    queryKey: [chainId, 'datasets-next', currentPage],
     queryFn: () =>
-      execute(nextWorkerpoolsQuery, {
+      execute(nextDatasetsQuery, chainId, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
-  const nextWorkerpools = nextData?.workerpools ?? [];
+  const nextDatasets = nextData?.datasets ?? [];
 
-  const additionalPages = Math.ceil(nextWorkerpools.length / TABLE_LENGTH);
+  const additionalPages = Math.ceil(nextDatasets.length / TABLE_LENGTH);
 
   const formattedData =
-    data?.workerpools.map((workerpool) => ({
-      ...workerpool,
-      destination: `/workerpool/${workerpool.address}`,
+    data?.datasets.map((dataset) => ({
+      ...dataset,
+      destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return {
@@ -57,7 +62,7 @@ function useWorkerpoolsData(currentPage: number) {
   };
 }
 
-function WorkerpoolsRoute() {
+function DatasetsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data,
@@ -66,7 +71,7 @@ function WorkerpoolsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useWorkerpoolsData(currentPage);
+  } = useDatasetsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -74,7 +79,7 @@ function WorkerpoolsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Workerpools
+        Datasets
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
@@ -90,7 +95,7 @@ function WorkerpoolsRoute() {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during workerpool loading.
+            A error occurred during datasets loading.
           </AlertDescription>
         </Alert>
       ) : (

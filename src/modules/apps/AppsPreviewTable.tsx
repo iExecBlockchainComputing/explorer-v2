@@ -2,21 +2,26 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
-import { CircularLoader } from '@/components/CircularLoader';
+import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/useUser.store';
 import { appsQuery } from './appsQuery';
 import { columns } from './appsTable/columns';
 
 export function AppsPreviewTable({ className }: { className?: string }) {
+  const { chainId } = useUserStore();
   const apps = useQuery({
-    queryKey: ['apps_preview'],
+    queryKey: [chainId, 'apps_preview'],
     queryFn: () =>
-      execute(appsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(appsQuery, chainId, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const formattedData =
@@ -39,7 +44,7 @@ export function AppsPreviewTable({ className }: { className?: string }) {
           {apps.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <Link to="/apps">View all</Link>
+          <ChainLink to="/apps">View all</ChainLink>
         </Button>
       </div>
       {(apps.isError || apps.errorUpdateCount > 0) && !apps.data ? (

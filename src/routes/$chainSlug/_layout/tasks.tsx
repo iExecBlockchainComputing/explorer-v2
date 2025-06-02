@@ -6,45 +6,50 @@ import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
-import { columns } from '@/modules/datasets/datasetsTable/columns';
-import { nextDatasetsQuery } from '@/modules/datasets/nextDatasetsQuery';
+import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
+import { tasksQuery } from '@/modules/tasks/tasksQuery';
+import { columns } from '@/modules/tasks/tasksTable/columns';
+import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/datasets')({
-  component: DatasetsRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/tasks')({
+  component: TasksRoute,
 });
 
-function useDatasetsData(currentPage: number) {
+function useTasksData(currentPage: number) {
+  const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['datasets', currentPage],
-      queryFn: () => execute(datasetsQuery, { length: TABLE_LENGTH, skip }),
+      queryKey: [chainId, 'tasks', currentPage],
+      queryFn: () =>
+        execute(tasksQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      enabled: !!chainId,
     }
   );
 
   const { data: nextData } = useQuery({
-    queryKey: ['datasets-next', currentPage],
+    queryKey: [chainId, 'tasks-next', currentPage],
     queryFn: () =>
-      execute(nextDatasetsQuery, {
+      execute(nextTasksQuery, chainId, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
-  const nextDatasets = nextData?.datasets ?? [];
+  const nextTasks = nextData?.tasks ?? [];
 
-  const additionalPages = Math.ceil(nextDatasets.length / TABLE_LENGTH);
+  const additionalPages = Math.ceil(nextTasks.length / TABLE_LENGTH);
 
   const formattedData =
-    data?.datasets.map((dataset) => ({
-      ...dataset,
-      destination: `/dataset/${dataset.address}`,
+    data?.tasks.map((task) => ({
+      ...task,
+      destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return {
@@ -57,7 +62,7 @@ function useDatasetsData(currentPage: number) {
   };
 }
 
-function DatasetsRoute() {
+function TasksRoute() {
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data,
@@ -66,7 +71,7 @@ function DatasetsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useDatasetsData(currentPage);
+  } = useTasksData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -74,7 +79,7 @@ function DatasetsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Datasets
+        Tasks
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
@@ -90,7 +95,7 @@ function DatasetsRoute() {
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during datasets loading.
+            A error occurred during tasks loading.
           </AlertDescription>
         </Alert>
       ) : (

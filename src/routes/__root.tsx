@@ -3,17 +3,16 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { Footer } from '@/components/Footer';
 import { UnsupportedChain } from '@/components/UnsupportedChain';
 import { Navbar } from '@/components/navbar/NavBar';
-import { useSyncAccountWithUserStore } from '@/hooks/useSyncAccountWithUserStore';
+import { ChainSyncManager } from '@/hooks/ChainSyncManger';
 
 export const Route = createRootRoute({
   component: Root,
 });
 
 function Root() {
-  useSyncAccountWithUserStore();
-
   return (
     <div className="mx-auto mb-20 w-full px-6 md:px-10 lg:px-20">
+      <ChainSyncManager />
       <Navbar />
       <UnsupportedChain />
       <Outlet />

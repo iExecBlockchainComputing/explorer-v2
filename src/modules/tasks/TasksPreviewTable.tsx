@@ -2,21 +2,26 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
-import { CircularLoader } from '@/components/CircularLoader';
+import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/useUser.store';
 import { tasksQuery } from './tasksQuery';
 import { columns } from './tasksTable/columns';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
+  const { chainId } = useUserStore();
   const tasks = useQuery({
-    queryKey: ['tasks_preview'],
+    queryKey: [chainId, 'tasks_preview'],
     queryFn: () =>
-      execute(tasksQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(tasksQuery, chainId, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const formattedData =
@@ -39,7 +44,7 @@ export function TasksPreviewTable({ className }: { className?: string }) {
           {tasks.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <Link to="/tasks">View all</Link>
+          <ChainLink to="/tasks">View all</ChainLink>
         </Button>
       </div>
       {(tasks.isError || tasks.errorUpdateCount > 0) && !tasks.data ? (

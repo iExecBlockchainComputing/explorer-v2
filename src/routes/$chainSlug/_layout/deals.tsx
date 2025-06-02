@@ -6,58 +6,63 @@ import { Box, LoaderCircle, Terminal } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { appsQuery } from '@/modules/apps/appsQuery';
-import { columns } from '@/modules/apps/appsTable/columns';
-import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
+import { dealsQuery } from '@/modules/deals/dealsQuery';
+import { columns } from '@/modules/deals/dealsTable/columns';
+import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
+import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute('/apps')({
-  component: AppsRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/deals')({
+  component: DealsRoute,
 });
 
-function useAppsData(currentPage: number) {
+function useDealsData(currentPage: number) {
+  const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['apps', currentPage],
-      queryFn: () => execute(appsQuery, { length: TABLE_LENGTH, skip }),
+      queryKey: [chainId, 'deals', currentPage],
+      queryFn: () =>
+        execute(dealsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      enabled: !!chainId,
     }
   );
 
   const { data: nextData } = useQuery({
-    queryKey: ['apps-next', currentPage],
+    queryKey: [chainId, 'deals-next', currentPage],
     queryFn: () =>
-      execute(nextAppsQuery, {
+      execute(nextDealsQuery, chainId, {
         length: TABLE_LENGTH * 2,
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
-  const nextApps = nextData?.apps ?? [];
+  const nextDeals = nextData?.deals ?? [];
 
-  const additionalPages = Math.ceil(nextApps.length / TABLE_LENGTH);
+  const additionalPages = Math.ceil(nextDeals.length / TABLE_LENGTH);
 
   const formattedData =
-    data?.apps.map((app) => ({
-      ...app,
-      destination: `/app/${app.address}`,
+    data?.deals.map((deal) => ({
+      ...deal,
+      destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
     data: formattedData,
     isLoading,
     isRefetching,
-    isError,
+    isError: isError,
     hasPastError: isError || errorUpdateCount > 0,
     additionalPages,
   };
 }
 
-function AppsRoute() {
+function DealsRoute() {
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data,
@@ -66,7 +71,7 @@ function AppsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useAppsData(currentPage);
+  } = useDealsData(currentPage);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -74,21 +79,22 @@ function AppsRoute() {
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
-        Apps deployed
+        Deals
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
           </span>
         )}
-        {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
       </h1>
-
       {hasPastError && !data.length ? (
         <Alert variant="destructive" className="mx-auto w-fit text-left">
           <Terminal className="h-4 w-4" />
           <AlertTitle>Error</AlertTitle>
           <AlertDescription>
-            A error occurred during apps loading.
+            A error occurred during deals loading.
           </AlertDescription>
         </Alert>
       ) : (

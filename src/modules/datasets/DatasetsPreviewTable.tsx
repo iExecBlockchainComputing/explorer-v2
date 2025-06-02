@@ -2,21 +2,26 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from '@tanstack/react-router';
 import { Box, LoaderCircle, Terminal } from 'lucide-react';
-import { CircularLoader } from '@/components/CircularLoader';
+import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import useUserStore from '@/stores/useUser.store';
 import { datasetsQuery } from './datasetsQuery';
 import { columns } from './datasetsTable/columns';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
+  const { chainId } = useUserStore();
   const datasets = useQuery({
-    queryKey: ['datasets_preview'],
+    queryKey: [chainId, 'datasets_preview'],
     queryFn: () =>
-      execute(datasetsQuery, { length: PREVIEW_TABLE_LENGTH, skip: 0 }),
+      execute(datasetsQuery, chainId, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const formattedData =
@@ -39,7 +44,7 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
           {datasets.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <Link to="/datasets">View all</Link>
+          <ChainLink to="/datasets">View all</ChainLink>
         </Button>
       </div>
       {(datasets.isError || datasets.errorUpdateCount > 0) && !datasets.data ? (
