@@ -3,6 +3,7 @@ import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
+import TaskEvent from '@/modules/events/TaskEvent';
 import { taskResultToObject } from '@/utils/format';
 import {
   formatDateCompact,
@@ -17,8 +18,6 @@ export function buildTaskDetails({
   task: Task;
   isConnected: boolean;
 }) {
-  console.log('task', task);
-
   const tasksCount = parseInt(task?.deal.botSize) || 1;
   const completedTasksCount = parseInt(task?.deal.completedTasksCount) || 0;
   const claimedTasksCount = parseInt(task?.deal.claimedTasksCount) || 0;
@@ -192,15 +191,8 @@ export function buildTaskDetails({
       Events: (
         <div className="flex flex-col gap-2">
           {task.taskEvents.map((taskEvent, i) => (
-            <div className="flex flex-wrap items-center gap-1" key={i}>
-              {taskEvent.type && taskEvent.type}
-              {taskEvent.transaction.txHash && (
-                <SmartLinkGroup
-                  type="address"
-                  addressOrId={taskEvent.transaction.txHash}
-                  label={taskEvent.transaction.txHash}
-                />
-              )}
+            <div className="content" key={i}>
+              <TaskEvent {...taskEvent} />
             </div>
           ))}
         </div>

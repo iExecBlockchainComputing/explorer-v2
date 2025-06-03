@@ -3,19 +3,15 @@ import { execute } from '@/graphql/execute';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/SearcherBar';
-import { Tabs } from '@/modules/Tabs';
 import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
 
-export const Route = createFileRoute(
-  '/$chainSlug/_layout/task copy/$taskAddress'
-)({
+export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
   component: TasksRoute,
 });
 

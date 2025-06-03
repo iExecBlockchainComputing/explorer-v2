@@ -2,6 +2,7 @@ import { Deal } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
+import DealEvent from '@/modules/events/DealEvent';
 import {
   formatDateCompact,
   formatElapsedTime,
@@ -194,15 +195,8 @@ export function buildDealDetails({
     }),
     ...(Array.isArray(deal?.dealEvents) && {
       Events: deal.dealEvents.map((dealEvent, i) => (
-        <div className="flex flex-wrap items-center gap-1" key={i}>
-          {dealEvent.type && dealEvent.type}
-          {dealEvent.transaction.txHash && (
-            <SmartLinkGroup
-              type="address"
-              addressOrId={dealEvent.transaction.txHash}
-              label={dealEvent.transaction.txHash}
-            />
-          )}
+        <div className="content" key={i}>
+          <DealEvent {...dealEvent} />
         </div>
       )),
     }),
