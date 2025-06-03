@@ -42,7 +42,7 @@ export default function SmartLinkGroup({
     workerpool: 'workerpool',
     app: 'app',
     address: 'address',
-    transaction: 'transaction',
+    transaction: 'tx',
   };
 
   const blockExplorerPath = {

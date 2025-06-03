@@ -8493,6 +8493,20 @@ export type TasksQueryVariables = Exact<{
 
 export type TasksQuery = { __typename?: 'Query', tasks: Array<{ __typename?: 'Task', index: any, finalDeadline: any, status: TaskStatus, timestamp: any, taskid: string, deal: { __typename?: 'Deal', requester: { __typename?: 'Account', address: string }, beneficiary: { __typename?: 'Account', address: string }, app: { __typename?: 'App', address: string }, dataset?: { __typename?: 'Dataset', address: string } | null, workerpool: { __typename?: 'Workerpool', address: string }, category: { __typename?: 'Category', workClockTimeRef: any, catid: string } } }> };
 
+export type TransactionEventQueryVariables = Exact<{
+  transactionAddress: Scalars['String']['input'];
+}>;
+
+
+export type TransactionEventQuery = { __typename?: 'Query', appTransfers: Array<{ __typename?: 'AppTransfer', id: string, type: 'AppTransfer', app: { __typename?: 'App', address: string }, from: { __typename?: 'Account', address: string }, to: { __typename?: 'Account', address: string } }>, datasetTransfers: Array<{ __typename?: 'DatasetTransfer', id: string, type: 'DatasetTransfer', dataset: { __typename?: 'Dataset', address: string }, from: { __typename?: 'Account', address: string }, to: { __typename?: 'Account', address: string } }>, workerpoolTransfers: Array<{ __typename?: 'WorkerpoolTransfer', id: string, type: 'WorkerpoolTransfer', workerpool: { __typename?: 'Workerpool', address: string }, from: { __typename?: 'Account', address: string }, to: { __typename?: 'Account', address: string } }>, rewards: Array<{ __typename?: 'Reward', id: string, value: any, type: 'Reward', account: { __typename?: 'Account', address: string }, task: { __typename?: 'Task', taskid: string } }>, seizes: Array<{ __typename?: 'Seize', id: string, value: any, type: 'Seize', account: { __typename?: 'Account', address: string }, task: { __typename?: 'Task', taskid: string } }>, locks: Array<{ __typename?: 'Lock', id: string, value: any, type: 'Lock', account: { __typename?: 'Account', address: string } }>, unlocks: Array<{ __typename?: 'Unlock', id: string, value: any, type: 'Unlock', account: { __typename?: 'Account', address: string } }>, accurateContributions: Array<{ __typename?: 'AccurateContribution', id: string, type: 'AccurateContribution', account: { __typename?: 'Account', address: string } }>, faultyContributions: Array<{ __typename?: 'FaultyContribution', id: string, type: 'FaultyContribution', account: { __typename?: 'Account', address: string } }>, policyUpdates: Array<{ __typename?: 'PolicyUpdate', id: string, type: 'PolicyUpdate', workerpool: { __typename?: 'Workerpool', address: string } }>, ordersMatcheds: Array<{ __typename?: 'OrdersMatched', id: string, type: 'OrdersMatched', deal: { __typename?: 'Deal', dealid: string } }>, schedulerNotices: Array<{ __typename?: 'SchedulerNotice', id: string, type: 'SchedulerNotice', deal: { __typename?: 'Deal', dealid: string }, workerpool: { __typename?: 'Workerpool', address: string } }>, taskInitializes: Array<{ __typename?: 'TaskInitialize', id: string, type: 'TaskInitialize', task: { __typename?: 'Task', taskid: string } }>, taskContributes: Array<{ __typename?: 'TaskContribute', id: string, type: 'TaskContribute', task: { __typename?: 'Task', taskid: string }, worker: { __typename?: 'Account', address: string } }>, taskConsensuses: Array<{ __typename?: 'TaskConsensus', id: string, type: 'TaskConsensus', task: { __typename?: 'Task', taskid: string } }>, taskReveals: Array<{ __typename?: 'TaskReveal', id: string, type: 'TaskReveal', task: { __typename?: 'Task', taskid: string } }>, taskReopens: Array<{ __typename?: 'TaskReopen', id: string, type: 'TaskReopen', task: { __typename?: 'Task', taskid: string } }>, taskFinalizes: Array<{ __typename?: 'TaskFinalize', id: string, type: 'TaskFinalize', task: { __typename?: 'Task', taskid: string } }>, taskClaimeds: Array<{ __typename?: 'TaskClaimed', id: string, type: 'TaskClaimed', task: { __typename?: 'Task', taskid: string } }> };
+
+export type TransactionQueryVariables = Exact<{
+  transactionAddress: Scalars['ID']['input'];
+}>;
+
+
+export type TransactionQuery = { __typename?: 'Query', transaction?: { __typename?: 'Transaction', gasLimit: any, gasUsed: any, gasPrice: any, txHash: string, from?: { __typename?: 'Account', address: string } | null, to?: { __typename?: 'Account', address: string } | null } | null };
+
 export type NextWorkerpoolsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -9034,6 +9048,193 @@ export const TasksDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<TasksQuery, TasksQueryVariables>;
+export const TransactionEventDocument = new TypedDocumentString(`
+    query TransactionEvent($transactionAddress: String!) {
+  appTransfers(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    app {
+      address: id
+    }
+    from {
+      address: id
+    }
+    to {
+      address: id
+    }
+  }
+  datasetTransfers(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    dataset {
+      address: id
+    }
+    from {
+      address: id
+    }
+    to {
+      address: id
+    }
+  }
+  workerpoolTransfers(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    workerpool {
+      address: id
+    }
+    from {
+      address: id
+    }
+    to {
+      address: id
+    }
+  }
+  rewards(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    account {
+      address: id
+    }
+    value
+    task {
+      taskid: id
+    }
+  }
+  seizes(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    account {
+      address: id
+    }
+    value
+    task {
+      taskid: id
+    }
+  }
+  locks(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    account {
+      address: id
+    }
+    value
+  }
+  unlocks(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    account {
+      address: id
+    }
+    value
+  }
+  accurateContributions(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    account {
+      address: id
+    }
+  }
+  faultyContributions(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    account {
+      address: id
+    }
+  }
+  policyUpdates(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    workerpool {
+      address: id
+    }
+  }
+  ordersMatcheds(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    deal {
+      dealid: id
+    }
+  }
+  schedulerNotices(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    deal {
+      dealid: id
+    }
+    workerpool {
+      address: id
+    }
+  }
+  taskInitializes(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+  }
+  taskContributes(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+    worker {
+      address: id
+    }
+  }
+  taskConsensuses(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+  }
+  taskReveals(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+  }
+  taskReopens(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+  }
+  taskFinalizes(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+  }
+  taskClaimeds(where: {transaction: $transactionAddress}) {
+    id
+    type: __typename
+    task {
+      taskid: id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<TransactionEventQuery, TransactionEventQueryVariables>;
+export const TransactionDocument = new TypedDocumentString(`
+    query Transaction($transactionAddress: ID!) {
+  transaction(id: $transactionAddress) {
+    txHash: id
+    from {
+      address: id
+    }
+    to {
+      address: id
+    }
+    gasLimit
+    gasUsed
+    gasPrice
+  }
+}
+    `) as unknown as TypedDocumentString<TransactionQuery, TransactionQueryVariables>;
 export const NextWorkerpoolsDocument = new TypedDocumentString(`
     query NextWorkerpools($length: Int = 20, $skip: Int = 0) {
   workerpools(

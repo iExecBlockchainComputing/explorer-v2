@@ -7,7 +7,7 @@ const Bytes = (props: { children: string }) => {
   return (
     <div>
       {chunks.map((chunk, i) => (
-        <div className="flex flex-wrap items-center gap-1" key={i}>
+        <div className="flex items-center gap-1" key={i}>
           <span className="hidden md:inline">{chunk}</span>
           <span className="inline md:hidden">{truncateAddress(chunk)}</span>
           {i === chunks.length - 1 && <CopyButton textToCopy={raw} />}

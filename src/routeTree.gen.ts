@@ -22,6 +22,7 @@ import { Route as ChainSlugLayoutDealsImport } from './routes/$chainSlug/_layout
 import { Route as ChainSlugLayoutDatasetsImport } from './routes/$chainSlug/_layout/datasets'
 import { Route as ChainSlugLayoutAppsImport } from './routes/$chainSlug/_layout/apps'
 import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
+import { Route as ChainSlugLayoutTxTxAddressImport } from './routes/$chainSlug/_layout/tx/$txAddress'
 import { Route as ChainSlugLayoutTaskTaskAddressImport } from './routes/$chainSlug/_layout/task/$taskAddress'
 import { Route as ChainSlugLayoutDealDealAddressImport } from './routes/$chainSlug/_layout/deal/$dealAddress'
 import { Route as ChainSlugLayoutDatasetDatasetAddressImport } from './routes/$chainSlug/_layout/dataset/$datasetAddress'
@@ -94,6 +95,14 @@ const ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute =
     path: '/workerpool/$workerpoolAddress',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
+
+const ChainSlugLayoutTxTxAddressRoute = ChainSlugLayoutTxTxAddressImport.update(
+  {
+    id: '/tx/$txAddress',
+    path: '/tx/$txAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any,
+)
 
 const ChainSlugLayoutTaskTaskAddressRoute =
   ChainSlugLayoutTaskTaskAddressImport.update({
@@ -218,6 +227,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChainSlugLayoutTaskTaskAddressImport
       parentRoute: typeof ChainSlugLayoutImport
     }
+    '/$chainSlug/_layout/tx/$txAddress': {
+      id: '/$chainSlug/_layout/tx/$txAddress'
+      path: '/tx/$txAddress'
+      fullPath: '/$chainSlug/tx/$txAddress'
+      preLoaderRoute: typeof ChainSlugLayoutTxTxAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
     '/$chainSlug/_layout/workerpool/$workerpoolAddress': {
       id: '/$chainSlug/_layout/workerpool/$workerpoolAddress'
       path: '/workerpool/$workerpoolAddress'
@@ -241,6 +257,7 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutDatasetDatasetAddressRoute: typeof ChainSlugLayoutDatasetDatasetAddressRoute
   ChainSlugLayoutDealDealAddressRoute: typeof ChainSlugLayoutDealDealAddressRoute
   ChainSlugLayoutTaskTaskAddressRoute: typeof ChainSlugLayoutTaskTaskAddressRoute
+  ChainSlugLayoutTxTxAddressRoute: typeof ChainSlugLayoutTxTxAddressRoute
   ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -256,6 +273,7 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
     ChainSlugLayoutDatasetDatasetAddressRoute,
   ChainSlugLayoutDealDealAddressRoute: ChainSlugLayoutDealDealAddressRoute,
   ChainSlugLayoutTaskTaskAddressRoute: ChainSlugLayoutTaskTaskAddressRoute,
+  ChainSlugLayoutTxTxAddressRoute: ChainSlugLayoutTxTxAddressRoute,
   ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
     ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
 }
@@ -289,6 +307,7 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
   '/$chainSlug/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
   '/$chainSlug/task/$taskAddress': typeof ChainSlugLayoutTaskTaskAddressRoute
+  '/$chainSlug/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -304,6 +323,7 @@ export interface FileRoutesByTo {
   '/$chainSlug/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
   '/$chainSlug/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
   '/$chainSlug/task/$taskAddress': typeof ChainSlugLayoutTaskTaskAddressRoute
+  '/$chainSlug/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -322,6 +342,7 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
   '/$chainSlug/_layout/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
   '/$chainSlug/_layout/task/$taskAddress': typeof ChainSlugLayoutTaskTaskAddressRoute
+  '/$chainSlug/_layout/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
   '/$chainSlug/_layout/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -340,6 +361,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/dataset/$datasetAddress'
     | '/$chainSlug/deal/$dealAddress'
     | '/$chainSlug/task/$taskAddress'
+    | '/$chainSlug/tx/$txAddress'
     | '/$chainSlug/workerpool/$workerpoolAddress'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -354,6 +376,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/dataset/$datasetAddress'
     | '/$chainSlug/deal/$dealAddress'
     | '/$chainSlug/task/$taskAddress'
+    | '/$chainSlug/tx/$txAddress'
     | '/$chainSlug/workerpool/$workerpoolAddress'
   id:
     | '__root__'
@@ -370,6 +393,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/dataset/$datasetAddress'
     | '/$chainSlug/_layout/deal/$dealAddress'
     | '/$chainSlug/_layout/task/$taskAddress'
+    | '/$chainSlug/_layout/tx/$txAddress'
     | '/$chainSlug/_layout/workerpool/$workerpoolAddress'
   fileRoutesById: FileRoutesById
 }
@@ -421,6 +445,7 @@ export const routeTree = rootRoute
         "/$chainSlug/_layout/dataset/$datasetAddress",
         "/$chainSlug/_layout/deal/$dealAddress",
         "/$chainSlug/_layout/task/$taskAddress",
+        "/$chainSlug/_layout/tx/$txAddress",
         "/$chainSlug/_layout/workerpool/$workerpoolAddress"
       ]
     },
@@ -462,6 +487,10 @@ export const routeTree = rootRoute
     },
     "/$chainSlug/_layout/task/$taskAddress": {
       "filePath": "$chainSlug/_layout/task/$taskAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/tx/$txAddress": {
+      "filePath": "$chainSlug/_layout/tx/$txAddress.tsx",
       "parent": "/$chainSlug/_layout"
     },
     "/$chainSlug/_layout/workerpool/$workerpoolAddress": {
