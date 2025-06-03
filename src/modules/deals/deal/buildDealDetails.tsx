@@ -2,6 +2,7 @@ import { Deal } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
+import JsonBlock from '@/modules/JsonBlock';
 import DealEvent from '@/modules/events/DealEvent';
 import {
   formatDateCompact,
@@ -126,14 +127,7 @@ export function buildDealDetails({
       ),
     }),
     ...(deal.params && {
-      Params: (
-        <div className="flex min-w-0 items-center gap-1">
-          <code className="min-w-0 overflow-x-auto text-sm whitespace-pre">
-            {JSON.stringify(JSON.parse(deal.params), null, 2)}
-          </code>
-          <CopyButton textToCopy={deal.params} />
-        </div>
-      ),
+      Params: <JsonBlock>{deal.params}</JsonBlock>,
     }),
     ...((pendingRatio || completedRatio || claimedRatio) && {
       Status: (

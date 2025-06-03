@@ -22,7 +22,7 @@ const JsonBlock = ({ children }: JsonBlockProps) => {
   }
 
   return (
-    <div className="flex min-w-0 items-center gap-1">
+    <div className="flex min-w-0 items-start gap-1">
       <code className="min-w-0 overflow-x-auto text-sm whitespace-pre">
         {display}
       </code>
