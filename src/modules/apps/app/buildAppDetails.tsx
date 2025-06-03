@@ -11,7 +11,6 @@ import {
 export function buildAppDetails({ app }: { app: App }) {
   const firstTransfer = Array.isArray(app?.transfers) && app?.transfers[0];
   const firstTimestamp = firstTransfer?.transaction?.timestamp;
-  console.log('app', app);
 
   return {
     ...(app.address && {
