@@ -14,6 +14,7 @@ import {
 
 type LinkType =
   | 'deal'
+  | 'task'
   | 'dataset'
   | 'workerpool'
   | 'app'
@@ -36,6 +37,7 @@ export default function SmartLinkGroup({
   const { chainId } = useUserStore();
   const basePath = {
     deal: 'deal',
+    task: 'task',
     dataset: 'dataset',
     workerpool: 'workerpool',
     app: 'app',
@@ -78,28 +80,30 @@ export default function SmartLinkGroup({
         </div>
       )}
 
-      <TooltipProvider delayDuration={0}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              variant="link"
-              className="h-auto p-0! text-sm text-white"
-              asChild
-            >
-              <a
-                href={`${getBlockExplorerUrl(chainId)}/${blockExplorerPath[type]}`}
-                target="_blank"
-                rel="noopener noreferrer"
+      {type !== 'task' && (
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="link"
+                className="h-auto p-0! text-sm text-white"
+                asChild
               >
-                <ExternalLink />
-              </a>
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="top" className="max-w-sm">
-            Open in Block Explorer
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+                <a
+                  href={`${getBlockExplorerUrl(chainId)}/${blockExplorerPath[type]}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <ExternalLink />
+                </a>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="top" className="max-w-sm">
+              Open in Block Explorer
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
 
       <CopyButton textToCopy={addressOrId} />
     </div>
