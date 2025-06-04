@@ -27,6 +27,7 @@ function useDatasetsData(currentPage: number) {
       queryFn: () =>
         execute(datasetsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      enabled: !!chainId,
     }
   );
 
@@ -38,6 +39,7 @@ function useDatasetsData(currentPage: number) {
         skip: (currentPage + 1) * TABLE_LENGTH,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const nextDatasets = nextData?.datasets ?? [];

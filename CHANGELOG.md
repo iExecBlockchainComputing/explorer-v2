@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.5.0...iexec-explorer-v1.6.0) (2025-06-02)
+
+
+### 🚀 Features
+
+* add chain switch ([#12](https://github.com/iExecBlockchainComputing/explorer-v2/issues/12)) ([9e7b020](https://github.com/iExecBlockchainComputing/explorer-v2/commit/9e7b020a84495402e4a0734f39f0b8fe10da1221))
+
+## [1.5.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.4.0...iexec-explorer-v1.5.0) (2025-05-21)
+
+
+### 🚀 Features
+
+* add main pages ([#9](https://github.com/iExecBlockchainComputing/explorer-v2/issues/9)) ([d8fcb93](https://github.com/iExecBlockchainComputing/explorer-v2/commit/d8fcb93f5922d92bee2d5be2d15767bf4661f183))
+
 ## [1.4.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.3.0...iexec-explorer-v1.4.0) (2025-05-13)
 
 

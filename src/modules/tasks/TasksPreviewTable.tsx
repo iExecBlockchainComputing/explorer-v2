@@ -13,14 +13,21 @@ import { columns } from './tasksTable/columns';
 
 export function TasksPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+  const { chainId } = useUserStore();
   const tasks = useQuery({
+    queryKey: [chainId, 'tasks_preview'],
     queryKey: [chainId, 'tasks_preview'],
     queryFn: () =>
       execute(tasksQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
         skip: 0,
       }),
+      execute(tasksQuery, chainId, {
+        length: PREVIEW_TABLE_LENGTH,
+        skip: 0,
+      }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId,
   });
 
   const formattedData =
@@ -43,6 +50,7 @@ export function TasksPreviewTable({ className }: { className?: string }) {
           {tasks.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
+          <ChainLink to="/tasks">View all</ChainLink>
           <ChainLink to="/tasks">View all</ChainLink>
         </Button>
       </div>
