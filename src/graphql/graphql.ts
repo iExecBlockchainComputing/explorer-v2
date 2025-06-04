@@ -8356,6 +8356,67 @@ export enum _SubgraphErrorPolicy_ {
   Deny = 'deny'
 }
 
+export type AddressQueryVariables = Exact<{
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type AddressQuery = { __typename?: 'Query', account?: { __typename?: 'Account', score: any, address: string, staked: any, locked: any, allApps: Array<{ __typename?: 'App', id: string }>, allDatasets: Array<{ __typename?: 'Dataset', id: string }>, allWorkerpools: Array<{ __typename?: 'Workerpool', id: string }>, allContributions: Array<{ __typename?: 'Contribution', id: string }>, allDealRequester: Array<{ __typename?: 'Deal', id: string }>, allDealBeneficiary: Array<{ __typename?: 'Deal', id: string }> } | null };
+
+export type AddressBeneficiaryDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type AddressBeneficiaryDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealBeneficiary: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
+
+export type NextAddressBeneficiaryDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type NextAddressBeneficiaryDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealBeneficiary: Array<{ __typename?: 'Deal', dealid: string }> } | null };
+
+export type AddressRequestedDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type AddressRequestedDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealRequester: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
+
+export type NextAddressRequestedDealsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type NextAddressRequestedDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealRequester: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
+
+export type AddressRequestedTasksQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type AddressRequestedTasksQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, taskRequester: Array<{ __typename?: 'Task', timestamp: any, status: TaskStatus, finalDeadline: any, taskid: string, deal: { __typename?: 'Deal', dealid: string, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } } }> } | null };
+
+export type NextAddressRequestedTasksQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type NextAddressRequestedTasksQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, taskRequester: Array<{ __typename?: 'Task', taskid: string }> } | null };
+
 export type AppDealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8568,6 +8629,202 @@ export class TypedDocumentString<TResult, TVariables>
   }
 }
 
+export const AddressDocument = new TypedDocumentString(`
+    query Address($address: ID!) {
+  account(id: $address) {
+    address: id
+    staked: balance
+    locked: frozen
+    score
+    allApps: apps(first: 1000) {
+      id
+    }
+    allDatasets: datasets(first: 1000) {
+      id
+    }
+    allWorkerpools: workerpools(first: 1000) {
+      id
+    }
+    allContributions: contributions(first: 1000) {
+      id
+    }
+    allDealRequester: dealRequester(first: 1000) {
+      id
+    }
+    allDealBeneficiary: dealBeneficiary(first: 1000) {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AddressQuery, AddressQueryVariables>;
+export const AddressBeneficiaryDealsDocument = new TypedDocumentString(`
+    query AddressBeneficiaryDeals($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    dealBeneficiary(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      dealid: id
+      timestamp
+      botSize
+      completedTasksCount
+      claimedTasksCount
+      category {
+        workClockTimeRef
+      }
+      startTime
+      app {
+        address: id
+        name
+      }
+      dataset {
+        address: id
+        name
+      }
+      workerpool {
+        address: id
+        description
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AddressBeneficiaryDealsQuery, AddressBeneficiaryDealsQueryVariables>;
+export const NextAddressBeneficiaryDealsDocument = new TypedDocumentString(`
+    query NextAddressBeneficiaryDeals($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    dealBeneficiary(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      dealid: id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextAddressBeneficiaryDealsQuery, NextAddressBeneficiaryDealsQueryVariables>;
+export const AddressRequestedDealsDocument = new TypedDocumentString(`
+    query AddressRequestedDeals($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    dealRequester(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      dealid: id
+      timestamp
+      botSize
+      completedTasksCount
+      claimedTasksCount
+      category {
+        workClockTimeRef
+      }
+      startTime
+      app {
+        address: id
+        name
+      }
+      dataset {
+        address: id
+        name
+      }
+      workerpool {
+        address: id
+        description
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AddressRequestedDealsQuery, AddressRequestedDealsQueryVariables>;
+export const NextAddressRequestedDealsDocument = new TypedDocumentString(`
+    query NextAddressRequestedDeals($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    dealRequester(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      dealid: id
+      timestamp
+      botSize
+      completedTasksCount
+      claimedTasksCount
+      category {
+        workClockTimeRef
+      }
+      startTime
+      app {
+        address: id
+        name
+      }
+      dataset {
+        address: id
+        name
+      }
+      workerpool {
+        address: id
+        description
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextAddressRequestedDealsQuery, NextAddressRequestedDealsQueryVariables>;
+export const AddressRequestedTasksDocument = new TypedDocumentString(`
+    query AddressRequestedTasks($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    taskRequester(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      taskid: id
+      timestamp
+      status
+      finalDeadline
+      deal {
+        dealid: id
+        app {
+          address: id
+          name
+        }
+        dataset {
+          address: id
+          name
+        }
+        workerpool {
+          address: id
+          description
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AddressRequestedTasksQuery, AddressRequestedTasksQueryVariables>;
+export const NextAddressRequestedTasksDocument = new TypedDocumentString(`
+    query NextAddressRequestedTasks($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    taskRequester(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      taskid: id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextAddressRequestedTasksQuery, NextAddressRequestedTasksQueryVariables>;
 export const AppDealsDocument = new TypedDocumentString(`
     query AppDeals($length: Int = 20, $skip: Int = 0, $appAddress: ID!) {
   app(id: $appAddress) {
