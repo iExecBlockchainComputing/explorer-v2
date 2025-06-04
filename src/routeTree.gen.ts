@@ -10,8 +10,6 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-import { createFileRoute } from '@tanstack/react-router'
-
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
@@ -158,29 +156,8 @@ declare module '@tanstack/react-router' {
       path: '/$chainSlug'
       fullPath: '/$chainSlug'
       preLoaderRoute: typeof ChainSlugImport
-    '/$chainSlug': {
-      id: '/$chainSlug'
-      path: '/$chainSlug'
-      fullPath: '/$chainSlug'
-      preLoaderRoute: typeof ChainSlugImport
       parentRoute: typeof rootRoute
     }
-    '/$chainSlug/_layout': {
-      id: '/$chainSlug/_layout'
-      path: '/$chainSlug'
-      fullPath: '/$chainSlug'
-      preLoaderRoute: typeof ChainSlugLayoutImport
-      parentRoute: typeof ChainSlugRoute
-    }
-    '/$chainSlug/_layout/apps': {
-      id: '/$chainSlug/_layout/apps'
-      path: '/apps'
-      fullPath: '/$chainSlug/apps'
-      preLoaderRoute: typeof ChainSlugLayoutAppsImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/datasets': {
-      id: '/$chainSlug/_layout/datasets'
     '/$chainSlug/_layout': {
       id: '/$chainSlug/_layout'
       path: '/$chainSlug'
@@ -201,36 +178,21 @@ declare module '@tanstack/react-router' {
       fullPath: '/$chainSlug/datasets'
       preLoaderRoute: typeof ChainSlugLayoutDatasetsImport
       parentRoute: typeof ChainSlugLayoutImport
-      fullPath: '/$chainSlug/datasets'
-      preLoaderRoute: typeof ChainSlugLayoutDatasetsImport
-      parentRoute: typeof ChainSlugLayoutImport
     }
-    '/$chainSlug/_layout/deals': {
-      id: '/$chainSlug/_layout/deals'
     '/$chainSlug/_layout/deals': {
       id: '/$chainSlug/_layout/deals'
       path: '/deals'
       fullPath: '/$chainSlug/deals'
       preLoaderRoute: typeof ChainSlugLayoutDealsImport
       parentRoute: typeof ChainSlugLayoutImport
-      fullPath: '/$chainSlug/deals'
-      preLoaderRoute: typeof ChainSlugLayoutDealsImport
-      parentRoute: typeof ChainSlugLayoutImport
     }
-    '/$chainSlug/_layout/tasks': {
-      id: '/$chainSlug/_layout/tasks'
     '/$chainSlug/_layout/tasks': {
       id: '/$chainSlug/_layout/tasks'
       path: '/tasks'
       fullPath: '/$chainSlug/tasks'
       preLoaderRoute: typeof ChainSlugLayoutTasksImport
       parentRoute: typeof ChainSlugLayoutImport
-      fullPath: '/$chainSlug/tasks'
-      preLoaderRoute: typeof ChainSlugLayoutTasksImport
-      parentRoute: typeof ChainSlugLayoutImport
     }
-    '/$chainSlug/_layout/workerpools': {
-      id: '/$chainSlug/_layout/workerpools'
     '/$chainSlug/_layout/workerpools': {
       id: '/$chainSlug/_layout/workerpools'
       path: '/workerpools'
@@ -463,12 +425,10 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChainSlugRoute: typeof ChainSlugRouteWithChildren
-  ChainSlugRoute: typeof ChainSlugRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ChainSlugRoute: ChainSlugRouteWithChildren,
   ChainSlugRoute: ChainSlugRouteWithChildren,
 }
 
@@ -483,7 +443,6 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/$chainSlug"
         "/$chainSlug"
       ]
     },
@@ -522,20 +481,11 @@ export const routeTree = rootRoute
     "/$chainSlug/_layout/datasets": {
       "filePath": "$chainSlug/_layout/datasets.tsx",
       "parent": "/$chainSlug/_layout"
-    "/$chainSlug/_layout/datasets": {
-      "filePath": "$chainSlug/_layout/datasets.tsx",
-      "parent": "/$chainSlug/_layout"
     },
     "/$chainSlug/_layout/deals": {
       "filePath": "$chainSlug/_layout/deals.tsx",
       "parent": "/$chainSlug/_layout"
-    "/$chainSlug/_layout/deals": {
-      "filePath": "$chainSlug/_layout/deals.tsx",
-      "parent": "/$chainSlug/_layout"
     },
-    "/$chainSlug/_layout/tasks": {
-      "filePath": "$chainSlug/_layout/tasks.tsx",
-      "parent": "/$chainSlug/_layout"
     "/$chainSlug/_layout/tasks": {
       "filePath": "$chainSlug/_layout/tasks.tsx",
       "parent": "/$chainSlug/_layout"
