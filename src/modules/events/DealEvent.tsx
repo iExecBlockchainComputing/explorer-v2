@@ -5,7 +5,7 @@ type DealEventProps = {
   transaction?: {
     txHash?: string;
   };
-  deal: {
+  deal?: {
     dealid?: string;
   };
   workerpool?: { address: string };
@@ -26,7 +26,7 @@ const DealEvent = ({ type, transaction, deal, workerpool }: DealEventProps) => {
         </div>
       )}
 
-      {deal.dealid && (
+      {deal?.dealid && (
         <div className="flex items-center gap-1">
           {'deal '}
           <SmartLinkGroup
