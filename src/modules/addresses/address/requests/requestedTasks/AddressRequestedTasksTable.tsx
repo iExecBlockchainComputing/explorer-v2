@@ -51,8 +51,6 @@ function useAddressRequestedTasksData({
     nextRequestedTasks.length / PREVIEW_TABLE_LENGTH
   );
 
-  console.log('useAddressRequestedTasksData', data);
-
   const formattedDeal =
     data?.account?.taskRequester.map((task) => ({
       ...task,
@@ -74,8 +72,6 @@ export function AddressRequestedTasksTable({
 }: {
   addressAddress: string;
 }) {
-  console.log('AddressRequestedTasksTable rendered', addressAddress);
-
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data: requestedTasks,

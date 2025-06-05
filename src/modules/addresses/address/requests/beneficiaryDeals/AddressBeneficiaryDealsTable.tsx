@@ -51,8 +51,6 @@ function useAddressBeneficiaryDealsData({
     nextBeneficiaryDeals.length / PREVIEW_TABLE_LENGTH
   );
 
-  console.log('useAddressBeneficiaryDealsData', data);
-
   const formattedDeal =
     data?.account?.dealBeneficiary.map((deal) => ({
       ...deal,
@@ -74,8 +72,6 @@ export function AddressBeneficiaryDealsTable({
 }: {
   addressAddress: string;
 }) {
-  console.log('AddressBeneficiaryDealsTable rendered', addressAddress);
-
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data: beneficiaryDeals,

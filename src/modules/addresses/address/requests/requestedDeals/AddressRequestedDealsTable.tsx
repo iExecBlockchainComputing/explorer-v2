@@ -51,8 +51,6 @@ function useAddressRequestedDealsData({
     nextRequestedDeals.length / PREVIEW_TABLE_LENGTH
   );
 
-  console.log('useAddressRequestedDealsData', data);
-
   const formattedDeal =
     data?.account?.dealRequester.map((deal) => ({
       ...deal,
@@ -74,8 +72,6 @@ export function AddressRequestedDealsTable({
 }: {
   addressAddress: string;
 }) {
-  console.log('AddressRequestedDealsTable rendered', addressAddress);
-
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data: requestedDeals,
