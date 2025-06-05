@@ -8363,6 +8363,24 @@ export type AddressQueryVariables = Exact<{
 
 export type AddressQuery = { __typename?: 'Query', account?: { __typename?: 'Account', score: any, address: string, staked: any, locked: any, allApps: Array<{ __typename?: 'App', id: string }>, allDatasets: Array<{ __typename?: 'Dataset', id: string }>, allWorkerpools: Array<{ __typename?: 'Workerpool', id: string }>, allContributions: Array<{ __typename?: 'Contribution', id: string }>, allDealRequester: Array<{ __typename?: 'Deal', id: string }>, allDealBeneficiary: Array<{ __typename?: 'Deal', id: string }> } | null };
 
+export type AddressAppsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type AddressAppsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, apps: Array<{ __typename?: 'App', name: string, timestamp: any, address: string, transfers: Array<{ __typename?: 'AppTransfer', transaction: { __typename?: 'Transaction', txHash: string } }> }> } | null };
+
+export type NextAddressAppsQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type NextAddressAppsQueryQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, apps: Array<{ __typename?: 'App', address: string }> } | null };
+
 export type AddressBeneficiaryDealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8675,6 +8693,33 @@ export const AddressDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<AddressQuery, AddressQueryVariables>;
+export const AddressAppsDocument = new TypedDocumentString(`
+    query AddressApps($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    apps(orderBy: timestamp, orderDirection: desc, first: $length, skip: $skip) {
+      address: id
+      name
+      timestamp
+      transfers(orderBy: timestamp, orderDirection: desc) {
+        transaction {
+          txHash: id
+        }
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AddressAppsQuery, AddressAppsQueryVariables>;
+export const NextAddressAppsDocument = new TypedDocumentString(`
+    query NextAddressApps($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    apps(orderBy: timestamp, orderDirection: desc, first: $length, skip: $skip) {
+      address: id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextAddressAppsQuery, NextAddressAppsQueryVariables>;
 export const AddressBeneficiaryDealsDocument = new TypedDocumentString(`
     query AddressBeneficiaryDeals($length: Int = 20, $skip: Int = 0, $address: ID!) {
   account(id: $address) {
