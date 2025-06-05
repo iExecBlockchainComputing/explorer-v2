@@ -240,52 +240,7 @@
   h6 {
     @apply font-anybody font-semibold;
   }
-}
-
-[data-slot='tabs-list'] {
-  @apply after:bg-background relative z-0 after:absolute after:inset-y-[3px] after:left-[3px] after:-z-1 after:rounded-md after:shadow-sm after:duration-200;
-}
-
-/* One tab */
-[data-slot='tabs-list']:has([data-slot='tabs-trigger']:only-child) {
-  @apply after:w-[calc(100%-6px)];
-}
-
-/* two tabs */
-[data-slot='tabs-list']:has(
-    [data-slot='tabs-trigger']:first-child:nth-last-child(2)
-  ) {
-  @apply grid grid-cols-2 after:w-[calc(50%-3px)];
-  &:has([data-slot='tabs-trigger']:nth-child(2)[data-state='active']) {
-    @apply after:translate-x-full;
-  }
-}
-
-/* three tabs */
-[data-slot='tabs-list']:has(
-    [data-slot='tabs-trigger']:first-child:nth-last-child(3)
-  ) {
-  @apply grid grid-cols-3 after:w-[calc(33%-1px)];
-  &:has([data-slot='tabs-trigger']:nth-child(2)[data-state='active']) {
-    @apply after:translate-x-full;
-  }
-  &:has([data-slot='tabs-trigger']:nth-child(3)[data-state='active']) {
-    @apply after:translate-x-[200%];
-  }
-}
-
-/* four tabs */
-[data-slot='tabs-list']:has(
-    [data-slot='tabs-trigger']:first-child:nth-last-child(4)
-  ) {
-  @apply grid grid-cols-4 after:w-[calc(25%-1.5px)];
-  &:has([data-slot='tabs-trigger']:nth-child(2)[data-state='active']) {
-    @apply after:translate-x-full;
-  }
-  &:has([data-slot='tabs-trigger']:nth-child(3)[data-state='active']) {
-    @apply after:translate-x-[200%];
-  }
-  &:has([data-slot='tabs-trigger']:nth-child(4)[data-state='active']) {
-    @apply after:translate-x-[300%];
+  button {
+    @apply cursor-pointer;
   }
 }
