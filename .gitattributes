@@ -1,0 +1,3 @@
+# ignore package-lock.json files in diffs
+package-lock.json -diff
+**/package-lock.json -diff
