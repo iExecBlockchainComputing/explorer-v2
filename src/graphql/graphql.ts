@@ -8370,7 +8370,7 @@ export type AddressBeneficiaryDealsQueryVariables = Exact<{
 }>;
 
 
-export type AddressBeneficiaryDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealBeneficiary: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
+export type AddressBeneficiaryDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealBeneficiary: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
 
 export type NextAddressBeneficiaryDealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
@@ -8388,7 +8388,7 @@ export type AddressRequestedDealsQueryVariables = Exact<{
 }>;
 
 
-export type AddressRequestedDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealRequester: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
+export type AddressRequestedDealsQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, dealRequester: Array<{ __typename?: 'Deal', timestamp: any, botSize: any, completedTasksCount: any, claimedTasksCount: any, startTime: any, appPrice: any, datasetPrice: any, workerpoolPrice: any, dealid: string, category: { __typename?: 'Category', workClockTimeRef: any }, app: { __typename?: 'App', name: string, address: string }, dataset?: { __typename?: 'Dataset', name: string, address: string } | null, workerpool: { __typename?: 'Workerpool', description: string, address: string } }> } | null };
 
 export type NextAddressRequestedDealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
@@ -8688,6 +8688,9 @@ export const AddressBeneficiaryDealsDocument = new TypedDocumentString(`
         address: id
         description
       }
+      appPrice
+      datasetPrice
+      workerpoolPrice
     }
   }
 }
@@ -8738,6 +8741,9 @@ export const AddressRequestedDealsDocument = new TypedDocumentString(`
         address: id
         description
       }
+      appPrice
+      datasetPrice
+      workerpoolPrice
     }
   }
 }

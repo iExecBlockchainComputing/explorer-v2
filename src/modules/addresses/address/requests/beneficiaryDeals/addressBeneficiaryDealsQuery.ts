@@ -35,6 +35,9 @@ export const addressBeneficiaryDealsQuery = graphql(`
           address: id
           description
         }
+        appPrice
+        datasetPrice
+        workerpoolPrice
       }
     }
   }
