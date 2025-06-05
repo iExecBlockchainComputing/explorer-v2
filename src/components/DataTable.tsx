@@ -80,7 +80,7 @@ export function DataTable<TData extends { destination: string }, TValue>({
         }).map((_, index) => (
           <TableRow key={`empty-${index}`}>
             {columns.map((_, colIndex) => (
-              <TableCell key={colIndex} className="h-12">
+              <TableCell key={colIndex} className="h-17">
                 &nbsp;
               </TableCell>
             ))}
