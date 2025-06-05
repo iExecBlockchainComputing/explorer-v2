@@ -8417,6 +8417,24 @@ export type NextAddressRequestedTasksQueryVariables = Exact<{
 
 export type NextAddressRequestedTasksQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, taskRequester: Array<{ __typename?: 'Task', taskid: string }> } | null };
 
+export type AddressContributionQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type AddressContributionQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, contributions: Array<{ __typename?: 'Contribution', id: string, timestamp: number, status: ContributionStatus, task: { __typename?: 'Task', taskid: string } }> } | null };
+
+export type NextAddressContributionQueryVariables = Exact<{
+  length?: InputMaybe<Scalars['Int']['input']>;
+  skip?: InputMaybe<Scalars['Int']['input']>;
+  address: Scalars['ID']['input'];
+}>;
+
+
+export type NextAddressContributionQuery = { __typename?: 'Query', account?: { __typename?: 'Account', address: string, contributions: Array<{ __typename?: 'Contribution', id: string }> } | null };
+
 export type AppDealsQueryVariables = Exact<{
   length?: InputMaybe<Scalars['Int']['input']>;
   skip?: InputMaybe<Scalars['Int']['input']>;
@@ -8831,6 +8849,41 @@ export const NextAddressRequestedTasksDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<NextAddressRequestedTasksQuery, NextAddressRequestedTasksQueryVariables>;
+export const AddressContributionDocument = new TypedDocumentString(`
+    query AddressContribution($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    contributions(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      id
+      timestamp
+      task {
+        taskid: id
+      }
+      status
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<AddressContributionQuery, AddressContributionQueryVariables>;
+export const NextAddressContributionDocument = new TypedDocumentString(`
+    query NextAddressContribution($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  account(id: $address) {
+    address: id
+    contributions(
+      orderBy: timestamp
+      orderDirection: desc
+      first: $length
+      skip: $skip
+    ) {
+      id
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<NextAddressContributionQuery, NextAddressContributionQueryVariables>;
 export const AppDealsDocument = new TypedDocumentString(`
     query AppDeals($length: Int = 20, $skip: Int = 0, $appAddress: ID!) {
   app(id: $appAddress) {

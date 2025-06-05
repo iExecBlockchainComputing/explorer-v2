@@ -15,6 +15,7 @@ import { buildAddressOverview } from '@/modules/addresses/address/buildAddressOv
 import { AddressBeneficiaryDealsTable } from '@/modules/addresses/address/requests/beneficiaryDeals/AddressBeneficiaryDealsTable';
 import { AddressRequestedDealsTable } from '@/modules/addresses/address/requests/requestedDeals/AddressRequestedDealsTable';
 import { AddressRequestedTasksTable } from '@/modules/addresses/address/requests/requestedTasks/AddressRequestedTasksTable';
+import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import useUserStore from '@/stores/useUser.store';
 
 export const Route = createFileRoute(
@@ -113,6 +114,21 @@ function AddressRoute() {
             <AddressRequestedTasksTable addressAddress={addressAddress} />
             <AddressRequestedDealsTable addressAddress={addressAddress} />
             <AddressBeneficiaryDealsTable addressAddress={addressAddress} />
+          </>
+        )}
+        {currentTab === 2 && (
+          <>
+            <div className="mb-6 grid max-w-52 grid-cols-3 gap-8">
+              <div className="col-span-2">Contributions :</div>
+              <div>
+                {addressDetails?.allContributions
+                  ? addressDetails.allContributions.length
+                  : 0}
+              </div>
+              <div className="col-span-2">Score :</div>
+              <div>{addressDetails?.score ? addressDetails.score : 0}</div>
+            </div>
+            <AddressContributionTable addressAddress={addressAddress} />
           </>
         )}
       </div>
