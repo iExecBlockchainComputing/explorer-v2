@@ -23,7 +23,7 @@ function useAddressRequestedTasksData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'requestedTasks', addressAddress],
+      queryKey: ['address', 'requestedTasks', addressAddress, currentPage],
       queryFn: () =>
         execute(addressRequestedTasksQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useAddressRequestedTasksData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'requestedTasks-next', currentPage],
+    queryKey: [chainId, 'requestedTasks-next', addressAddress, currentPage],
     queryFn: () =>
       execute(nextAddressRequestedTasksQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,

@@ -23,7 +23,7 @@ function useAddressBeneficiaryDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'beneficiaryDeals', addressAddress],
+      queryKey: ['address', 'beneficiaryDeals', addressAddress, currentPage],
       queryFn: () =>
         execute(addressBeneficiaryDealsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useAddressBeneficiaryDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'beneficiaryDeals-next', currentPage],
+    queryKey: [chainId, 'beneficiaryDeals-next', addressAddress, currentPage],
     queryFn: () =>
       execute(nextAddressBeneficiaryDealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
