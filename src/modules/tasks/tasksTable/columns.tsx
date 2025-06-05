@@ -46,6 +46,7 @@ export const columns: ColumnDef<Task>[] = [
         <StatusCell
           statusEnum={status}
           timeoutTimestamp={finalDeadlineTimestamp}
+          bare
         />
       );
     },
