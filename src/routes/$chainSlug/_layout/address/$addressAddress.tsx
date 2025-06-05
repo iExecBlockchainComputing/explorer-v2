@@ -62,14 +62,34 @@ function AddressRoute() {
     hasPastError,
   } = useAddressData(addressAddress, chainId);
 
-  // if (!address) {
-  //   return <p>Hum there is nothing here..</p>;
-  // }
   const addressDetails = address ? buildAddressDetails({ address }) : undefined;
-
   const addressOverview = address
     ? buildAddressOverview({ address })
     : undefined;
+
+  const disabledTabs: number[] = [];
+  const disabledReasons: Record<number, string> = {};
+
+  if (!address?.allContributions?.length) {
+    disabledTabs.push(2);
+    disabledReasons[2] = 'No contributions for this address.';
+  }
+
+  if (!address?.allApps?.length) {
+    disabledTabs.push(3);
+    disabledReasons[3] = 'No apps for this address.';
+  }
+
+  if (!address?.allDatasets?.length) {
+    disabledTabs.push(4);
+    disabledReasons[4] = 'No datasets for this address.';
+  }
+
+  if (!address?.allWorkerpools?.length) {
+    disabledTabs.push(5);
+    disabledReasons[5] = 'No workerpools for this address.';
+  }
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <SearcherBar className="py-10" />
@@ -86,14 +106,18 @@ function AddressRoute() {
           <LoaderCircle className="animate-spin" />
         )}
       </h1>
+
       <AddressBreadcrumbs addressId={addressAddress} />
+
       {hasPastError && !addressOverview ? (
-        <ErrorAlert message="An error occurred during address details  loading." />
+        <ErrorAlert message="An error occurred during address details loading." />
       ) : (
         <DetailsTable details={addressOverview} zebra={false} />
       )}
+
       <Tabs
         currentTab={currentTab}
+        onTabChange={setCurrentTab}
         tabLabels={[
           'OVERVIEW',
           'REQUESTS',
@@ -102,12 +126,14 @@ function AddressRoute() {
           'DATASETS',
           'WORKERPOOLS',
         ]}
-        onTabChange={setCurrentTab}
+        disabledTabs={disabledTabs}
+        disabledReasons={disabledReasons}
       />
+
       <div>
         {currentTab === 0 &&
           (hasPastError && !addressDetails ? (
-            <ErrorAlert message="An error occurred during address details  loading." />
+            <ErrorAlert message="An error occurred during address details loading." />
           ) : (
             <DetailsTable details={addressDetails} />
           ))}
