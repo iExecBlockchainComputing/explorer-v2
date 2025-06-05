@@ -1,4 +1,4 @@
-import { multiaddr } from 'multiaddr';
+import { multiaddr } from '@multiformats/multiaddr';
 
 export const multiaddrHexToHuman = (hexString: string): string => {
   if (hexString.substr(0, 2) !== '0x') return hexString;
