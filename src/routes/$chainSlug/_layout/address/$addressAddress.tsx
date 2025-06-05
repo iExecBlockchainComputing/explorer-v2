@@ -130,10 +130,6 @@ function AddressRoute() {
         {currentTab === 3 && (
           <>
             <p className="mb-6">Deployed apps : {address?.allApps.length}</p>
-            <div className="mb-6 grid max-w-52 grid-cols-3 gap-8">
-              <div className="col-span-2">Deployed apps :</div>
-              <div>{address?.allApps.length}</div>
-            </div>
             <AddressAppsTable addressAddress={addressAddress} />
           </>
         )}
