@@ -13,9 +13,11 @@ import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
 import { buildAddressOverview } from '@/modules/addresses/address/buildAddressOverview';
+import { AddressDatasetsTable } from '@/modules/addresses/address/datasets/AddressDatasetsTable';
 import { AddressBeneficiaryDealsTable } from '@/modules/addresses/address/requests/beneficiaryDeals/AddressBeneficiaryDealsTable';
 import { AddressRequestedDealsTable } from '@/modules/addresses/address/requests/requestedDeals/AddressRequestedDealsTable';
 import { AddressRequestedTasksTable } from '@/modules/addresses/address/requests/requestedTasks/AddressRequestedTasksTable';
+import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools/AddressWorkerpoolsTable';
 import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import useUserStore from '@/stores/useUser.store';
 
@@ -118,22 +120,37 @@ function AddressRoute() {
         )}
         {currentTab === 2 && (
           <>
-            <div className="mb-6 grid max-w-52 grid-cols-3 gap-8">
-              <div className="col-span-2">Contributions :</div>
-              <div>{address?.allContributions.length}</div>
-              <div className="col-span-2">Score :</div>
-              <div>{address?.score}</div>
-            </div>
+            <p className="mb-8">
+              Contributions : {address?.allContributions.length}
+            </p>
+            <p className="mb-6">Score : {address?.score}</p>
             <AddressContributionTable addressAddress={addressAddress} />
           </>
         )}
         {currentTab === 3 && (
           <>
+            <p className="mb-6">Deployed apps : {address?.allApps.length}</p>
             <div className="mb-6 grid max-w-52 grid-cols-3 gap-8">
               <div className="col-span-2">Deployed apps :</div>
               <div>{address?.allApps.length}</div>
             </div>
             <AddressAppsTable addressAddress={addressAddress} />
+          </>
+        )}
+        {currentTab === 4 && (
+          <>
+            <p className="mb-6">
+              Deployed datasets : {address?.allDatasets.length}
+            </p>
+            <AddressDatasetsTable addressAddress={addressAddress} />
+          </>
+        )}
+        {currentTab === 5 && (
+          <>
+            <p className="mb-6">
+              Deployed workerpools : {address?.allWorkerpools.length}
+            </p>
+            <AddressWorkerpoolsTable addressAddress={addressAddress} />
           </>
         )}
       </div>
