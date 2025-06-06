@@ -1,3 +1,3 @@
-export function rlcToNrlc(rlcValue: number) {
-  return rlcValue * 10 ** 9;
+export function rlcToNrlc(rlcValue: number | bigint): bigint {
+  return BigInt(rlcValue) * 10n ** 9n;
 }
