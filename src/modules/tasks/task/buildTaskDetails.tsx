@@ -10,6 +10,7 @@ import {
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
+import { ClaimButton } from '../ClaimButton';
 import StatusCell from '../StatusCell';
 
 export function buildTaskDetails({
@@ -118,23 +119,14 @@ export function buildTaskDetails({
     }),
     ...(task.status && {
       Status: (
-        <>
+        <div>
           <StatusCell statusEnum={task.status} />
-          {/* {task.finalDeadline &&
-            task.finalDeadline * 1000 < Date.now() &&
-            task.status !== 'COMPLETED' &&
-            task.status !== 'FAILLED' &&
-            isConnected && (
-              <>
-             TODO add claim button
-              </>
-            )} */}
-
+          <ClaimButton tasks={[task]} className="text-white underline" />
           {/* {task.results &&
             taskResultToObject(task.results)?.storage === 'ipfs' && (
                TODO add Download result archive button
             )} */}
-        </>
+        </div>
       ),
     }),
     ...(task.results && {

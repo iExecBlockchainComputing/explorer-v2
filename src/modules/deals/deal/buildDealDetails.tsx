@@ -4,6 +4,7 @@ import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
 import DealEvent from '@/modules/events/DealEvent';
+import { ClaimButton } from '@/modules/tasks/ClaimButton';
 import {
   formatDateCompact,
   formatElapsedTime,
@@ -154,7 +155,17 @@ export function buildDealDetails({
                 }`}
               >
                 {Math.round(pendingRatio * 100)}%{' '}
-                {isClaimable ? 'CLAIMABLE' : 'PENDING'}
+                {isClaimable ? (
+                  <>
+                    CLAIMABLE
+                    <ClaimButton
+                      task={deal.tasks}
+                      className="text-white underline"
+                    />
+                  </>
+                ) : (
+                  'PENDING'
+                )}
               </span>
             )}
           </span>

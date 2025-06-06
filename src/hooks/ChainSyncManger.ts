@@ -2,6 +2,7 @@ import { useParams, useRouter } from '@tanstack/react-router';
 import { switchChain } from '@wagmi/core';
 import { useEffect, useRef } from 'react';
 import { useAccount } from 'wagmi';
+import { cleanIExecSDKs, initIExecSDKs } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
 import { getChainFromId, INITIAL_CHAIN } from '@/utils/chain.utils';
 import { wagmiAdapter } from '@/utils/wagmiConfig';
@@ -22,6 +23,7 @@ export function ChainSyncManager() {
     address: accountAddress,
     isConnected: accountIsConnected,
     status: accountStatus,
+    connector: accountConnector,
   } = useAccount();
   const { chainId, setChainId, setIsConnected, setAddress } = useUserStore();
 
@@ -40,6 +42,11 @@ export function ChainSyncManager() {
     if (accountChain?.id && chainId !== accountChain?.id) {
       setChainId(accountChain?.id);
     }
+    if (accountStatus === 'connected') {
+      initIExecSDKs({ connector: accountConnector });
+      return;
+    }
+    cleanIExecSDKs();
   }, [
     accountAddress,
     accountIsConnected,
@@ -48,6 +55,8 @@ export function ChainSyncManager() {
     chainId,
     accountChain?.id,
     setChainId,
+    accountStatus,
+    accountConnector,
   ]);
 
   // request chain change if the user connects on chain different from the active chain

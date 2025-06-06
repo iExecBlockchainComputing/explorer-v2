@@ -64,9 +64,9 @@ const StatusCell = ({
       break;
     case 'FAILLED':
       label = 'CLAIMED';
-      colorClass = 'text-danger-foreground';
-      bgClass = 'bg-danger-foreground/10';
-      borderClass = 'border-danger-border';
+      colorClass = 'text-info-foreground';
+      bgClass = 'bg-info-foreground/10';
+      borderClass = 'border-info-border';
       break;
     case 'CONTRIBUTED':
       label = 'CONTRIBUTED';
