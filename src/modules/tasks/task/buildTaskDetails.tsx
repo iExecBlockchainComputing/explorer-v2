@@ -1,4 +1,4 @@
-import { Task } from '@/graphql/graphql';
+import { TaskQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
@@ -13,13 +13,10 @@ import { truncateAddress } from '@/utils/truncateAddress';
 import { ClaimButton } from '../ClaimButton';
 import StatusCell from '../StatusCell';
 
-export function buildTaskDetails({
-  task,
-  isConnected,
-}: {
-  task: Task;
-  isConnected: boolean;
-}) {
+export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
+  if (!task) {
+    return {};
+  }
   return {
     ...(task.taskid && {
       Taskid: (

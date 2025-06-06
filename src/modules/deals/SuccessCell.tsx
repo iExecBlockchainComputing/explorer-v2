@@ -1,4 +1,6 @@
-export function SuccessCell({ deal }: { deal: any }) {
+import { Deal } from '@/graphql/graphql';
+
+export function SuccessCell({ deal }: { deal: Deal }) {
   const timeoutTimestamp =
     deal?.startTime &&
     deal?.category?.workClockTimeRef &&

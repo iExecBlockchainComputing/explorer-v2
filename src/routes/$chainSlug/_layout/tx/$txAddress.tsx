@@ -65,7 +65,7 @@ function TransactionsRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useTransactionData(txAddress, chainId);
+  } = useTransactionData(txAddress, chainId!);
 
   // if (!transaction) {
   //   return <p>Hum there is nothing here..</p>;

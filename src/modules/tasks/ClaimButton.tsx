@@ -1,6 +1,7 @@
-import { Task } from '@/graphql/graphql';
+import { Task, TaskQuery } from '@/graphql/graphql';
 import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
+import useUserStore from '@/stores/useUser.store';
 import { pluralize } from '@/utils/pluralize';
 
 function isClaimable(task: Task): boolean {
@@ -13,9 +14,13 @@ export function ClaimButton({
   tasks,
   className,
 }: {
-  tasks: Task[];
+  tasks: TaskQuery['task'];
   className?: string;
 }) {
+  const { isConnected } = useUserStore();
+  if (!isConnected || !tasks) {
+    return;
+  }
   const claimableTasks = tasks.filter(isClaimable);
 
   if (claimableTasks.length === 0) {

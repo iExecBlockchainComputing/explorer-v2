@@ -1,4 +1,4 @@
-import { App } from '@/graphql/graphql';
+import { AppQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
@@ -8,7 +8,10 @@ import {
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
 
-export function buildAppDetails({ app }: { app: App }) {
+export function buildAppDetails({ app }: { app: AppQuery['app'] }) {
+  if (!app) {
+    return {};
+  }
   const firstTransfer = Array.isArray(app?.transfers) && app?.transfers[0];
   const firstTimestamp = firstTransfer?.transaction?.timestamp;
 

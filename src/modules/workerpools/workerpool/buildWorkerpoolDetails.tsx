@@ -1,4 +1,4 @@
-import { Workerpool } from '@/graphql/graphql';
+import { WorkerpoolQuery } from '@/graphql/graphql';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
 import {
@@ -9,8 +9,11 @@ import {
 export function buildWorkerpoolDetails({
   workerpool,
 }: {
-  workerpool: Workerpool;
+  workerpool: WorkerpoolQuery['workerpool'];
 }) {
+  if (!workerpool) {
+    return {};
+  }
   const firstTransfer =
     Array.isArray(workerpool?.transfers) && workerpool?.transfers[0];
   const firstTimestamp = firstTransfer?.transaction?.timestamp;

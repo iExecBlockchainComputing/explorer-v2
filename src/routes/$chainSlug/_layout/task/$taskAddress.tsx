@@ -44,7 +44,7 @@ function TasksRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useTaskData(taskAddress, chainId);
+  } = useTaskData(taskAddress, chainId!);
 
   // if (!task) {
   //   return <p>Hum there is nothing here..</p>;

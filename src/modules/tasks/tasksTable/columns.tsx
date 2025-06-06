@@ -11,7 +11,7 @@ export const columns: ColumnDef<Task>[] = [
     accessorKey: 'taskid',
     header: 'Task',
     cell: ({ row }) => {
-      const taskAddress = row.getValue('taskid');
+      const taskAddress = row.original.taskid;
       return (
         <CopyButton
           displayText={truncateAddress(taskAddress, {

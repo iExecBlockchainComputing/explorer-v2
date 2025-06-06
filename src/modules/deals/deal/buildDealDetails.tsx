@@ -1,4 +1,4 @@
-import { Deal } from '@/graphql/graphql';
+import { DealQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
@@ -15,9 +15,12 @@ export function buildDealDetails({
   deal,
   isConnected,
 }: {
-  deal: Deal;
+  deal: DealQuery['deal'];
   isConnected: boolean;
 }) {
+  if (!deal) {
+    return {};
+  }
   const dealDeadline =
     deal?.startTime &&
     deal?.category.workClockTimeRef &&
@@ -159,7 +162,7 @@ export function buildDealDetails({
                   <>
                     CLAIMABLE
                     <ClaimButton
-                      task={deal.tasks}
+                      tasks={deal.tasks}
                       className="text-white underline"
                     />
                   </>

@@ -12,7 +12,9 @@ type TaskEventProps = {
   worker?: {
     address?: string;
   };
-  workerpool?: string;
+  workerpool?: {
+    address?: string;
+  };
   hash?: string;
   digest?: string;
   consensus?: string;
@@ -53,7 +55,7 @@ const TaskEvent = ({
         </div>
       )}
 
-      {workerpool && (
+      {workerpool?.address && (
         <div className="flex items-center gap-1">
           {'workerpool '}
           <SmartLinkGroup

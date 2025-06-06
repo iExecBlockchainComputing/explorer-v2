@@ -60,7 +60,7 @@ function AddressRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useAddressData(addressAddress, chainId);
+  } = useAddressData(addressAddress, chainId!);
 
   const addressDetails = address ? buildAddressDetails({ address }) : undefined;
   const addressOverview = address

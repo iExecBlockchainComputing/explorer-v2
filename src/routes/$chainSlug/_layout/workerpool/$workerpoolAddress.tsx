@@ -51,7 +51,7 @@ function WorkerpoolsRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useWorkerpoolData(workerpoolAddress, chainId);
+  } = useWorkerpoolData(workerpoolAddress, chainId!);
 
   const workerpoolDetails = workerpool
     ? buildWorkerpoolDetails({ workerpool })

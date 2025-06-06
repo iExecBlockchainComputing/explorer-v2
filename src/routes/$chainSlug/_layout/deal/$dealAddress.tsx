@@ -48,7 +48,7 @@ function DealsRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useDealData(dealAddress, chainId);
+  } = useDealData(dealAddress, chainId!);
 
   // if (!deal) {
   //   return <p>Hum there is nothing here..</p>;
