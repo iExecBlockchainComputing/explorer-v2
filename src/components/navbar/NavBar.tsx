@@ -22,7 +22,7 @@ export function Navbar() {
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
       </ChainLink>
-      <div className="mr-6 flex items-center gap-4 md:mr-0">
+      <div className="mr-8 flex items-center gap-4 md:mr-0">
         {isConnected && (
           <div className="hidden md:flex">
             <Button variant="link" asChild className="text-white">

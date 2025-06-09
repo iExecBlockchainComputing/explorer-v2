@@ -61,19 +61,22 @@ function DealsRoute() {
     <div className="mt-8 flex flex-col gap-6">
       <SearcherBar className="py-10" />
 
-      <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-        <Box size="20" />
-        Deal details
-        {!deal && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h1>
-      <DealBreadcrumbs dealId={dealAddress} />
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+          <Box size="20" />
+          Deal details
+          {!deal && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {(isLoading || isRefetching) && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <DealBreadcrumbs dealId={dealAddress} />
+      </div>
+
       <Tabs
         currentTab={currentTab}
         tabLabels={['DETAILS', 'TASKS']}
