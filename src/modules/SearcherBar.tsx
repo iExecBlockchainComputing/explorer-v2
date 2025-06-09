@@ -9,7 +9,7 @@ export function SearcherBar({ className }: { className?: string }) {
   const { isConnected, address: userAddress } = useUserStore();
 
   return (
-    <div className={cn('m-auto w-full max-w-2xl', className)}>
+    <div className={cn('m-auto w-full', className)}>
       <div className="relative w-full">
         <Input
           className={cn(
@@ -20,12 +20,13 @@ export function SearcherBar({ className }: { className?: string }) {
         />
         <Search
           size="18"
-          className="absolute top-1/2 left-4 -translate-y-1/2 sm:left-6"
+          className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 sm:left-6"
         />
         {isConnected && (
           <Button
             variant="outline"
             className="bg-input hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
+            asChild
           >
             <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
           </Button>
@@ -34,7 +35,8 @@ export function SearcherBar({ className }: { className?: string }) {
       {isConnected && (
         <Button
           variant="outline"
-          className="mx-auto mt-4 flex w-auto sm:hidden"
+          className="mx-auto mt-4 flex w-fit sm:hidden"
+          asChild
         >
           <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
         </Button>
