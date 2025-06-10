@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.6.0...iexec-explorer-v1.6.1) (2025-06-10)
+
+
+### 🧰 Other
+
+* migrate to deployed subgraph for arbitrum-sepolia ([#23](https://github.com/iExecBlockchainComputing/explorer-v2/issues/23)) ([b2a81dc](https://github.com/iExecBlockchainComputing/explorer-v2/commit/b2a81dcc8ebde51b1f4204cddeb7757d9115d16c))
+
 ## [1.6.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.5.0...iexec-explorer-v1.6.0) (2025-06-02)
 
 
