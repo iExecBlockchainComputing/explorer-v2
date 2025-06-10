@@ -25,7 +25,7 @@ export const SUPPORTED_CHAINS = [
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl:
-      'http://localhost:8080/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+      'https://thegraph.arbitrum-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
     wagmiNetwork: arbitrumSepolia,
   },
 ];
