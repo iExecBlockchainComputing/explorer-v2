@@ -17,8 +17,11 @@ function Index() {
   const currentChain = SUPPORTED_CHAINS.find((chain) => chain.id === chainId);
 
   return (
-    <div className="mt-8 flex flex-col gap-10 sm:gap-20">
-      <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full max-w-[1408px] overflow-hidden rounded-2xl pt-10 sm:h-80 sm:border sm:px-12 sm:pt-20">
+    <div className="flex flex-col gap-10 pt-10 sm:mt-6 sm:gap-20 md:mt-10">
+      <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full max-w-[1408px] overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
+        <h1 className="mb-2 text-lg font-extrabold md:text-2xl">
+          The iExec Protocol Explorer
+        </h1>
         <SearcherBar />
         <div className="absolute inset-0 -z-10 hidden blur-2xl sm:block sm:blur-[100px] lg:blur-[150px]">
           <div

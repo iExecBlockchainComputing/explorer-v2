@@ -76,7 +76,6 @@ function AppsRoute() {
   return (
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-10" />
-
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
         Apps deployed

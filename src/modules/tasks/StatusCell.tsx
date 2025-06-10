@@ -12,60 +12,96 @@ type StatusEnumType =
 const StatusCell = ({
   statusEnum,
   timeoutTimestamp = 0,
+  bare = false,
 }: {
   statusEnum: StatusEnumType;
   timeoutTimestamp?: number;
+  bare?: boolean;
 }) => {
-  let status, color;
   const timeout = timeoutTimestamp && timeoutTimestamp < Date.now();
+
+  let label = '';
+  let colorClass = '';
+  let bgClass = '';
+  let borderClass = '';
+
   switch (statusEnum) {
-    // task satus
     case 'INACTIVE':
-      status = 'INACTIVE';
-      color = timeout ? '#EF5353' : '#F4C503';
+      label = 'INACTIVE';
+      colorClass = timeout
+        ? 'text-danger-foreground'
+        : 'text-warning-foreground';
+      bgClass = timeout
+        ? 'bg-danger-foreground/10'
+        : 'bg-warning-foreground/10';
+      borderClass = timeout ? 'border-danger-border' : 'border-warning-border';
       break;
     case 'ACTIVE':
-      status = 'STARTED';
-      color = timeout ? '#EF5353' : '#F4C503';
+      label = 'STARTED';
+      colorClass = timeout
+        ? 'text-danger-foreground'
+        : 'text-warning-foreground';
+      bgClass = timeout
+        ? 'bg-danger-foreground/10'
+        : 'bg-warning-foreground/10';
+      borderClass = timeout ? 'border-danger-border' : 'border-warning-border';
       break;
     case 'REVEALING':
-      status = 'REVEALING';
-      color = timeout ? '#EF5353' : '#F4C503';
+      label = 'REVEALING';
+      colorClass = timeout
+        ? 'text-danger-foreground'
+        : 'text-warning-foreground';
+      bgClass = timeout
+        ? 'bg-danger-foreground/10'
+        : 'bg-warning-foreground/10';
+      borderClass = timeout ? 'border-danger-border' : 'border-warning-border';
       break;
     case 'COMPLETED':
-      status = 'COMPLETED';
-      color = '#11B15E';
+      label = 'COMPLETED';
+      colorClass = 'text-success-foreground';
+      bgClass = 'bg-success-foreground/10';
+      borderClass = 'border-success-border';
       break;
     case 'FAILLED':
-      status = 'CLAIMED';
-      color = '#EF5353';
+      label = 'CLAIMED';
+      colorClass = 'text-info-foreground';
+      bgClass = 'bg-info-foreground/10';
+      borderClass = 'border-info-border';
       break;
-    //contribution status
     case 'CONTRIBUTED':
-      status = 'CONTRIBUTED';
-      color = '#F4C503';
+      label = 'CONTRIBUTED';
+      colorClass = 'text-warning-foreground';
+      bgClass = 'bg-warning-foreground/10';
+      borderClass = 'border-warning-border';
       break;
     case 'PROVED':
-      status = 'PROVED';
-      color = '#11B15E';
+      label = 'PROVED';
+      colorClass = 'text-success-foreground';
+      bgClass = 'bg-success-foreground/10';
+      borderClass = 'border-success-border';
       break;
     case 'REJECTED':
-      status = 'REJECTED';
-      color = '#EF5353';
+      label = 'REJECTED';
+      colorClass = 'text-danger-foreground';
+      bgClass = 'bg-danger-foreground/10';
+      borderClass = 'border-danger-border';
       break;
     default:
-      status = '';
-      color = '#F4C503';
+      label = 'UNSET';
+      colorClass = 'text-warning-foreground';
+      bgClass = 'bg-warning-foreground/10';
+      borderClass = 'border-warning-border';
+      break;
   }
 
+  const classes = bare
+    ? `${colorClass}`
+    : `rounded-full border px-2 py-1 ${colorClass} ${bgClass} ${borderClass}`;
+
   return (
-    <div
-      style={{
-        color: color,
-      }}
-    >
-      {status}
-    </div>
+    <span className="flex flex-wrap items-center gap-2">
+      <span className={classes}>{label}</span>
+    </span>
   );
 };
 

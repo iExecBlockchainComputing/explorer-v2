@@ -23,7 +23,7 @@ function useAddressRequestedDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'requestedDeals', addressAddress],
+      queryKey: ['address', 'requestedDeals', addressAddress, currentPage],
       queryFn: () =>
         execute(addressRequestedDealsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useAddressRequestedDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'requestedDeals-next', currentPage],
+    queryKey: [chainId, 'requestedDeals-next', addressAddress, currentPage],
     queryFn: () =>
       execute(nextAddressRequestedDealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -50,8 +50,6 @@ function useAddressRequestedDealsData({
   const additionalPages = Math.ceil(
     nextRequestedDeals.length / PREVIEW_TABLE_LENGTH
   );
-
-  console.log('useAddressRequestedDealsData', data);
 
   const formattedDeal =
     data?.account?.dealRequester.map((deal) => ({
@@ -74,8 +72,6 @@ export function AddressRequestedDealsTable({
 }: {
   addressAddress: string;
 }) {
-  console.log('AddressRequestedDealsTable rendered', addressAddress);
-
   const [currentPage, setCurrentPage] = useState(0);
   const {
     data: requestedDeals,

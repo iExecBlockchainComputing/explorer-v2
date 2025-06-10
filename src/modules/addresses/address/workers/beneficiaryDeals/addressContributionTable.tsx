@@ -6,12 +6,12 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
-import { addressBeneficiaryDealsQuery } from './addressBeneficiaryDealsQuery';
-import { nextAddressBeneficiaryDealsQuery } from './nextAddressBeneficiaryDealsQuery';
+import { addressContributionQuery } from './addressContributionQuery';
+import { nextAddressContributionQuery } from './nextAddressContributionQuery';
 
-function useAddressBeneficiaryDealsData({
+function useAddressContributionData({
   addressAddress,
   currentPage,
 }: {
@@ -23,9 +23,9 @@ function useAddressBeneficiaryDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'beneficiaryDeals', addressAddress, currentPage],
+      queryKey: ['address', 'contribution', addressAddress, currentPage],
       queryFn: () =>
-        execute(addressBeneficiaryDealsQuery, chainId, {
+        execute(addressContributionQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
           address: addressAddress,
@@ -35,9 +35,9 @@ function useAddressBeneficiaryDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'beneficiaryDeals-next', addressAddress, currentPage],
+    queryKey: [chainId, 'contribution-next', addressAddress, currentPage],
     queryFn: () =>
-      execute(nextAddressBeneficiaryDealsQuery, chainId, {
+      execute(nextAddressContributionQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
         skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
         address: addressAddress,
@@ -45,16 +45,16 @@ function useAddressBeneficiaryDealsData({
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
-  const nextBeneficiaryDeals = nextData?.account?.dealBeneficiary ?? [];
+  const nextContribution = nextData?.account?.contributions ?? [];
 
   const additionalPages = Math.ceil(
-    nextBeneficiaryDeals.length / PREVIEW_TABLE_LENGTH
+    nextContribution.length / PREVIEW_TABLE_LENGTH
   );
 
   const formattedDeal =
-    data?.account?.dealBeneficiary.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
+    data?.account?.contributions.map((contribution) => ({
+      ...contribution,
+      destination: `/task/${contribution.taskid}`,
     })) ?? [];
 
   return {
@@ -67,26 +67,26 @@ function useAddressBeneficiaryDealsData({
   };
 }
 
-export function AddressBeneficiaryDealsTable({
+export function AddressContributionTable({
   addressAddress,
 }: {
   addressAddress: string;
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const {
-    data: beneficiaryDeals,
+    data: contribution,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressBeneficiaryDealsData({ addressAddress, currentPage });
+  } = useAddressContributionData({ addressAddress, currentPage });
 
   return (
     <div className="space-y-6">
       <h2 className="flex items-center gap-2 font-extrabold">
-        Latests beneficiary deals
-        {!beneficiaryDeals && isError && (
+        Contributions
+        {!contribution && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
           </span>
@@ -95,12 +95,12 @@ export function AddressBeneficiaryDealsTable({
           <LoaderCircle className="animate-spin" />
         )}
       </h2>
-      {hasPastError && !beneficiaryDeals.length ? (
-        <ErrorAlert message="A error occurred during address beneficiaryDeals loading." />
+      {hasPastError && !contribution.length ? (
+        <ErrorAlert message="A error occurred during address contribution loading." />
       ) : (
         <DataTable
           columns={columns}
-          data={beneficiaryDeals}
+          data={contribution}
           tableLength={PREVIEW_TABLE_LENGTH}
         />
       )}

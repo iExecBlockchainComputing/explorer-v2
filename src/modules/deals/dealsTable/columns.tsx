@@ -12,7 +12,7 @@ export const columns: ColumnDef<Deal>[] = [
     accessorKey: 'dealid',
     header: 'Deal',
     cell: ({ row }) => {
-      const dealAddress = row.getValue('dealid');
+      const dealAddress = row.original.dealid;
       return (
         <CopyButton
           displayText={truncateAddress(dealAddress, {

@@ -35,7 +35,7 @@ export const columns: ColumnDef<Workerpool>[] = [
     },
   },
   {
-    accessorKey: 'owner',
+    accessorKey: 'owner.address',
     header: 'Owner',
     cell: ({ row }) => {
       const owner = row.original.owner.address;

@@ -6,12 +6,12 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { columns } from '@/modules/datasets/datasetsTable/columns';
 import useUserStore from '@/stores/useUser.store';
-import { addressBeneficiaryDealsQuery } from './addressBeneficiaryDealsQuery';
-import { nextAddressBeneficiaryDealsQuery } from './nextAddressBeneficiaryDealsQuery';
+import { addressDatasetsQuery } from './addressDatasetsQuery';
+import { nextAddressDatasetsQuery } from './nextAddressDatasetsQuery';
 
-function useAddressBeneficiaryDealsData({
+function useAddressDatasetsData({
   addressAddress,
   currentPage,
 }: {
@@ -23,9 +23,9 @@ function useAddressBeneficiaryDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'beneficiaryDeals', addressAddress, currentPage],
+      queryKey: ['address', 'datasets', addressAddress, currentPage],
       queryFn: () =>
-        execute(addressBeneficiaryDealsQuery, chainId, {
+        execute(addressDatasetsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
           address: addressAddress,
@@ -35,9 +35,9 @@ function useAddressBeneficiaryDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'beneficiaryDeals-next', addressAddress, currentPage],
+    queryKey: [chainId, 'datasets-next', addressAddress, currentPage],
     queryFn: () =>
-      execute(nextAddressBeneficiaryDealsQuery, chainId, {
+      execute(nextAddressDatasetsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
         skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
         address: addressAddress,
@@ -45,16 +45,14 @@ function useAddressBeneficiaryDealsData({
     refetchInterval: TABLE_REFETCH_INTERVAL,
   });
 
-  const nextBeneficiaryDeals = nextData?.account?.dealBeneficiary ?? [];
+  const nextDatasets = nextData?.account?.datasets ?? [];
 
-  const additionalPages = Math.ceil(
-    nextBeneficiaryDeals.length / PREVIEW_TABLE_LENGTH
-  );
+  const additionalPages = Math.ceil(nextDatasets.length / PREVIEW_TABLE_LENGTH);
 
   const formattedDeal =
-    data?.account?.dealBeneficiary.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
+    data?.account?.datasets.map((dataset) => ({
+      ...dataset,
+      destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return {
@@ -67,26 +65,30 @@ function useAddressBeneficiaryDealsData({
   };
 }
 
-export function AddressBeneficiaryDealsTable({
+export function AddressDatasetsTable({
   addressAddress,
 }: {
   addressAddress: string;
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const {
-    data: beneficiaryDeals,
+    data: datasets,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressBeneficiaryDealsData({ addressAddress, currentPage });
+  } = useAddressDatasetsData({ addressAddress, currentPage });
+
+  const filteredColumns = columns.filter(
+    (col) => col.accessorKey !== 'owner.address'
+  );
 
   return (
     <div className="space-y-6">
       <h2 className="flex items-center gap-2 font-extrabold">
-        Latests beneficiary deals
-        {!beneficiaryDeals && isError && (
+        Latests datasets
+        {!datasets && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
           </span>
@@ -95,12 +97,12 @@ export function AddressBeneficiaryDealsTable({
           <LoaderCircle className="animate-spin" />
         )}
       </h2>
-      {hasPastError && !beneficiaryDeals.length ? (
-        <ErrorAlert message="A error occurred during address beneficiaryDeals loading." />
+      {hasPastError && !datasets.length ? (
+        <ErrorAlert message="A error occurred during address datasets loading." />
       ) : (
         <DataTable
-          columns={columns}
-          data={beneficiaryDeals}
+          columns={filteredColumns}
+          data={datasets}
           tableLength={PREVIEW_TABLE_LENGTH}
         />
       )}

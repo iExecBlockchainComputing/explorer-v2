@@ -51,7 +51,7 @@ function DatasetsRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useDatasetData(datasetAddress, chainId);
+  } = useDatasetData(datasetAddress, chainId!);
 
   const datasetDetails = dataset ? buildDatasetDetails({ dataset }) : undefined;
 

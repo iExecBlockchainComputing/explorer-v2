@@ -21,7 +21,7 @@ interface DataTableProps<TData, TValue> {
   isLoading?: boolean;
 }
 
-export function DataTable<TData extends { destination: string }, TValue>({
+export function DataTable<TData, TValue>({
   columns,
   data,
   tableLength = 10,
@@ -58,7 +58,12 @@ export function DataTable<TData extends { destination: string }, TValue>({
           <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
             {row.getVisibleCells().map((cell) => (
               <TableCell key={cell.id}>
-                <ChainLink to={cell.row.original.destination}>
+                <ChainLink
+                  to={
+                    (cell.row.original as { destination: string }).destination
+                  }
+                  className="w-full"
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </ChainLink>
               </TableCell>
@@ -80,7 +85,7 @@ export function DataTable<TData extends { destination: string }, TValue>({
         }).map((_, index) => (
           <TableRow key={`empty-${index}`}>
             {columns.map((_, colIndex) => (
-              <TableCell key={colIndex} className="h-12">
+              <TableCell key={colIndex} className="h-17">
                 &nbsp;
               </TableCell>
             ))}

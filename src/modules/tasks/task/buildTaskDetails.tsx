@@ -1,4 +1,4 @@
-import { Task } from '@/graphql/graphql';
+import { TaskQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
@@ -10,27 +10,14 @@ import {
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
+import { ClaimButton } from '../ClaimButton';
+import { DownloadResult } from '../DownloadResult';
+import StatusCell from '../StatusCell';
 
-export function buildTaskDetails({
-  task,
-  isConnected,
-}: {
-  task: Task;
-  isConnected: boolean;
-}) {
-  const tasksCount = parseInt(task?.deal.botSize) || 1;
-  const completedTasksCount = parseInt(task?.deal.completedTasksCount) || 0;
-  const claimedTasksCount = parseInt(task?.deal.claimedTasksCount) || 0;
-  const pendingTasksCount =
-    tasksCount - (completedTasksCount + claimedTasksCount);
-
-  const completedRatio = completedTasksCount / tasksCount;
-  const claimedRatio = claimedTasksCount / tasksCount;
-  const pendingRatio = pendingTasksCount / tasksCount;
-
-  const isClaimable =
-    task.finalDeadline * 1000 < Date.now() && isConnected && pendingRatio > 0;
-
+export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
+  if (!task) {
+    return {};
+  }
   return {
     ...(task.taskid && {
       Taskid: (
@@ -128,38 +115,13 @@ export function buildTaskDetails({
         />
       ),
     }),
-    ...((pendingRatio || completedRatio || claimedRatio) && {
+    ...(task.status && {
       Status: (
-        <span>
-          <span className="flex flex-wrap items-center gap-2 text-xs font-medium">
-            {completedRatio > 0 && (
-              <span className="bg-success-foreground/10 border-success-border text-success-foreground rounded-full border px-2 py-1">
-                {Math.round(completedRatio * 100)}% COMPLETED
-              </span>
-            )}
-
-            {claimedRatio > 0 && (
-              <span className="bg-info-foreground/10 border-info-border text-info-foreground rounded-full border px-2 py-1">
-                {Math.round(claimedRatio * 100)}% CLAIMED
-              </span>
-            )}
-
-            {pendingRatio > 0 && (
-              <span
-                className={`rounded-full border px-2 py-1 ${
-                  isClaimable
-                    ? 'bg-info-foreground/10 border-info-border text-info-foreground'
-                    : 'bg-warning-foreground/10 border-warning-border text-warning-foreground'
-                }`}
-              >
-                {Math.round(pendingRatio * 100)}%{' '}
-                {isClaimable ? 'CLAIMABLE' : 'PENDING'}
-              </span>
-            )}
-          </span>
-
-          {/* {isClaimable && <ClaimFailedTask taskId="" />} // TODO  */}
-        </span>
+        <div>
+          <StatusCell statusEnum={task.status} />
+          <ClaimButton tasks={[task]} className="text-white underline" />
+          <DownloadResult taskid={task.taskid} taskResults={task.results} />
+        </div>
       ),
     }),
     ...(task.results && {

@@ -49,7 +49,7 @@ function AppsRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useAppData(appAddress, chainId);
+  } = useAppData(appAddress, chainId!);
 
   const appDetails = app ? buildAppDetails({ app }) : undefined;
 

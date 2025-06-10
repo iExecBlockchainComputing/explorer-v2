@@ -1,4 +1,4 @@
-import { Transaction } from '@/graphql/graphql';
+import { TransactionQuery } from '@/graphql/graphql';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import AccountEvent from '@/modules/events/AccountEvent';
 import DealEvent from '@/modules/events/DealEvent';
@@ -8,8 +8,11 @@ import TransferEvent from '@/modules/events/TransferEvent';
 export function buildTransactionDetails({
   transaction,
 }: {
-  transaction: Transaction;
+  transaction: TransactionQuery['transaction'];
 }) {
+  if (!transaction) {
+    return {};
+  }
   return {
     ...(transaction.txHash && {
       TxHash: (

@@ -44,7 +44,7 @@ function TasksRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useTaskData(taskAddress, chainId);
+  } = useTaskData(taskAddress, chainId!);
 
   // if (!task) {
   //   return <p>Hum there is nothing here..</p>;
@@ -57,19 +57,22 @@ function TasksRoute() {
     <div className="mt-8 flex flex-col gap-6">
       <SearcherBar className="py-10" />
 
-      <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-        <Box size="20" />
-        Task details
-        {!task && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h1>
-      <TaskBreadcrumbs taskId={taskAddress} />
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+          <Box size="20" />
+          Task details
+          {!task && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {(isLoading || isRefetching) && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <TaskBreadcrumbs taskId={taskAddress} />
+      </div>
+
       {hasPastError && !taskDetails ? (
         <ErrorAlert message="An error occurred during task details  loading." />
       ) : (

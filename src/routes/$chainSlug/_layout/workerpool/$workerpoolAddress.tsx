@@ -51,7 +51,7 @@ function WorkerpoolsRoute() {
     isRefetching,
     isError,
     hasPastError,
-  } = useWorkerpoolData(workerpoolAddress, chainId);
+  } = useWorkerpoolData(workerpoolAddress, chainId!);
 
   const workerpoolDetails = workerpool
     ? buildWorkerpoolDetails({ workerpool })
@@ -61,19 +61,22 @@ function WorkerpoolsRoute() {
     <div className="mt-8 flex flex-col gap-6">
       <SearcherBar className="py-10" />
 
-      <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-        <Box size="20" />
-        Workerpool details
-        {workerpool && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h1>
-      <WorkerpoolBreadcrumbs workerpoolId={workerpoolAddress} />
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold">
+          <Box size="20" />
+          Workerpool details
+          {workerpool && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {(isLoading || isRefetching) && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <WorkerpoolBreadcrumbs workerpoolId={workerpoolAddress} />
+      </div>
+
       <div className="space-y-10">
         {hasPastError && !workerpoolDetails ? (
           <ErrorAlert message="An error occurred during deal details  loading." />

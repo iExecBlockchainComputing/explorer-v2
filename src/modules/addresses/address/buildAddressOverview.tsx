@@ -1,4 +1,5 @@
 import { AddressQuery } from '@/graphql/graphql';
+import SmartLinkGroup from '@/components/SmartLinkGroup';
 
 export function buildAddressOverview({
   address,
@@ -7,7 +8,13 @@ export function buildAddressOverview({
 }) {
   return {
     ...(address?.address && {
-      Address: <p>{address.address}</p>,
+      Address: (
+        <SmartLinkGroup
+          type={'address'}
+          addressOrId={address.address}
+          isCurrentPage={true}
+        />
+      ),
     }),
     ...(address?.allDatasets && {
       Stacked: <p>{address.staked}</p>,

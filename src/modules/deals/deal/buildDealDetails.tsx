@@ -1,9 +1,10 @@
-import { Deal } from '@/graphql/graphql';
+import { DealQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
 import DealEvent from '@/modules/events/DealEvent';
+import { ClaimButton } from '@/modules/tasks/ClaimButton';
 import {
   formatDateCompact,
   formatElapsedTime,
@@ -14,9 +15,12 @@ export function buildDealDetails({
   deal,
   isConnected,
 }: {
-  deal: Deal;
+  deal: DealQuery['deal'];
   isConnected: boolean;
 }) {
+  if (!deal) {
+    return {};
+  }
   const dealDeadline =
     deal?.startTime &&
     deal?.category.workClockTimeRef &&
@@ -154,12 +158,20 @@ export function buildDealDetails({
                 }`}
               >
                 {Math.round(pendingRatio * 100)}%{' '}
-                {isClaimable ? 'CLAIMABLE' : 'PENDING'}
+                {isClaimable ? (
+                  <>
+                    CLAIMABLE
+                    <ClaimButton
+                      tasks={deal.tasks}
+                      className="text-white underline"
+                    />
+                  </>
+                ) : (
+                  'PENDING'
+                )}
               </span>
             )}
           </span>
-
-          {/* {isClaimable && <ClaimFailedDeal taskId="" />} // TODO  */}
         </span>
       ),
     }),

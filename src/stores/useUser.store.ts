@@ -1,4 +1,3 @@
-import { SUPPORTED_CHAINS } from '@/config';
 import { Address } from '@/types';
 import { create } from 'zustand';
 

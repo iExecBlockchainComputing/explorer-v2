@@ -1,4 +1,4 @@
-import { Dataset } from '@/graphql/graphql';
+import { DatasetQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
@@ -8,7 +8,14 @@ import {
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
 
-export function buildDatasetDetails({ dataset }: { dataset: Dataset }) {
+export function buildDatasetDetails({
+  dataset,
+}: {
+  dataset: DatasetQuery['dataset'];
+}) {
+  if (!dataset) {
+    return {};
+  }
   const firstTransfer =
     Array.isArray(dataset?.transfers) && dataset?.transfers[0];
   const firstTimestamp = firstTransfer?.transaction?.timestamp;
