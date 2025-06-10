@@ -11,6 +11,7 @@ import {
 } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { ClaimButton } from '../ClaimButton';
+import { DownloadResult } from '../DownloadResult';
 import StatusCell from '../StatusCell';
 
 export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
@@ -119,10 +120,7 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
         <div>
           <StatusCell statusEnum={task.status} />
           <ClaimButton tasks={[task]} className="text-white underline" />
-          {/* {task.results &&
-            taskResultToObject(task.results)?.storage === 'ipfs' && (
-               TODO add Download result archive button
-            )} */}
+          <DownloadResult taskid={task.taskid} taskResults={task.results} />
         </div>
       ),
     }),

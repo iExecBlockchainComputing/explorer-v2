@@ -172,8 +172,6 @@ export function buildDealDetails({
               </span>
             )}
           </span>
-
-          {/* {isClaimable && <ClaimFailedDeal taskId="" />} // TODO  */}
         </span>
       ),
     }),
