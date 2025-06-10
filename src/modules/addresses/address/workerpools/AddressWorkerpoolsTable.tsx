@@ -23,7 +23,13 @@ function useAddressWorkerpoolsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'workerpools', addressAddress, currentPage],
+      queryKey: [
+        chainId,
+        'address',
+        'workerpools',
+        addressAddress,
+        currentPage,
+      ],
       queryFn: () =>
         execute(addressWorkerpoolsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +41,13 @@ function useAddressWorkerpoolsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'workerpools-next', addressAddress, currentPage],
+    queryKey: [
+      chainId,
+      'address',
+      'workerpools-next',
+      addressAddress,
+      currentPage,
+    ],
     queryFn: () =>
       execute(nextAddressWorkerpoolsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,

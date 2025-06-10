@@ -18,7 +18,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
 function useTaskData(taskAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['task', taskAddress],
+      queryKey: [chainId, 'task', taskAddress],
       queryFn: () =>
         execute(taskQuery, chainId, { length: TABLE_LENGTH, taskAddress }),
       refetchInterval: TABLE_REFETCH_INTERVAL,

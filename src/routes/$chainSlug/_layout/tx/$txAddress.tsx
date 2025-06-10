@@ -19,7 +19,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
 function useTransactionData(transactionAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['transaction', transactionAddress],
+      queryKey: [chainId, 'transaction', transactionAddress],
       queryFn: async () => {
         const transactionData = await execute(transactionQuery, chainId, {
           length: TABLE_LENGTH,

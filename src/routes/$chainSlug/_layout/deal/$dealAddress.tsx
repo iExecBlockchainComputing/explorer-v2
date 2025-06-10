@@ -21,7 +21,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
 function useDealData(dealAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['deal', dealAddress],
+      queryKey: [chainId, 'deal', dealAddress],
       queryFn: () =>
         execute(dealQuery, chainId, { length: TABLE_LENGTH, dealAddress }),
       refetchInterval: TABLE_REFETCH_INTERVAL,

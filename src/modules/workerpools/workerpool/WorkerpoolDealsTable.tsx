@@ -23,7 +23,7 @@ function useWorkerpoolDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['workerpool', 'deals', workerpoolAddress],
+      queryKey: [chainId, 'workerpool', 'deals', workerpoolAddress],
       queryFn: () =>
         execute(workerpoolDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useWorkerpoolDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'deals-next', currentPage],
+    queryKey: [chainId, 'workerpool', 'deals-next', currentPage],
     queryFn: () =>
       execute(nextWorkerpoolDealsQuery, chainId, {
         length: DETAIL_TABLE_LENGTH * 2,

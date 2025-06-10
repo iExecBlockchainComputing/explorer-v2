@@ -19,7 +19,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')({
 function useAppData(appAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['app', appAddress],
+      queryKey: [chainId, 'app', appAddress],
       queryFn: () =>
         execute(appQuery, chainId, {
           length: TABLE_LENGTH,

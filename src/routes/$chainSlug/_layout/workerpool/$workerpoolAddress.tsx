@@ -21,7 +21,7 @@ export const Route = createFileRoute(
 function useWorkerpoolData(workerpoolAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['workerpool', workerpoolAddress],
+      queryKey: [chainId, 'workerpool', workerpoolAddress],
       queryFn: () =>
         execute(workerpoolQuery, chainId, {
           length: TABLE_LENGTH,

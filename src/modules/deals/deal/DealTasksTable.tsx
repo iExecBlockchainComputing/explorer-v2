@@ -12,7 +12,7 @@ function useDealTasksData({ dealAddress }: { dealAddress: string }) {
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['deal', 'tasks', dealAddress],
+      queryKey: [chainId, 'deal', 'tasks', dealAddress],
       queryFn: () =>
         execute(dealTasksQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,

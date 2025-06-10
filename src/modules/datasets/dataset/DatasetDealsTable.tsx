@@ -23,7 +23,7 @@ function useDatasetDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['dataset', 'deals', datasetAddress],
+      queryKey: [chainId, 'dataset', 'deals', datasetAddress],
       queryFn: () =>
         execute(datasetDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useDatasetDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'deals-next', currentPage],
+    queryKey: [chainId, 'dataset', 'deals-next', currentPage],
     queryFn: () =>
       execute(nextDatasetDealsQuery, chainId, {
         length: DETAIL_TABLE_LENGTH * 2,

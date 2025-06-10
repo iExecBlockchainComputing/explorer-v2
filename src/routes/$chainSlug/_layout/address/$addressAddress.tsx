@@ -30,7 +30,7 @@ export const Route = createFileRoute(
 function useAddressData(address: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', address],
+      queryKey: [chainId, 'address', address],
       queryFn: () =>
         execute(addressQuery, chainId, {
           length: TABLE_LENGTH,

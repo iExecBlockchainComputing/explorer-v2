@@ -23,7 +23,7 @@ function useAddressAppsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'apps', addressAddress, currentPage],
+      queryKey: [chainId, 'address', 'apps', addressAddress, currentPage],
       queryFn: () =>
         execute(addressAppsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useAddressAppsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'apps-next', addressAddress, currentPage],
+    queryKey: [chainId, 'address', 'apps-next', addressAddress, currentPage],
     queryFn: () =>
       execute(nextAddressAppsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,

@@ -23,7 +23,13 @@ function useAddressRequestedDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'requestedDeals', addressAddress, currentPage],
+      queryKey: [
+        chainId,
+        'address',
+        'requestedDeals',
+        addressAddress,
+        currentPage,
+      ],
       queryFn: () =>
         execute(addressRequestedDealsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +41,13 @@ function useAddressRequestedDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'requestedDeals-next', addressAddress, currentPage],
+    queryKey: [
+      chainId,
+      'address',
+      'requestedDeals-next',
+      addressAddress,
+      currentPage,
+    ],
     queryFn: () =>
       execute(nextAddressRequestedDealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,

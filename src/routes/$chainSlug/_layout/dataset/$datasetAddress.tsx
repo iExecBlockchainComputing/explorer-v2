@@ -21,7 +21,7 @@ export const Route = createFileRoute(
 function useDatasetData(datasetAddress: string, chainId: number) {
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['dataset', datasetAddress],
+      queryKey: [chainId, 'dataset', datasetAddress],
       queryFn: () =>
         execute(datasetQuery, chainId, {
           length: TABLE_LENGTH,

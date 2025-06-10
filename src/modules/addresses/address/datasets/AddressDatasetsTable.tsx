@@ -23,7 +23,7 @@ function useAddressDatasetsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'datasets', addressAddress, currentPage],
+      queryKey: [chainId, 'address', 'datasets', addressAddress, currentPage],
       queryFn: () =>
         execute(addressDatasetsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +35,13 @@ function useAddressDatasetsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'datasets-next', addressAddress, currentPage],
+    queryKey: [
+      chainId,
+      'address',
+      'datasets-next',
+      addressAddress,
+      currentPage,
+    ],
     queryFn: () =>
       execute(nextAddressDatasetsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
