@@ -13,7 +13,7 @@ export function SearcherBar({ className }: { className?: string }) {
       <div className="relative w-full">
         <Input
           className={cn(
-            'bg-input border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
+            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32'
           )}
           placeholder="Search address or id or transaction"
@@ -25,7 +25,7 @@ export function SearcherBar({ className }: { className?: string }) {
         {isConnected && (
           <Button
             variant="outline"
-            className="bg-input hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
+            className="bg-muted hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
             asChild
           >
             <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
