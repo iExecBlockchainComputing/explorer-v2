@@ -56,20 +56,22 @@ function AppsRoute() {
   return (
     <div className="mt-8 flex flex-col gap-6">
       <SearcherBar className="py-10" />
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 text-2xl font-extrabold">
+          <Box size="20" />
+          App details
+          {app && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {(isLoading || isRefetching) && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <AppBreadcrumbs appId={appAddress} />
+      </div>
 
-      <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-        <Box size="20" />
-        App details
-        {app && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h1>
-      <AppBreadcrumbs appId={appAddress} />
       <div className="space-y-10">
         {hasPastError && !appDetails ? (
           <ErrorAlert message="An error occurred during deal details  loading." />
