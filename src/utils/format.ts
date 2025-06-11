@@ -17,7 +17,7 @@ export const taskResultToObject = (results?: string | null) => {
   try {
     if (results && results !== '0x') {
       resultObj = JSON.parse(
-        Buffer.from(results.substr(2), 'hex').toString('utf8')
+        Buffer.from(results.substring(2), 'hex').toString('utf8')
       );
     }
   } catch {
