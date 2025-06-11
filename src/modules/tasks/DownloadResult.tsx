@@ -1,6 +1,6 @@
 import { IPFS_GATEWAY_URL } from '@/config';
 import { cn } from '@/lib/utils';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { taskResultToObject } from '@/utils/format';
@@ -38,8 +38,6 @@ export function DownloadResult({
   taskResults?: string | null;
   className?: string;
 }) {
-  const queryClient = useQueryClient();
-
   const {
     mutate: downloadTaskResult,
     isPending,
@@ -52,9 +50,6 @@ export function DownloadResult({
 
       if (!location) throw new Error('Invalid location');
       await fetchZipFromIpfs(taskid, location);
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['task', taskid] });
     },
   });
 
