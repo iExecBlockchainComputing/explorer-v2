@@ -119,7 +119,7 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
       Status: (
         <div>
           <StatusCell statusEnum={task.status} />
-          <ClaimButton tasks={[task]} className="text-white underline" />
+          <ClaimButton taskOrDeal={task} className="text-white underline" />
           <DownloadResult taskid={task.taskid} taskResults={task.results} />
         </div>
       ),
