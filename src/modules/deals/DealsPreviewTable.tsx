@@ -2,19 +2,22 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { Box, LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { ErrorAlert } from '../ErrorAlert';
 import { dealsQuery } from './dealsQuery';
 import { columns } from './dealsTable/columns';
 
 export function DealsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+
+  const queryKey = [chainId, 'deals_preview'];
   const deals = useQuery({
-    queryKey: [chainId, 'deals_preview'],
+    queryKey,
     queryFn: () =>
       execute(dealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
@@ -22,6 +25,7 @@ export function DealsPreviewTable({ className }: { className?: string }) {
       }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
   const formattedData =
@@ -48,13 +52,7 @@ export function DealsPreviewTable({ className }: { className?: string }) {
         </Button>
       </div>
       {(deals.isError || deals.errorUpdateCount > 0) && !deals.data ? (
-        <Alert variant="destructive" className="mx-auto w-fit text-left">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            A error occurred during deals loading.
-          </AlertDescription>
-        </Alert>
+        <ErrorAlert message="An error occurred during deals loading." />
       ) : (
         <DataTable
           columns={columns}

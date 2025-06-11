@@ -2,16 +2,17 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle, Terminal } from 'lucide-react';
+import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/deals')({
   component: DealsRoute,
@@ -21,18 +22,21 @@ function useDealsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
+  const queryKey = [chainId, 'deals', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'deals', currentPage],
+      queryKey,
       queryFn: () =>
         execute(dealsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'deals-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'deals-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextDealsQuery, chainId, {
         length: TABLE_LENGTH * 2,
@@ -40,6 +44,7 @@ function useDealsData(currentPage: number) {
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDeals = nextData?.deals ?? [];
@@ -90,13 +95,7 @@ function DealsRoute() {
         )}
       </h1>
       {hasPastError && !data.length ? (
-        <Alert variant="destructive" className="mx-auto w-fit text-left">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            A error occurred during deals loading.
-          </AlertDescription>
-        </Alert>
+        <ErrorAlert message="An error occurred during deals loading." />
       ) : (
         <DataTable
           columns={columns}

@@ -11,7 +11,7 @@ export const columns: ColumnDef<App>[] = [
     accessorKey: 'address',
     header: 'Address',
     cell: ({ row }) => {
-      const appAddress = row.getValue('address');
+      const appAddress = row.original.address;
       return (
         <CopyButton
           displayText={truncateAddress(appAddress, {
@@ -26,7 +26,7 @@ export const columns: ColumnDef<App>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ row }) => {
-      const name = row.getValue('name');
+      const name = row.original.name;
       return (
         <div className="w-36">
           <CopyButton displayText={name} textToCopy={name} />

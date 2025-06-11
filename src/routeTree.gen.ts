@@ -21,6 +21,13 @@ import { Route as ChainSlugLayoutTasksImport } from './routes/$chainSlug/_layout
 import { Route as ChainSlugLayoutDealsImport } from './routes/$chainSlug/_layout/deals'
 import { Route as ChainSlugLayoutDatasetsImport } from './routes/$chainSlug/_layout/datasets'
 import { Route as ChainSlugLayoutAppsImport } from './routes/$chainSlug/_layout/apps'
+import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
+import { Route as ChainSlugLayoutTxTxAddressImport } from './routes/$chainSlug/_layout/tx/$txAddress'
+import { Route as ChainSlugLayoutTaskTaskAddressImport } from './routes/$chainSlug/_layout/task/$taskAddress'
+import { Route as ChainSlugLayoutDealDealAddressImport } from './routes/$chainSlug/_layout/deal/$dealAddress'
+import { Route as ChainSlugLayoutDatasetDatasetAddressImport } from './routes/$chainSlug/_layout/dataset/$datasetAddress'
+import { Route as ChainSlugLayoutAppAppAddressImport } from './routes/$chainSlug/_layout/app/$appAddress'
+import { Route as ChainSlugLayoutAddressAddressAddressImport } from './routes/$chainSlug/_layout/address/$addressAddress'
 
 // Create Virtual Routes
 
@@ -82,6 +89,56 @@ const ChainSlugLayoutAppsRoute = ChainSlugLayoutAppsImport.update({
   path: '/apps',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
+
+const ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute =
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressImport.update({
+    id: '/workerpool/$workerpoolAddress',
+    path: '/workerpool/$workerpoolAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+
+const ChainSlugLayoutTxTxAddressRoute = ChainSlugLayoutTxTxAddressImport.update(
+  {
+    id: '/tx/$txAddress',
+    path: '/tx/$txAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any,
+)
+
+const ChainSlugLayoutTaskTaskAddressRoute =
+  ChainSlugLayoutTaskTaskAddressImport.update({
+    id: '/task/$taskAddress',
+    path: '/task/$taskAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+
+const ChainSlugLayoutDealDealAddressRoute =
+  ChainSlugLayoutDealDealAddressImport.update({
+    id: '/deal/$dealAddress',
+    path: '/deal/$dealAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+
+const ChainSlugLayoutDatasetDatasetAddressRoute =
+  ChainSlugLayoutDatasetDatasetAddressImport.update({
+    id: '/dataset/$datasetAddress',
+    path: '/dataset/$datasetAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+
+const ChainSlugLayoutAppAppAddressRoute =
+  ChainSlugLayoutAppAppAddressImport.update({
+    id: '/app/$appAddress',
+    path: '/app/$appAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+
+const ChainSlugLayoutAddressAddressAddressRoute =
+  ChainSlugLayoutAddressAddressAddressImport.update({
+    id: '/address/$addressAddress',
+    path: '/address/$addressAddress',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -150,6 +207,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChainSlugLayoutIndexImport
       parentRoute: typeof ChainSlugLayoutImport
     }
+    '/$chainSlug/_layout/address/$addressAddress': {
+      id: '/$chainSlug/_layout/address/$addressAddress'
+      path: '/address/$addressAddress'
+      fullPath: '/$chainSlug/address/$addressAddress'
+      preLoaderRoute: typeof ChainSlugLayoutAddressAddressAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
+    '/$chainSlug/_layout/app/$appAddress': {
+      id: '/$chainSlug/_layout/app/$appAddress'
+      path: '/app/$appAddress'
+      fullPath: '/$chainSlug/app/$appAddress'
+      preLoaderRoute: typeof ChainSlugLayoutAppAppAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
+    '/$chainSlug/_layout/dataset/$datasetAddress': {
+      id: '/$chainSlug/_layout/dataset/$datasetAddress'
+      path: '/dataset/$datasetAddress'
+      fullPath: '/$chainSlug/dataset/$datasetAddress'
+      preLoaderRoute: typeof ChainSlugLayoutDatasetDatasetAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
+    '/$chainSlug/_layout/deal/$dealAddress': {
+      id: '/$chainSlug/_layout/deal/$dealAddress'
+      path: '/deal/$dealAddress'
+      fullPath: '/$chainSlug/deal/$dealAddress'
+      preLoaderRoute: typeof ChainSlugLayoutDealDealAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
+    '/$chainSlug/_layout/task/$taskAddress': {
+      id: '/$chainSlug/_layout/task/$taskAddress'
+      path: '/task/$taskAddress'
+      fullPath: '/$chainSlug/task/$taskAddress'
+      preLoaderRoute: typeof ChainSlugLayoutTaskTaskAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
+    '/$chainSlug/_layout/tx/$txAddress': {
+      id: '/$chainSlug/_layout/tx/$txAddress'
+      path: '/tx/$txAddress'
+      fullPath: '/$chainSlug/tx/$txAddress'
+      preLoaderRoute: typeof ChainSlugLayoutTxTxAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
+    '/$chainSlug/_layout/workerpool/$workerpoolAddress': {
+      id: '/$chainSlug/_layout/workerpool/$workerpoolAddress'
+      path: '/workerpool/$workerpoolAddress'
+      fullPath: '/$chainSlug/workerpool/$workerpoolAddress'
+      preLoaderRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressImport
+      parentRoute: typeof ChainSlugLayoutImport
+    }
   }
 }
 
@@ -162,6 +268,13 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutTasksRoute: typeof ChainSlugLayoutTasksRoute
   ChainSlugLayoutWorkerpoolsRoute: typeof ChainSlugLayoutWorkerpoolsRoute
   ChainSlugLayoutIndexRoute: typeof ChainSlugLayoutIndexRoute
+  ChainSlugLayoutAddressAddressAddressRoute: typeof ChainSlugLayoutAddressAddressAddressRoute
+  ChainSlugLayoutAppAppAddressRoute: typeof ChainSlugLayoutAppAppAddressRoute
+  ChainSlugLayoutDatasetDatasetAddressRoute: typeof ChainSlugLayoutDatasetDatasetAddressRoute
+  ChainSlugLayoutDealDealAddressRoute: typeof ChainSlugLayoutDealDealAddressRoute
+  ChainSlugLayoutTaskTaskAddressRoute: typeof ChainSlugLayoutTaskTaskAddressRoute
+  ChainSlugLayoutTxTxAddressRoute: typeof ChainSlugLayoutTxTxAddressRoute
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
@@ -171,6 +284,16 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
   ChainSlugLayoutTasksRoute: ChainSlugLayoutTasksRoute,
   ChainSlugLayoutWorkerpoolsRoute: ChainSlugLayoutWorkerpoolsRoute,
   ChainSlugLayoutIndexRoute: ChainSlugLayoutIndexRoute,
+  ChainSlugLayoutAddressAddressAddressRoute:
+    ChainSlugLayoutAddressAddressAddressRoute,
+  ChainSlugLayoutAppAppAddressRoute: ChainSlugLayoutAppAppAddressRoute,
+  ChainSlugLayoutDatasetDatasetAddressRoute:
+    ChainSlugLayoutDatasetDatasetAddressRoute,
+  ChainSlugLayoutDealDealAddressRoute: ChainSlugLayoutDealDealAddressRoute,
+  ChainSlugLayoutTaskTaskAddressRoute: ChainSlugLayoutTaskTaskAddressRoute,
+  ChainSlugLayoutTxTxAddressRoute: ChainSlugLayoutTxTxAddressRoute,
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
+    ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
 }
 
 const ChainSlugLayoutRouteWithChildren = ChainSlugLayoutRoute._addFileChildren(
@@ -198,6 +321,13 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/': typeof ChainSlugLayoutIndexRoute
+  '/$chainSlug/address/$addressAddress': typeof ChainSlugLayoutAddressAddressAddressRoute
+  '/$chainSlug/app/$appAddress': typeof ChainSlugLayoutAppAppAddressRoute
+  '/$chainSlug/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
+  '/$chainSlug/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
+  '/$chainSlug/task/$taskAddress': typeof ChainSlugLayoutTaskTaskAddressRoute
+  '/$chainSlug/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
+  '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 export interface FileRoutesByTo {
@@ -208,6 +338,13 @@ export interface FileRoutesByTo {
   '/$chainSlug/deals': typeof ChainSlugLayoutDealsRoute
   '/$chainSlug/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
+  '/$chainSlug/address/$addressAddress': typeof ChainSlugLayoutAddressAddressAddressRoute
+  '/$chainSlug/app/$appAddress': typeof ChainSlugLayoutAppAppAddressRoute
+  '/$chainSlug/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
+  '/$chainSlug/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
+  '/$chainSlug/task/$taskAddress': typeof ChainSlugLayoutTaskTaskAddressRoute
+  '/$chainSlug/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
+  '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 export interface FileRoutesById {
@@ -221,6 +358,13 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/_layout/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/_layout/': typeof ChainSlugLayoutIndexRoute
+  '/$chainSlug/_layout/address/$addressAddress': typeof ChainSlugLayoutAddressAddressAddressRoute
+  '/$chainSlug/_layout/app/$appAddress': typeof ChainSlugLayoutAppAppAddressRoute
+  '/$chainSlug/_layout/dataset/$datasetAddress': typeof ChainSlugLayoutDatasetDatasetAddressRoute
+  '/$chainSlug/_layout/deal/$dealAddress': typeof ChainSlugLayoutDealDealAddressRoute
+  '/$chainSlug/_layout/task/$taskAddress': typeof ChainSlugLayoutTaskTaskAddressRoute
+  '/$chainSlug/_layout/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
+  '/$chainSlug/_layout/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
 export interface FileRouteTypes {
@@ -234,6 +378,13 @@ export interface FileRouteTypes {
     | '/$chainSlug/tasks'
     | '/$chainSlug/workerpools'
     | '/$chainSlug/'
+    | '/$chainSlug/address/$addressAddress'
+    | '/$chainSlug/app/$appAddress'
+    | '/$chainSlug/dataset/$datasetAddress'
+    | '/$chainSlug/deal/$dealAddress'
+    | '/$chainSlug/task/$taskAddress'
+    | '/$chainSlug/tx/$txAddress'
+    | '/$chainSlug/workerpool/$workerpoolAddress'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -243,6 +394,13 @@ export interface FileRouteTypes {
     | '/$chainSlug/deals'
     | '/$chainSlug/tasks'
     | '/$chainSlug/workerpools'
+    | '/$chainSlug/address/$addressAddress'
+    | '/$chainSlug/app/$appAddress'
+    | '/$chainSlug/dataset/$datasetAddress'
+    | '/$chainSlug/deal/$dealAddress'
+    | '/$chainSlug/task/$taskAddress'
+    | '/$chainSlug/tx/$txAddress'
+    | '/$chainSlug/workerpool/$workerpoolAddress'
   id:
     | '__root__'
     | '/'
@@ -254,6 +412,13 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/tasks'
     | '/$chainSlug/_layout/workerpools'
     | '/$chainSlug/_layout/'
+    | '/$chainSlug/_layout/address/$addressAddress'
+    | '/$chainSlug/_layout/app/$appAddress'
+    | '/$chainSlug/_layout/dataset/$datasetAddress'
+    | '/$chainSlug/_layout/deal/$dealAddress'
+    | '/$chainSlug/_layout/task/$taskAddress'
+    | '/$chainSlug/_layout/tx/$txAddress'
+    | '/$chainSlug/_layout/workerpool/$workerpoolAddress'
   fileRoutesById: FileRoutesById
 }
 
@@ -299,7 +464,14 @@ export const routeTree = rootRoute
         "/$chainSlug/_layout/deals",
         "/$chainSlug/_layout/tasks",
         "/$chainSlug/_layout/workerpools",
-        "/$chainSlug/_layout/"
+        "/$chainSlug/_layout/",
+        "/$chainSlug/_layout/address/$addressAddress",
+        "/$chainSlug/_layout/app/$appAddress",
+        "/$chainSlug/_layout/dataset/$datasetAddress",
+        "/$chainSlug/_layout/deal/$dealAddress",
+        "/$chainSlug/_layout/task/$taskAddress",
+        "/$chainSlug/_layout/tx/$txAddress",
+        "/$chainSlug/_layout/workerpool/$workerpoolAddress"
       ]
     },
     "/$chainSlug/_layout/apps": {
@@ -324,6 +496,34 @@ export const routeTree = rootRoute
     },
     "/$chainSlug/_layout/": {
       "filePath": "$chainSlug/_layout/index.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/address/$addressAddress": {
+      "filePath": "$chainSlug/_layout/address/$addressAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/app/$appAddress": {
+      "filePath": "$chainSlug/_layout/app/$appAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/dataset/$datasetAddress": {
+      "filePath": "$chainSlug/_layout/dataset/$datasetAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/deal/$dealAddress": {
+      "filePath": "$chainSlug/_layout/deal/$dealAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/task/$taskAddress": {
+      "filePath": "$chainSlug/_layout/task/$taskAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/tx/$txAddress": {
+      "filePath": "$chainSlug/_layout/tx/$txAddress.tsx",
+      "parent": "/$chainSlug/_layout"
+    },
+    "/$chainSlug/_layout/workerpool/$workerpoolAddress": {
+      "filePath": "$chainSlug/_layout/workerpool/$workerpoolAddress.tsx",
       "parent": "/$chainSlug/_layout"
     }
   }

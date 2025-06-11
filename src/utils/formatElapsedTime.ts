@@ -1,8 +1,11 @@
-export function formatElapsedTime(timestamp: string): string {
-  if (!timestamp) {
+export function formatElapsedTime(timestamp: string | number): string {
+  if (timestamp == null || isNaN(Number(timestamp))) {
     return '?';
   }
-  const elapsedTime = Date.now() - new Date(Number(timestamp) * 1000).getTime();
+
+  const timeMs = Number(timestamp) * 1000;
+  const elapsedTime = Date.now() - timeMs;
+
   if (elapsedTime < 0) {
     if (elapsedTime / 1000 > -60) {
       return 'in a few seconds';
@@ -28,13 +31,14 @@ export function formatElapsedTime(timestamp: string): string {
   return (elapsedTime / 1000 / 60 / 60 / 24).toFixed(0) + 'd ago';
 }
 
-export function readableDate(timestamp: string): string {
-  if (!timestamp) {
+export function readableDate(timestamp: string | number): string {
+  if (timestamp == null || isNaN(Number(timestamp))) {
     return '?';
   }
-  const date = new Date(Number(timestamp) * 1000);
+
+  const date = new Date(Number(Number(timestamp)) * 1000);
+
   return date.toLocaleDateString('en-US', {
-    // weekday: 'long',
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -43,4 +47,11 @@ export function readableDate(timestamp: string): string {
     second: '2-digit',
     hour12: false,
   });
+}
+
+export function formatDateCompact(timestamp: string | number): string {
+  const date = new Date(Number(Number(timestamp)) * 1000);
+  const dateStr = date.toString();
+  const trimmed = dateStr.replace(/\s\([^)]*\)$/, '');
+  return `(${trimmed})`;
 }

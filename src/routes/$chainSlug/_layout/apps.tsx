@@ -6,12 +6,13 @@ import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
 import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/apps')({
   component: AppsRoute,
@@ -21,6 +22,7 @@ function useAppsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
+  const queryKey = [chainId, 'apps', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey: [chainId, 'apps', currentPage],
@@ -28,11 +30,13 @@ function useAppsData(currentPage: number) {
         execute(appsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'apps-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'apps-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAppsQuery, chainId, {
         length: TABLE_LENGTH * 2,
@@ -40,6 +44,7 @@ function useAppsData(currentPage: number) {
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextApps = nextData?.apps ?? [];
@@ -76,7 +81,6 @@ function AppsRoute() {
   return (
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-10" />
-
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
         <Box size="20" />
         Apps deployed
@@ -89,13 +93,7 @@ function AppsRoute() {
       </h1>
 
       {hasPastError && !data.length ? (
-        <Alert variant="destructive" className="mx-auto w-fit text-left">
-          <Terminal className="h-4 w-4" />
-          <AlertTitle>Error</AlertTitle>
-          <AlertDescription>
-            A error occurred during apps loading.
-          </AlertDescription>
-        </Alert>
+        <ErrorAlert message="An error occurred during apps loading." />
       ) : (
         <DataTable
           columns={columns}

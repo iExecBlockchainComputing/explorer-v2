@@ -11,7 +11,7 @@ export const Route = createRootRoute({
 
 function Root() {
   return (
-    <div className="mx-auto mb-20 w-full px-6 md:px-10 lg:px-20">
+    <div className="mx-auto mb-20 w-full px-4 md:px-10 lg:px-20">
       <ChainSyncManager />
       <Navbar />
       <UnsupportedChain />

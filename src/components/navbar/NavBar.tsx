@@ -1,4 +1,3 @@
-import { Link } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
@@ -18,12 +17,12 @@ export function Navbar() {
   };
 
   return (
-    <div className="flex items-center justify-between pt-6 lg:pt-3">
+    <div className="flex items-center justify-between py-6 lg:py-3">
       <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
       </ChainLink>
-      <div className="mr-6 flex items-center gap-4 md:mr-0">
+      <div className="mr-8 flex items-center gap-4 md:mr-0">
         {isConnected && (
           <div className="hidden md:flex">
             <Button variant="link" asChild className="text-white">
