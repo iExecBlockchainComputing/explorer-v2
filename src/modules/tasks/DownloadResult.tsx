@@ -46,7 +46,9 @@ export function DownloadResult({
     isError,
   } = useMutation({
     mutationFn: async () => {
-      const { location } = taskResultToObject(taskResults);
+      const { location } = taskResultToObject(taskResults) as {
+        location?: string;
+      };
 
       if (!location) throw new Error('Invalid location');
       await fetchZipFromIpfs(taskid, location);
