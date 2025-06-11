@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -20,6 +20,7 @@ import { AddressRequestedTasksTable } from '@/modules/addresses/address/requests
 import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools/AddressWorkerpoolsTable';
 import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
   '/$chainSlug/_layout/address/$addressAddress'
@@ -28,16 +29,17 @@ export const Route = createFileRoute(
 });
 
 function useAddressData(address: string, chainId: number) {
+  const queryKey = [chainId, 'address', address];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', address],
+      queryKey,
       queryFn: () =>
         execute(addressQuery, chainId, {
           length: TABLE_LENGTH,
           address,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
-      placeholderData: keepPreviousData,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 

@@ -23,7 +23,7 @@ function useAppDealsData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['app', 'deals', appAddress],
+      queryKey: [chainId, 'app', 'deals', appAddress],
       queryFn: () =>
         execute(appDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
@@ -35,7 +35,7 @@ function useAppDealsData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'deals-next', currentPage],
+    queryKey: [chainId, 'app', 'deals-next', currentPage],
     queryFn: () =>
       execute(nextAppDealsQuery, chainId, {
         length: DETAIL_TABLE_LENGTH * 2,

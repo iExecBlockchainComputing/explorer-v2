@@ -23,7 +23,13 @@ function useAddressContributionData({
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'contribution', addressAddress, currentPage],
+      queryKey: [
+        chainId,
+        'address',
+        'contribution',
+        addressAddress,
+        currentPage,
+      ],
       queryFn: () =>
         execute(addressContributionQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -35,7 +41,13 @@ function useAddressContributionData({
   );
 
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'contribution-next', addressAddress, currentPage],
+    queryKey: [
+      chainId,
+      'address',
+      'contribution-next',
+      addressAddress,
+      currentPage,
+    ],
     queryFn: () =>
       execute(nextAddressContributionQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,

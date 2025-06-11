@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
@@ -11,15 +11,17 @@ import { buildTransactionDetails } from '@/modules/transactions/transaction/buil
 import { transactionEventQuery } from '@/modules/transactions/transaction/transactionEventQuery';
 import { transactionQuery } from '@/modules/transactions/transaction/transactionQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
   component: TransactionsRoute,
 });
 
 function useTransactionData(transactionAddress: string, chainId: number) {
+  const queryKey = [chainId, 'transaction', transactionAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['transaction', transactionAddress],
+      queryKey,
       queryFn: async () => {
         const transactionData = await execute(transactionQuery, chainId, {
           length: TABLE_LENGTH,
@@ -43,7 +45,7 @@ function useTransactionData(transactionAddress: string, chainId: number) {
         return { transaction };
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
-      placeholderData: keepPreviousData,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
