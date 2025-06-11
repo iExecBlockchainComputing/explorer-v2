@@ -75,7 +75,7 @@ export function ClaimButton({
       } catch (error) {
         console.error(`Failed to claim:`, error);
       }
-      await sleep(3_000); // wait to allow subgraph to synchronize before invalidating the data
+      await sleep(5_000); // wait to allow subgraph to synchronize before invalidating the data
     },
     onSuccess: claimCallback,
     onError: claimCallback,
