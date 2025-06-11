@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
@@ -11,6 +11,7 @@ import { buildWorkerpoolDetails } from '@/modules/workerpools/workerpool/buildWo
 import { WorkerpoolBreadcrumbs } from '@/modules/workerpools/workerpool/workerpoolBreadcrumbs';
 import { workerpoolQuery } from '@/modules/workerpools/workerpool/workerpoolQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
   '/$chainSlug/_layout/workerpool/$workerpoolAddress'
@@ -19,9 +20,10 @@ export const Route = createFileRoute(
 });
 
 function useWorkerpoolData(workerpoolAddress: string, chainId: number) {
+  const queryKey = [chainId, 'workerpool', workerpoolAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'workerpool', workerpoolAddress],
+      queryKey,
       queryFn: () =>
         execute(workerpoolQuery, chainId, {
           length: TABLE_LENGTH,
@@ -29,7 +31,7 @@ function useWorkerpoolData(workerpoolAddress: string, chainId: number) {
           workerpoolAddressString: workerpoolAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
-      placeholderData: keepPreviousData,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
