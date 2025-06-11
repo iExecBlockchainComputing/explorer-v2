@@ -72,6 +72,8 @@ function AddressRoute() {
   const disabledTabs: number[] = [];
   const disabledReasons: Record<number, string> = {};
 
+  // TODO like for other tab we have to check REQUESTS
+
   if (!address?.allContributions?.length) {
     disabledTabs.push(2);
     disabledReasons[2] = 'No contributions for this address.';
