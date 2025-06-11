@@ -46,9 +46,6 @@ function TasksRoute() {
     hasPastError,
   } = useTaskData(taskAddress, chainId!);
 
-  // if (!task) {
-  //   return <p>Hum there is nothing here..</p>;
-  // }
   const taskDetails = task
     ? buildTaskDetails({ task, isConnected })
     : undefined;

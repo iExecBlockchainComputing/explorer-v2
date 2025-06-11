@@ -50,9 +50,6 @@ function DealsRoute() {
     hasPastError,
   } = useDealData(dealAddress, chainId!);
 
-  // if (!deal) {
-  //   return <p>Hum there is nothing here..</p>;
-  // }
   const dealDetails = deal
     ? buildDealDetails({ deal, isConnected })
     : undefined;

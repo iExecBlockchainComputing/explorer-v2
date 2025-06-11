@@ -67,9 +67,6 @@ function TransactionsRoute() {
     hasPastError,
   } = useTransactionData(txAddress, chainId!);
 
-  // if (!transaction) {
-  //   return <p>Hum there is nothing here..</p>;
-  // }
   const transactionDetails = transaction
     ? buildTransactionDetails({ transaction, isConnected })
     : undefined;
