@@ -36,7 +36,7 @@ function useTaskData(taskAddress: string, chainId: number) {
 }
 
 function TasksRoute() {
-  const { chainId, isConnected } = useUserStore();
+  const { chainId } = useUserStore();
   const { taskAddress } = Route.useParams();
   const {
     data: task,
@@ -46,9 +46,7 @@ function TasksRoute() {
     hasPastError,
   } = useTaskData(taskAddress, chainId!);
 
-  const taskDetails = task
-    ? buildTaskDetails({ task, isConnected })
-    : undefined;
+  const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
   return (
     <div className="mt-8 flex flex-col gap-6">
