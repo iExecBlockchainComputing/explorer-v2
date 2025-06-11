@@ -12,6 +12,7 @@ import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
 import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/tasks')({
   component: TasksRoute,
@@ -21,18 +22,21 @@ function useTasksData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
+  const queryKey = [chainId, 'tasks', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'tasks', currentPage],
+      queryKey,
       queryFn: () =>
         execute(tasksQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'tasks-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'tasks-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextTasksQuery, chainId, {
         length: TABLE_LENGTH * 2,
@@ -40,6 +44,7 @@ function useTasksData(currentPage: number) {
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextTasks = nextData?.tasks ?? [];

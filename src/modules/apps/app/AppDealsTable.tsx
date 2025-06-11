@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { appDealsQuery } from './appDealsQuery';
 import { nextAppDealsQuery } from './nextAppDealsQuery';
 
@@ -21,6 +22,7 @@ function useAppDealsData({
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
 
+  const queryKey = [chainId, 'app', 'deals', appAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey: [chainId, 'app', 'deals', appAddress],
@@ -31,11 +33,13 @@ function useAppDealsData({
           appAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'app', 'deals-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'app', 'deals-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAppDealsQuery, chainId, {
         length: DETAIL_TABLE_LENGTH * 2,
@@ -43,6 +47,7 @@ function useAppDealsData({
         appAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDeals = nextData?.app?.deals ?? [];

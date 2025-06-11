@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { datasetDealsQuery } from './datasetDealsQuery';
 import { nextDatasetDealsQuery } from './nextDatasetDealsQuery';
 
@@ -21,9 +22,10 @@ function useDatasetDealsData({
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
 
+  const queryKey = [chainId, 'dataset', 'deals', datasetAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'dataset', 'deals', datasetAddress],
+      queryKey,
       queryFn: () =>
         execute(datasetDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
@@ -31,9 +33,11 @@ function useDatasetDealsData({
           datasetAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'dataset', 'deals-next', currentPage];
   const { data: nextData } = useQuery({
     queryKey: [chainId, 'dataset', 'deals-next', currentPage],
     queryFn: () =>
@@ -43,6 +47,7 @@ function useDatasetDealsData({
         datasetAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDeals = nextData?.dataset?.deals ?? [];

@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/apps/appsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressAppsQuery } from './addressAppsQuery';
 import { nextAddressAppsQuery } from './nextAddressAppsQuery';
 
@@ -21,9 +22,10 @@ function useAddressAppsData({
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
 
+  const queryKey = [chainId, 'address', 'apps', addressAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'address', 'apps', addressAddress, currentPage],
+      queryKey,
       queryFn: () =>
         execute(addressAppsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -31,11 +33,19 @@ function useAddressAppsData({
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [
+    chainId,
+    'address',
+    'apps-next',
+    addressAddress,
+    currentPage,
+  ];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'address', 'apps-next', addressAddress, currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAddressAppsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -43,6 +53,7 @@ function useAddressAppsData({
         address: addressAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextApps = nextData?.account?.apps ?? [];

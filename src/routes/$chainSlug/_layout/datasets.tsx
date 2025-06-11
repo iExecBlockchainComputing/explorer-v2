@@ -12,6 +12,7 @@ import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { nextDatasetsQuery } from '@/modules/datasets/nextDatasetsQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
   component: DatasetsRoute,
@@ -21,18 +22,21 @@ function useDatasetsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
+  const queryKey = [chainId, 'datasets', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'datasets', currentPage],
+      queryKey,
       queryFn: () =>
         execute(datasetsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'datasets-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'datasets-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextDatasetsQuery, chainId, {
         length: TABLE_LENGTH * 2,
@@ -40,6 +44,7 @@ function useDatasetsData(currentPage: number) {
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDatasets = nextData?.datasets ?? [];

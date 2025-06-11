@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressWorkerpoolsQuery } from './addressWorkerpoolsQuery';
 import { nextAddressWorkerpoolsQuery } from './nextAddressWorkerpoolsQuery';
 
@@ -21,15 +22,16 @@ function useAddressWorkerpoolsData({
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
 
+  const queryKey = [
+    chainId,
+    'address',
+    'workerpools',
+    addressAddress,
+    currentPage,
+  ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [
-        chainId,
-        'address',
-        'workerpools',
-        addressAddress,
-        currentPage,
-      ],
+      queryKey,
       queryFn: () =>
         execute(addressWorkerpoolsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -37,17 +39,19 @@ function useAddressWorkerpoolsData({
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [
+    chainId,
+    'address',
+    'workerpools-next',
+    addressAddress,
+    currentPage,
+  ];
   const { data: nextData } = useQuery({
-    queryKey: [
-      chainId,
-      'address',
-      'workerpools-next',
-      addressAddress,
-      currentPage,
-    ],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAddressWorkerpoolsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -55,6 +59,7 @@ function useAddressWorkerpoolsData({
         address: addressAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextWorkerpools = nextData?.account?.workerpools ?? [];

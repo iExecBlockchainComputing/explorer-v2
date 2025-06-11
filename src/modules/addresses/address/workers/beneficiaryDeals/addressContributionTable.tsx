@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressContributionQuery } from './addressContributionQuery';
 import { nextAddressContributionQuery } from './nextAddressContributionQuery';
 
@@ -21,15 +22,16 @@ function useAddressContributionData({
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
 
+  const queryKey = [
+    chainId,
+    'address',
+    'contribution',
+    addressAddress,
+    currentPage,
+  ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [
-        chainId,
-        'address',
-        'contribution',
-        addressAddress,
-        currentPage,
-      ],
+      queryKey,
       queryFn: () =>
         execute(addressContributionQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -37,17 +39,19 @@ function useAddressContributionData({
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [
+    chainId,
+    'address',
+    'contribution-next',
+    addressAddress,
+    currentPage,
+  ];
   const { data: nextData } = useQuery({
-    queryKey: [
-      chainId,
-      'address',
-      'contribution-next',
-      addressAddress,
-      currentPage,
-    ],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAddressContributionQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -55,6 +59,7 @@ function useAddressContributionData({
         address: addressAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextContribution = nextData?.account?.contributions ?? [];

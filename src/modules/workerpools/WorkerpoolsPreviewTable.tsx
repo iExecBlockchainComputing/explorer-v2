@@ -7,14 +7,17 @@ import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { ErrorAlert } from '../ErrorAlert';
 import { workerpoolsQuery } from './workerpoolsQuery';
 import { columns } from './workerpoolsTable/columns';
 
 export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+
+  const queryKey = [chainId, 'workerpools_preview'];
   const workerpools = useQuery({
-    queryKey: [chainId, 'workerpools_preview'],
+    queryKey,
     queryFn: () =>
       execute(workerpoolsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
@@ -22,6 +25,7 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
       }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
   const formattedData =

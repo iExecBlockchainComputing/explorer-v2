@@ -7,14 +7,17 @@ import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { ErrorAlert } from '../ErrorAlert';
 import { dealsQuery } from './dealsQuery';
 import { columns } from './dealsTable/columns';
 
 export function DealsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+
+  const queryKey = [chainId, 'deals_preview'];
   const deals = useQuery({
-    queryKey: [chainId, 'deals_preview'],
+    queryKey,
     queryFn: () =>
       execute(dealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
@@ -22,6 +25,7 @@ export function DealsPreviewTable({ className }: { className?: string }) {
       }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
   const formattedData =

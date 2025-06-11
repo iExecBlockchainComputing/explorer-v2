@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { nextWorkerpoolDealsQuery } from './nextWorkerpoolDealsQuery';
 import { workerpoolDealsQuery } from './workerpoolDealsQuery';
 
@@ -21,9 +22,10 @@ function useWorkerpoolDealsData({
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
 
+  const queryKey = [chainId, 'workerpool', 'deals', workerpoolAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'workerpool', 'deals', workerpoolAddress],
+      queryKey,
       queryFn: () =>
         execute(workerpoolDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
@@ -31,11 +33,13 @@ function useWorkerpoolDealsData({
           workerpoolAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'workerpool', 'deals-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'workerpool', 'deals-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextWorkerpoolDealsQuery, chainId, {
         length: DETAIL_TABLE_LENGTH * 2,
@@ -43,6 +47,7 @@ function useWorkerpoolDealsData({
         workerpoolAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDeals = nextData?.workerpool?.deals ?? [];
