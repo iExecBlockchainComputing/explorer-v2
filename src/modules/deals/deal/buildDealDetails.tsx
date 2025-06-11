@@ -162,7 +162,7 @@ export function buildDealDetails({
                   <>
                     CLAIMABLE
                     <ClaimButton
-                      tasks={deal.tasks}
+                      taskOrDeal={deal}
                       className="text-white underline"
                     />
                   </>
