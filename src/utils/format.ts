@@ -12,10 +12,10 @@ export const multiaddrHexToHuman = (hexString: string): string => {
   return res;
 };
 
-export const taskResultToObject = (results) => {
+export const taskResultToObject = (results?: string | null) => {
   let resultObj = { storage: 'none' };
   try {
-    if (results !== '0x') {
+    if (results && results !== '0x') {
       resultObj = JSON.parse(
         Buffer.from(results.substr(2), 'hex').toString('utf8')
       );
