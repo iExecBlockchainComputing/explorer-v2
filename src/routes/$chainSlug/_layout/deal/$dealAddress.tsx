@@ -6,12 +6,12 @@ import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
 import { Tabs } from '@/modules/Tabs';
 import { DealBreadcrumbs } from '@/modules/deals/deal/DealBreadcrumbs';
 import { DealTasksTable } from '@/modules/deals/deal/DealTasksTable';
 import { buildDealDetails } from '@/modules/deals/deal/buildDealDetails';
 import { dealQuery } from '@/modules/deals/deal/dealQuery';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
