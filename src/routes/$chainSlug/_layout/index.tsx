@@ -18,7 +18,7 @@ function Index() {
 
   return (
     <div className="flex flex-col gap-10 pt-10 sm:mt-6 sm:gap-20 md:mt-10">
-      <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full max-w-[1408px] overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
+      <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full max-w-[1408px] sm:overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
         <h1 className="mb-2 text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
         </h1>
