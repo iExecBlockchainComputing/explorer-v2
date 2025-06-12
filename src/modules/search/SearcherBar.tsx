@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { Search } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,8 @@ import { searchQuery } from './searchQuery';
 export function SearcherBar({ className }: { className?: string }) {
   const { isConnected, address: userAddress, chainId } = useUserStore();
   const [inputValue, setInputValue] = useState('');
+  const [shake, setShake] = useState(false);
+  const [errorCount, setErrorCount] = useState(0);
 
   const navigate = useNavigate();
 
@@ -23,68 +25,86 @@ export function SearcherBar({ className }: { className?: string }) {
     slug: string,
     value: string
   ) => {
-    const routes = [
-      'deal',
-      'task',
-      'dataset',
-      'app',
-      'workerpool',
-      'account',
-      'tx',
-    ];
-    for (const key of routes) {
-      if (data[key]) {
-        navigate({
-          to: `/${slug}/${key === 'account' ? 'address' : key}/${value}`,
-        });
+    const entityToRoute: Record<string, string> = {
+      deal: 'deal',
+      task: 'task',
+      dataset: 'dataset',
+      app: 'app',
+      workerpool: 'workerpool',
+      account: 'address',
+      transaction: 'tx',
+    };
+
+    for (const [entityKey, routePath] of Object.entries(entityToRoute)) {
+      if (data[entityKey]) {
+        navigate({ to: `/${slug}/${routePath}/${value}` });
         return;
       }
     }
-    navigate({ to: '/search', search: { q: value } });
-    // Show error message ender search bar instead
+    throw new Error('An error occurred please try again');
   };
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (address: string) => {
-      return await execute(searchQuery, chainId, {
-        search: address,
+  const { mutate, isPending, isError, error } = useMutation({
+    mutationKey: ['search', inputValue],
+    mutationFn: async (value: string) => {
+      const isValid =
+        value.length === 42 || // address
+        value.length === 66 || // tx, deal, task hash
+        value.endsWith('.eth'); // ENS
+
+      if (!isValid) {
+        throw new Error('Invalid value');
+      }
+
+      let resolvedValue = value;
+
+      if (value.endsWith('.eth')) {
+        const iexec = await getIExec();
+        const resolved = await iexec.ens.resolveName(value);
+        if (!resolved) {
+          throw new Error(`Fail to resolve ENS : ${value}`);
+        }
+        resolvedValue = resolved.toLowerCase();
+      }
+
+      const result = await execute(searchQuery, chainId, {
+        search: resolvedValue,
       });
+
+      const isEmpty = Object.values(result).every((v) => v === null);
+      if (isEmpty) {
+        throw new Error('No data found');
+      }
+      console.log(result);
+      return result;
     },
-    onSuccess: (data, address) => {
+
+    onSuccess: (data, input) => {
       const chainSlug = getChainFromId(chainId)?.slug;
       if (!chainSlug) return;
-      navigateToEntity(data, chainSlug, address);
+      navigateToEntity(data, chainSlug, input.trim().toLowerCase());
     },
-    onError: (err, address) => {
+
+    onError: (err, input) => {
       console.error('Search error:', err);
-      navigate({ to: '/search', search: { q: address } });
-      // TODO Show error message under search bar if needed
+      requestAnimationFrame(() => {
+        setErrorCount((prev) => prev + 1);
+      });
     },
   });
 
-  const handleSearch = async () => {
+  useEffect(() => {
+    if (errorCount > 0) {
+      setShake(true);
+      const timer = setTimeout(() => setShake(false), 1_000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorCount]);
+
+  const handleSearch = () => {
     const rawValue = inputValue.trim().toLowerCase();
     if (!rawValue) return;
-
-    const isEns = rawValue.endsWith('.eth');
-    let resolvedValue = rawValue;
-
-    if (isEns) {
-      try {
-        const iexec = await getIExec();
-        const resolved = await iexec.ens.resolveName(rawValue);
-        if (!resolved) {
-          console.warn('ENS name not resolved:', rawValue);
-          return navigate({ to: '/search', search: { q: rawValue } });
-        }
-        resolvedValue = resolved.toLowerCase();
-      } catch (err) {
-        console.error('ENS resolution error:', err);
-        return navigate({ to: '/search', search: { q: rawValue } });
-      }
-    }
-
-    mutate(resolvedValue);
+    mutate(rawValue);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -101,10 +121,18 @@ export function SearcherBar({ className }: { className?: string }) {
           disabled={isPending}
           className={cn(
             'bg-input border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
-            isConnected && 'sm:pr-32'
+            isConnected && 'sm:pr-32',
+            isError &&
+              'focus-visible:border-danger-border focus:outline-danger-border focus-visible:ring-danger-border',
+            shake && 'animate-shake'
           )}
           placeholder="Search address, deal id, task id, transaction hash..."
         />
+        {isError && (
+          <p className="bg-danger text-danger-foreground border-danger-border absolute -bottom-8 rounded-full border px-4">
+            {error.message}
+          </p>
+        )}
         <Search
           size="18"
           className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 sm:left-6"
@@ -120,21 +148,19 @@ export function SearcherBar({ className }: { className?: string }) {
         )}
       </div>
 
-      <div className="mt-3 flex justify-center sm:hidden">
-        <Button variant="outline" onClick={handleSearch} disabled={isPending}>
-          {isPending ? 'Searching...' : 'Search'}
-        </Button>
-      </div>
+      <div className={cn('mt-4 flex justify-center gap-4', isError && 'mt-10')}>
+        <div className="flex justify-center sm:hidden">
+          <Button variant="outline" onClick={handleSearch} disabled={isPending}>
+            {isPending ? 'Searching...' : 'Search'}
+          </Button>
+        </div>
 
-      {isConnected && (
-        <Button
-          variant="outline"
-          className="mx-auto mt-4 flex w-fit sm:hidden"
-          asChild
-        >
-          <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
-        </Button>
-      )}
+        {isConnected && (
+          <Button variant="outline" className="sm:hidden" asChild>
+            <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
+          </Button>
+        )}
+      </div>
     </div>
   );
 }
