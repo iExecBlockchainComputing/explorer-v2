@@ -7,15 +7,14 @@ import { useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { getIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
 import { getChainFromId } from '@/utils/chain.utils';
-import { fetchEnsAddress } from '@/utils/fetchEnsAddress';
 import { searchQuery } from './searchQuery';
 
 export function SearcherBar({ className }: { className?: string }) {
   const { isConnected, address: userAddress, chainId } = useUserStore();
   const [inputValue, setInputValue] = useState('');
-  const [ensResolvedAddress, setEnsResolvedAddress] = useState('');
 
   const navigate = useNavigate();
 
@@ -31,7 +30,7 @@ export function SearcherBar({ className }: { className?: string }) {
       'app',
       'workerpool',
       'account',
-      'transaction',
+      'tx',
     ];
     for (const key of routes) {
       if (data[key]) {
@@ -46,21 +45,20 @@ export function SearcherBar({ className }: { className?: string }) {
   };
 
   const { mutate, isPending } = useMutation({
-    mutationFn: async () =>
-      execute(searchQuery, chainId, {
-        search: inputValue.trim().toLowerCase(),
-      }),
-    onSuccess: (data) => {
-      const value = inputValue.trim();
-      if (!value) return;
+    mutationFn: async (address: string) => {
+      return await execute(searchQuery, chainId, {
+        search: address,
+      });
+    },
+    onSuccess: (data, address) => {
       const chainSlug = getChainFromId(chainId)?.slug;
       if (!chainSlug) return;
-      navigateToEntity(data, chainSlug, value);
+      navigateToEntity(data, chainSlug, address);
     },
-    onError: (err) => {
+    onError: (err, address) => {
       console.error('Search error:', err);
-      navigate({ to: '/search', search: { q: inputValue.trim() } });
-      // Show error message ender search bar instead
+      navigate({ to: '/search', search: { q: address } });
+      // TODO Show error message under search bar if needed
     },
   });
 
@@ -68,30 +66,25 @@ export function SearcherBar({ className }: { className?: string }) {
     const rawValue = inputValue.trim().toLowerCase();
     if (!rawValue) return;
 
-    const isEnsName = rawValue.endsWith('.eth');
+    const isEns = rawValue.endsWith('.eth');
+    let resolvedValue = rawValue;
 
-    if (isEnsName) {
+    if (isEns) {
       try {
-        const { data: address } = await fetchEnsAddress({
-          name: rawValue,
-          chainId,
-        });
-        if (address) {
-          setEnsResolvedAddress(address);
-          navigate({
-            to: `/${getChainFromId(chainId)?.slug}/address/${address}`,
-          });
-        } else {
-          // ENS non résolu : fallback vers page de recherche
-          navigate({ to: `/search`, search: { q: rawValue } });
+        const iexec = await getIExec();
+        const resolved = await iexec.ens.resolveName(rawValue);
+        if (!resolved) {
+          console.warn('ENS name not resolved:', rawValue);
+          return navigate({ to: '/search', search: { q: rawValue } });
         }
+        resolvedValue = resolved.toLowerCase();
       } catch (err) {
-        console.error('ENS resolution failed:', err);
-        navigate({ to: `/search`, search: { q: rawValue } });
+        console.error('ENS resolution error:', err);
+        return navigate({ to: '/search', search: { q: rawValue } });
       }
-    } else {
-      mutate();
     }
+
+    mutate(resolvedValue);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
