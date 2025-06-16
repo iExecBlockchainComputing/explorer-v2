@@ -12,6 +12,7 @@ import { Tabs } from '@/modules/Tabs';
 import { AccountBreadcrumbs } from '@/modules/account/AccountBreadcrumbs';
 import { getTabs } from '@/modules/account/getTabs';
 import useUserStore from '@/stores/useUser.store';
+import { getChainFromId } from '@/utils/chain.utils';
 import { rlcToNrlc } from '@/utils/rlcToNrlc';
 import { truncateAddress } from '@/utils/truncateAddress';
 
@@ -51,7 +52,7 @@ function RouteComponent() {
     refetch: refetchTotalToDeposit,
     isError: totalToDepositIsError,
   } = useQuery({
-    queryKey: ['totalToDeposit', userAddress],
+    queryKey: [chainId, 'totalToDeposit', userAddress],
     queryFn: async () => {
       const iexec = await getIExec();
       const wallet = iexec.wallet;
@@ -68,7 +69,7 @@ function RouteComponent() {
     refetch: refetchTotalToWithdraw,
     isError: totalToWithdrawIsError,
   } = useQuery({
-    queryKey: ['totalToWithdraw', userAddress],
+    queryKey: [chainId, 'totalToWithdraw', userAddress],
     queryFn: async () => {
       const iexec = await getIExec();
       const account = iexec.account;
@@ -135,10 +136,13 @@ function RouteComponent() {
   });
 
   useEffect(() => {
-    if (currentTab === tabs.length - 1 && chainId !== SUPPORTED_CHAINS[0].id) {
-      setCurrentTab(currentTab - 1);
+    const chain = getChainFromId(chainId);
+    const bridge = chain?.bridge;
+
+    if (!bridge && currentTab === 2) {
+      setCurrentTab(1);
     }
-  }, [chainId, currentTab, tabs.length]);
+  }, [chainId]);
 
   return (
     <div className="mt-8 flex flex-col gap-10">
@@ -213,10 +217,10 @@ function RouteComponent() {
 
         <div className="border-grey-500 space-y-6 rounded-3xl border p-10">
           <div className="space-y-1.5">
-            <h2>{tabs[currentTab].longTitle}</h2>
-            <p>{tabs[currentTab].desc}</p>
+            <h2>{tabs[currentTab]?.longTitle}</h2>
+            <p>{tabs[currentTab]?.desc}</p>
           </div>
-          {tabs[currentTab].steps && (
+          {tabs[currentTab]?.steps && (
             <>
               <Stepper
                 classname="p-6"
@@ -226,7 +230,7 @@ function RouteComponent() {
               {tabs[currentTab].steps[currentStep]?.content}
             </>
           )}
-          {tabs[currentTab].content && tabs[currentTab].content}
+          {tabs[currentTab]?.content && tabs[currentTab].content}
         </div>
       </div>
     </div>
