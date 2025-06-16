@@ -1,15 +1,18 @@
 import { SUPPORTED_CHAINS } from '@/config';
 import { cn } from '@/lib/utils';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
+import { formatRLC } from 'iexec/utils';
 import { ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Stepper } from '@/components/Stepper';
 import { ChainSelector } from '@/components/navbar/ChainSelector';
+import { getIExec } from '@/externals/iexecSdkClient';
 import { Tabs } from '@/modules/Tabs';
 import { AccountBreadcrumbs } from '@/modules/account/AccountBreadcrumbs';
 import { getTabs } from '@/modules/account/getTabs';
 import useUserStore from '@/stores/useUser.store';
+import { rlcToNrlc } from '@/utils/rlcToNrlc';
 import { truncateAddress } from '@/utils/truncateAddress';
 
 export const Route = createFileRoute('/$chainSlug/_layout/account')({
@@ -17,9 +20,11 @@ export const Route = createFileRoute('/$chainSlug/_layout/account')({
 });
 
 function RouteComponent() {
-  const { address, chainId } = useUserStore();
+  const { address: userAddress, chainId } = useUserStore();
   const [currentTab, setCurrentTab] = useState(0);
   const [currentStep, setCurrentStep] = useState(0);
+  const [depositAmount, setDepositAmount] = useState('0');
+  const [withdrawAmount, setWithdrawAmount] = useState('0');
 
   const disabledTabs: number[] = [];
   const disabledReasons: Record<number, string> = {};
@@ -29,17 +34,105 @@ function RouteComponent() {
     disabledReasons[2] = 'The selected chain has no bridge.';
   }
 
+  const { data: rlcPrice = 0 } = useQuery({
+    queryKey: ['rlcPrice'],
+    queryFn: async () => {
+      const resp = await fetch(
+        'https://api.coingecko.com/api/v3/simple/price?ids=iexec-rlc&vs_currencies=usd'
+      );
+      const json = await resp.json();
+      return json['iexec-rlc']?.usd as number;
+    },
+    refetchInterval: 60_000,
+  });
+
+  const {
+    data: totalToDeposit = 0,
+    refetch: refetchTotalToDeposit,
+    isError: totalToDepositIsError,
+  } = useQuery({
+    queryKey: ['totalToDeposit', userAddress],
+    queryFn: async () => {
+      const iexec = await getIExec();
+      const wallet = iexec.wallet;
+      if (!wallet) throw new Error('Wallet is not initialized');
+      if (!userAddress) throw new Error('userAddress is missing');
+      const balance = await wallet.checkBalances(userAddress);
+      return balance.nRLC.toNumber() as number;
+    },
+    enabled: !!userAddress,
+  });
+
+  const {
+    data: totalToWithdraw = 0,
+    refetch: refetchTotalToWithdraw,
+    isError: totalToWithdrawIsError,
+  } = useQuery({
+    queryKey: ['totalToWithdraw', userAddress],
+    queryFn: async () => {
+      const iexec = await getIExec();
+      const account = iexec.account;
+      if (!account) throw new Error('Account is not initialized');
+      if (!userAddress) throw new Error('userAddress is missing');
+      const balance = await account.checkBalance(userAddress);
+      return balance.stake.toNumber() as number;
+    },
+    enabled: !!userAddress,
+  });
+
   const deposit = useMutation({
-    mutationFn: async () => {},
-    onSuccess: () => setCurrentStep(2),
+    mutationFn: async () => {
+      if (totalToDeposit === 0) {
+        throw new Error('You have nothing to deposit yet.');
+      }
+      const iexec = await getIExec();
+      const account = iexec.account;
+      if (!account) throw new Error('Account is not initialized');
+      setCurrentStep(1);
+      await account.deposit(rlcToNrlc(depositAmount));
+    },
+    onSuccess: () => {
+      refetchTotalToDeposit();
+      setDepositAmount('0');
+      setCurrentStep(2);
+    },
+    onError: () => {
+      setCurrentStep(0);
+    },
   });
 
   const withdraw = useMutation({
-    mutationFn: async () => {},
-    onSuccess: () => setCurrentStep(2),
+    mutationFn: async () => {
+      if (totalToWithdraw === 0) {
+        throw new Error('You have nothing to withdraw yet.');
+      }
+      const iexec = await getIExec();
+      const account = iexec.account;
+      if (!account) throw new Error('Account is not initialized');
+      setCurrentStep(1);
+      await account.withdraw(rlcToNrlc(withdrawAmount));
+    },
+    onSuccess: () => {
+      refetchTotalToWithdraw();
+      setWithdrawAmount('0');
+      setCurrentStep(2);
+    },
+    onError: () => {
+      setCurrentStep(0);
+    },
   });
 
-  const tabs = getTabs({ deposit, withdraw, chainId });
+  const tabs = getTabs({
+    totalToDeposit,
+    totalToWithdraw,
+    depositAmount,
+    setDepositAmount,
+    setWithdrawAmount,
+    withdrawAmount,
+    deposit,
+    withdraw,
+    chainId,
+  });
 
   useEffect(() => {
     if (currentTab === tabs.length - 1 && chainId !== SUPPORTED_CHAINS[0].id) {
@@ -54,7 +147,7 @@ function RouteComponent() {
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
           IExec Wallet Manager
         </h1>
-        <span>{truncateAddress(address, { startLen: 8, endLen: 8 })}</span>
+        <span>{truncateAddress(userAddress, { startLen: 8, endLen: 8 })}</span>
         <ChainSelector />
       </div>
 
@@ -67,9 +160,16 @@ function RouteComponent() {
         >
           <p>Your wallet</p>
           <div className="text-right">
-            0 xRLC
+            {Number(formatRLC(totalToDeposit)).toLocaleString('en', {
+              maximumFractionDigits: 8,
+            })}{' '}
+            xRLC
             <br />
-            $0.00
+            {Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              maximumFractionDigits: 2,
+            }).format(Number(formatRLC(totalToDeposit)) * rlcPrice)}
           </div>
         </div>
         <ArrowRight
@@ -86,9 +186,16 @@ function RouteComponent() {
         >
           <p>Your iExec Account</p>
           <div className="text-right">
-            0 xRLC
+            {Number(formatRLC(totalToWithdraw)).toLocaleString('en', {
+              maximumFractionDigits: 8,
+            })}{' '}
+            xRLC
             <br />
-            $0.00
+            {Intl.NumberFormat('en-US', {
+              style: 'currency',
+              currency: 'USD',
+              maximumFractionDigits: 2,
+            }).format(Number(formatRLC(totalToWithdraw)) * rlcPrice)}
           </div>
         </div>
       </div>

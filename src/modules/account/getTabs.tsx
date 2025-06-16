@@ -1,17 +1,38 @@
 import { SUPPORTED_CHAINS } from '@/config';
 import { DefaultError } from '@tanstack/query-core';
 import { UseMutationResult } from '@tanstack/react-query';
+import { formatRLC } from 'iexec/utils';
 import { LoaderCircle, CheckCircle, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { getChainFromId } from '@/utils/chain.utils';
 
 interface TabsProps {
   deposit: UseMutationResult<void, DefaultError, void>;
   withdraw: UseMutationResult<void, DefaultError, void>;
   chainId: number;
+  totalToDeposit: number;
+  totalToWithdraw: number;
+  depositAmount: string;
+  withdrawAmount: string;
+  setDepositAmount: (amount: string) => void;
+  setWithdrawAmount: (amount: string) => void;
 }
 
-export function getTabs({ deposit, withdraw, chainId }: TabsProps) {
+export function getTabs({
+  deposit,
+  withdraw,
+  chainId,
+  totalToDeposit,
+  totalToWithdraw,
+  depositAmount,
+  withdrawAmount,
+  setDepositAmount,
+  setWithdrawAmount,
+}: TabsProps) {
+  const maxToWithdraw = Number(formatRLC(totalToWithdraw));
+  const maxToDeposit = Number(formatRLC(totalToDeposit));
+
   return [
     {
       title: 'DEPOSIT xRLC',
@@ -29,17 +50,36 @@ export function getTabs({ deposit, withdraw, chainId }: TabsProps) {
               }}
             >
               <div className="relative">
-                <Input className="w-full max-w-80" max={10} />
+                <Input
+                  className="max-w-80 min-w-full pr-11"
+                  type="number"
+                  required
+                  max={maxToDeposit}
+                  value={depositAmount?.toString()}
+                  onChange={(e) => {
+                    setDepositAmount(e.target.value);
+                  }}
+                />
                 <Button
                   type="button"
                   size="xs"
                   variant="outline"
                   className="absolute inset-y-1.5 right-1"
+                  onClick={() => {
+                    setDepositAmount(maxToDeposit.toString());
+                  }}
                 >
                   Max
                 </Button>
               </div>
-              <Button type="submit">Deposit</Button>
+              <Button
+                type="submit"
+                disabled={
+                  depositAmount === '0' || Number(depositAmount) > maxToDeposit
+                }
+              >
+                Deposit
+              </Button>
             </form>
           ),
         },
@@ -79,17 +119,37 @@ export function getTabs({ deposit, withdraw, chainId }: TabsProps) {
               }}
             >
               <div className="relative">
-                <Input className="w-full max-w-80" max={10} />
+                <Input
+                  className="w-full max-w-80 pr-11"
+                  type="number"
+                  required
+                  max={maxToWithdraw}
+                  value={withdrawAmount?.toString()}
+                  onChange={(e) => {
+                    setWithdrawAmount(e.target.value);
+                  }}
+                />
                 <Button
                   type="button"
                   size="xs"
                   variant="outline"
                   className="absolute inset-y-1.5 right-1"
+                  onClick={() => {
+                    setWithdrawAmount(maxToWithdraw.toString());
+                  }}
                 >
                   Max
                 </Button>
               </div>
-              <Button type="submit">Withdraw</Button>
+              <Button
+                type="submit"
+                disabled={
+                  withdrawAmount === '0' ||
+                  Number(withdrawAmount) > maxToWithdraw
+                }
+              >
+                Withdraw
+              </Button>
             </form>
           ),
         },
@@ -116,11 +176,11 @@ export function getTabs({ deposit, withdraw, chainId }: TabsProps) {
     {
       title: 'BRIDGE xRLC/RLC',
       longTitle: 'Bridge your xRLC/RLC between chains',
-      desc: 'Move your xRLC/RLC in your wallet between iExec Sidechain and Ethereum Mainnet with our bridge. ',
+      desc: getChainFromId(chainId)?.bridgeInformation,
       content: (
         <Button asChild>
           <a
-            href="https://bridge-bellecour.iex.ec/"
+            href={getChainFromId(chainId)?.bridge}
             rel="noreferrer"
             target="_blank"
           >
@@ -130,7 +190,8 @@ export function getTabs({ deposit, withdraw, chainId }: TabsProps) {
       ),
     },
   ].filter((tab, index) => {
-    if (index === 2 && chainId !== SUPPORTED_CHAINS[0].id) return false;
+    const chain = getChainFromId(chainId);
+    if (index === 2 && (!chain || !chain.bridge)) return false;
     return true;
   });
 }

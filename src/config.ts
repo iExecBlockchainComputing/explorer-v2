@@ -19,6 +19,9 @@ export const SUPPORTED_CHAINS = [
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+    bridge: 'https://bridge-bellecour.iex.ec/',
+    bridgeInformation:
+      'Move your xRLC/RLC in your wallet between iExec Sidechain and Ethereum Mainnet with our bridge.',
     wagmiNetwork: bellecour,
   },
   {
