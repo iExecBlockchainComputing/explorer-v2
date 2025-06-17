@@ -17,7 +17,7 @@ export const Stepper: React.FC<StepperProps> = ({
 
   return (
     <div
-      className={cn(classname, 'grid gap-y-4')}
+      className={cn('grid gap-y-4', classname)}
       style={{
         gridTemplateColumns: `repeat(${stepsNb}, minmax(0, 1fr))`,
         maxWidth: stepsNb * 350,
