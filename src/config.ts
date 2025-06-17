@@ -9,6 +9,7 @@ export const PREVIEW_TABLE_REFETCH_INTERVAL = 10_000;
 export const TABLE_REFETCH_INTERVAL = 10_000;
 
 export const IPFS_GATEWAY_URL = 'https://ipfs.iex.ec';
+export const API_COINGECKO_URL = 'https://api.coingecko.com/api/v3/simple/';
 
 export const SUPPORTED_CHAINS = [
   {

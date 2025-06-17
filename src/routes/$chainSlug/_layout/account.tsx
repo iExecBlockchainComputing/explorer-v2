@@ -1,4 +1,4 @@
-import { SUPPORTED_CHAINS } from '@/config';
+import { API_COINGECKO_URL, SUPPORTED_CHAINS } from '@/config';
 import { cn } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -10,6 +10,7 @@ import WalletIcon from '@/components/icons/WalletIcon';
 import IexecAccountIcon from '@/components/icons/iexecAccountIcon';
 import { ChainSelector } from '@/components/navbar/ChainSelector';
 import { getIExec } from '@/externals/iexecSdkClient';
+import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AccountBreadcrumbs } from '@/modules/account/AccountBreadcrumbs';
 import { getTabs } from '@/modules/account/getTabs';
@@ -25,9 +26,20 @@ export const Route = createFileRoute('/$chainSlug/_layout/account')({
 function RouteComponent() {
   const { address: userAddress, chainId } = useUserStore();
   const [currentTab, setCurrentTab] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
+  const [depositStep, setDepositStep] = useState(0);
+  const [withdrawStep, setWithdrawStep] = useState(0);
   const [depositAmount, setDepositAmount] = useState('0');
   const [withdrawAmount, setWithdrawAmount] = useState('0');
+  const getStepState = (): [
+    number,
+    React.Dispatch<React.SetStateAction<number>>,
+  ] => {
+    return currentTab === 1
+      ? [withdrawStep, setWithdrawStep]
+      : [depositStep, setDepositStep];
+  };
+
+  const [currentStep] = getStepState();
 
   const disabledTabs: number[] = [];
   const disabledReasons: Record<number, string> = {};
@@ -37,11 +49,11 @@ function RouteComponent() {
     disabledReasons[2] = 'The selected chain has no bridge.';
   }
 
-  const { data: rlcPrice = 0 } = useQuery({
+  const { data: rlcPrice = 0, isError: rlcPriceIsError } = useQuery({
     queryKey: ['rlcPrice'],
     queryFn: async () => {
       const resp = await fetch(
-        'https://api.coingecko.com/api/v3/simple/price?ids=iexec-rlc&vs_currencies=usd'
+        `${API_COINGECKO_URL}price?ids=iexec-rlc&vs_currencies=usd`
       );
       const json = await resp.json();
       return json['iexec-rlc']?.usd as number;
@@ -91,16 +103,16 @@ function RouteComponent() {
       const iexec = await getIExec();
       const account = iexec.account;
       if (!account) throw new Error('Account is not initialized');
-      setCurrentStep(1);
+      setDepositStep(1);
       await account.deposit(rlcToNrlc(depositAmount));
     },
     onSuccess: () => {
       refetchTotalToDeposit();
       setDepositAmount('0');
-      setCurrentStep(2);
+      setDepositStep(2);
     },
     onError: () => {
-      setCurrentStep(0);
+      setDepositStep(0);
     },
   });
 
@@ -112,16 +124,16 @@ function RouteComponent() {
       const iexec = await getIExec();
       const account = iexec.account;
       if (!account) throw new Error('Account is not initialized');
-      setCurrentStep(1);
+      setWithdrawStep(1);
       await account.withdraw(rlcToNrlc(withdrawAmount));
     },
     onSuccess: () => {
       refetchTotalToWithdraw();
       setWithdrawAmount('0');
-      setCurrentStep(2);
+      setWithdrawStep(2);
     },
     onError: () => {
-      setCurrentStep(0);
+      setWithdrawStep(0);
     },
   });
 
@@ -170,17 +182,27 @@ function RouteComponent() {
             </div>
             Your Wallet
           </p>
-          <div className="text-right text-lg font-bold">
-            {Number(formatRLC(totalToDeposit)).toLocaleString('en', {
-              maximumFractionDigits: 8,
-            })}{' '}
-            xRLC
+          <div className="text-center text-lg font-bold md:text-right">
+            {totalToWithdrawIsError ? (
+              <ErrorAlert message="Fail to get wallet xRLC" />
+            ) : (
+              <>
+                {Number(formatRLC(totalToDeposit)).toLocaleString('en', {
+                  maximumFractionDigits: 8,
+                })}{' '}
+                xRLC
+              </>
+            )}
             <br />
-            {Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              maximumFractionDigits: 2,
-            }).format(Number(formatRLC(totalToDeposit)) * rlcPrice)}
+            {rlcPriceIsError ? (
+              <ErrorAlert message="Fail to get current RLC price" />
+            ) : (
+              Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 2,
+              }).format(Number(formatRLC(totalToDeposit)) * rlcPrice)
+            )}
           </div>
         </div>
         <ArrowRight
@@ -203,17 +225,27 @@ function RouteComponent() {
             </div>
             Your iExec Account
           </p>
-          <div className="text-right text-lg font-bold">
-            {Number(formatRLC(totalToWithdraw)).toLocaleString('en', {
-              maximumFractionDigits: 8,
-            })}{' '}
-            xRLC
+          <div className="text-center text-lg font-bold md:text-right">
+            {totalToDepositIsError ? (
+              <ErrorAlert message="Fail to get iExec account xRLC" />
+            ) : (
+              <>
+                {Number(formatRLC(totalToWithdraw)).toLocaleString('en', {
+                  maximumFractionDigits: 8,
+                })}{' '}
+                xRLC
+              </>
+            )}
             <br />
-            {Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: 'USD',
-              maximumFractionDigits: 2,
-            }).format(Number(formatRLC(totalToWithdraw)) * rlcPrice)}
+            {rlcPriceIsError ? (
+              <ErrorAlert message="Fail to get get current RLC price" />
+            ) : (
+              Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                maximumFractionDigits: 2,
+              }).format(Number(formatRLC(totalToWithdraw)) * rlcPrice)
+            )}
           </div>
         </div>
       </div>
@@ -222,7 +254,8 @@ function RouteComponent() {
           currentTab={currentTab}
           onTabChange={(tab) => {
             setCurrentTab(tab);
-            setCurrentStep(0);
+            if (tab === 0 && depositStep === 2) setDepositStep(0);
+            if (tab === 1 && withdrawStep === 2) setWithdrawStep(0);
           }}
           tabLabels={tabs.map((tab) => tab.title)}
           disabledTabs={disabledTabs}
