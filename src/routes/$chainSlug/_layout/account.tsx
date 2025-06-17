@@ -134,7 +134,7 @@ function RouteComponent() {
     withdrawAmount,
     deposit,
     withdraw,
-    chainId,
+    chainId: chainId!,
   });
 
   useEffect(() => {
@@ -153,7 +153,7 @@ function RouteComponent() {
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
           IExec Wallet Manager
         </h1>
-        <span>{truncateAddress(userAddress, { startLen: 8, endLen: 8 })}</span>
+        <span>{truncateAddress(userAddress!, { startLen: 8, endLen: 8 })}</span>
         <ChainSelector />
       </div>
 
@@ -231,22 +231,18 @@ function RouteComponent() {
 
         {/* Mobile only previous steps */}
         {tabs[currentTab]?.steps && (
-          <div className="space-y-2 md:hidden">
-            {tabs[currentTab].steps
-              .slice(0, currentStep)
-              .map((step, index, arr) => (
-                <div key={index}>
-                  <div className="inline-flex items-center">
-                    <span className="bg-primary mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal text-black">
-                      <Check size={16} />
-                    </span>
-                    <span className="font-bold">{step.title}</span>
-                  </div>
-                  {index < arr.length - 1 && (
-                    <span className="bg-primary mt-2 ml-4 block h-10 w-px -translate-x-full"></span>
-                  )}
+          <div className="space-y-6 md:hidden">
+            {tabs[currentTab].steps.slice(0, currentStep).map((step, index) => (
+              <div key={index}>
+                <div className="inline-flex items-center">
+                  <span className="bg-primary mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal text-black">
+                    <Check size={16} />
+                  </span>
+                  <span className="font-bold">{step.title}</span>
                 </div>
-              ))}
+                <span className="bg-primary ml-4 block h-10 w-px -translate-x-full translate-y-3 scale-y-125"></span>
+              </div>
+            ))}
           </div>
         )}
 
