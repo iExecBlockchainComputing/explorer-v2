@@ -43,7 +43,7 @@ export function getTabs({
           title: 'Choose the amount to deposit',
           content: (
             <form
-              className="flex justify-center gap-6"
+              className="flex flex-col justify-center gap-6 md:flex-row"
               onSubmit={(e) => {
                 e.preventDefault();
                 deposit.mutate();
@@ -112,7 +112,7 @@ export function getTabs({
           title: 'Choose the amount to withdraw',
           content: (
             <form
-              className="flex justify-center gap-6"
+              className="flex flex-col justify-center gap-6 md:flex-row"
               onSubmit={(e) => {
                 e.preventDefault();
                 withdraw.mutate();
@@ -120,7 +120,7 @@ export function getTabs({
             >
               <div className="relative">
                 <Input
-                  className="w-full max-w-80 pr-11"
+                  className="w-full min-w-80 pr-11"
                   type="number"
                   required
                   max={maxToWithdraw}

@@ -3,9 +3,11 @@ import { cn } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { formatRLC } from 'iexec/utils';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Stepper } from '@/components/Stepper';
+import WalletIcon from '@/components/icons/WalletIcon';
+import IexecAccountIcon from '@/components/icons/iexecAccountIcon';
 import { ChainSelector } from '@/components/navbar/ChainSelector';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { Tabs } from '@/modules/Tabs';
@@ -155,15 +157,20 @@ function RouteComponent() {
         <ChainSelector />
       </div>
 
-      <div className="flex items-center justify-center gap-6">
+      <div className="flex flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div
           className={cn(
-            'border-grey-500 min-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-300',
+            'border-grey-500 w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-300',
             currentTab === 0 && 'border-primary'
           )}
         >
-          <p>Your wallet</p>
-          <div className="text-right">
+          <p className="font-anybody flex items-center gap-4 font-extrabold">
+            <div className="bg-primary/10 text-primary rounded-lg p-2">
+              <WalletIcon size={20} />
+            </div>
+            Your Wallet
+          </p>
+          <div className="text-right text-lg font-bold">
             {Number(formatRLC(totalToDeposit)).toLocaleString('en', {
               maximumFractionDigits: 8,
             })}{' '}
@@ -178,18 +185,25 @@ function RouteComponent() {
         </div>
         <ArrowRight
           className={cn(
-            'text-primary size-8 duration-300',
-            currentTab === 1 ? 'rotate-180' : currentTab === 2 && 'opacity-0'
+            'text-primary size-8 flex-none rotate-90 duration-300 md:rotate-0',
+            currentTab === 1
+              ? '-rotate-90 md:rotate-180'
+              : currentTab === 2 && 'opacity-0'
           )}
         />
         <div
           className={cn(
-            'border-grey-500 min-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-300',
+            'border-grey-500 w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-300',
             currentTab === 1 && 'border-primary'
           )}
         >
-          <p>Your iExec Account</p>
-          <div className="text-right">
+          <p className="font-anybody flex items-center gap-4 font-extrabold">
+            <div className="bg-primary/10 text-primary rounded-lg p-2">
+              <IexecAccountIcon size={20} />
+            </div>
+            Your iExec Account
+          </p>
+          <div className="text-right text-lg font-bold">
             {Number(formatRLC(totalToWithdraw)).toLocaleString('en', {
               maximumFractionDigits: 8,
             })}{' '}
@@ -203,7 +217,7 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-10 w-full max-w-5xl space-y-6">
+      <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col gap-6">
         <Tabs
           currentTab={currentTab}
           onTabChange={(tab) => {
@@ -215,15 +229,45 @@ function RouteComponent() {
           disabledReasons={disabledReasons}
         />
 
-        <div className="border-grey-500 space-y-6 rounded-3xl border p-10">
-          <div className="space-y-1.5">
-            <h2>{tabs[currentTab]?.longTitle}</h2>
-            <p>{tabs[currentTab]?.desc}</p>
+        {/* Mobile only previous steps */}
+        {tabs[currentTab]?.steps && (
+          <div className="space-y-2 md:hidden">
+            {tabs[currentTab].steps
+              .slice(0, currentStep)
+              .map((step, index, arr) => (
+                <div key={index}>
+                  <div className="inline-flex items-center">
+                    <span className="bg-primary mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal text-black">
+                      <Check size={16} />
+                    </span>
+                    <span className="font-bold">{step.title}</span>
+                  </div>
+                  {index < arr.length - 1 && (
+                    <span className="bg-primary mt-2 ml-4 block h-10 w-px -translate-x-full"></span>
+                  )}
+                </div>
+              ))}
           </div>
+        )}
+
+        <div className="md:border-grey-500 space-y-6 md:rounded-3xl md:border md:p-10">
+          <div className="space-y-4 md:space-y-1.5">
+            <h2 className="md:font-anybody font-sans font-bold">
+              <span className="mr-4 inline-flex size-8 items-center justify-center rounded-full bg-white font-sans font-normal text-black md:hidden">
+                {currentStep + 1}
+              </span>
+              {tabs[currentTab]?.longTitle}
+            </h2>
+            {currentStep === 0 && (
+              <p className="md:hidden">{tabs[currentTab]?.desc}</p>
+            )}
+            <p className="hidden md:inline-block">{tabs[currentTab]?.desc}</p>
+          </div>
+
           {tabs[currentTab]?.steps && (
             <>
               <Stepper
-                classname="p-6"
+                classname="p-6 hidden md:grid"
                 currentStep={currentStep}
                 steps={tabs[currentTab].steps.map((s) => s.title)}
               />
@@ -232,6 +276,30 @@ function RouteComponent() {
           )}
           {tabs[currentTab]?.content && tabs[currentTab].content}
         </div>
+
+        {/* Mobile only next steps */}
+        {tabs[currentTab]?.steps && (
+          <div className="space-y-2 md:hidden">
+            {tabs[currentTab].steps
+              .map((step, index) => ({ step, index }))
+              .filter(({ index }) => index > currentStep)
+              .map(({ step, index }, arrayIndex, arr) => (
+                <div key={index}>
+                  <div>
+                    <span className="bg-grey-700 mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal text-white">
+                      {index + 1}
+                    </span>
+                    <span className="text-grey-500 font-bold">
+                      {step.title}
+                    </span>
+                  </div>
+                  {arrayIndex < arr.length - 1 && (
+                    <span className="bg-grey-600 mt-2 ml-4 block h-10 w-px -translate-x-full"></span>
+                  )}
+                </div>
+              ))}
+          </div>
+        )}
       </div>
     </div>
   );
