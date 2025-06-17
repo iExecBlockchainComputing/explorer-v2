@@ -7,7 +7,7 @@ import { ArrowRight, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Stepper } from '@/components/Stepper';
 import WalletIcon from '@/components/icons/WalletIcon';
-import IexecAccountIcon from '@/components/icons/iexecAccountIcon';
+import IexecAccountIcon from '@/components/icons/IexecAccountIcon_temp';
 import { ChainSelector } from '@/components/navbar/ChainSelector';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { ErrorAlert } from '@/modules/ErrorAlert';
