@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressBeneficiaryDealsQuery } from './addressBeneficiaryDealsQuery';
 import { nextAddressBeneficiaryDealsQuery } from './nextAddressBeneficiaryDealsQuery';
 
@@ -21,9 +22,17 @@ function useAddressBeneficiaryDealsData({
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
 
+  const queryKey = [
+    chainId,
+    'address',
+    'beneficiaryDeals',
+    addressAddress,
+    currentPage,
+  ];
+
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'beneficiaryDeals', addressAddress, currentPage],
+      queryKey,
       queryFn: () =>
         execute(addressBeneficiaryDealsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -31,11 +40,20 @@ function useAddressBeneficiaryDealsData({
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [
+    chainId,
+    'address',
+    'beneficiaryDeals-next',
+    addressAddress,
+    currentPage,
+  ];
+
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'beneficiaryDeals-next', addressAddress, currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAddressBeneficiaryDealsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -43,6 +61,7 @@ function useAddressBeneficiaryDealsData({
         address: addressAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextBeneficiaryDeals = nextData?.account?.dealBeneficiary ?? [];

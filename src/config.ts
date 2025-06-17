@@ -28,12 +28,12 @@ export const SUPPORTED_CHAINS = [
   {
     id: 421614,
     name: 'Arbitrum Sepolia',
-    slug: 'arbitrum-sepolia',
+    slug: 'arbitrum-sepolia-testnet',
     color: '#28A0F080',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl:
-      'http://localhost:8080/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+      'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
     wagmiNetwork: arbitrumSepolia,
   },
 ];

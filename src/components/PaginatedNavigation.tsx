@@ -23,7 +23,6 @@ export const PaginatedNavigation = ({
     const pages: (number | 'ellipsis')[] = [];
 
     if (totalPages <= 5) {
-      // Affiche tout si peu de pages
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }

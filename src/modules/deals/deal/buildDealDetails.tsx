@@ -150,26 +150,24 @@ export function buildDealDetails({
             )}
 
             {pendingRatio > 0 && (
-              <span
-                className={`rounded-full border px-2 py-1 ${
-                  isClaimable
-                    ? 'bg-info-foreground/10 border-info-border text-info-foreground'
-                    : 'bg-warning-foreground/10 border-warning-border text-warning-foreground'
-                }`}
-              >
-                {Math.round(pendingRatio * 100)}%{' '}
-                {isClaimable ? (
-                  <>
-                    CLAIMABLE
-                    <ClaimButton
-                      tasks={deal.tasks}
-                      className="text-white underline"
-                    />
-                  </>
-                ) : (
-                  'PENDING'
+              <>
+                <span
+                  className={`rounded-full border px-2 py-1 ${
+                    isClaimable
+                      ? 'bg-info-foreground/10 border-info-border text-info-foreground'
+                      : 'bg-warning-foreground/10 border-warning-border text-warning-foreground'
+                  }`}
+                >
+                  {Math.round(pendingRatio * 100)}%{' '}
+                  {isClaimable ? 'CLAIMABLE' : 'PENDING'}
+                </span>
+                {isClaimable && (
+                  <ClaimButton
+                    taskOrDeal={deal}
+                    className="text-white underline"
+                  />
                 )}
-              </span>
+              </>
             )}
           </span>
         </span>

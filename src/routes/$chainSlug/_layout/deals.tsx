@@ -12,6 +12,7 @@ import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/deals')({
   component: DealsRoute,
@@ -21,18 +22,21 @@ function useDealsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
+  const queryKey = [chainId, 'deals', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'deals', currentPage],
+      queryKey,
       queryFn: () =>
         execute(dealsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'deals-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'deals-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextDealsQuery, chainId, {
         length: TABLE_LENGTH * 2,
@@ -40,6 +44,7 @@ function useDealsData(currentPage: number) {
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDeals = nextData?.deals ?? [];

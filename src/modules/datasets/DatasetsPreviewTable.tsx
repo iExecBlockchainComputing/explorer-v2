@@ -7,14 +7,17 @@ import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { ErrorAlert } from '../ErrorAlert';
 import { datasetsQuery } from './datasetsQuery';
 import { columns } from './datasetsTable/columns';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+
+  const queryKey = [chainId, 'datasets_preview'];
   const datasets = useQuery({
-    queryKey: [chainId, 'datasets_preview'],
+    queryKey,
     queryFn: () =>
       execute(datasetsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
@@ -22,6 +25,7 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
       }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
   const formattedData =

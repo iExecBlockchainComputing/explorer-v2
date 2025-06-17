@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
@@ -13,19 +13,21 @@ import { DealTasksTable } from '@/modules/deals/deal/DealTasksTable';
 import { buildDealDetails } from '@/modules/deals/deal/buildDealDetails';
 import { dealQuery } from '@/modules/deals/deal/dealQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
   component: DealsRoute,
 });
 
 function useDealData(dealAddress: string, chainId: number) {
+  const queryKey = [chainId, 'deal', dealAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['deal', dealAddress],
+      queryKey,
       queryFn: () =>
         execute(dealQuery, chainId, { length: TABLE_LENGTH, dealAddress }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
-      placeholderData: keepPreviousData,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
@@ -50,9 +52,6 @@ function DealsRoute() {
     hasPastError,
   } = useDealData(dealAddress, chainId!);
 
-  // if (!deal) {
-  //   return <p>Hum there is nothing here..</p>;
-  // }
   const dealDetails = deal
     ? buildDealDetails({ deal, isConnected })
     : undefined;

@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressRequestedTasksQuery } from './addressRequestedTasksQuery';
 import { nextAddressRequestedTasksQuery } from './nextAddressRequestedTasksQuery';
 
@@ -21,9 +22,16 @@ function useAddressRequestedTasksData({
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
 
+  const queryKey = [
+    chainId,
+    'address',
+    'requestedTasks',
+    addressAddress,
+    currentPage,
+  ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'requestedTasks', addressAddress, currentPage],
+      queryKey,
       queryFn: () =>
         execute(addressRequestedTasksQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -31,11 +39,19 @@ function useAddressRequestedTasksData({
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [
+    chainId,
+    'address',
+    'requestedTasks-next',
+    addressAddress,
+    currentPage,
+  ];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'requestedTasks-next', addressAddress, currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAddressRequestedTasksQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -43,6 +59,7 @@ function useAddressRequestedTasksData({
         address: addressAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextRequestedTasks = nextData?.account?.taskRequester ?? [];

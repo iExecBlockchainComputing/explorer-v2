@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
@@ -11,15 +11,17 @@ import { AppDealsTable } from '@/modules/apps/app/AppDealsTable';
 import { appQuery } from '@/modules/apps/app/appQuery';
 import { buildAppDetails } from '@/modules/apps/app/buildAppDetails';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')({
   component: AppsRoute,
 });
 
 function useAppData(appAddress: string, chainId: number) {
+  const queryKey = [chainId, 'app', appAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['app', appAddress],
+      queryKey,
       queryFn: () =>
         execute(appQuery, chainId, {
           length: TABLE_LENGTH,
@@ -27,7 +29,7 @@ function useAppData(appAddress: string, chainId: number) {
           appAddressString: appAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
-      placeholderData: keepPreviousData,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 

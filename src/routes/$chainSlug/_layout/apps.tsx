@@ -12,6 +12,7 @@ import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
 import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/apps')({
   component: AppsRoute,
@@ -21,6 +22,7 @@ function useAppsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
 
+  const queryKey = [chainId, 'apps', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey: [chainId, 'apps', currentPage],
@@ -28,11 +30,13 @@ function useAppsData(currentPage: number) {
         execute(appsQuery, chainId, { length: TABLE_LENGTH, skip }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [chainId, 'apps-next', currentPage];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'apps-next', currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAppsQuery, chainId, {
         length: TABLE_LENGTH * 2,
@@ -40,6 +44,7 @@ function useAppsData(currentPage: number) {
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextApps = nextData?.apps ?? [];

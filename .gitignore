@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+src/graphql/*
+!src/graphql/execute.ts
 
 # misc
 .DS_Store

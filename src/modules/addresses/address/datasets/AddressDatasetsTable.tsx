@@ -8,6 +8,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressDatasetsQuery } from './addressDatasetsQuery';
 import { nextAddressDatasetsQuery } from './nextAddressDatasetsQuery';
 
@@ -21,9 +22,16 @@ function useAddressDatasetsData({
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
 
+  const queryKey = [
+    chainId,
+    'address',
+    'datasets',
+    addressAddress,
+    currentPage,
+  ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['address', 'datasets', addressAddress, currentPage],
+      queryKey,
       queryFn: () =>
         execute(addressDatasetsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
@@ -31,11 +39,19 @@ function useAddressDatasetsData({
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
+  const queryKeyNextData = [
+    chainId,
+    'address',
+    'datasets',
+    addressAddress,
+    currentPage,
+  ];
   const { data: nextData } = useQuery({
-    queryKey: [chainId, 'datasets-next', addressAddress, currentPage],
+    queryKey: queryKeyNextData,
     queryFn: () =>
       execute(nextAddressDatasetsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH * 2,
@@ -43,6 +59,7 @@ function useAddressDatasetsData({
         address: addressAddress,
       }),
     refetchInterval: TABLE_REFETCH_INTERVAL,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
   });
 
   const nextDatasets = nextData?.account?.datasets ?? [];

@@ -7,14 +7,17 @@ import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { ErrorAlert } from '../ErrorAlert';
 import { appsQuery } from './appsQuery';
 import { columns } from './appsTable/columns';
 
 export function AppsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+
+  const queryKey = [chainId, 'apps_preview'];
   const apps = useQuery({
-    queryKey: [chainId, 'apps_preview'],
+    queryKey,
     queryFn: () =>
       execute(appsQuery, chainId, {
         length: PREVIEW_TABLE_LENGTH,
@@ -22,6 +25,7 @@ export function AppsPreviewTable({ className }: { className?: string }) {
       }),
     refetchInterval: PREVIEW_TABLE_REFETCH_INTERVAL,
     enabled: !!chainId,
+    placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
   const formattedData =

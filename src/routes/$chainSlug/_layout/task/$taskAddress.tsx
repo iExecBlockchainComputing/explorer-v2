@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
@@ -10,19 +10,21 @@ import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
+import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
   component: TasksRoute,
 });
 
 function useTaskData(taskAddress: string, chainId: number) {
+  const queryKey = [chainId, 'task', taskAddress];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: ['task', taskAddress],
+      queryKey,
       queryFn: () =>
         execute(taskQuery, chainId, { length: TABLE_LENGTH, taskAddress }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
-      placeholderData: keepPreviousData,
+      placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
@@ -36,7 +38,7 @@ function useTaskData(taskAddress: string, chainId: number) {
 }
 
 function TasksRoute() {
-  const { chainId, isConnected } = useUserStore();
+  const { chainId } = useUserStore();
   const { taskAddress } = Route.useParams();
   const {
     data: task,
@@ -46,12 +48,7 @@ function TasksRoute() {
     hasPastError,
   } = useTaskData(taskAddress, chainId!);
 
-  // if (!task) {
-  //   return <p>Hum there is nothing here..</p>;
-  // }
-  const taskDetails = task
-    ? buildTaskDetails({ task, isConnected })
-    : undefined;
+  const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
   return (
     <div className="mt-8 flex flex-col gap-6">
