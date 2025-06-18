@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { Search } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,11 +12,19 @@ import useUserStore from '@/stores/useUser.store';
 import { getChainFromId } from '@/utils/chain.utils';
 import { searchQuery } from './searchQuery';
 
-export function SearcherBar({ className }: { className?: string }) {
+export function SearcherBar({
+  className,
+  initialSearch,
+}: {
+  className?: string;
+  initialSearch?: string;
+}) {
   const { isConnected, address: userAddress, chainId } = useUserStore();
   const [inputValue, setInputValue] = useState('');
   const [shake, setShake] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
+  const [localError, setLocalError] = useState<Error | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -43,7 +51,7 @@ export function SearcherBar({ className }: { className?: string }) {
     }
   };
 
-  const { mutate, isPending, isError, error } = useMutation({
+  const { mutate, mutateAsync, isPending, isError, error } = useMutation({
     mutationKey: ['search', inputValue],
     mutationFn: async (value: string) => {
       const isValid =
@@ -74,7 +82,6 @@ export function SearcherBar({ className }: { className?: string }) {
       if (isEmpty) {
         throw new Error('No data found');
       }
-      console.log(result);
       return { result, id: resolvedValue };
     },
     onSuccess: (data) => {
@@ -85,11 +92,34 @@ export function SearcherBar({ className }: { className?: string }) {
 
     onError: (err) => {
       console.error('Search error:', err);
+      inputRef.current.focus();
       requestAnimationFrame(() => {
         setErrorCount((prev) => prev + 1);
       });
     },
   });
+
+  useEffect(() => {
+    const run = async () => {
+      if (initialSearch && chainId) {
+        const normalized = initialSearch.trim().toLowerCase();
+        setInputValue(normalized);
+        try {
+          setLocalError(null); // reset
+          await mutateAsync(normalized);
+        } catch (err) {
+          console.error('Initial search error:', err);
+          setErrorCount((prev) => prev + 1);
+          // mutation don't return error when used in useEffect we need to use a local state
+          setLocalError(
+            err instanceof Error ? err : new Error('Unknown error')
+          );
+        }
+      }
+    };
+
+    run();
+  }, [initialSearch, chainId]);
 
   useEffect(() => {
     if (errorCount > 0) {
@@ -113,6 +143,7 @@ export function SearcherBar({ className }: { className?: string }) {
     <div className={cn('m-auto w-full', className)}>
       <div className="relative w-full">
         <Input
+          ref={inputRef}
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -120,15 +151,15 @@ export function SearcherBar({ className }: { className?: string }) {
           className={cn(
             'bg-input border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32',
-            isError &&
+            (isError || localError) &&
               'focus-visible:border-danger-border focus:outline-danger-border focus-visible:ring-danger-border',
             shake && 'animate-shake'
           )}
           placeholder="Search address, deal id, task id, transaction hash..."
         />
-        {isError && (
+        {(localError || error) && (
           <p className="bg-danger text-danger-foreground border-danger-border absolute -bottom-8 rounded-full border px-4">
-            {error.message}
+            {localError ? localError.message : error?.message}
           </p>
         )}
         <Search

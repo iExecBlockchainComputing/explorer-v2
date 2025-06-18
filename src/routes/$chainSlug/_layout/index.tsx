@@ -1,5 +1,6 @@
 import { SUPPORTED_CHAINS } from '@/config';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useLocation } from '@tanstack/react-router';
+import { useEffect } from 'react';
 import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
 import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';
@@ -14,6 +15,10 @@ export const Route = createFileRoute('/$chainSlug/_layout/')({
 
 function Index() {
   const { chainId } = useUserStore();
+  const location = useLocation();
+
+  const forwardedSearch = location.state?.forwardedSearch;
+
   const currentChain = SUPPORTED_CHAINS.find((chain) => chain.id === chainId);
 
   return (
@@ -22,7 +27,10 @@ function Index() {
         <h1 className="mb-2 text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
         </h1>
-        <SearcherBar />
+        <SearcherBar
+          key={forwardedSearch ?? 'default'}
+          initialSearch={forwardedSearch}
+        />
         <div className="absolute inset-0 -z-10 hidden blur-2xl sm:block sm:blur-[100px] lg:blur-[150px]">
           <div
             className="absolute top-1/2 -right-1/4 aspect-[23/30] w-1/2 rounded-full xl:-right-1/5"
