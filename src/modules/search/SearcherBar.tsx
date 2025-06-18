@@ -21,7 +21,7 @@ export function SearcherBar({ className }: { className?: string }) {
   const navigate = useNavigate();
 
   const navigateToEntity = (
-    data: Record<string, any>,
+    data: Record<string, unknown>,
     slug: string,
     value: string
   ) => {
