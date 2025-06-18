@@ -25,7 +25,7 @@ export function SearcherBar({ className }: { className?: string }) {
     slug: string,
     value: string
   ) => {
-    const entityToRoute: Record<string, string> = {
+    const route = Object.entries({
       deal: 'deal',
       task: 'task',
       dataset: 'dataset',
@@ -33,15 +33,14 @@ export function SearcherBar({ className }: { className?: string }) {
       workerpool: 'workerpool',
       account: 'address',
       transaction: 'tx',
-    };
+    }).find(([entityKey]) => data[entityKey]);
 
-    for (const [entityKey, routePath] of Object.entries(entityToRoute)) {
-      if (data[entityKey]) {
-        navigate({ to: `/${slug}/${routePath}/${value}` });
-        return;
-      }
+    if (route) {
+      const [, routePath] = route;
+      navigate({ to: `/${slug}/${routePath}/${value}` });
+    } else {
+      throw new Error('An error occurred please try again');
     }
-    throw new Error('An error occurred please try again');
   };
 
   const { mutate, isPending, isError, error } = useMutation({
