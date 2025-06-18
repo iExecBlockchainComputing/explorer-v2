@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.8.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.7.0...iexec-explorer-v1.8.0) (2025-06-17)
+
+
+### 🚀 Features
+
+* update Arbitrum Sepolia urls ([#32](https://github.com/iExecBlockchainComputing/explorer-v2/issues/32)) ([0a07bf8](https://github.com/iExecBlockchainComputing/explorer-v2/commit/0a07bf8746a67116ffabb59823e76e52330ef621))
+
+## [1.7.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.6.1...iexec-explorer-v1.7.0) (2025-06-12)
+
+
+### 🚀 Features
+
+* add Vercel configuration for URL rewrites ([36feea5](https://github.com/iExecBlockchainComputing/explorer-v2/commit/36feea580115ee37979b10281cc9d2344f1023a4))
+
+
+### 🐞 Bug Fixes
+
+* add Vercel configuration for URL rewrites ([#29](https://github.com/iExecBlockchainComputing/explorer-v2/issues/29)) ([36feea5](https://github.com/iExecBlockchainComputing/explorer-v2/commit/36feea580115ee37979b10281cc9d2344f1023a4))
+
 ## [1.6.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.6.0...iexec-explorer-v1.6.1) (2025-06-10)
 
 
