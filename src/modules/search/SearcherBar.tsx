@@ -1,7 +1,7 @@
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
-import { useNavigate } from '@tanstack/react-router';
+import { useNavigate, useParams } from '@tanstack/react-router';
 import { Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
-import { getChainFromId } from '@/utils/chain.utils';
+import { getChainFromId, getChainFromSlug } from '@/utils/chain.utils';
 import { searchQuery } from './searchQuery';
 
 export function SearcherBar({
@@ -19,12 +19,16 @@ export function SearcherBar({
   className?: string;
   initialSearch?: string;
 }) {
-  const { isConnected, address: userAddress, chainId } = useUserStore();
+  const { isConnected, address: userAddress } = useUserStore();
   const [inputValue, setInputValue] = useState('');
   const [shake, setShake] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
   const [localError, setLocalError] = useState<Error | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // Get ChainId from URL to be faster when using URL search
+  const { chainSlug } = useParams({ from: '/$chainSlug' });
+  const chainId = getChainFromSlug(chainSlug)?.id;
 
   const navigate = useNavigate();
 
