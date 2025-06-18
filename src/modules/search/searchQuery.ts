@@ -3,30 +3,30 @@ import { graphql } from '@/graphql/gql';
 export const searchQuery = graphql(`
   query Search($search: ID!) {
     app(id: $search) {
-      address: id
+      id
     }
     dataset(id: $search) {
-      address: id
+      id
     }
     workerpool(id: $search) {
-      address: id
+      id
     }
     deal(id: $search) {
-      dealid: id
+      id
     }
     task(id: $search) {
-      taskid: id
+      id
     }
     account(id: $search) {
-      address: id
+      id
     }
     transaction(id: $search) {
-      txHash: id
+      id
       from {
-        address: id
+        id
       }
       to {
-        address: id
+        id
       }
     }
   }
