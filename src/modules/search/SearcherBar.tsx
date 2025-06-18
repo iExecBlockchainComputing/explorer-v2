@@ -76,16 +76,15 @@ export function SearcherBar({ className }: { className?: string }) {
         throw new Error('No data found');
       }
       console.log(result);
-      return result;
+      return { result, id: resolvedValue };
     },
-
-    onSuccess: (data, input) => {
+    onSuccess: (data) => {
       const chainSlug = getChainFromId(chainId)?.slug;
       if (!chainSlug) return;
-      navigateToEntity(data, chainSlug, input.trim().toLowerCase());
+      navigateToEntity(data.result, chainSlug, data.id);
     },
 
-    onError: (err, input) => {
+    onError: (err) => {
       console.error('Search error:', err);
       requestAnimationFrame(() => {
         setErrorCount((prev) => prev + 1);
