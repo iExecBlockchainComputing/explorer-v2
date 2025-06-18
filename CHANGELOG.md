@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.7.0...iexec-explorer-v1.8.0) (2025-06-17)
+
+
+### 🚀 Features
+
+* update Arbitrum Sepolia urls ([#32](https://github.com/iExecBlockchainComputing/explorer-v2/issues/32)) ([0a07bf8](https://github.com/iExecBlockchainComputing/explorer-v2/commit/0a07bf8746a67116ffabb59823e76e52330ef621))
+
 ## [1.7.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.6.1...iexec-explorer-v1.7.0) (2025-06-12)
 
 
