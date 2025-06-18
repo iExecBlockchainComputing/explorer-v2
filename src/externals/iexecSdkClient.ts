@@ -2,6 +2,7 @@ import { IExec, IExecConfig, Eip1193Provider } from 'iexec';
 import { type Connector } from 'wagmi';
 
 let iExec: IExec | null = null;
+let readonlyIExec: IExec | null = null;
 
 // Basic promise queue for pending getIExec() requests
 const IEXEC_CLIENT_RESOLVES: Array<Promise<IExec>> = [];
@@ -9,6 +10,7 @@ const IEXEC_CLIENT_RESOLVES: Array<Promise<IExec>> = [];
 // Clean both SDKs
 export function cleanIExecSDKs() {
   iExec = null;
+  readonlyIExec = null;
 }
 
 export async function initIExecSDKs({ connector }: { connector?: Connector }) {
@@ -26,9 +28,7 @@ export async function initIExecSDKs({ connector }: { connector?: Connector }) {
   const config = new IExecConfig({ ethProvider: provider });
   iExec = new IExec(config);
 
-  IEXEC_CLIENT_RESOLVES.forEach((resolve) => {
-    return resolve(iExec);
-  });
+  IEXEC_CLIENT_RESOLVES.forEach((resolve) => resolve(iExec!));
   IEXEC_CLIENT_RESOLVES.length = 0;
 }
 
@@ -39,4 +39,11 @@ export function getIExec(): Promise<IExec> {
     });
   }
   return Promise.resolve(iExec);
+}
+
+export function getReadonlyIExec(): IExec {
+  if (!readonlyIExec) {
+    readonlyIExec = new IExec({ ethProvider: 'bellecour' });
+  }
+  return readonlyIExec;
 }

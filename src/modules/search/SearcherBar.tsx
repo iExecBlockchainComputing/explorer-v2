@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getIExec } from '@/externals/iexecSdkClient';
+import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
 import { getChainFromId } from '@/utils/chain.utils';
 import { searchQuery } from './searchQuery';
@@ -58,7 +58,7 @@ export function SearcherBar({ className }: { className?: string }) {
       let resolvedValue = value;
 
       if (value.endsWith('.eth')) {
-        const iexec = await getIExec();
+        const iexec = isConnected ? await getIExec() : getReadonlyIExec();
         const resolved = await iexec.ens.resolveName(value);
         if (!resolved) {
           throw new Error(`Fail to resolve ENS : ${value}`);
