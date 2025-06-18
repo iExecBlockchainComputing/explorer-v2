@@ -92,7 +92,9 @@ export function SearcherBar({
 
     onError: (err) => {
       console.error('Search error:', err);
-      inputRef.current.focus();
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
       requestAnimationFrame(() => {
         setErrorCount((prev) => prev + 1);
       });
