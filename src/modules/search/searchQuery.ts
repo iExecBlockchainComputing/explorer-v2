@@ -28,9 +28,6 @@ export const searchQuery = graphql(`
       to {
         address: id
       }
-      gasLimit
-      gasUsed
-      gasPrice
     }
   }
 `);
