@@ -177,9 +177,9 @@ function RouteComponent() {
           )}
         >
           <p className="font-anybody flex items-center gap-4 font-extrabold">
-            <div className="bg-primary/10 text-primary rounded-lg p-2">
+            <span className="bg-primary/10 text-primary rounded-lg p-2">
               <WalletIcon size={20} />
-            </div>
+            </span>
             Your Wallet
           </p>
           <div className="text-center text-lg font-bold md:text-right">
@@ -220,9 +220,9 @@ function RouteComponent() {
           )}
         >
           <p className="font-anybody flex items-center gap-4 font-extrabold">
-            <div className="bg-primary/10 text-primary rounded-lg p-2">
+            <span className="bg-primary/10 text-primary rounded-lg p-2">
               <IexecAccountIcon size={20} />
-            </div>
+            </span>
             Your iExec Account
           </p>
           <div className="text-center text-lg font-bold md:text-right">
