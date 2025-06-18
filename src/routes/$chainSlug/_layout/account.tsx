@@ -5,11 +5,14 @@ import { createFileRoute } from '@tanstack/react-router';
 import { formatRLC } from 'iexec/utils';
 import { ArrowRight, Check } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { ChainLink } from '@/components/ChainLink';
 import { Stepper } from '@/components/Stepper';
 import IexecAccountIcon from '@/components/icons/IexecAccountIcon';
 import WalletIcon from '@/components/icons/WalletIcon';
 import { ChainSelector } from '@/components/navbar/ChainSelector';
+import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
+import { useLoginLogout } from '@/hooks/useLoginLogout';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AccountBreadcrumbs } from '@/modules/account/AccountBreadcrumbs';
@@ -25,6 +28,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/account')({
 
 function RouteComponent() {
   const { address: userAddress, chainId } = useUserStore();
+  const { login } = useLoginLogout();
   const [currentTab, setCurrentTab] = useState(0);
   const [depositStep, setDepositStep] = useState(0);
   const [withdrawStep, setWithdrawStep] = useState(0);
@@ -157,6 +161,23 @@ function RouteComponent() {
       setCurrentTab(1);
     }
   }, [chainId]);
+
+  if (!userAddress) {
+    return (
+      <div className="mt-20 flex flex-col items-center justify-center gap-6 text-center">
+        <h1 className="text-2xl font-bold">You are not connected</h1>
+        <p className="text-muted-foreground max-w-sm">
+          To access the iExec Wallet Manager, please connect your wallet.
+        </p>
+        <div className="flex gap-4">
+          <Button variant="outline">
+            <ChainLink to="/">Go back home</ChainLink>
+          </Button>
+          <Button onClick={login}>Connect wallet</Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-8 flex flex-col gap-10">
