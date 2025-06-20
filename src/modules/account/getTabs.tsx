@@ -1,4 +1,3 @@
-import { SUPPORTED_CHAINS } from '@/config';
 import { DefaultError } from '@tanstack/query-core';
 import { UseMutationResult } from '@tanstack/react-query';
 import { formatRLC } from 'iexec/utils';
