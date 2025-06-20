@@ -75,7 +75,9 @@ export function getTabs({
               <Button
                 type="submit"
                 disabled={
-                  depositAmount === '0' || Number(depositAmount) > maxToDeposit
+                  Number.isNaN(Number(depositAmount)) ||
+                  Number(depositAmount) < 10**-9 || // 1 nRLC
+                  Number(depositAmount) > maxToDeposit
                 }
               >
                 Deposit
