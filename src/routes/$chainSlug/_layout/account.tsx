@@ -44,6 +44,7 @@ function RouteComponent() {
   };
 
   const [currentStep] = getStepState();
+  const token = getChainFromId(chainId)?.tokenSymbol;
 
   const disabledTabs: number[] = [];
   const disabledReasons: Record<number, string> = {};
@@ -205,13 +206,13 @@ function RouteComponent() {
           </p>
           <div className="text-center text-lg font-bold md:text-right">
             {totalToWithdrawIsError ? (
-              <ErrorAlert message="Fail to get wallet xRLC" />
+              <ErrorAlert message={`Fail to get wallet ${token}`} />
             ) : (
               <>
                 {Number(formatRLC(totalToDeposit)).toLocaleString('en', {
-                  maximumFractionDigits: 8,
+                  maximumFractionDigits: 9,
                 })}{' '}
-                xRLC
+                {token}
               </>
             )}
             <br />
@@ -248,18 +249,18 @@ function RouteComponent() {
           </p>
           <div className="text-center text-lg font-bold md:text-right">
             {totalToDepositIsError ? (
-              <ErrorAlert message="Fail to get iExec account xRLC" />
+              <ErrorAlert message={`Fail to get iExec account ${token}`} />
             ) : (
               <>
                 {Number(formatRLC(totalToWithdraw)).toLocaleString('en', {
-                  maximumFractionDigits: 8,
+                  maximumFractionDigits: 9,
                 })}{' '}
-                xRLC
+                {token}
               </>
             )}
             <br />
             {rlcPriceIsError ? (
-              <ErrorAlert message="Fail to get get current RLC price" />
+              <ErrorAlert message={`Fail to get current ${token} price`} />
             ) : (
               Intl.NumberFormat('en-US', {
                 style: 'currency',

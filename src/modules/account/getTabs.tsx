@@ -32,11 +32,12 @@ export function getTabs({
 }: TabsProps) {
   const maxToWithdraw = Number(formatRLC(totalToWithdraw));
   const maxToDeposit = Number(formatRLC(totalToDeposit));
+  const token = getChainFromId(chainId)?.tokenSymbol;
 
   return [
     {
-      title: 'DEPOSIT xRLC',
-      longTitle: 'Deposit xRLC to your Account',
+      title: `DEPOSIT ${token}`,
+      longTitle: `Deposit ${token} to your Account`,
       desc: 'Top up your iExec account with your wallet to use iExec platform',
       steps: [
         {
@@ -93,7 +94,7 @@ export function getTabs({
           ),
         },
         {
-          title: 'xRLC deposit',
+          title: `${token} deposit`,
           content: (
             <span className="mx-auto flex w-full justify-center gap-2">
               Deposit successful
@@ -104,8 +105,8 @@ export function getTabs({
       ],
     },
     {
-      title: 'WITHDRAW xRLC',
-      longTitle: 'Withdraw xRLC to your Wallet',
+      title: `WITHDRAW ${token}`,
+      longTitle: `Withdraw ${token} to your Wallet`,
       desc: 'Withdraw your profits from your iExec Account',
       steps: [
         {
@@ -163,7 +164,7 @@ export function getTabs({
           ),
         },
         {
-          title: 'xRLC withdrawn',
+          title: `${token} withdrawn`,
           content: (
             <span className="mx-auto flex w-full justify-center gap-2">
               Withdraw successful
@@ -174,8 +175,8 @@ export function getTabs({
       ],
     },
     {
-      title: 'BRIDGE xRLC/RLC',
-      longTitle: 'Bridge your xRLC/RLC between chains',
+      title: `BRIDGE ${token}`,
+      longTitle: `Bridge your ${token} between chains`,
       desc: getChainFromId(chainId)?.bridgeInformation,
       content: (
         <Button asChild>

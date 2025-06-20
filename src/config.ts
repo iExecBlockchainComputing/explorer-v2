@@ -22,8 +22,9 @@ export const SUPPORTED_CHAINS = [
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
     bridge: 'https://bridge-bellecour.iex.ec/',
     bridgeInformation:
-      'Move your xRLC/RLC in your wallet between iExec Sidechain and Ethereum Mainnet with our bridge.',
+      'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
     wagmiNetwork: bellecour,
+    tokenSymbol: 'xRLC',
   },
   {
     id: 421614,
@@ -35,5 +36,6 @@ export const SUPPORTED_CHAINS = [
     subgraphUrl:
       'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
     wagmiNetwork: arbitrumSepolia,
+    tokenSymbol: 'RLC',
   },
 ];
