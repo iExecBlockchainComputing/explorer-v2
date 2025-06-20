@@ -102,7 +102,7 @@ function RouteComponent() {
 
   const deposit = useMutation({
     mutationFn: async () => {
-      if (totalToDeposit === 0) {
+      if (depositAmount === '0') {
         throw new Error('You have nothing to deposit yet.');
       }
       const iexec = await getIExec();
@@ -113,6 +113,7 @@ function RouteComponent() {
     },
     onSuccess: () => {
       refetchTotalToDeposit();
+      refetchTotalToWithdraw();
       setDepositAmount('0');
       setDepositStep(2);
     },
@@ -123,7 +124,7 @@ function RouteComponent() {
 
   const withdraw = useMutation({
     mutationFn: async () => {
-      if (totalToWithdraw === 0) {
+      if (withdrawAmount === '0') {
         throw new Error('You have nothing to withdraw yet.');
       }
       const iexec = await getIExec();
@@ -134,6 +135,7 @@ function RouteComponent() {
     },
     onSuccess: () => {
       refetchTotalToWithdraw();
+      refetchTotalToDeposit();
       setWithdrawAmount('0');
       setWithdrawStep(2);
     },
