@@ -27,10 +27,7 @@ function Index() {
         <h1 className="mb-2 text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
         </h1>
-        <SearcherBar
-          key={forwardedSearch ?? 'default'}
-          initialSearch={forwardedSearch}
-        />
+        <SearcherBar initialSearch={forwardedSearch} />
         <div className="absolute inset-0 -z-10 hidden blur-2xl sm:block sm:blur-[100px] lg:blur-[150px]">
           <div
             className="absolute top-1/2 -right-1/4 aspect-[23/30] w-1/2 rounded-full xl:-right-1/5"
