@@ -146,7 +146,8 @@ export function getTabs({
               <Button
                 type="submit"
                 disabled={
-                  withdrawAmount === '0' ||
+                  Number.isNaN(Number(withdrawAmount)) ||
+                  Number(withdrawAmount) <= 0 ||
                   Number(withdrawAmount) > maxToWithdraw
                 }
               >
