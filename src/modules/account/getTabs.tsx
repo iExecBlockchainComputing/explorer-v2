@@ -52,13 +52,12 @@ export function getTabs({
               <div className="relative">
                 <Input
                   className="max-w-80 min-w-full pr-11"
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
+                  pattern="[0-9]+([.][0-9]+)?"
                   required
-                  max={maxToDeposit}
-                  value={depositAmount?.toString()}
-                  onChange={(e) => {
-                    setDepositAmount(e.target.value);
-                  }}
+                  value={depositAmount}
+                  onChange={(e) => setDepositAmount(e.target.value)}
                 />
                 <Button
                   type="button"
@@ -123,13 +122,12 @@ export function getTabs({
               <div className="relative">
                 <Input
                   className="w-full min-w-80 pr-11"
-                  type="number"
+                  type="text"
+                  inputMode="decimal"
+                  pattern="[0-9]+([.][0-9]+)?"
                   required
-                  max={maxToWithdraw}
-                  value={withdrawAmount?.toString()}
-                  onChange={(e) => {
-                    setWithdrawAmount(e.target.value);
-                  }}
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
                 />
                 <Button
                   type="button"
