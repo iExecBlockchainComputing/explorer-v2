@@ -1,6 +1,5 @@
 import { SUPPORTED_CHAINS } from '@/config';
 import { createFileRoute, useLocation } from '@tanstack/react-router';
-import { useEffect } from 'react';
 import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
 import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';

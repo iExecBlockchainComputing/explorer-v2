@@ -22,12 +22,6 @@ export const searchQuery = graphql(`
     }
     transaction(id: $search) {
       id
-      from {
-        id
-      }
-      to {
-        id
-      }
     }
   }
 `);
