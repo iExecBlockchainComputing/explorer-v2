@@ -70,7 +70,9 @@ export function SearcherBar({
       let resolvedValue = value;
 
       if (value.endsWith('.eth')) {
-        const iexec = isConnected ? await getIExec() : getReadonlyIExec();
+        const iexec = isConnected
+          ? await getIExec()
+          : getReadonlyIExec(chainId!);
         const resolved = await iexec.ens.resolveName(value);
         if (!resolved) {
           throw new Error(`Fail to resolve ENS : ${value}`);

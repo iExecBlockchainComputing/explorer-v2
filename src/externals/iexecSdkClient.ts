@@ -1,5 +1,6 @@
 import { IExec, IExecConfig, Eip1193Provider } from 'iexec';
 import { type Connector } from 'wagmi';
+import { getChainFromId } from '@/utils/chain.utils';
 
 let iExec: IExec | null = null;
 let readonlyIExec: IExec | null = null;
@@ -41,9 +42,12 @@ export function getIExec(): Promise<IExec> {
   return Promise.resolve(iExec);
 }
 
-export function getReadonlyIExec(): IExec {
+export function getReadonlyIExec(chainId: number): IExec {
+  const chain = getChainFromId(chainId);
+  if (!chain) throw new Error(`Unknown chainId ${chainId}`);
+
   if (!readonlyIExec) {
-    readonlyIExec = new IExec({ ethProvider: 'bellecour' });
+    readonlyIExec = new IExec({ ethProvider: chain?.slug });
   }
   return readonlyIExec;
 }
