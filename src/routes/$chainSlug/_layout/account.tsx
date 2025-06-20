@@ -54,7 +54,7 @@ function RouteComponent() {
     disabledReasons[2] = 'The selected chain has no bridge.';
   }
 
-  const { data: rlcPrice = 0, isError: rlcPriceIsError } = useQuery({
+  const { data: rlcPrice = 0 } = useQuery({
     queryKey: ['rlcPrice'],
     queryFn: async () => {
       const resp = await fetch(
@@ -216,15 +216,12 @@ function RouteComponent() {
               </>
             )}
             <br />
-            {rlcPriceIsError ? (
-              <ErrorAlert message="Fail to get current RLC price" />
-            ) : (
+            {totalToDeposit &&
               Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
                 maximumFractionDigits: 2,
-              }).format(Number(formatRLC(totalToDeposit)) * rlcPrice)
-            )}
+              }).format(Number(formatRLC(totalToDeposit)) * rlcPrice)}
           </div>
         </div>
         <ArrowRight
@@ -259,15 +256,12 @@ function RouteComponent() {
               </>
             )}
             <br />
-            {rlcPriceIsError ? (
-              <ErrorAlert message={`Fail to get current ${token} price`} />
-            ) : (
+            {totalToWithdraw &&
               Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
                 maximumFractionDigits: 2,
-              }).format(Number(formatRLC(totalToWithdraw)) * rlcPrice)
-            )}
+              }).format(Number(formatRLC(totalToWithdraw)) * rlcPrice)}
           </div>
         </div>
       </div>
