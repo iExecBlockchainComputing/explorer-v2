@@ -67,11 +67,11 @@ function RouteComponent() {
   });
 
   const {
-    data: totalToDeposit = 0,
-    refetch: refetchTotalToDeposit,
-    isError: totalToDepositIsError,
+    data: walletBalance = 0,
+    refetch: refetchWalletBalance,
+    isError: walletBalanceIsError,
   } = useQuery({
-    queryKey: [chainId, 'totalToDeposit', userAddress],
+    queryKey: [chainId, 'walletBalance', userAddress],
     queryFn: async () => {
       const iexec = await getIExec();
       const wallet = iexec.wallet;
@@ -84,11 +84,11 @@ function RouteComponent() {
   });
 
   const {
-    data: totalToWithdraw = 0,
-    refetch: refetchTotalToWithdraw,
-    isError: totalToWithdrawIsError,
+    data: accountStakedBalance = 0,
+    refetch: refetchaccountStakedBalance,
+    isError: accountStakedBalanceIsError,
   } = useQuery({
-    queryKey: [chainId, 'totalToWithdraw', userAddress],
+    queryKey: [chainId, 'accountStakedBalance', userAddress],
     queryFn: async () => {
       const iexec = await getIExec();
       const account = iexec.account;
@@ -112,8 +112,8 @@ function RouteComponent() {
       await account.deposit(rlcToNrlc(depositAmount));
     },
     onSuccess: () => {
-      refetchTotalToDeposit();
-      refetchTotalToWithdraw();
+      refetchWalletBalance();
+      refetchaccountStakedBalance();
       setDepositAmount('0');
       setDepositStep(2);
     },
@@ -134,8 +134,8 @@ function RouteComponent() {
       await account.withdraw(rlcToNrlc(withdrawAmount));
     },
     onSuccess: () => {
-      refetchTotalToWithdraw();
-      refetchTotalToDeposit();
+      refetchaccountStakedBalance();
+      refetchWalletBalance();
       setWithdrawAmount('0');
       setWithdrawStep(2);
     },
@@ -145,8 +145,8 @@ function RouteComponent() {
   });
 
   const tabs = getTabs({
-    totalToDeposit,
-    totalToWithdraw,
+    walletBalance,
+    accountStakedBalance,
     depositAmount,
     setDepositAmount,
     setWithdrawAmount,
@@ -207,23 +207,23 @@ function RouteComponent() {
             Your Wallet
           </p>
           <div className="text-center text-lg font-bold md:text-right">
-            {totalToWithdrawIsError ? (
+            {accountStakedBalanceIsError ? (
               <ErrorAlert message={`Fail to get wallet ${token}`} />
             ) : (
               <>
-                {Number(formatRLC(totalToDeposit)).toLocaleString('en', {
+                {Number(formatRLC(walletBalance)).toLocaleString('en', {
                   maximumFractionDigits: 9,
                 })}{' '}
                 {token}
               </>
             )}
             <br />
-            {totalToDeposit &&
+            {walletBalance &&
               Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
                 maximumFractionDigits: 2,
-              }).format(Number(formatRLC(totalToDeposit)) * rlcPrice)}
+              }).format(Number(formatRLC(walletBalance)) * rlcPrice)}
           </div>
         </div>
         <ArrowRight
@@ -247,23 +247,23 @@ function RouteComponent() {
             Your iExec Account
           </p>
           <div className="text-center text-lg font-bold md:text-right">
-            {totalToDepositIsError ? (
+            {walletBalanceIsError ? (
               <ErrorAlert message={`Fail to get iExec account ${token}`} />
             ) : (
               <>
-                {Number(formatRLC(totalToWithdraw)).toLocaleString('en', {
+                {Number(formatRLC(accountStakedBalance)).toLocaleString('en', {
                   maximumFractionDigits: 9,
                 })}{' '}
                 {token}
               </>
             )}
             <br />
-            {totalToWithdraw &&
+            {accountStakedBalance &&
               Intl.NumberFormat('en-US', {
                 style: 'currency',
                 currency: 'USD',
                 maximumFractionDigits: 2,
-              }).format(Number(formatRLC(totalToWithdraw)) * rlcPrice)}
+              }).format(Number(formatRLC(accountStakedBalance)) * rlcPrice)}
           </div>
         </div>
       </div>

@@ -10,8 +10,8 @@ interface TabsProps {
   deposit: UseMutationResult<void, DefaultError, void>;
   withdraw: UseMutationResult<void, DefaultError, void>;
   chainId: number;
-  totalToDeposit: number;
-  totalToWithdraw: number;
+  walletBalance: number;
+  accountStakedBalance: number;
   depositAmount: string;
   withdrawAmount: string;
   setDepositAmount: (amount: string) => void;
@@ -22,15 +22,15 @@ export function getTabs({
   deposit,
   withdraw,
   chainId,
-  totalToDeposit,
-  totalToWithdraw,
+  walletBalance,
+  accountStakedBalance,
   depositAmount,
   withdrawAmount,
   setDepositAmount,
   setWithdrawAmount,
 }: TabsProps) {
-  const maxToWithdraw = Number(formatRLC(totalToWithdraw));
-  const maxToDeposit = Number(formatRLC(totalToDeposit));
+  const maxToWithdraw = Number(formatRLC(accountStakedBalance));
+  const maxToDeposit = Number(formatRLC(walletBalance));
   const token = getChainFromId(chainId)?.tokenSymbol;
 
   return [
