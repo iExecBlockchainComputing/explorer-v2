@@ -1,6 +1,7 @@
-export const rlcToNrlc = (rlc: number | string): string => {
-  const rlcNumber = typeof rlc === 'string' ? parseFloat(rlc) : rlc;
+import Big from 'big.js';
 
-  const nrlc = Math.round(rlcNumber * 1e9);
-  return nrlc.toString();
+export const rlcToNrlc = (rlc: string | number): string => {
+  const rlcBig = new Big(rlc);
+  const nrlc = rlcBig.times(1e9);
+  return nrlc.toFixed(0);
 };
