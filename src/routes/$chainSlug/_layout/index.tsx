@@ -1,5 +1,5 @@
 import { SUPPORTED_CHAINS } from '@/config';
-import { createFileRoute, useLocation } from '@tanstack/react-router';
+import { createFileRoute, useSearch } from '@tanstack/react-router';
 import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
 import { DealsPreviewTable } from '@/modules/deals/DealsPreviewTable';
@@ -14,9 +14,9 @@ export const Route = createFileRoute('/$chainSlug/_layout/')({
 
 function Index() {
   const { chainId } = useUserStore();
-  const location = useLocation();
+  const search = useSearch({ from: '/$chainSlug/_layout/' });
 
-  const forwardedSearch = location.state?.forwardedSearch;
+  const initialSearch = search?.search;
 
   const currentChain = SUPPORTED_CHAINS.find((chain) => chain.id === chainId);
 
@@ -26,7 +26,7 @@ function Index() {
         <h1 className="mb-2 text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
         </h1>
-        <SearcherBar initialSearch={forwardedSearch} />
+        <SearcherBar initialSearch={initialSearch} />
         <div className="absolute inset-0 -z-10 hidden blur-2xl sm:block sm:blur-[100px] lg:blur-[150px]">
           <div
             className="absolute top-1/2 -right-1/4 aspect-[23/30] w-1/2 rounded-full xl:-right-1/5"
@@ -43,7 +43,7 @@ function Index() {
         <TasksPreviewTable className="lg:col-span-5" />
         <AppsPreviewTable className="lg:col-span-4" />
         <DatasetsPreviewTable className="lg:col-span-4" />
-        <WorkerpoolsPreviewTable className="lg:col-span-4" />{' '}
+        <WorkerpoolsPreviewTable className="lg:col-span-4" />
       </div>
     </div>
   );

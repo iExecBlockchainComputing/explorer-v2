@@ -6,11 +6,8 @@ export const Route = createFileRoute('/$chainSlug/_layout/search/$search')({
     console.log('$search', chainSlug, search);
 
     return redirect({
-      to: `/${chainSlug}`,
+      to: `/${chainSlug}?search=${encodeURIComponent(search)}`,
       replace: true,
-      state: {
-        forwardedSearch: search,
-      },
     });
   },
 });
