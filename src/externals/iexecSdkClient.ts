@@ -26,7 +26,10 @@ export async function initIExecSDKs({ connector }: { connector?: Connector }) {
     return;
   }
   // Initialize
-  const config = new IExecConfig({ ethProvider: provider });
+  const config = new IExecConfig(
+    { ethProvider: provider },
+    { allowExperimentalNetworks: true }
+  );
   iExec = new IExec(config);
 
   IEXEC_CLIENT_RESOLVES.forEach((resolve) => resolve(iExec!));
@@ -47,7 +50,10 @@ export function getReadonlyIExec(chainId: number): IExec {
   if (!chain) throw new Error(`Unknown chainId ${chainId}`);
 
   if (!readonlyIExec) {
-    readonlyIExec = new IExec({ ethProvider: chain?.slug });
+    readonlyIExec = new IExec(
+      { ethProvider: chain.id },
+      { allowExperimentalNetworks: true }
+    );
   }
   return readonlyIExec;
 }
