@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
 import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';

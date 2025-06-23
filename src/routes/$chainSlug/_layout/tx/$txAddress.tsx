@@ -5,7 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TransactionBreadcrumbs } from '@/modules/transactions/transaction/TransactionBreadcrumbs';
 import { buildTransactionDetails } from '@/modules/transactions/transaction/buildTransactionDetails';
 import { transactionEventQuery } from '@/modules/transactions/transaction/transactionEventQuery';
