@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.8.0...iexec-explorer-v1.9.0) (2025-06-23)
+
+
+### 🚀 Features
+
+* implement SearcherBar component with enhanced search functionality ([#34](https://github.com/iExecBlockchainComputing/explorer-v2/issues/34)) ([28cad7f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/28cad7fc7f436c73bad3efe9de756d4014cc7e58))
+
 ## [1.8.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.7.0...iexec-explorer-v1.8.0) (2025-06-17)
 
 
