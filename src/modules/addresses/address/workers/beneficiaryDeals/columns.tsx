@@ -38,12 +38,7 @@ export const columns: ColumnDef<AddressContribution>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const status = row.original.status;
-      return (
-        <StatusCell
-          statusEnum={status}
-          bare
-        />
-      );
+      return <StatusCell statusEnum={status} bare />;
     },
   },
 ];
