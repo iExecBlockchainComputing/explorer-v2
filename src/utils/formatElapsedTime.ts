@@ -16,7 +16,13 @@ export function formatElapsedTime(timestamp: string | number): string {
     if (elapsedTime / 1000 / 60 / 60 > -24) {
       return 'in ' + (-elapsedTime / 1000 / 60 / 60).toFixed(0) + 'h';
     }
-    return 'in the future';
+    if (elapsedTime / 1000 / 60 / 60 / 24 > -30) {
+      return 'in ' + (-elapsedTime / 1000 / 60 / 60 / 24).toFixed(0) + 'd';
+    }
+    if (elapsedTime / 1000 / 60 / 60 / 24 / 30.44 > -12) {
+      return 'in ' + (-elapsedTime / 1000 / 60 / 60 / 24 / 30.44).toFixed(0) + 'mo';
+    }
+    return 'in ' + (-elapsedTime / 1000 / 60 / 60 / 24 / 365.25).toFixed(0) + 'y';
   }
 
   if (elapsedTime / 1000 < 60) {
@@ -28,7 +34,13 @@ export function formatElapsedTime(timestamp: string | number): string {
   if (elapsedTime / 1000 / 60 / 60 < 24) {
     return (elapsedTime / 1000 / 60 / 60).toFixed(0) + 'h ago';
   }
-  return (elapsedTime / 1000 / 60 / 60 / 24).toFixed(0) + 'd ago';
+  if (elapsedTime / 1000 / 60 / 60 / 24 < 30) {
+    return (elapsedTime / 1000 / 60 / 60 / 24).toFixed(0) + 'd ago';
+  }
+  if (elapsedTime / 1000 / 60 / 60 / 24 / 30.44 < 12) {
+    return (elapsedTime / 1000 / 60 / 60 / 24 / 30.44).toFixed(0) + 'mo ago';
+  }
+  return (elapsedTime / 1000 / 60 / 60 / 24 / 365.25).toFixed(0) + 'y ago';
 }
 
 export function readableDate(timestamp: string | number): string {
