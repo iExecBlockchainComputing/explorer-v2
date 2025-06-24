@@ -1,11 +1,18 @@
 import { DealsQuery } from '@/graphql/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
+import useUserStore from '@/stores/useUser.store';
+import { getChainFromId } from '@/utils/chain.utils';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { SuccessCell } from '../SuccessCell';
 
 type Deal = DealsQuery['deals'][number];
+
+const getTokenSymbol = () => {
+  const chainId = useUserStore.getState().chainId;
+  return getChainFromId(chainId)?.tokenSymbol || 'RLC';
+};
 
 export const columns: ColumnDef<Deal>[] = [
   {
@@ -100,7 +107,11 @@ export const columns: ColumnDef<Deal>[] = [
         minimumFractionDigits: 0,
         maximumFractionDigits: 10,
       });
-      return <span>{price} xRLC</span>;
+      return (
+        <span>
+          {price} {getTokenSymbol()}
+        </span>
+      );
     },
   },
 ];

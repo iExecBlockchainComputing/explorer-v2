@@ -9,6 +9,7 @@ export const PREVIEW_TABLE_REFETCH_INTERVAL = 10_000;
 export const TABLE_REFETCH_INTERVAL = 10_000;
 
 export const IPFS_GATEWAY_URL = 'https://ipfs.iex.ec';
+export const API_COINGECKO_URL = 'https://api.coingecko.com/api/v3/simple/';
 
 export const SUPPORTED_CHAINS = [
   {
@@ -19,7 +20,11 @@ export const SUPPORTED_CHAINS = [
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+    bridge: 'https://bridge-bellecour.iex.ec/',
+    bridgeInformation:
+      'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
     wagmiNetwork: bellecour,
+    tokenSymbol: 'xRLC',
   },
   {
     id: 421614,
@@ -31,5 +36,6 @@ export const SUPPORTED_CHAINS = [
     subgraphUrl:
       'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
     wagmiNetwork: arbitrumSepolia,
+    tokenSymbol: 'RLC',
   },
 ];

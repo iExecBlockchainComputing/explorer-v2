@@ -157,7 +157,7 @@ export function SearcherBar({
           onKeyDown={handleKeyDown}
           disabled={isPending}
           className={cn(
-            'bg-input border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
+            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32',
             (isError || localError) &&
               'focus-visible:border-danger-border focus:outline-danger-border focus-visible:ring-danger-border',
@@ -177,7 +177,7 @@ export function SearcherBar({
         {isConnected && (
           <Button
             variant="outline"
-            className="bg-input hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
+            className="bg-muted hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
             asChild
           >
             <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>

@@ -24,8 +24,9 @@ const buttonVariants = cva(
           'from-primary text-primary hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-primary before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-[#322B1E] before:duration-300',
       },
       size: {
-        default: 'h-9 px-4 py-2 has-[>svg]:px-3 rounded-full',
+        xs: 'h-6 rounded-full px-2 text-xs has-[>svg]:px-1.5 gap-1',
         sm: 'h-8 rounded-full gap-1.5 px-3 has-[>svg]:px-2.5',
+        default: 'h-9 px-4 py-2 has-[>svg]:px-3 rounded-full',
         lg: 'h-10 rounded-md px-6 has-[>svg]:px-4',
         icon: 'size-9 rounded-md',
       },
