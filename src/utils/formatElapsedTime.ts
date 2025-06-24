@@ -20,7 +20,7 @@ export function formatElapsedTime(timestamp: string | number): string {
   }
 
   if (elapsedTime / 1000 < 60) {
-    return 'a few seconds ago';
+    return 'just now';
   }
   if (elapsedTime / 1000 / 60 < 60) {
     return (elapsedTime / 1000 / 60).toFixed(0) + 'min ago';

@@ -41,14 +41,6 @@ export const columns: ColumnDef<Deal>[] = [
     },
   },
   {
-    accessorKey: 'time',
-    header: 'Time',
-    cell: ({ row }) => {
-      const timestamp = row.original.timestamp;
-      return <div className="min-w-32">{formatElapsedTime(timestamp)}</div>;
-    },
-  },
-  {
     accessorKey: 'workerpool.address',
     header: 'Workerpool',
     cell: ({ row }) => {
@@ -82,6 +74,21 @@ export const columns: ColumnDef<Deal>[] = [
     },
   },
   {
+    accessorKey: 'time',
+    header: 'Time',
+    cell: ({ row }) => {
+      const timestamp = row.original.timestamp;
+      return <div className="min-w-18">{formatElapsedTime(timestamp)}</div>;
+    },
+  },
+  {
+    accessorKey: 'success',
+    header: 'Success',
+    cell: ({ row }) => {
+      return <SuccessCell deal={row.original} />;
+    },
+  },
+  {
     accessorKey: 'price',
     header: 'Price',
     cell: ({ row }) => {
@@ -94,13 +101,6 @@ export const columns: ColumnDef<Deal>[] = [
         maximumFractionDigits: 10,
       });
       return <span>{price} xRLC</span>;
-    },
-  },
-  {
-    accessorKey: 'success',
-    header: 'Success',
-    cell: ({ row }) => {
-      return <SuccessCell deal={row.original} />;
     },
   },
 ];

@@ -52,6 +52,14 @@ export const columns: ColumnDef<Dataset>[] = [
     },
   },
   {
+    accessorKey: 'time',
+    header: 'Time',
+    cell: ({ row }) => {
+      const timestamp = row.original.timestamp;
+      return <div className="min-w-18">{formatElapsedTime(timestamp)}</div>;
+    },
+  },
+  {
     accessorKey: 'tx_hash',
     header: 'TxHash',
     cell: ({ row }) => {
@@ -64,14 +72,6 @@ export const columns: ColumnDef<Dataset>[] = [
           textToCopy={txHash}
         />
       );
-    },
-  },
-  {
-    accessorKey: 'time',
-    header: 'Time',
-    cell: ({ row }) => {
-      const timestamp = row.original.timestamp;
-      return <div className="min-w-32">{formatElapsedTime(timestamp)}</div>;
     },
   },
 ];
