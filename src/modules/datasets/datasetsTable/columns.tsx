@@ -29,10 +29,14 @@ export const columns: ColumnDef<Dataset>[] = [
       const datasetName = row.original.name;
       return datasetName ? (
         <div className="w-36">
-          <CopyButton displayText={datasetName} textToCopy={datasetName} />
+          <CopyButton
+            displayText={datasetName}
+            textToCopy={datasetName}
+            tooltipWithText
+          />
         </div>
       ) : (
-        <span className="text-muted-foreground">No dataset name</span>
+        <span className="text-muted-foreground">No name</span>
       );
     },
   },

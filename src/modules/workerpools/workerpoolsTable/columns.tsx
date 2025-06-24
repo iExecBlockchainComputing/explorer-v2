@@ -32,6 +32,7 @@ export const columns: ColumnDef<Workerpool>[] = [
           <CopyButton
             displayText={workerpoolDescription}
             textToCopy={workerpoolDescription}
+            tooltipWithText
           />
         </div>
       );

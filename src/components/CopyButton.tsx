@@ -11,9 +11,11 @@ import {
 const CopyButton = ({
   textToCopy,
   displayText,
+  tooltipWithText = false,
 }: {
   textToCopy: string;
   displayText?: string;
+  tooltipWithText?: boolean;
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipMessage, setTooltipMessage] = useState('Copy');
@@ -27,7 +29,11 @@ const CopyButton = ({
   };
 
   const handleMouseEnter = () => {
-    setTooltipMessage('Copy');
+    if (tooltipWithText && displayText) {
+      setTooltipMessage(`Copy "${displayText}"`);
+    } else {
+      setTooltipMessage('Copy');
+    }
     setShowTooltip(true);
   };
 
@@ -48,7 +54,7 @@ const CopyButton = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className={cn(
-              'hover:before:bg-grey-700 active:before:bg-grey-600 relative z-0 -my-1 flex w-fit items-center gap-1 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-150 active:before:scale-x-[0.98] active:before:scale-y-[0.94]',
+              'hover:before:bg-grey-700 active:before:bg-grey-600 relative z-0 -my-1 box-content flex max-w-full items-center gap-1 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-150 active:before:scale-x-[0.98] active:before:scale-y-[0.94]',
               displayText ? '-mx-2 px-2' : '-mx-1 px-1'
             )}
           >

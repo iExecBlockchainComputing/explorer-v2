@@ -29,7 +29,7 @@ export const columns: ColumnDef<App>[] = [
       const name = row.original.name;
       return (
         <div className="w-36">
-          <CopyButton displayText={name} textToCopy={name} />
+          <CopyButton displayText={name} textToCopy={name} tooltipWithText />
         </div>
       );
     },
