@@ -38,7 +38,7 @@ export function buildTransactionDetails({
     ...(transaction.to && {
       To: (
         <SmartLinkGroup
-          type="transaction"
+          type="address"
           addressOrId={transaction.to.address}
           label={transaction.to.address}
         />
