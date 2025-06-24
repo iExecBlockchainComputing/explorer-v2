@@ -69,9 +69,7 @@ export const columns: ColumnDef<Deal>[] = [
     cell: ({ row }) => {
       const datasetAddress = row.original.dataset?.address;
       if (!datasetAddress) {
-        return (
-          <span className="text-muted-foreground">No dataset address</span>
-        );
+        return <span className="text-muted-foreground">No dataset</span>;
       }
       return (
         <CopyButton
