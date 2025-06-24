@@ -15,20 +15,12 @@ export function SuccessCell({ deal }: { deal: Deal }) {
   const timeout = timeoutTimestamp && timeoutTimestamp < Date.now();
   let color;
   if (successRate === 1) {
-    color = '#11B15E';
+    color = 'text-success-foreground';
   } else if (!timeout) {
-    color = '#F4C503';
+    color = 'text-warning-foreground';
   } else {
-    color = '#EF5353';
+    color = 'text-danger-foreground';
   }
 
-  return (
-    <div
-      style={{
-        color: color,
-      }}
-    >
-      {successRate * 100}%
-    </div>
-  );
+  return <div className={color}>{successRate * 100}%</div>;
 }
