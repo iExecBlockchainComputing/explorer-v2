@@ -218,9 +218,6 @@
   --muted: var(--color-grey-700);
   --muted-foreground: var(--color-grey-300);
 
-  /* --intermediary: var(--color-grey-400);
-  --intermediary-foreground: var(--color-grey-600); */
-
   --accent: var(--color-grey-700);
   --accent-foreground: var(--color-white);
 
