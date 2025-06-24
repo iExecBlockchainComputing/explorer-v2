@@ -38,11 +38,9 @@ export const columns: ColumnDef<AddressContribution>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const status = row.original.status;
-      const finalDeadlineTimestamp = row.original.finalDeadline * 1000;
       return (
         <StatusCell
           statusEnum={status}
-          timeoutTimestamp={finalDeadlineTimestamp}
           bare
         />
       );
