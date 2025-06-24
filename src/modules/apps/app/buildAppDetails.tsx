@@ -1,8 +1,9 @@
 import { AppQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
+import JsonBlock from '@/modules/JsonBlock';
 import TransferEvent from '@/modules/events/TransferEvent';
-import { multiaddrHexToHuman } from '@/utils/format';
+import { mrEnclaveHexToHuman, multiaddrHexToHuman } from '@/utils/format';
 import {
   formatDateCompact,
   formatElapsedTime,
@@ -56,6 +57,9 @@ export function buildAppDetails({ app }: { app: AppQuery['app'] }) {
           <CopyButton textToCopy={app.checksum} />
         </div>
       ),
+    }),
+    ...(app.mrenclave && {
+      MrEnclave: <JsonBlock>{mrEnclaveHexToHuman(app.mrenclave)}</JsonBlock>,
     }),
     ...(app.transfers && {
       Transfers: (

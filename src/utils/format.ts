@@ -12,6 +12,12 @@ export const multiaddrHexToHuman = (hexString: string): string => {
   return res;
 };
 
+export const mrEnclaveHexToHuman = (hexString: string) => {
+  if (hexString?.substr(0, 2) !== '0x') return hexString;
+  const buffer = Buffer.from(hexString.substr(2), 'hex');
+  return buffer.toString();
+};
+
 export const taskResultToObject = (results?: string | null) => {
   let resultObj = { storage: 'none' };
   try {
