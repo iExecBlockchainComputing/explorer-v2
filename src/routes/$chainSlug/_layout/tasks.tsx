@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
 import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';

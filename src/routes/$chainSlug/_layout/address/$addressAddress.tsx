@@ -6,7 +6,6 @@ import { Box, LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
 import { Tabs } from '@/modules/Tabs';
 import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrumbs';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
@@ -19,6 +18,7 @@ import { AddressRequestedDealsTable } from '@/modules/addresses/address/requests
 import { AddressRequestedTasksTable } from '@/modules/addresses/address/requests/requestedTasks/AddressRequestedTasksTable';
 import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools/AddressWorkerpoolsTable';
 import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
