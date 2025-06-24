@@ -20,9 +20,13 @@ export function formatElapsedTime(timestamp: string | number): string {
       return 'in ' + (-elapsedTime / 1000 / 60 / 60 / 24).toFixed(0) + 'd';
     }
     if (elapsedTime / 1000 / 60 / 60 / 24 / 30.44 > -12) {
-      return 'in ' + (-elapsedTime / 1000 / 60 / 60 / 24 / 30.44).toFixed(0) + 'mo';
+      return (
+        'in ' + (-elapsedTime / 1000 / 60 / 60 / 24 / 30.44).toFixed(0) + 'mo'
+      );
     }
-    return 'in ' + (-elapsedTime / 1000 / 60 / 60 / 24 / 365.25).toFixed(0) + 'y';
+    return (
+      'in ' + (-elapsedTime / 1000 / 60 / 60 / 24 / 365.25).toFixed(0) + 'y'
+    );
   }
 
   if (elapsedTime / 1000 < 60) {
