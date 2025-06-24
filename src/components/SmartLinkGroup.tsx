@@ -1,7 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ExternalLink } from 'lucide-react';
 import CopyButton from '@/components/CopyButton';
 import { Button } from '@/components/ui/button';
+import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
 import { getBlockExplorerUrl, getChainFromId } from '@/utils/chain.utils';
 import { truncateAddress } from '@/utils/truncateAddress';
@@ -34,7 +36,7 @@ export default function SmartLinkGroup({
   label,
   isCurrentPage = false,
 }: SmartLinkGroupProps) {
-  const { chainId } = useUserStore();
+  const { chainId, isConnected } = useUserStore();
   const basePath = {
     deal: 'deal',
     task: 'task',
@@ -44,6 +46,20 @@ export default function SmartLinkGroup({
     address: 'address',
     transaction: 'tx',
   };
+
+  const { data: ens } = useQuery({
+    queryKey: ['ens', addressOrId],
+    queryFn: async () => {
+      const iexec = isConnected ? await getIExec() : getReadonlyIExec(chainId!);
+      const resolved = await iexec.ens.lookupAddress(addressOrId);
+      if (!resolved) {
+        return null;
+      }
+      return resolved;
+    },
+    enabled: !!chainId && !!addressOrId && addressOrId.length === 42,
+    staleTime: Infinity,
+  });
 
   const blockExplorerPath = {
     deal: `tx/${addressOrId}`,
@@ -59,7 +75,7 @@ export default function SmartLinkGroup({
       {!isCurrentPage ? (
         <Button
           variant="link"
-          className="h-auto p-0 text-sm text-orange-200"
+          className="h-auto gap-1 p-0 text-sm text-orange-200"
           asChild
         >
           <Link
@@ -69,6 +85,7 @@ export default function SmartLinkGroup({
             <span className="inline md:hidden">
               {(label ? truncateAddress(label) : '') ?? addressOrId}
             </span>
+            {ens ? `(${ens})` : ''}
           </Link>
         </Button>
       ) : (
@@ -77,6 +94,7 @@ export default function SmartLinkGroup({
           <span className="inline md:hidden">
             {(label ? truncateAddress(label) : '') ?? addressOrId}
           </span>
+          {ens ? `(${ens})` : ''}
         </div>
       )}
 
