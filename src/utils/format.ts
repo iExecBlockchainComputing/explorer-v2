@@ -13,8 +13,8 @@ export const multiaddrHexToHuman = (hexString: string): string => {
 };
 
 export const mrEnclaveHexToHuman = (hexString: string) => {
-  if (hexString?.substr(0, 2) !== '0x') return hexString;
-  const buffer: Buffer = Buffer.from(hexString.substr(2), 'hex');
+  if (hexString.substring(0, 2) !== '0x') return hexString;
+  const buffer: Buffer = Buffer.from(hexString.substring(2), 'hex');
   return buffer.toString();
 };
 
