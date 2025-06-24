@@ -22,7 +22,7 @@ export function Tabs({
   disabledReasons = {},
 }: TabsProps) {
   return (
-    <div className="flex items-center gap-6">
+    <div className="-mb-2 flex items-center gap-6 overflow-x-auto pb-2">
       {tabLabels.map((label, index) => {
         const isDisabled = disabledTabs.includes(index);
         const reason = disabledReasons[index];

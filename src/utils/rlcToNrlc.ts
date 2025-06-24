@@ -1,3 +1,7 @@
-export function rlcToNrlc(rlcValue: number | bigint): bigint {
-  return BigInt(rlcValue) * 10n ** 9n;
-}
+import Big from 'big.js';
+
+export const rlcToNrlc = (rlc: string | number): string => {
+  const rlcBig = new Big(rlc);
+  const nrlc = rlcBig.times(1e9);
+  return nrlc.toFixed(0);
+};

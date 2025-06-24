@@ -223,7 +223,7 @@
 
   --destructive: var(--color-red-500);
   --border: var(--color-white);
-  --input: var(--color-grey-700);
+  --input: var(--color-grey-400);
   --ring: var(--color-primary);
 
   --chart-1: oklch(0.488 0.243 264.376);
