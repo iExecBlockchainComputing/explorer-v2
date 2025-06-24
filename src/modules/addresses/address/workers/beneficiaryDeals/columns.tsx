@@ -1,17 +1,20 @@
-import { TasksQuery } from '@/graphql/graphql';
+import { AddressContributionQuery } from '@/graphql/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
+import StatusCell from '@/modules/tasks/StatusCell';
+import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
-import StatusCell from '../StatusCell';
 
-type Task = TasksQuery['tasks'][number];
+type AddressContribution = NonNullable<
+  NonNullable<AddressContributionQuery['account']>['contributions']
+>[number];
 
-export const columns: ColumnDef<Task>[] = [
+export const columns: ColumnDef<AddressContribution>[] = [
   {
     accessorKey: 'taskid',
     header: 'Task',
     cell: ({ row }) => {
-      const taskAddress = row.original.taskid;
+      const taskAddress = row.original.task.taskid;
       return (
         <CopyButton
           displayText={truncateAddress(taskAddress, {
@@ -20,6 +23,14 @@ export const columns: ColumnDef<Task>[] = [
           textToCopy={taskAddress}
         />
       );
+    },
+  },
+  {
+    accessorKey: 'time',
+    header: 'Time',
+    cell: ({ row }) => {
+      const timestamp = row.original.timestamp;
+      return <div className="min-w-18">{formatElapsedTime(timestamp)}</div>;
     },
   },
   {
@@ -35,20 +46,6 @@ export const columns: ColumnDef<Task>[] = [
           bare
         />
       );
-    },
-  },
-  {
-    accessorKey: 'deadline',
-    header: 'Deadline',
-    cell: ({ row }) => {
-      const deadline = new Intl.DateTimeFormat('en-US', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-      }).format(new Date(row.original.finalDeadline * 1000));
-      return deadline;
     },
   },
 ];

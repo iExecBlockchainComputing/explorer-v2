@@ -6,10 +6,10 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressContributionQuery } from './addressContributionQuery';
+import { columns } from './columns';
 import { nextAddressContributionQuery } from './nextAddressContributionQuery';
 
 function useAddressContributionData({
@@ -71,7 +71,7 @@ function useAddressContributionData({
   const formattedDeal =
     data?.account?.contributions.map((contribution) => ({
       ...contribution,
-      destination: `/task/${contribution.taskid}`,
+      destination: `/task/${contribution.task.taskid}`,
     })) ?? [];
 
   return {
@@ -98,6 +98,7 @@ export function AddressContributionTable({
     additionalPages,
     hasPastError,
   } = useAddressContributionData({ addressAddress, currentPage });
+  console.log('AddressContributionTable', contribution);
 
   return (
     <div className="space-y-6">
