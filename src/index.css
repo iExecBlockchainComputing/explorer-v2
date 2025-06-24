@@ -264,4 +264,16 @@
   button {
     @apply cursor-pointer;
   }
+
+  *::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply bg-grey-700 rounded-full;
+  }
+  *::-webkit-scrollbar-track {
+    @apply bg-grey-800 rounded-full;
+  }
 }
