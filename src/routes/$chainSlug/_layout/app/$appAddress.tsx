@@ -5,11 +5,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
 import { AppDealsTable } from '@/modules/apps/app/AppDealsTable';
 import { appQuery } from '@/modules/apps/app/appQuery';
 import { buildAppDetails } from '@/modules/apps/app/buildAppDetails';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 

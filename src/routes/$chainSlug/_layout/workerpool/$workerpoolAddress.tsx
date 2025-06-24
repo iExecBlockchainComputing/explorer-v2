@@ -5,7 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import { WorkerpoolDealsTable } from '@/modules/workerpools/workerpool/WorkerpoolDealsTable';
 import { buildWorkerpoolDetails } from '@/modules/workerpools/workerpool/buildWorkerpoolDetails';
 import { WorkerpoolBreadcrumbs } from '@/modules/workerpools/workerpool/workerpoolBreadcrumbs';

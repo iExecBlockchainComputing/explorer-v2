@@ -5,11 +5,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { Box, LoaderCircle } from 'lucide-react';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
 import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 

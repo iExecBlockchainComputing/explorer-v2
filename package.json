@@ -1,7 +1,7 @@
 {
   "name": "iexec-explorer",
   "private": true,
-  "version": "1.8.0",
+  "version": "1.9.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -42,7 +42,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "graphql": "^16.10.0",
-    "iexec": "^8.15.0",
+    "iexec": "^8.16.0",
     "lucide-react": "^0.487.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "react": "^19.0.0",

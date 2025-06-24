@@ -7,10 +7,10 @@ import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { SearcherBar } from '@/modules/SearcherBar';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
 import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
+import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
