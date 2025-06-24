@@ -85,7 +85,7 @@ function RouteComponent() {
 
   const {
     data: accountStakedBalance = 0,
-    refetch: refetchaccountStakedBalance,
+    refetch: refetchAccountStakedBalance,
     isError: accountStakedBalanceIsError,
   } = useQuery({
     queryKey: [chainId, 'accountStakedBalance', userAddress],
@@ -113,7 +113,7 @@ function RouteComponent() {
     },
     onSuccess: () => {
       refetchWalletBalance();
-      refetchaccountStakedBalance();
+      refetchAccountStakedBalance();
       setDepositAmount('0');
       setDepositStep(2);
     },
@@ -134,7 +134,7 @@ function RouteComponent() {
       await account.withdraw(rlcToNrlc(withdrawAmount));
     },
     onSuccess: () => {
-      refetchaccountStakedBalance();
+      refetchAccountStakedBalance();
       refetchWalletBalance();
       setWithdrawAmount('0');
       setWithdrawStep(2);
