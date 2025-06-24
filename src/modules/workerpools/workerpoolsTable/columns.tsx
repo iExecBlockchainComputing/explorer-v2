@@ -28,8 +28,11 @@ export const columns: ColumnDef<Workerpool>[] = [
     cell: ({ row }) => {
       const workerpoolDescription = row.original.description;
       return (
-        <div className="w-42 overflow-hidden overflow-ellipsis">
-          {workerpoolDescription}
+        <div className="w-42">
+          <CopyButton
+            displayText={workerpoolDescription}
+            textToCopy={workerpoolDescription}
+          />
         </div>
       );
     },

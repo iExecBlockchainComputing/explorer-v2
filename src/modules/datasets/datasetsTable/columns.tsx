@@ -28,8 +28,8 @@ export const columns: ColumnDef<Dataset>[] = [
     cell: ({ row }) => {
       const datasetName = row.original.name;
       return datasetName ? (
-        <div className="w-36 overflow-hidden overflow-ellipsis">
-          {datasetName}
+        <div className="w-36">
+          <CopyButton displayText={datasetName} textToCopy={datasetName} />
         </div>
       ) : (
         <span className="text-muted-foreground">No dataset name</span>
