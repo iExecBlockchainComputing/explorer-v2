@@ -6,7 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import DealIcon from '@/components/icons/dealIcon';
+import DealIcon from '@/components/icons/DealIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';

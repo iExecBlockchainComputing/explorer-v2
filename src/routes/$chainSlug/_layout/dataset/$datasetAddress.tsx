@@ -3,7 +3,7 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import DatasetIcon from '@/components/icons/datasetIcon';
+import DatasetIcon from '@/components/icons/DatasetIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
-import AddressIcon from '@/components/icons/addressIcon';
+import AddressIcon from '@/components/icons/AddressIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';

@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
-import WorkerpoolIcon from '@/components/icons/workerpoolIcon';
+import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';

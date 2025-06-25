@@ -3,7 +3,7 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import AppIcon from '@/components/icons/appIcon';
+import AppIcon from '@/components/icons/AppIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';

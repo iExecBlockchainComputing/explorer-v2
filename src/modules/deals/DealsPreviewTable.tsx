@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
-import DealIcon from '@/components/icons/dealIcon';
+import DealIcon from '@/components/icons/DealIcon';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';

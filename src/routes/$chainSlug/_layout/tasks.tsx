@@ -6,7 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import TaskIcon from '@/components/icons/taskIcon';
+import TaskIcon from '@/components/icons/TaskIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';

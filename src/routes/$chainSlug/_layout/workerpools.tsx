@@ -6,7 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import WorkerpoolIcon from '@/components/icons/workerpoolIcon';
+import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';

@@ -6,7 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import AppIcon from '@/components/icons/appIcon';
+import AppIcon from '@/components/icons/AppIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';

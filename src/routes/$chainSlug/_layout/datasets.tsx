@@ -6,7 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
-import DatasetIcon from '@/components/icons/datasetIcon';
+import DatasetIcon from '@/components/icons/DatasetIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
