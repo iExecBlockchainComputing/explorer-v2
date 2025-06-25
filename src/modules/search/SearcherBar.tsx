@@ -148,7 +148,7 @@ export function SearcherBar({
   };
 
   return (
-    <div className={cn('m-auto w-full', className)}>
+    <div className={cn('m-auto w-full max-w-[1408px]', className)}>
       <div className="relative w-full">
         <Input
           ref={inputRef}
@@ -157,7 +157,7 @@ export function SearcherBar({
           onKeyDown={handleKeyDown}
           disabled={isPending}
           className={cn(
-            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
+            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 text-white sm:py-6.5',
             isConnected && 'sm:pr-32',
             (isError || localError) &&
               'focus-visible:border-danger-border focus:outline-danger-border focus-visible:ring-danger-border',

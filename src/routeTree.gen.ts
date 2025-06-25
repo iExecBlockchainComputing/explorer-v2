@@ -21,8 +21,8 @@ import { Route as ChainSlugLayoutTasksImport } from './routes/$chainSlug/_layout
 import { Route as ChainSlugLayoutDealsImport } from './routes/$chainSlug/_layout/deals'
 import { Route as ChainSlugLayoutDatasetsImport } from './routes/$chainSlug/_layout/datasets'
 import { Route as ChainSlugLayoutAppsImport } from './routes/$chainSlug/_layout/apps'
-import { Route as ChainSlugLayoutSplatImport } from './routes/$chainSlug/_layout/$'
 import { Route as ChainSlugLayoutAccountImport } from './routes/$chainSlug/_layout/account'
+import { Route as ChainSlugLayoutSplatImport } from './routes/$chainSlug/_layout/$'
 import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
 import { Route as ChainSlugLayoutTxTxAddressImport } from './routes/$chainSlug/_layout/tx/$txAddress'
 import { Route as ChainSlugLayoutTaskTaskAddressImport } from './routes/$chainSlug/_layout/task/$taskAddress'
@@ -93,15 +93,15 @@ const ChainSlugLayoutAppsRoute = ChainSlugLayoutAppsImport.update({
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
 
-const ChainSlugLayoutSplatRoute = ChainSlugLayoutSplatImport.update({
-  id: '/$',
-  path: '/$',
-  getParentRoute: () => ChainSlugLayoutRoute,
-} as any)
-
 const ChainSlugLayoutAccountRoute = ChainSlugLayoutAccountImport.update({
   id: '/account',
   path: '/account',
+  getParentRoute: () => ChainSlugLayoutRoute,
+} as any)
+
+const ChainSlugLayoutSplatRoute = ChainSlugLayoutSplatImport.update({
+  id: '/$',
+  path: '/$',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
 

@@ -9,9 +9,10 @@ import {
   SelectValue,
 } from '../ui/select.tsx';
 
-export function ChainSelector() {
+export function ChainSelector({ className }: { className?: string }) {
   const { chainId } = useUserStore();
   const { requestChainChange } = useChainSwitch();
+
   const handleChainChange = async (value: string) => {
     requestChainChange(Number(value));
   };
@@ -22,12 +23,16 @@ export function ChainSelector() {
       onValueChange={handleChainChange}
       defaultValue="-1"
     >
-      <SelectTrigger>
+      <SelectTrigger className={className}>
         <SelectValue placeholder="Select Chain" />
       </SelectTrigger>
-      <SelectContent>
+      <SelectContent className={className}>
         {SUPPORTED_CHAINS.map((chain) => (
-          <SelectItem key={chain.id} value={chain.id.toString()}>
+          <SelectItem
+            key={chain.id}
+            value={chain.id.toString()}
+            className={className}
+          >
             <img src={chain.icon} className="size-4" alt="" /> {chain.name}
           </SelectItem>
         ))}
