@@ -2,7 +2,8 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import DatasetIcon from '@/components/icons/datasetIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
@@ -63,7 +64,7 @@ function DatasetsRoute() {
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          <Box size="20" />
+          <DatasetIcon size={24} />
           Dataset details
           {dataset && isError && (
             <span className="text-muted-foreground text-sm font-light">

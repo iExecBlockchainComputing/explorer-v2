@@ -2,7 +2,8 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import TaskIcon from '@/components/icons/taskIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -56,7 +57,7 @@ function TasksRoute() {
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-          <Box size="20" />
+          <TaskIcon size={24} />
           Task details
           {!task && isError && (
             <span className="text-muted-foreground text-sm font-light">

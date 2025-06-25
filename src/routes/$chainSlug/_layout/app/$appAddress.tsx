@@ -2,7 +2,8 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import AppIcon from '@/components/icons/appIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
@@ -60,7 +61,7 @@ function AppsRoute() {
       <SearcherBar className="py-10" />
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          <Box size="20" />
+          <AppIcon size={24} />
           App details
           {app && isError && (
             <span className="text-muted-foreground text-sm font-light">

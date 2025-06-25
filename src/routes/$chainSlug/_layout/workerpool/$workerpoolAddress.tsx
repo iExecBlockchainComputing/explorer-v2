@@ -2,7 +2,8 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import WorkerpoolIcon from '@/components/icons/workerpoolIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -65,7 +66,7 @@ function WorkerpoolsRoute() {
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          <Box size="20" />
+          <WorkerpoolIcon size={24} />
           Workerpool details
           {workerpool && isError && (
             <span className="text-muted-foreground text-sm font-light">

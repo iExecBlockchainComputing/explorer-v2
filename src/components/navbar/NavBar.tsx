@@ -104,7 +104,7 @@ export function Navbar() {
             >
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
-            <ChainSelector className='w-full border-0' />
+            <ChainSelector className="w-full border-0" />
           </div>
         </div>
       </div>

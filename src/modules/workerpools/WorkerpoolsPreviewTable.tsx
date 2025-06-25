@@ -2,9 +2,10 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
+import WorkerpoolIcon from '@/components/icons/workerpoolIcon';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -38,7 +39,7 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
     <div className={cn(className, 'flex flex-col gap-2')}>
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
-          <Box size="16" className="text-secondary" />
+          <WorkerpoolIcon size={20} className="text-secondary" />
           Latest workerpools deployed
           {workerpools.data && workerpools.isError && (
             <span className="text-muted-foreground text-sm font-light">

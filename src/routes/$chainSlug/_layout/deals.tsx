@@ -2,10 +2,11 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import DealIcon from '@/components/icons/dealIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
@@ -83,7 +84,7 @@ function DealsRoute() {
       <SearcherBar className="py-10" />
 
       <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-        <Box size="20" />
+        <DealIcon size={24} />
         Deals
         {data.length > 0 && isError && (
           <span className="text-muted-foreground text-sm font-light">
