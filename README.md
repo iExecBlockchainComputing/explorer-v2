@@ -1,83 +1,86 @@
-# iExec explorer
+# iExec Explorer
 
-## Install
+<img src="src/assets/iexec-logo.svg" alt="iExec logo" width="60" />
 
-```sh
-npm ci
+## Description
+
+**iExec Explorer** is a modern web app to explore the iExec protocol across multiple supported blockchains (Bellecour, Arbitrum Sepolia, etc.). It lets you search, browse, and analyze deals, tasks, apps, datasets, workerpools, transactions, and accounts, with an integrated wallet manager.
+
+## Main Features
+
+- 🔎 **Universal search**: by address, deal/task/tx hash, ENS, etc.
+- 📊 **Entity explorer**: Deals, Tasks, Apps, Datasets, Workerpools, Transactions, Accounts
+- 🧩 **Detailed views**: all key info for each entity
+- 🦾 **Multi-chain support**
+- 👛 **Wallet Manager**: deposit, withdraw, balance
+- ⚡ **Live data**: auto-refresh tables
+- 🛡️ **Secure wallet connection** (Wagmi, WalletConnect, etc.)
+- 🎨 **Modern UI**: responsive, dark mode
+
+## Quick Start
+
+### Prerequisites
+- Node.js >= 18
+- npm >= 9
+
+### Install
+```bash
+git clone <repo-url>
+cd explorer-v2
+npm install
+```
+
+### Generate GraphQL Types (required)
+```bash
 npm run codegen
 ```
+This command generates the necessary GraphQL types for the project.
 
-## Develop
+### Configure
+Create a `.env` file at the root:
+```env
+VITE_REOWN_PROJECT_ID=your_project_id
+VITE_ROLLBAR_ACCESS_TOKEN=your_rollbar_token # (optional)
+```
 
-```sh
-# npm ci
-# npm run codegen
+### Run
+```bash
 npm run dev
 ```
+App runs at [http://localhost:5173](http://localhost:5173) by default.
 
-browse <http://localhost:5173>
-
-## Build
-
-```sh
-# npm ci
-# npm run codegen
+### Build
+```bash
 npm run build
+npm run preview
 ```
 
-You can serve the build with `npx serve -p 3000 ./dist` and browse <http://localhost:3000>
+## Useful Scripts
+- `npm run dev` — start dev server
+- `npm run build` — production build
+- `npm run preview` — preview build
+- `npm run lint` — lint code
+- `npm run check-type` — TypeScript check
+- `npm run format` — Prettier format
+- `npm run codegen` — GraphQL types
 
-## Template: React + TypeScript + Vite
+## Tech Stack
+- **React 19** + TypeScript
+- **Vite**
+- **TailwindCSS**
+- **TanStack Router & React Query**
+- **GraphQL** (TheGraph)
+- **Wagmi & WalletConnect**
+- **Zustand**
+- **Rollbar**
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Links
+- [iExec Website](https://www.iex.ec/)
+- [iExec Docs](https://docs.iex.ec/)
+- [Blockscout Bellecour](https://blockscout-bellecour.iex.ec/)
 
-Currently, two official plugins are available:
+## Contributing
+Contributions are welcome! Please open issues or pull requests.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-### Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactDom from 'eslint-plugin-react-dom';
-import reactX from 'eslint-plugin-react-x';
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
-```
+## License
+MIT
