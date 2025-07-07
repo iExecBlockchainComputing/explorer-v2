@@ -11,6 +11,8 @@ import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
+import { NotFoundError } from '@/utils/NotFoundError';
+import { isValidTaskAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
@@ -18,23 +20,34 @@ export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
 });
 
 function useTaskData(taskAddress: string, chainId: number) {
+  const isValid = isValidTaskAddress(taskAddress);
   const queryKey = [chainId, 'task', taskAddress];
-  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
-    {
+  const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
+    useQuery({
       queryKey,
-      queryFn: () =>
-        execute(taskQuery, chainId, { length: TABLE_LENGTH, taskAddress }),
+      enabled: !!chainId && isValid,
+      queryFn: async () => {
+        const result = await execute(taskQuery, chainId, {
+          length: TABLE_LENGTH,
+          taskAddress,
+        });
+        if (!result?.task) {
+          throw new NotFoundError();
+        }
+        return result;
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
-    }
-  );
+    });
 
   return {
     data: data?.task,
     isLoading,
     isRefetching,
     isError,
+    error,
     hasPastError: isError || errorUpdateCount > 0,
+    isValid,
   };
 }
 
@@ -47,9 +60,19 @@ function TasksRoute() {
     isRefetching,
     isError,
     hasPastError,
+    isValid,
+    error,
   } = useTaskData(taskAddress, chainId!);
 
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
+
+  if (!isValid) {
+    return <ErrorAlert className="my-16" message="Invalid task address." />;
+  }
+
+  if (isError && error instanceof NotFoundError) {
+    return <ErrorAlert message="Task not found." />;
+  }
 
   return (
     <div className="mt-8 flex flex-col gap-6">
@@ -72,9 +95,9 @@ function TasksRoute() {
       </div>
 
       {hasPastError && !taskDetails ? (
-        <ErrorAlert message="An error occurred during task details  loading." />
+        <ErrorAlert message="An error occurred during task details loading." />
       ) : (
-        <DetailsTable details={taskDetails} />
+        <DetailsTable details={taskDetails || {}} />
       )}
     </div>
   );
