@@ -23,27 +23,27 @@ function Index() {
   return (
     <div className="flex flex-col gap-10 pt-10 sm:mt-6 sm:gap-20 md:mt-10">
       <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full sm:overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
-        <h1 className="mx-auto mb-2 w-full max-w-[1408px] text-lg font-extrabold md:text-2xl">
+        <h1 className="mx-auto mb-2 w-full max-w-[1024px] text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
         </h1>
         <SearcherBar initialSearch={initialSearch} />
         <div className="absolute inset-0 -z-10 hidden blur-2xl sm:block sm:blur-[100px] lg:blur-[150px]">
           <div
-            className="absolute top-1/2 -right-1/4 aspect-[23/30] w-1/2 rounded-full opacity-75 xl:-right-1/5"
+            className="absolute top-1/2 -right-1/4 aspect-[23/30] w-1/2 rounded-full xl:-right-1/5"
             style={{ backgroundColor: currentChain?.color }}
           />
           <div
-            className="absolute top-0 right-0 hidden aspect-square h-1/2 translate-x-1/2 -translate-y-1/2 rounded-full opacity-75 md:block"
+            className="absolute top-0 right-0 hidden aspect-square h-1/2 translate-x-1/2 -translate-y-1/2 rounded-full md:block"
             style={{ backgroundColor: currentChain?.color }}
           />
         </div>
       </div>
       <div className="flex flex-col gap-x-6 gap-y-10 lg:grid lg:grid-cols-12">
-        <DealsPreviewTable className="lg:col-span-7" />
-        <TasksPreviewTable className="lg:col-span-5" />
-        <AppsPreviewTable className="lg:col-span-4" />
-        <DatasetsPreviewTable className="lg:col-span-4" />
-        <WorkerpoolsPreviewTable className="lg:col-span-4" />
+        <DealsPreviewTable className="lg:col-span-12" />
+        <TasksPreviewTable className="lg:col-span-6" />
+        <AppsPreviewTable className="lg:col-span-6" />
+        <DatasetsPreviewTable className="lg:col-span-6" />
+        <WorkerpoolsPreviewTable className="lg:col-span-6" />
       </div>
     </div>
   );

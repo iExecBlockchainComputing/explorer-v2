@@ -148,7 +148,7 @@ export function SearcherBar({
   };
 
   return (
-    <div className={cn('m-auto w-full max-w-[1408px]', className)}>
+    <div className={cn('m-auto w-full max-w-[1024px]', className)}>
       <div className="relative w-full">
         <Input
           ref={inputRef}
