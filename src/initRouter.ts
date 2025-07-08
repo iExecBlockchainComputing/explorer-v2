@@ -9,6 +9,7 @@ export function initRouter(queryClient: QueryClient) {
     context: {
       queryClient,
     },
+    scrollRestoration: true,
     defaultPreload: 'intent',
     defaultPreloadDelay: 2000,
     defaultPreloadStaleTime: 0,
