@@ -8,6 +8,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 
+const isMobile = () => window.matchMedia('(pointer:coarse)').matches;
+
 const CopyButton = ({
   textToCopy,
   displayText,
@@ -45,26 +47,51 @@ const CopyButton = ({
     <TooltipProvider delayDuration={0}>
       <Tooltip open={showTooltip}>
         <TooltipTrigger asChild>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              e.preventDefault();
-              handleCopy();
-            }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={cn(
-              'hover:before:bg-grey-700 active:before:bg-grey-600 relative z-0 -my-1 box-content flex max-w-full items-center gap-1 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-150 active:before:scale-x-[0.98] active:before:scale-y-[0.94]',
-              displayText ? '-mx-2 px-2' : '-mx-1 px-1'
-            )}
-          >
-            {displayText && (
-              <span className="overflow-hidden overflow-ellipsis">
-                {displayText}
+          {isMobile() ? (
+            <span
+              className={cn(
+                'box-content flex max-w-full items-center gap-1',
+                displayText ? '-mx-2 px-2' : '-mx-1 px-1'
+              )}
+            >
+              {displayText && (
+                <span className="overflow-hidden overflow-ellipsis">
+                  {displayText}
+                </span>
+              )}
+              <span
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  handleCopy();
+                }}
+                className="cursor-pointer"
+              >
+                <Copy className="size-4 flex-none" />
               </span>
-            )}
-            <Copy className="size-4 flex-none" />
-          </button>
+            </span>
+          ) : (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleCopy();
+              }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={cn(
+                'hover:before:bg-grey-700 active:before:bg-grey-600 relative z-0 -my-1 box-content flex max-w-full items-center gap-1 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-150 active:before:scale-x-[0.98] active:before:scale-y-[0.94]',
+                displayText ? '-mx-2 px-2' : '-mx-1 px-1'
+              )}
+            >
+              {displayText && (
+                <span className="overflow-hidden overflow-ellipsis">
+                  {displayText}
+                </span>
+              )}
+              <Copy className="size-4 flex-none" />
+            </button>
+          )}
         </TooltipTrigger>
         <TooltipContent side="top" className="max-w-sm">
           {tooltipMessage}
