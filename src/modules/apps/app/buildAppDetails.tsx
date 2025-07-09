@@ -58,9 +58,10 @@ export function buildAppDetails({ app }: { app: AppQuery['app'] }) {
         </div>
       ),
     }),
-    ...(app.mrenclave && {
-      MrEnclave: <JsonBlock>{mrEnclaveHexToHuman(app.mrenclave)}</JsonBlock>,
-    }),
+    ...(app.mrenclave &&
+      app.mrenclave !== '0x' && {
+        MrEnclave: <JsonBlock>{mrEnclaveHexToHuman(app.mrenclave)}</JsonBlock>,
+      }),
     ...(app.transfers && {
       Transfers: (
         <div className="flex flex-col gap-2">
