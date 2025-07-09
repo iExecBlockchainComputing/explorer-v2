@@ -49,7 +49,11 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
           {datasets.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/datasets">View all</ChainLink>
+          <ChainLink to="/datasets">
+            <span>
+              View all <span className="content hidden sm:inline">datasets</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(datasets.isError || datasets.errorUpdateCount > 0) && !datasets.data ? (

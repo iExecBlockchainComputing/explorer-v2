@@ -49,7 +49,11 @@ export function TasksPreviewTable({ className }: { className?: string }) {
           {tasks.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/tasks">View all</ChainLink>
+          <ChainLink to="/tasks">
+            <span>
+              View all <span className="content hidden sm:inline">tasks</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(tasks.isError || tasks.errorUpdateCount > 0) && !tasks.data ? (

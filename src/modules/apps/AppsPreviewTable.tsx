@@ -49,7 +49,11 @@ export function AppsPreviewTable({ className }: { className?: string }) {
           {apps.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/apps">View all</ChainLink>
+          <ChainLink to="/apps">
+            <span>
+              View all <span className="content hidden sm:inline">apps</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(apps.isError || apps.errorUpdateCount > 0) && !apps.data ? (

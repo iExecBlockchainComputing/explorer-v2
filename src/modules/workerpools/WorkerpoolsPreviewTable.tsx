@@ -49,7 +49,11 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
           {workerpools.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/workerpools">View all</ChainLink>
+          <ChainLink to="/workerpools">
+            <span>
+              View all <span className="content hidden sm:inline">workerpools</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(workerpools.isError || workerpools.errorUpdateCount > 0) &&

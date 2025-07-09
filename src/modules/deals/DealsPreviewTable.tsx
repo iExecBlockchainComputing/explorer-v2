@@ -49,7 +49,11 @@ export function DealsPreviewTable({ className }: { className?: string }) {
           {deals.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/deals">View all</ChainLink>
+          <ChainLink to="/deals">
+            <span>
+              View all <span className="content hidden sm:inline">deals</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(deals.isError || deals.errorUpdateCount > 0) && !deals.data ? (
