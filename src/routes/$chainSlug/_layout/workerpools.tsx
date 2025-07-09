@@ -10,7 +10,6 @@ import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { WorkerpoolBreadcrumbsList } from '@/modules/workerpools/WorkerpoolBreadcrumbs';
-import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
 import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
@@ -23,38 +22,34 @@ export const Route = createFileRoute('/$chainSlug/_layout/workerpools')({
 function useWorkerpoolsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
 
   const queryKey = [chainId, 'workerpools', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(workerpoolsQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(workerpoolsQuery, chainId, {
+          length: TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
+        }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const queryKeyNextData = [chainId, 'workerpools-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: [chainId, 'workerpools-next', currentPage],
-    queryFn: () =>
-      execute(nextWorkerpoolsQuery, chainId, {
-        length: TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * TABLE_LENGTH,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextWorkerpools = nextData?.workerpools ?? [];
-
-  const additionalPages = Math.ceil(nextWorkerpools.length / TABLE_LENGTH);
+  const workerpools = data?.workerpools ?? [];
+  const hasNextPage = (data?.workerpoolsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.workerpoolsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedData =
-    data?.workerpools.map((workerpool) => ({
+    workerpools.map((workerpool) => ({
       ...workerpool,
       destination: `/workerpool/${workerpool.address}`,
     })) ?? [];

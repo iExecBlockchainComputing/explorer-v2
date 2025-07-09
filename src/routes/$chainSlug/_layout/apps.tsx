@@ -11,7 +11,6 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AppBreadcrumbsList } from '@/modules/apps/AppBreadcrumbs';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
-import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -23,38 +22,34 @@ export const Route = createFileRoute('/$chainSlug/_layout/apps')({
 function useAppsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
 
   const queryKey = [chainId, 'apps', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'apps', currentPage],
+      queryKey,
       queryFn: () =>
-        execute(appsQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(appsQuery, chainId, {
+          length: TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
+        }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const queryKeyNextData = [chainId, 'apps-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAppsQuery, chainId, {
-        length: TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * TABLE_LENGTH,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextApps = nextData?.apps ?? [];
-
-  const additionalPages = Math.ceil(nextApps.length / TABLE_LENGTH);
+  const apps = data?.apps ?? [];
+  const hasNextPage = (data?.appsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.appsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedData =
-    data?.apps.map((app) => ({
+    apps.map((app) => ({
       ...app,
       destination: `/app/${app.address}`,
     })) ?? [];

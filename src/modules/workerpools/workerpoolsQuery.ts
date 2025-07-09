@@ -1,7 +1,7 @@
 import { graphql } from '@/graphql/gql';
 
 export const workerpoolsQuery = graphql(`
-  query Workerpools($length: Int = 20, $skip: Int = 0) {
+  query Workerpools($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40) {
     workerpools(
       first: $length
       skip: $skip
@@ -23,6 +23,22 @@ export const workerpoolsQuery = graphql(`
           blockNumber
         }
       }
+    }
+    workerpoolsHasNext: workerpools(
+      first: 1
+      skip: $nextSkip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      address: id
+    }
+    workerpoolsHasNextNext: workerpools(
+      first: 1
+      skip: $nextNextSkip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      address: id
     }
   }
 `);

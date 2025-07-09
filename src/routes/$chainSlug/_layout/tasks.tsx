@@ -10,7 +10,6 @@ import TaskIcon from '@/components/icons/TaskIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TaskBreadcrumbsList } from '@/modules/tasks/TaskBreadcrumbs';
-import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
 import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
@@ -23,38 +22,34 @@ export const Route = createFileRoute('/$chainSlug/_layout/tasks')({
 function useTasksData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
 
   const queryKey = [chainId, 'tasks', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(tasksQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(tasksQuery, chainId, {
+          length: TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
+        }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const queryKeyNextData = [chainId, 'tasks-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextTasksQuery, chainId, {
-        length: TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * TABLE_LENGTH,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextTasks = nextData?.tasks ?? [];
-
-  const additionalPages = Math.ceil(nextTasks.length / TABLE_LENGTH);
+  const tasks = data?.tasks ?? [];
+  const hasNextPage = (data?.tasksHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.tasksHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedData =
-    data?.tasks.map((task) => ({
+    tasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];
