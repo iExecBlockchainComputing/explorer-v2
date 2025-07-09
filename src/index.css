@@ -263,7 +263,8 @@
   h6 {
     @apply font-anybody font-semibold;
   }
-  button {
+  button,
+  a {
     @apply cursor-pointer;
   }
 
