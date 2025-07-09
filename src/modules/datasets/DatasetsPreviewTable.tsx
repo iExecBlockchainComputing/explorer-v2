@@ -51,7 +51,8 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
         <Button variant="link" className="-mr-4" asChild>
           <ChainLink to="/datasets">
             <span>
-              View all <span className="content hidden sm:inline">datasets</span>
+              View all{' '}
+              <span className="content hidden sm:inline">datasets</span>
             </span>
           </ChainLink>
         </Button>

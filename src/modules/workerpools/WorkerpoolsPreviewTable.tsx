@@ -51,7 +51,8 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
         <Button variant="link" className="-mr-4" asChild>
           <ChainLink to="/workerpools">
             <span>
-              View all <span className="content hidden sm:inline">workerpools</span>
+              View all{' '}
+              <span className="content hidden sm:inline">workerpools</span>
             </span>
           </ChainLink>
         </Button>
