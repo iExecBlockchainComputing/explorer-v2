@@ -1,7 +1,13 @@
 import { graphql } from '@/graphql/gql';
 
 export const addressWorkerpoolsQuery = graphql(`
-  query AddressWorkerpools($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40, $address: ID!) {
+  query AddressWorkerpools(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+    $address: ID!
+  ) {
     account(id: $address) {
       address: id
       # workerpools

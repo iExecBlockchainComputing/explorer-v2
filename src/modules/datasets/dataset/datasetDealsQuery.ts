@@ -1,7 +1,13 @@
 import { graphql } from '@/graphql/gql';
 
 export const datasetDealsQuery = graphql(`
-  query DatasetDeals($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40, $datasetAddress: ID!) {
+  query DatasetDeals(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+    $datasetAddress: ID!
+  ) {
     dataset(id: $datasetAddress) {
       address: id
       deals: usages(

@@ -1,7 +1,12 @@
 import { graphql } from '@/graphql/gql';
 
 export const tasksQuery = graphql(`
-  query Tasks($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40) {
+  query Tasks(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+  ) {
     tasks(
       first: $length
       skip: $skip

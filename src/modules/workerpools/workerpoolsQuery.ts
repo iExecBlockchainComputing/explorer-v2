@@ -1,7 +1,12 @@
 import { graphql } from '@/graphql/gql';
 
 export const workerpoolsQuery = graphql(`
-  query Workerpools($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40) {
+  query Workerpools(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+  ) {
     workerpools(
       first: $length
       skip: $skip

@@ -1,7 +1,12 @@
 import { graphql } from '@/graphql/gql';
 
 export const appDealsQuery = graphql(`
-  query AppDeals($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $appAddress: ID!) {
+  query AppDeals(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $appAddress: ID!
+  ) {
     app(id: $appAddress) {
       address: id
       deals: usages(

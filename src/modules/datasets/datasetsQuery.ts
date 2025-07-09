@@ -1,7 +1,12 @@
 import { graphql } from '@/graphql/gql';
 
 export const datasetsQuery = graphql(`
-  query Datasets($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40) {
+  query Datasets(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+  ) {
     datasets(
       first: $length
       skip: $skip
