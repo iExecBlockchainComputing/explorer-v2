@@ -39,11 +39,11 @@ function Index() {
         </div>
       </div>
       <div className="flex flex-col gap-x-6 gap-y-10 lg:grid lg:grid-cols-12">
-        <DealsPreviewTable className="lg:col-span-12" />
-        <TasksPreviewTable className="lg:col-span-6" />
-        <AppsPreviewTable className="lg:col-span-6" />
-        <DatasetsPreviewTable className="lg:col-span-6" />
-        <WorkerpoolsPreviewTable className="lg:col-span-6" />
+        <DealsPreviewTable className="3xl:col-span-7 lg:col-span-12" />
+        <TasksPreviewTable className="3xl:col-span-5 lg:col-span-6" />
+        <AppsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
+        <DatasetsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
+        <WorkerpoolsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
       </div>
     </div>
   );
