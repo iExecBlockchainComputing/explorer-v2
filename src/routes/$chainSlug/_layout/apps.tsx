@@ -8,6 +8,7 @@ import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import AppIcon from '@/components/icons/AppIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { AppBreadcrumbsList } from '@/modules/apps/AppBreadcrumbs';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
 import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
@@ -82,16 +83,22 @@ function AppsRoute() {
   return (
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-10" />
-      <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-        <AppIcon size={24} />
-        Apps deployed
-        {data.length > 0 && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {isLoading && isRefetching && <LoaderCircle className="animate-spin" />}
-      </h1>
+
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+          <AppIcon size={24} />
+          Apps deployed
+          {data.length > 0 && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {isLoading && isRefetching && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <AppBreadcrumbsList />
+      </div>
 
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during apps loading." />
