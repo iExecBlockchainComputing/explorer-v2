@@ -10,7 +10,6 @@ import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressRequestedTasksQuery } from './addressRequestedTasksQuery';
-import { nextAddressRequestedTasksQuery } from './nextAddressRequestedTasksQuery';
 
 function useAddressRequestedTasksData({
   addressAddress,
@@ -21,6 +20,8 @@ function useAddressRequestedTasksData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +37,8 @@ function useAddressRequestedTasksData({
         execute(addressRequestedTasksQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,33 +46,15 @@ function useAddressRequestedTasksData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'requestedTasks-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressRequestedTasksQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextRequestedTasks = nextData?.account?.taskRequester ?? [];
-
-  const additionalPages = Math.ceil(
-    nextRequestedTasks.length / PREVIEW_TABLE_LENGTH
-  );
+  const requestedTasks = data?.account?.taskRequester ?? [];
+  const hasNextPage = (data?.account?.taskRequesterHasNext?.length ?? 0) > 0;
+  const hasNextNextPage =
+    (data?.account?.taskRequesterHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.account?.taskRequester.map((task) => ({
+    requestedTasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];

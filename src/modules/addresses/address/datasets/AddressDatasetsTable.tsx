@@ -10,7 +10,6 @@ import { columns } from '@/modules/datasets/datasetsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressDatasetsQuery } from './addressDatasetsQuery';
-import { nextAddressDatasetsQuery } from './nextAddressDatasetsQuery';
 
 function useAddressDatasetsData({
   addressAddress,
@@ -21,6 +20,8 @@ function useAddressDatasetsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +37,8 @@ function useAddressDatasetsData({
         execute(addressDatasetsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,31 +46,14 @@ function useAddressDatasetsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'datasets',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressDatasetsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextDatasets = nextData?.account?.datasets ?? [];
-
-  const additionalPages = Math.ceil(nextDatasets.length / PREVIEW_TABLE_LENGTH);
+  const datasets = data?.account?.datasets ?? [];
+  const hasNextPage = (data?.account?.datasetsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.account?.datasetsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.account?.datasets.map((dataset) => ({
+    datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
     })) ?? [];

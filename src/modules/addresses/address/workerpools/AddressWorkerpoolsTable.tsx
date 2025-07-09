@@ -10,7 +10,6 @@ import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressWorkerpoolsQuery } from './addressWorkerpoolsQuery';
-import { nextAddressWorkerpoolsQuery } from './nextAddressWorkerpoolsQuery';
 
 function useAddressWorkerpoolsData({
   addressAddress,
@@ -21,6 +20,8 @@ function useAddressWorkerpoolsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +37,8 @@ function useAddressWorkerpoolsData({
         execute(addressWorkerpoolsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,33 +46,15 @@ function useAddressWorkerpoolsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'workerpools-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressWorkerpoolsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextWorkerpools = nextData?.account?.workerpools ?? [];
-
-  const additionalPages = Math.ceil(
-    nextWorkerpools.length / PREVIEW_TABLE_LENGTH
-  );
+  const workerpools = data?.account?.workerpools ?? [];
+  const hasNextPage = (data?.account?.workerpoolsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage =
+    (data?.account?.workerpoolsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.account?.workerpools.map((workerpool) => ({
+    workerpools.map((workerpool) => ({
       ...workerpool,
       destination: `/workerpool/${workerpool.address}`,
     })) ?? [];

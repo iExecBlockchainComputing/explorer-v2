@@ -1,7 +1,7 @@
 import { graphql } from '@/graphql/gql';
 
 export const addressAppsQuery = graphql(`
-  query AddressApps($length: Int = 20, $skip: Int = 0, $address: ID!) {
+  query AddressApps($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40, $address: ID!) {
     account(id: $address) {
       address: id
       # apps
@@ -19,6 +19,22 @@ export const addressAppsQuery = graphql(`
             txHash: id
           }
         }
+      }
+      appsHasNext: apps(
+        orderBy: timestamp
+        orderDirection: desc
+        first: 1
+        skip: $nextSkip
+      ) {
+        address: id
+      }
+      appsHasNextNext: apps(
+        orderBy: timestamp
+        orderDirection: desc
+        first: 1
+        skip: $nextNextSkip
+      ) {
+        address: id
       }
     }
   }

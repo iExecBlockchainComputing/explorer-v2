@@ -10,7 +10,6 @@ import { columns } from '@/modules/apps/appsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressAppsQuery } from './addressAppsQuery';
-import { nextAddressAppsQuery } from './nextAddressAppsQuery';
 
 function useAddressAppsData({
   addressAddress,
@@ -21,6 +20,8 @@ function useAddressAppsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [chainId, 'address', 'apps', addressAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
@@ -30,6 +31,8 @@ function useAddressAppsData({
         execute(addressAppsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,31 +40,14 @@ function useAddressAppsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'apps-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressAppsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextApps = nextData?.account?.apps ?? [];
-
-  const additionalPages = Math.ceil(nextApps.length / PREVIEW_TABLE_LENGTH);
+  const apps = data?.account?.apps ?? [];
+  const hasNextPage = (data?.account?.appsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.account?.appsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.account?.apps.map((app) => ({
+    apps.map((app) => ({
       ...app,
       destination: `/app/${app.address}`,
     })) ?? [];

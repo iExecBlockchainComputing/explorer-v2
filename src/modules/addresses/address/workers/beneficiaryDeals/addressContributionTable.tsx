@@ -10,7 +10,6 @@ import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressContributionQuery } from './addressContributionQuery';
 import { columns } from './columns';
-import { nextAddressContributionQuery } from './nextAddressContributionQuery';
 
 function useAddressContributionData({
   addressAddress,
@@ -21,6 +20,8 @@ function useAddressContributionData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +37,8 @@ function useAddressContributionData({
         execute(addressContributionQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,33 +46,15 @@ function useAddressContributionData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'contribution-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressContributionQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextContribution = nextData?.account?.contributions ?? [];
-
-  const additionalPages = Math.ceil(
-    nextContribution.length / PREVIEW_TABLE_LENGTH
-  );
+  const contributions = data?.account?.contributions ?? [];
+  const hasNextPage = (data?.account?.contributionsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage =
+    (data?.account?.contributionsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.account?.contributions.map((contribution) => ({
+    contributions.map((contribution) => ({
       ...contribution,
       destination: `/task/${contribution.task.taskid}`,
     })) ?? [];

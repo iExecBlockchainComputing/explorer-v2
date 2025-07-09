@@ -1,7 +1,7 @@
 import { graphql } from '@/graphql/gql';
 
 export const datasetDealsQuery = graphql(`
-  query DatasetDeals($length: Int = 20, $skip: Int = 0, $datasetAddress: ID!) {
+  query DatasetDeals($length: Int = 20, $skip: Int = 0, $nextSkip: Int = 20, $nextNextSkip: Int = 40, $datasetAddress: ID!) {
     dataset(id: $datasetAddress) {
       address: id
       deals: usages(
@@ -45,6 +45,22 @@ export const datasetDealsQuery = graphql(`
         trust
         completedTasksCount
         claimedTasksCount
+      }
+      dealsHasNext: usages(
+        first: 1
+        skip: $nextSkip
+        orderBy: timestamp
+        orderDirection: desc
+      ) {
+        id
+      }
+      dealsHasNextNext: usages(
+        first: 1
+        skip: $nextNextSkip
+        orderBy: timestamp
+        orderDirection: desc
+      ) {
+        id
       }
     }
   }

@@ -10,7 +10,6 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { datasetDealsQuery } from './datasetDealsQuery';
-import { nextDatasetDealsQuery } from './nextDatasetDealsQuery';
 
 function useDatasetDealsData({
   datasetAddress,
@@ -21,8 +20,10 @@ function useDatasetDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
+  const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'dataset', 'deals', datasetAddress];
+  const queryKey = [chainId, 'dataset', 'deals', datasetAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
@@ -30,6 +31,8 @@ function useDatasetDealsData({
         execute(datasetDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           datasetAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,25 +40,14 @@ function useDatasetDealsData({
     }
   );
 
-  const queryKeyNextData = [chainId, 'dataset', 'deals-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: [chainId, 'dataset', 'deals-next', currentPage],
-    queryFn: () =>
-      execute(nextDatasetDealsQuery, chainId, {
-        length: DETAIL_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * DETAIL_TABLE_LENGTH,
-        datasetAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextDeals = nextData?.dataset?.deals ?? [];
-
-  const additionalPages = Math.ceil(nextDeals.length / DETAIL_TABLE_LENGTH);
+  const deals = data?.dataset?.deals ?? [];
+  const hasNextPage = (data?.dataset?.dealsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.dataset?.dealsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.dataset?.deals.map((deal) => ({
+    deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];

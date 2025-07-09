@@ -9,7 +9,6 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { nextWorkerpoolDealsQuery } from './nextWorkerpoolDealsQuery';
 import { workerpoolDealsQuery } from './workerpoolDealsQuery';
 
 function useWorkerpoolDealsData({
@@ -21,8 +20,16 @@ function useWorkerpoolDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
+  const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'workerpool', 'deals', workerpoolAddress];
+  const queryKey = [
+    chainId,
+    'workerpool',
+    'deals',
+    workerpoolAddress,
+    currentPage,
+  ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
@@ -30,6 +37,8 @@ function useWorkerpoolDealsData({
         execute(workerpoolDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           workerpoolAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,25 +46,14 @@ function useWorkerpoolDealsData({
     }
   );
 
-  const queryKeyNextData = [chainId, 'workerpool', 'deals-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextWorkerpoolDealsQuery, chainId, {
-        length: DETAIL_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * DETAIL_TABLE_LENGTH,
-        workerpoolAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextDeals = nextData?.workerpool?.deals ?? [];
-
-  const additionalPages = Math.ceil(nextDeals.length / DETAIL_TABLE_LENGTH);
+  const deals = data?.workerpool?.deals ?? [];
+  const hasNextPage = (data?.workerpool?.dealsHasNext?.length ?? 0) > 0;
+  const hasNextNextPage = (data?.workerpool?.dealsHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.workerpool?.deals.map((deal) => ({
+    deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];

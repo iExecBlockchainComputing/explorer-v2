@@ -10,7 +10,6 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { addressRequestedDealsQuery } from './addressRequestedDealsQuery';
-import { nextAddressRequestedDealsQuery } from './nextAddressRequestedDealsQuery';
 
 function useAddressRequestedDealsData({
   addressAddress,
@@ -21,6 +20,8 @@ function useAddressRequestedDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +37,8 @@ function useAddressRequestedDealsData({
         execute(addressRequestedDealsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,33 +46,15 @@ function useAddressRequestedDealsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'requestedDeals-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressRequestedDealsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextRequestedDeals = nextData?.account?.dealRequester ?? [];
-
-  const additionalPages = Math.ceil(
-    nextRequestedDeals.length / PREVIEW_TABLE_LENGTH
-  );
+  const requestedDeals = data?.account?.dealRequester ?? [];
+  const hasNextPage = (data?.account?.dealRequesterHasNext?.length ?? 0) > 0;
+  const hasNextNextPage =
+    (data?.account?.dealRequesterHasNextNext?.length ?? 0) > 0;
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
 
   const formattedDeal =
-    data?.account?.dealRequester.map((deal) => ({
+    requestedDeals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
