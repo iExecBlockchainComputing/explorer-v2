@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { datasetDealsQuery } from './datasetDealsQuery';
 
 function useDatasetDealsData({
@@ -41,19 +42,20 @@ function useDatasetDealsData({
   );
 
   const deals = data?.dataset?.deals ?? [];
-  const hasNextPage = (data?.dataset?.dealsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.dataset?.dealsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.dataset?.dealsHasNext?.length),
+    Boolean(data?.dataset?.dealsHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedDeals =
     deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError,

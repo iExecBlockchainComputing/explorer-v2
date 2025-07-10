@@ -32,3 +32,16 @@ export const taskResultToObject = (results?: string | null) => {
   }
   return resultObj;
 };
+
+/**
+ * Calculates the number of additional pages for pagination.
+ * @param hasNextPage Indicates if there is a next page
+ * @param hasNextNextPage Indicates if there is a page after the next
+ * @returns 0, 1 or 2 depending on available pages
+ */
+export function getAdditionalPages(
+  hasNextPage: boolean,
+  hasNextNextPage: boolean
+): number {
+  return hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+}

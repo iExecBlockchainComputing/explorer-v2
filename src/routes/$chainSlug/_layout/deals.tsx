@@ -14,6 +14,7 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/deals')({
   component: DealsRoute,
@@ -43,19 +44,20 @@ function useDealsData(currentPage: number) {
   );
 
   const deals = data?.deals ?? [];
-  const hasNextPage = (data?.dealsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.dealsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.dealsHasNext?.length),
+    Boolean(data?.dealsHasNextNext?.length)
+  );
 
-  const formattedData =
+  const formattedDeals =
     deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError: isError,

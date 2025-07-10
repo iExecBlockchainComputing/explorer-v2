@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressWorkerpoolsQuery } from './addressWorkerpoolsQuery';
 
 function useAddressWorkerpoolsData({
@@ -47,20 +48,20 @@ function useAddressWorkerpoolsData({
   );
 
   const workerpools = data?.account?.workerpools ?? [];
-  const hasNextPage = (data?.account?.workerpoolsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage =
-    (data?.account?.workerpoolsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.workerpoolsHasNext?.length),
+    Boolean(data?.account?.workerpoolsHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedWorkerpools =
     workerpools.map((workerpool) => ({
       ...workerpool,
       destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedWorkerpools,
     isLoading,
     isRefetching,
     isError,

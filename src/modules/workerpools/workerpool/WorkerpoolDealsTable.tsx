@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { workerpoolDealsQuery } from './workerpoolDealsQuery';
 
 function useWorkerpoolDealsData({
@@ -47,19 +48,20 @@ function useWorkerpoolDealsData({
   );
 
   const deals = data?.workerpool?.deals ?? [];
-  const hasNextPage = (data?.workerpool?.dealsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.workerpool?.dealsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.workerpool?.dealsHasNext?.length),
+    Boolean(data?.workerpool?.dealsHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedDeals =
     deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError,

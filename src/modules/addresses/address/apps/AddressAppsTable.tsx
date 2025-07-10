@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/apps/appsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressAppsQuery } from './addressAppsQuery';
 
 function useAddressAppsData({
@@ -41,19 +42,20 @@ function useAddressAppsData({
   );
 
   const apps = data?.account?.apps ?? [];
-  const hasNextPage = (data?.account?.appsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.account?.appsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.appsHasNext?.length),
+    Boolean(data?.account?.appsHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedApps =
     apps.map((app) => ({
       ...app,
       destination: `/app/${app.address}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedApps,
     isLoading,
     isRefetching,
     isError,

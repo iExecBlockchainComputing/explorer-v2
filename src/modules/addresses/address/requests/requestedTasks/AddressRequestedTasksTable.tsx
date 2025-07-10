@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressRequestedTasksQuery } from './addressRequestedTasksQuery';
 
 function useAddressRequestedTasksData({
@@ -47,20 +48,20 @@ function useAddressRequestedTasksData({
   );
 
   const requestedTasks = data?.account?.taskRequester ?? [];
-  const hasNextPage = (data?.account?.taskRequesterHasNext?.length ?? 0) > 0;
-  const hasNextNextPage =
-    (data?.account?.taskRequesterHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.taskRequesterHasNext?.length),
+    Boolean(data?.account?.taskRequesterHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedTasks =
     requestedTasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedTasks,
     isLoading,
     isRefetching,
     isError,

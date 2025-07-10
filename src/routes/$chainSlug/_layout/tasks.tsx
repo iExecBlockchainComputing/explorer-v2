@@ -14,6 +14,7 @@ import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/tasks')({
   component: TasksRoute,
@@ -43,19 +44,20 @@ function useTasksData(currentPage: number) {
   );
 
   const tasks = data?.tasks ?? [];
-  const hasNextPage = (data?.tasksHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.tasksHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.tasksHasNext?.length),
+    Boolean(data?.tasksHasNextNext?.length)
+  );
 
-  const formattedData =
+  const formattedTasks =
     tasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedTasks,
     isLoading,
     isRefetching,
     isError: isError,

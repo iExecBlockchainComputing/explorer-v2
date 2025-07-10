@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressDatasetsQuery } from './addressDatasetsQuery';
 
 function useAddressDatasetsData({
@@ -47,19 +48,20 @@ function useAddressDatasetsData({
   );
 
   const datasets = data?.account?.datasets ?? [];
-  const hasNextPage = (data?.account?.datasetsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.account?.datasetsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.datasetsHasNext?.length),
+    Boolean(data?.account?.datasetsHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const datasetsDatasets =
     datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: datasetsDatasets,
     isLoading,
     isRefetching,
     isError,

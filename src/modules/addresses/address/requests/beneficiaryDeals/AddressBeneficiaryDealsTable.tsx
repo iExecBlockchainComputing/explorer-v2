@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressBeneficiaryDealsQuery } from './addressBeneficiaryDealsQuery';
 
 function useAddressBeneficiaryDealsData({
@@ -48,20 +49,20 @@ function useAddressBeneficiaryDealsData({
   );
 
   const beneficiaryDeals = data?.account?.dealBeneficiary ?? [];
-  const hasNextPage = (data?.account?.dealBeneficiaryHasNext?.length ?? 0) > 0;
-  const hasNextNextPage =
-    (data?.account?.dealBeneficiaryHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.dealBeneficiaryHasNext?.length),
+    Boolean(data?.account?.dealBeneficiaryHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedDeals =
     beneficiaryDeals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError,

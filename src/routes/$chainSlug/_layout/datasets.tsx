@@ -14,6 +14,7 @@ import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
   component: DatasetsRoute,
@@ -43,19 +44,20 @@ function useDatasetsData(currentPage: number) {
   );
 
   const datasets = data?.datasets ?? [];
-  const hasNextPage = (data?.datasetsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.datasetsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.datasetsHasNext?.length),
+    Boolean(data?.datasetsHasNextNext?.length)
+  );
 
-  const formattedData =
+  const formattedDatasets =
     datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedDatasets,
     isLoading,
     isRefetching,
     isError: isError,

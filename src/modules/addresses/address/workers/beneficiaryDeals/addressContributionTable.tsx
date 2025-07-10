@@ -8,6 +8,7 @@ import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressContributionQuery } from './addressContributionQuery';
 import { columns } from './columns';
 
@@ -47,20 +48,20 @@ function useAddressContributionData({
   );
 
   const contributions = data?.account?.contributions ?? [];
-  const hasNextPage = (data?.account?.contributionsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage =
-    (data?.account?.contributionsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.contributionsHasNext?.length),
+    Boolean(data?.account?.contributionsHasNextNext?.length)
+  );
 
-  const formattedDeal =
+  const formattedContributions =
     contributions.map((contribution) => ({
       ...contribution,
       destination: `/task/${contribution.task.taskid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedContributions,
     isLoading,
     isRefetching,
     isError,

@@ -14,6 +14,7 @@ import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/workerpools')({
   component: WorkerpoolsRoute,
@@ -43,19 +44,20 @@ function useWorkerpoolsData(currentPage: number) {
   );
 
   const workerpools = data?.workerpools ?? [];
-  const hasNextPage = (data?.workerpoolsHasNext?.length ?? 0) > 0;
-  const hasNextNextPage = (data?.workerpoolsHasNextNext?.length ?? 0) > 0;
   // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = hasNextPage ? (hasNextNextPage ? 2 : 1) : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.workerpoolsHasNext?.length),
+    Boolean(data?.workerpoolsHasNextNext?.length)
+  );
 
-  const formattedData =
+  const formattedWorkerpools =
     workerpools.map((workerpool) => ({
       ...workerpool,
       destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedWorkerpools,
     isLoading,
     isRefetching,
     isError: isError,
