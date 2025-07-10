@@ -3,10 +3,10 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import TaskIcon from '@/components/icons/TaskIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TaskBreadcrumbsList } from '@/modules/tasks/TaskBreadcrumbs';
@@ -65,7 +65,7 @@ function useTasksData(currentPage: number) {
 }
 
 function TasksRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('tasksPage');
   const {
     data,
     isLoading,
@@ -73,7 +73,7 @@ function TasksRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useTasksData(currentPage);
+  } = useTasksData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -105,9 +105,9 @@ function TasksRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

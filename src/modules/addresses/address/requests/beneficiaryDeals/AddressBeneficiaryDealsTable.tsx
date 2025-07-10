@@ -2,9 +2,9 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
@@ -75,7 +75,9 @@ export function AddressBeneficiaryDealsTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam(
+    'addressBeneficiaryDealsPage'
+  );
   const {
     data: beneficiaryDeals,
     isError,
@@ -83,7 +85,10 @@ export function AddressBeneficiaryDealsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressBeneficiaryDealsData({ addressAddress, currentPage });
+  } = useAddressBeneficiaryDealsData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
 
   return (
     <div className="space-y-6">
@@ -108,9 +113,9 @@ export function AddressBeneficiaryDealsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

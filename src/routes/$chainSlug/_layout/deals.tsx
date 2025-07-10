@@ -3,10 +3,10 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DealIcon from '@/components/icons/DealIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AllDealsBreadcrumbs } from '@/modules/deals/DealBreadcrumbs';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
@@ -65,7 +65,7 @@ function useDealsData(currentPage: number) {
 }
 
 function DealsRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('dealsPage');
   const {
     data,
     isLoading,
@@ -73,7 +73,7 @@ function DealsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useDealsData(currentPage);
+  } = useDealsData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -105,9 +105,9 @@ function DealsRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

@@ -3,10 +3,10 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { WorkerpoolBreadcrumbsList } from '@/modules/workerpools/WorkerpoolBreadcrumbs';
@@ -65,7 +65,7 @@ function useWorkerpoolsData(currentPage: number) {
 }
 
 function WorkerpoolsRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('workerpoolsPage');
   const {
     data,
     isLoading,
@@ -73,7 +73,7 @@ function WorkerpoolsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useWorkerpoolsData(currentPage);
+  } = useWorkerpoolsData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -106,9 +106,9 @@ function WorkerpoolsRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

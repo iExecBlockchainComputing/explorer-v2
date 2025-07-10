@@ -2,9 +2,9 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -74,7 +74,7 @@ export function AddressContributionTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('addressContributionPage');
   const {
     data: contribution,
     isError,
@@ -82,7 +82,10 @@ export function AddressContributionTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressContributionData({ addressAddress, currentPage });
+  } = useAddressContributionData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
   console.log('AddressContributionTable', contribution);
 
   return (
@@ -108,9 +111,9 @@ export function AddressContributionTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

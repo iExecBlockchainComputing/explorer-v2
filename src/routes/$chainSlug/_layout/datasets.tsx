@@ -3,10 +3,10 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DatasetIcon from '@/components/icons/DatasetIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
@@ -65,7 +65,7 @@ function useDatasetsData(currentPage: number) {
 }
 
 function DatasetsRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('datasetsPage');
   const {
     data,
     isLoading,
@@ -73,7 +73,7 @@ function DatasetsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useDatasetsData(currentPage);
+  } = useDatasetsData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -106,9 +106,9 @@ function DatasetsRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

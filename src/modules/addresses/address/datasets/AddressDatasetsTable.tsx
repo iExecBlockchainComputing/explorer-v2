@@ -2,9 +2,9 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import useUserStore from '@/stores/useUser.store';
@@ -73,7 +73,7 @@ export function AddressDatasetsTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('addressDatasetsPage');
   const {
     data: datasets,
     isError,
@@ -81,7 +81,7 @@ export function AddressDatasetsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressDatasetsData({ addressAddress, currentPage });
+  } = useAddressDatasetsData({ addressAddress, currentPage: currentPage - 1 });
 
   const filteredColumns = columns.filter(
     (col) => col.accessorKey !== 'owner.address'
@@ -110,9 +110,9 @@ export function AddressDatasetsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );
