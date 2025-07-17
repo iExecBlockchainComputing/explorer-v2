@@ -6,6 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -94,7 +95,10 @@ function WorkerpoolsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <WorkerpoolBreadcrumbsList />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <WorkerpoolBreadcrumbsList />
+        </div>
       </div>
 
       {hasPastError && !data.length ? (

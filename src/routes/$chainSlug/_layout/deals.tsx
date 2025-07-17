@@ -6,6 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DealIcon from '@/components/icons/DealIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AllDealsBreadcrumbs } from '@/modules/deals/DealBreadcrumbs';
@@ -94,7 +95,10 @@ function DealsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <AllDealsBreadcrumbs />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <AllDealsBreadcrumbs />
+        </div>
       </div>
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during deals loading." />

@@ -5,6 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import DealIcon from '@/components/icons/DealIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
@@ -97,7 +98,10 @@ function DealsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <DealBreadcrumbs dealId={dealAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <DealBreadcrumbs dealId={dealAddress} />
+        </div>
       </div>
 
       <Tabs

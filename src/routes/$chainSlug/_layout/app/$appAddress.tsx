@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import AppIcon from '@/components/icons/AppIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
@@ -92,7 +93,10 @@ function AppsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <AppBreadcrumbs appId={appAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <AppBreadcrumbs appId={appAddress} />
+        </div>
       </div>
 
       <div className="space-y-10">
