@@ -2,15 +2,15 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressDatasetsQuery } from './addressDatasetsQuery';
-import { nextAddressDatasetsQuery } from './nextAddressDatasetsQuery';
 
 function useAddressDatasetsData({
   addressAddress,
@@ -21,6 +21,8 @@ function useAddressDatasetsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +38,8 @@ function useAddressDatasetsData({
         execute(addressDatasetsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,37 +47,21 @@ function useAddressDatasetsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'datasets',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressDatasetsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const datasets = data?.account?.datasets ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.datasetsHasNext?.length),
+    Boolean(data?.account?.datasetsHasNextNext?.length)
+  );
 
-  const nextDatasets = nextData?.account?.datasets ?? [];
-
-  const additionalPages = Math.ceil(nextDatasets.length / PREVIEW_TABLE_LENGTH);
-
-  const formattedDeal =
-    data?.account?.datasets.map((dataset) => ({
+  const datasetsDatasets =
+    datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: datasetsDatasets,
     isLoading,
     isRefetching,
     isError,
@@ -87,7 +75,7 @@ export function AddressDatasetsTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('addressDatasetsPage');
   const {
     data: datasets,
     isError,
@@ -95,7 +83,7 @@ export function AddressDatasetsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressDatasetsData({ addressAddress, currentPage });
+  } = useAddressDatasetsData({ addressAddress, currentPage: currentPage - 1 });
 
   const filteredColumns = columns.filter(
     (col) => col.accessorKey !== 'owner.address'
@@ -124,9 +112,9 @@ export function AddressDatasetsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

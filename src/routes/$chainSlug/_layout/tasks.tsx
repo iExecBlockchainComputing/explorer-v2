@@ -3,18 +3,18 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import TaskIcon from '@/components/icons/TaskIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TaskBreadcrumbsList } from '@/modules/tasks/TaskBreadcrumbs';
-import { nextTasksQuery } from '@/modules/tasks/nextTasksQuery';
 import { tasksQuery } from '@/modules/tasks/tasksQuery';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/tasks')({
   component: TasksRoute,
@@ -23,44 +23,41 @@ export const Route = createFileRoute('/$chainSlug/_layout/tasks')({
 function useTasksData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
 
   const queryKey = [chainId, 'tasks', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(tasksQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(tasksQuery, chainId, {
+          length: TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
+        }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const queryKeyNextData = [chainId, 'tasks-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextTasksQuery, chainId, {
-        length: TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * TABLE_LENGTH,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const tasks = data?.tasks ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.tasksHasNext?.length),
+    Boolean(data?.tasksHasNextNext?.length)
+  );
 
-  const nextTasks = nextData?.tasks ?? [];
-
-  const additionalPages = Math.ceil(nextTasks.length / TABLE_LENGTH);
-
-  const formattedData =
-    data?.tasks.map((task) => ({
+  const formattedTasks =
+    tasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedTasks,
     isLoading,
     isRefetching,
     isError: isError,
@@ -70,7 +67,7 @@ function useTasksData(currentPage: number) {
 }
 
 function TasksRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('tasksPage');
   const {
     data,
     isLoading,
@@ -78,7 +75,7 @@ function TasksRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useTasksData(currentPage);
+  } = useTasksData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -110,9 +107,9 @@ function TasksRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

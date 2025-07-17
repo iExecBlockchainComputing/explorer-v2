@@ -2,15 +2,15 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressRequestedTasksQuery } from './addressRequestedTasksQuery';
-import { nextAddressRequestedTasksQuery } from './nextAddressRequestedTasksQuery';
 
 function useAddressRequestedTasksData({
   addressAddress,
@@ -21,6 +21,8 @@ function useAddressRequestedTasksData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +38,8 @@ function useAddressRequestedTasksData({
         execute(addressRequestedTasksQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,39 +47,21 @@ function useAddressRequestedTasksData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'requestedTasks-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressRequestedTasksQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextRequestedTasks = nextData?.account?.taskRequester ?? [];
-
-  const additionalPages = Math.ceil(
-    nextRequestedTasks.length / PREVIEW_TABLE_LENGTH
+  const requestedTasks = data?.account?.taskRequester ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.taskRequesterHasNext?.length),
+    Boolean(data?.account?.taskRequesterHasNextNext?.length)
   );
 
-  const formattedDeal =
-    data?.account?.taskRequester.map((task) => ({
+  const formattedTasks =
+    requestedTasks.map((task) => ({
       ...task,
       destination: `/task/${task.taskid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedTasks,
     isLoading,
     isRefetching,
     isError,
@@ -89,7 +75,9 @@ export function AddressRequestedTasksTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam(
+    'addressRequestedTasksPage'
+  );
   const {
     data: requestedTasks,
     isError,
@@ -97,7 +85,10 @@ export function AddressRequestedTasksTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressRequestedTasksData({ addressAddress, currentPage });
+  } = useAddressRequestedTasksData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
 
   return (
     <div className="space-y-6">
@@ -122,9 +113,9 @@ export function AddressRequestedTasksTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

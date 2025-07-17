@@ -1,7 +1,12 @@
 import { graphql } from '@/graphql/gql';
 
 export const datasetsQuery = graphql(`
-  query Datasets($length: Int = 20, $skip: Int = 0) {
+  query Datasets(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+  ) {
     datasets(
       first: $length
       skip: $skip
@@ -23,6 +28,22 @@ export const datasetsQuery = graphql(`
           blockNumber
         }
       }
+    }
+    datasetsHasNext: datasets(
+      first: 1
+      skip: $nextSkip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      address: id
+    }
+    datasetsHasNextNext: datasets(
+      first: 1
+      skip: $nextNextSkip
+      orderBy: timestamp
+      orderDirection: desc
+    ) {
+      address: id
     }
   }
 `);

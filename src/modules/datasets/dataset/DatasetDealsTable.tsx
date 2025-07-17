@@ -2,15 +2,15 @@ import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { datasetDealsQuery } from './datasetDealsQuery';
-import { nextDatasetDealsQuery } from './nextDatasetDealsQuery';
 
 function useDatasetDealsData({
   datasetAddress,
@@ -21,8 +21,10 @@ function useDatasetDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
+  const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'dataset', 'deals', datasetAddress];
+  const queryKey = [chainId, 'dataset', 'deals', datasetAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
@@ -30,6 +32,8 @@ function useDatasetDealsData({
         execute(datasetDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           datasetAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,31 +41,21 @@ function useDatasetDealsData({
     }
   );
 
-  const queryKeyNextData = [chainId, 'dataset', 'deals-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: [chainId, 'dataset', 'deals-next', currentPage],
-    queryFn: () =>
-      execute(nextDatasetDealsQuery, chainId, {
-        length: DETAIL_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * DETAIL_TABLE_LENGTH,
-        datasetAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const deals = data?.dataset?.deals ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.dataset?.dealsHasNext?.length),
+    Boolean(data?.dataset?.dealsHasNextNext?.length)
+  );
 
-  const nextDeals = nextData?.dataset?.deals ?? [];
-
-  const additionalPages = Math.ceil(nextDeals.length / DETAIL_TABLE_LENGTH);
-
-  const formattedDeal =
-    data?.dataset?.deals.map((deal) => ({
+  const formattedDeals =
+    deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError,
@@ -75,7 +69,7 @@ export function DatasetDealsTable({
 }: {
   datasetAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('datasetDealsPage');
   const {
     data: deals,
     isError,
@@ -83,7 +77,7 @@ export function DatasetDealsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useDatasetDealsData({ datasetAddress, currentPage });
+  } = useDatasetDealsData({ datasetAddress, currentPage: currentPage - 1 });
 
   const filteredColumns = columns.filter((col) => col.accessorKey !== 'dealid');
 
@@ -110,9 +104,9 @@ export function DatasetDealsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

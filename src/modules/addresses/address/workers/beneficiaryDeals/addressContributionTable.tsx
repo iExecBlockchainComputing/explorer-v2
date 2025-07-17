@@ -2,15 +2,15 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressContributionQuery } from './addressContributionQuery';
 import { columns } from './columns';
-import { nextAddressContributionQuery } from './nextAddressContributionQuery';
 
 function useAddressContributionData({
   addressAddress,
@@ -21,6 +21,8 @@ function useAddressContributionData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +38,8 @@ function useAddressContributionData({
         execute(addressContributionQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,39 +47,21 @@ function useAddressContributionData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'contribution-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressContributionQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextContribution = nextData?.account?.contributions ?? [];
-
-  const additionalPages = Math.ceil(
-    nextContribution.length / PREVIEW_TABLE_LENGTH
+  const contributions = data?.account?.contributions ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.contributionsHasNext?.length),
+    Boolean(data?.account?.contributionsHasNextNext?.length)
   );
 
-  const formattedDeal =
-    data?.account?.contributions.map((contribution) => ({
+  const formattedContributions =
+    contributions.map((contribution) => ({
       ...contribution,
       destination: `/task/${contribution.task.taskid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedContributions,
     isLoading,
     isRefetching,
     isError,
@@ -89,7 +75,7 @@ export function AddressContributionTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('addressContributionPage');
   const {
     data: contribution,
     isError,
@@ -97,7 +83,10 @@ export function AddressContributionTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressContributionData({ addressAddress, currentPage });
+  } = useAddressContributionData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
   console.log('AddressContributionTable', contribution);
 
   return (
@@ -123,9 +112,9 @@ export function AddressContributionTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

@@ -2,15 +2,14 @@ import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { appDealsQuery } from './appDealsQuery';
-import { nextAppDealsQuery } from './nextAppDealsQuery';
 
 function useAppDealsData({
   appAddress,
@@ -21,15 +20,17 @@ function useAppDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
+  const nextSkip = skip + DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'app', 'deals', appAddress];
+  const queryKey = [chainId, 'app', 'deals', appAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'app', 'deals', appAddress],
+      queryKey,
       queryFn: () =>
         execute(appDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
+          nextSkip,
           appAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,25 +38,12 @@ function useAppDealsData({
     }
   );
 
-  const queryKeyNextData = [chainId, 'app', 'deals-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAppDealsQuery, chainId, {
-        length: DETAIL_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * DETAIL_TABLE_LENGTH,
-        appAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextDeals = nextData?.app?.deals ?? [];
-
-  const additionalPages = Math.ceil(nextDeals.length / DETAIL_TABLE_LENGTH);
+  const deals = data?.app?.deals ?? [];
+  const hasNextPage = (data?.app?.dealsHasNext?.length ?? 0) > 0;
+  const additionalPages = hasNextPage ? 1 : 0;
 
   const formattedDeal =
-    data?.app?.deals.map((deal) => ({
+    deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
@@ -71,7 +59,7 @@ function useAppDealsData({
 }
 
 export function AppDealsTable({ appAddress }: { appAddress: string }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('appDealsPage');
   const {
     data: deals,
     isError,
@@ -79,7 +67,7 @@ export function AppDealsTable({ appAddress }: { appAddress: string }) {
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAppDealsData({ appAddress, currentPage });
+  } = useAppDealsData({ appAddress, currentPage: currentPage - 1 });
 
   const filteredColumns = columns.filter((col) => col.accessorKey !== 'app');
 
@@ -106,9 +94,9 @@ export function AppDealsTable({ appAddress }: { appAddress: string }) {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

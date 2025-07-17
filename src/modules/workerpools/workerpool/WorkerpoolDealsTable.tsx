@@ -2,14 +2,14 @@ import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { nextWorkerpoolDealsQuery } from './nextWorkerpoolDealsQuery';
+import { getAdditionalPages } from '@/utils/format';
 import { workerpoolDealsQuery } from './workerpoolDealsQuery';
 
 function useWorkerpoolDealsData({
@@ -21,8 +21,16 @@ function useWorkerpoolDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
+  const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'workerpool', 'deals', workerpoolAddress];
+  const queryKey = [
+    chainId,
+    'workerpool',
+    'deals',
+    workerpoolAddress,
+    currentPage,
+  ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
@@ -30,6 +38,8 @@ function useWorkerpoolDealsData({
         execute(workerpoolDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           workerpoolAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,31 +47,21 @@ function useWorkerpoolDealsData({
     }
   );
 
-  const queryKeyNextData = [chainId, 'workerpool', 'deals-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextWorkerpoolDealsQuery, chainId, {
-        length: DETAIL_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * DETAIL_TABLE_LENGTH,
-        workerpoolAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const deals = data?.workerpool?.deals ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.workerpool?.dealsHasNext?.length),
+    Boolean(data?.workerpool?.dealsHasNextNext?.length)
+  );
 
-  const nextDeals = nextData?.workerpool?.deals ?? [];
-
-  const additionalPages = Math.ceil(nextDeals.length / DETAIL_TABLE_LENGTH);
-
-  const formattedDeal =
-    data?.workerpool?.deals.map((deal) => ({
+  const formattedDeals =
+    deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError,
@@ -75,7 +75,7 @@ export function WorkerpoolDealsTable({
 }: {
   workerpoolAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('workerpoolDealsPage');
   const {
     data: deals,
     isError,
@@ -83,7 +83,10 @@ export function WorkerpoolDealsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useWorkerpoolDealsData({ workerpoolAddress, currentPage });
+  } = useWorkerpoolDealsData({
+    workerpoolAddress,
+    currentPage: currentPage - 1,
+  });
 
   const filteredColumns = columns.filter(
     (col) => col.accessorKey !== 'dataset.address'
@@ -112,9 +115,9 @@ export function WorkerpoolDealsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

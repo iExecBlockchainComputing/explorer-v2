@@ -2,15 +2,15 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/apps/appsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressAppsQuery } from './addressAppsQuery';
-import { nextAddressAppsQuery } from './nextAddressAppsQuery';
 
 function useAddressAppsData({
   addressAddress,
@@ -21,6 +21,8 @@ function useAddressAppsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [chainId, 'address', 'apps', addressAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
@@ -30,6 +32,8 @@ function useAddressAppsData({
         execute(addressAppsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -37,37 +41,21 @@ function useAddressAppsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'apps-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressAppsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const apps = data?.account?.apps ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.appsHasNext?.length),
+    Boolean(data?.account?.appsHasNextNext?.length)
+  );
 
-  const nextApps = nextData?.account?.apps ?? [];
-
-  const additionalPages = Math.ceil(nextApps.length / PREVIEW_TABLE_LENGTH);
-
-  const formattedDeal =
-    data?.account?.apps.map((app) => ({
+  const formattedApps =
+    apps.map((app) => ({
       ...app,
       destination: `/app/${app.address}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedApps,
     isLoading,
     isRefetching,
     isError,
@@ -81,7 +69,7 @@ export function AddressAppsTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('addressAppsPage');
   const {
     data: apps,
     isError,
@@ -89,7 +77,7 @@ export function AddressAppsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressAppsData({ addressAddress, currentPage });
+  } = useAddressAppsData({ addressAddress, currentPage: currentPage - 1 });
 
   const filteredColumns = columns.filter(
     (col) => col.accessorKey !== 'owner.address'
@@ -118,9 +106,9 @@ export function AddressAppsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

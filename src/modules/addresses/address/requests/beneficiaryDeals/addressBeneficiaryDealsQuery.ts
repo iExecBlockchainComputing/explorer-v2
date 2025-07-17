@@ -4,6 +4,8 @@ export const addressBeneficiaryDealsQuery = graphql(`
   query AddressBeneficiaryDeals(
     $length: Int = 20
     $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
     $address: ID!
   ) {
     account(id: $address) {
@@ -38,6 +40,22 @@ export const addressBeneficiaryDealsQuery = graphql(`
         appPrice
         datasetPrice
         workerpoolPrice
+      }
+      dealBeneficiaryHasNext: dealBeneficiary(
+        orderBy: timestamp
+        orderDirection: desc
+        first: 1
+        skip: $nextSkip
+      ) {
+        dealid: id
+      }
+      dealBeneficiaryHasNextNext: dealBeneficiary(
+        orderBy: timestamp
+        orderDirection: desc
+        first: 1
+        skip: $nextNextSkip
+      ) {
+        dealid: id
       }
     }
   }

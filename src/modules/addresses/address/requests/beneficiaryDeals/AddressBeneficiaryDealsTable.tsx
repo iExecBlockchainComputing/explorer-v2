@@ -2,15 +2,15 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressBeneficiaryDealsQuery } from './addressBeneficiaryDealsQuery';
-import { nextAddressBeneficiaryDealsQuery } from './nextAddressBeneficiaryDealsQuery';
 
 function useAddressBeneficiaryDealsData({
   addressAddress,
@@ -21,6 +21,8 @@ function useAddressBeneficiaryDealsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -37,6 +39,8 @@ function useAddressBeneficiaryDealsData({
         execute(addressBeneficiaryDealsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -44,40 +48,21 @@ function useAddressBeneficiaryDealsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'beneficiaryDeals-next',
-    addressAddress,
-    currentPage,
-  ];
-
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressBeneficiaryDealsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextBeneficiaryDeals = nextData?.account?.dealBeneficiary ?? [];
-
-  const additionalPages = Math.ceil(
-    nextBeneficiaryDeals.length / PREVIEW_TABLE_LENGTH
+  const beneficiaryDeals = data?.account?.dealBeneficiary ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.dealBeneficiaryHasNext?.length),
+    Boolean(data?.account?.dealBeneficiaryHasNextNext?.length)
   );
 
-  const formattedDeal =
-    data?.account?.dealBeneficiary.map((deal) => ({
+  const formattedDeals =
+    beneficiaryDeals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError,
@@ -91,7 +76,9 @@ export function AddressBeneficiaryDealsTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam(
+    'addressBeneficiaryDealsPage'
+  );
   const {
     data: beneficiaryDeals,
     isError,
@@ -99,7 +86,10 @@ export function AddressBeneficiaryDealsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressBeneficiaryDealsData({ addressAddress, currentPage });
+  } = useAddressBeneficiaryDealsData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
 
   return (
     <div className="space-y-6">
@@ -124,9 +114,9 @@ export function AddressBeneficiaryDealsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

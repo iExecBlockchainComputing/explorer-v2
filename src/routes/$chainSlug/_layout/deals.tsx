@@ -3,18 +3,18 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DealIcon from '@/components/icons/DealIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AllDealsBreadcrumbs } from '@/modules/deals/DealBreadcrumbs';
 import { dealsQuery } from '@/modules/deals/dealsQuery';
 import { columns } from '@/modules/deals/dealsTable/columns';
-import { nextDealsQuery } from '@/modules/deals/nextDealsQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/deals')({
   component: DealsRoute,
@@ -23,44 +23,41 @@ export const Route = createFileRoute('/$chainSlug/_layout/deals')({
 function useDealsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
 
   const queryKey = [chainId, 'deals', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(dealsQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(dealsQuery, chainId, {
+          length: TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
+        }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const queryKeyNextData = [chainId, 'deals-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextDealsQuery, chainId, {
-        length: TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * TABLE_LENGTH,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const deals = data?.deals ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.dealsHasNext?.length),
+    Boolean(data?.dealsHasNextNext?.length)
+  );
 
-  const nextDeals = nextData?.deals ?? [];
-
-  const additionalPages = Math.ceil(nextDeals.length / TABLE_LENGTH);
-
-  const formattedData =
-    data?.deals.map((deal) => ({
+  const formattedDeals =
+    deals.map((deal) => ({
       ...deal,
       destination: `/deal/${deal.dealid}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedDeals,
     isLoading,
     isRefetching,
     isError: isError,
@@ -70,7 +67,7 @@ function useDealsData(currentPage: number) {
 }
 
 function DealsRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('dealsPage');
   const {
     data,
     isLoading,
@@ -78,7 +75,7 @@ function DealsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useDealsData(currentPage);
+  } = useDealsData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -110,9 +107,9 @@ function DealsRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

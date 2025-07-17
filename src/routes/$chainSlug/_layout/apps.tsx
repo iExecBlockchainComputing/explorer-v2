@@ -3,18 +3,18 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import AppIcon from '@/components/icons/AppIcon';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AppBreadcrumbsList } from '@/modules/apps/AppBreadcrumbs';
 import { appsQuery } from '@/modules/apps/appsQuery';
 import { columns } from '@/modules/apps/appsTable/columns';
-import { nextAppsQuery } from '@/modules/apps/nextAppsQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/apps')({
   component: AppsRoute,
@@ -23,44 +23,41 @@ export const Route = createFileRoute('/$chainSlug/_layout/apps')({
 function useAppsData(currentPage: number) {
   const { chainId } = useUserStore();
   const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
 
   const queryKey = [chainId, 'apps', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
-      queryKey: [chainId, 'apps', currentPage],
+      queryKey,
       queryFn: () =>
-        execute(appsQuery, chainId, { length: TABLE_LENGTH, skip }),
+        execute(appsQuery, chainId, {
+          length: TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
+        }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       enabled: !!chainId,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const queryKeyNextData = [chainId, 'apps-next', currentPage];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAppsQuery, chainId, {
-        length: TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * TABLE_LENGTH,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
+  const apps = data?.apps ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.appsHasNext?.length),
+    Boolean(data?.appsHasNextNext?.length)
+  );
 
-  const nextApps = nextData?.apps ?? [];
-
-  const additionalPages = Math.ceil(nextApps.length / TABLE_LENGTH);
-
-  const formattedData =
-    data?.apps.map((app) => ({
+  const formattedApps =
+    apps.map((app) => ({
       ...app,
       destination: `/app/${app.address}`,
     })) ?? [];
 
   return {
-    data: formattedData,
+    data: formattedApps,
     isLoading,
     isRefetching,
     isError,
@@ -70,7 +67,7 @@ function useAppsData(currentPage: number) {
 }
 
 function AppsRoute() {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('appsPage');
   const {
     data,
     isLoading,
@@ -78,7 +75,7 @@ function AppsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useAppsData(currentPage);
+  } = useAppsData(currentPage - 1);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -111,9 +108,9 @@ function AppsRoute() {
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );

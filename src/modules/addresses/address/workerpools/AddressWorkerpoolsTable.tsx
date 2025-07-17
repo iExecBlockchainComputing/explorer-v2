@@ -2,15 +2,15 @@ import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { addressWorkerpoolsQuery } from './addressWorkerpoolsQuery';
-import { nextAddressWorkerpoolsQuery } from './nextAddressWorkerpoolsQuery';
 
 function useAddressWorkerpoolsData({
   addressAddress,
@@ -21,6 +21,8 @@ function useAddressWorkerpoolsData({
 }) {
   const { chainId } = useUserStore();
   const skip = currentPage * PREVIEW_TABLE_LENGTH;
+  const nextSkip = skip + PREVIEW_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * PREVIEW_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
@@ -36,6 +38,8 @@ function useAddressWorkerpoolsData({
         execute(addressWorkerpoolsQuery, chainId, {
           length: PREVIEW_TABLE_LENGTH,
           skip,
+          nextSkip,
+          nextNextSkip,
           address: addressAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -43,39 +47,21 @@ function useAddressWorkerpoolsData({
     }
   );
 
-  const queryKeyNextData = [
-    chainId,
-    'address',
-    'workerpools-next',
-    addressAddress,
-    currentPage,
-  ];
-  const { data: nextData } = useQuery({
-    queryKey: queryKeyNextData,
-    queryFn: () =>
-      execute(nextAddressWorkerpoolsQuery, chainId, {
-        length: PREVIEW_TABLE_LENGTH * 2,
-        skip: (currentPage + 1) * PREVIEW_TABLE_LENGTH,
-        address: addressAddress,
-      }),
-    refetchInterval: TABLE_REFETCH_INTERVAL,
-    placeholderData: createPlaceholderDataFnForQueryKey(queryKeyNextData),
-  });
-
-  const nextWorkerpools = nextData?.account?.workerpools ?? [];
-
-  const additionalPages = Math.ceil(
-    nextWorkerpools.length / PREVIEW_TABLE_LENGTH
+  const workerpools = data?.account?.workerpools ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.account?.workerpoolsHasNext?.length),
+    Boolean(data?.account?.workerpoolsHasNextNext?.length)
   );
 
-  const formattedDeal =
-    data?.account?.workerpools.map((workerpool) => ({
+  const formattedWorkerpools =
+    workerpools.map((workerpool) => ({
       ...workerpool,
       destination: `/workerpool/${workerpool.address}`,
     })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedWorkerpools,
     isLoading,
     isRefetching,
     isError,
@@ -89,7 +75,7 @@ export function AddressWorkerpoolsTable({
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = usePageParam('addressWorkerpoolsPage');
   const {
     data: workerpools,
     isError,
@@ -97,7 +83,10 @@ export function AddressWorkerpoolsTable({
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAddressWorkerpoolsData({ addressAddress, currentPage });
+  } = useAddressWorkerpoolsData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
 
   const filteredColumns = columns.filter(
     (col) => col.accessorKey !== 'owner.address'
@@ -126,9 +115,9 @@ export function AddressWorkerpoolsTable({
         />
       )}
       <PaginatedNavigation
-        currentPage={currentPage + 1}
-        totalPages={currentPage + 1 + additionalPages}
-        onPageChange={(newPage) => setCurrentPage(newPage - 1)}
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
       />
     </div>
   );
