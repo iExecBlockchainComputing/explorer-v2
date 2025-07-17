@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.10.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.9.2...iexec-explorer-v1.10.0) (2025-07-17)
+
+
+### 🚀 Features
+
+* subgraphs request number optimization ([#38](https://github.com/iExecBlockchainComputing/explorer-v2/issues/38)) ([92c01a3](https://github.com/iExecBlockchainComputing/explorer-v2/commit/92c01a3c5fe823ea62f6a235041ea58cc4c08e80))
+
 ## [1.9.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.9.1...iexec-explorer-v1.9.2) (2025-07-17)
 
 
