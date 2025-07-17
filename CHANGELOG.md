@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.9.1...iexec-explorer-v1.9.2) (2025-07-17)
+
+
+### 🐞 Bug Fixes
+
+* Small fixes and adjustments ([#37](https://github.com/iExecBlockchainComputing/explorer-v2/issues/37)) ([b4027db](https://github.com/iExecBlockchainComputing/explorer-v2/commit/b4027dbb2d15e08f3fd8ecf58307a20cee4316fa))
+
 ## [1.9.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.9.0...iexec-explorer-v1.9.1) (2025-06-24)
 
 
