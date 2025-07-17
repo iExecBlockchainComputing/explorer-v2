@@ -2,9 +2,10 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
+import TaskIcon from '@/components/icons/TaskIcon';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -38,7 +39,7 @@ export function TasksPreviewTable({ className }: { className?: string }) {
     <div className={cn(className, 'flex flex-col gap-2')}>
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
-          <Box size="16" className="text-secondary" />
+          <TaskIcon size={20} className="text-secondary" />
           Latest tasks
           {tasks.data && tasks.isError && (
             <span className="text-muted-foreground text-sm font-light">
@@ -48,7 +49,11 @@ export function TasksPreviewTable({ className }: { className?: string }) {
           {tasks.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/tasks">View all</ChainLink>
+          <ChainLink to="/tasks">
+            <span>
+              View all <span className="content hidden sm:inline">tasks</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(tasks.isError || tasks.errorUpdateCount > 0) && !tasks.data ? (

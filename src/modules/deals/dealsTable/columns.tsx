@@ -48,14 +48,6 @@ export const columns: ColumnDef<Deal>[] = [
     },
   },
   {
-    accessorKey: 'time',
-    header: 'Time',
-    cell: ({ row }) => {
-      const timestamp = row.original.timestamp;
-      return <div className="min-w-32">{formatElapsedTime(timestamp)}</div>;
-    },
-  },
-  {
     accessorKey: 'workerpool.address',
     header: 'Workerpool',
     cell: ({ row }) => {
@@ -76,9 +68,7 @@ export const columns: ColumnDef<Deal>[] = [
     cell: ({ row }) => {
       const datasetAddress = row.original.dataset?.address;
       if (!datasetAddress) {
-        return (
-          <span className="text-muted-foreground">No dataset address</span>
-        );
+        return <span className="text-muted-foreground">No dataset</span>;
       }
       return (
         <CopyButton
@@ -88,6 +78,21 @@ export const columns: ColumnDef<Deal>[] = [
           textToCopy={datasetAddress}
         />
       );
+    },
+  },
+  {
+    accessorKey: 'time',
+    header: 'Time',
+    cell: ({ row }) => {
+      const timestamp = row.original.timestamp;
+      return <div className="min-w-18">{formatElapsedTime(timestamp)}</div>;
+    },
+  },
+  {
+    accessorKey: 'success',
+    header: 'Success',
+    cell: ({ row }) => {
+      return <SuccessCell deal={row.original} />;
     },
   },
   {
@@ -107,13 +112,6 @@ export const columns: ColumnDef<Deal>[] = [
           {price} {getTokenSymbol()}
         </span>
       );
-    },
-  },
-  {
-    accessorKey: 'success',
-    header: 'Success',
-    cell: ({ row }) => {
-      return <SuccessCell deal={row.original} />;
     },
   },
 ];

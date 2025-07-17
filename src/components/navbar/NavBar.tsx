@@ -17,7 +17,7 @@ export function Navbar() {
   };
 
   return (
-    <div className="flex items-center justify-between py-6 lg:py-3">
+    <nav className="flex items-center justify-between py-6">
       <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
         <span className="hidden sm:block">iExec Explorer</span>
@@ -104,10 +104,10 @@ export function Navbar() {
             >
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
-            <ChainSelector />
+            <ChainSelector className="w-full border-0" />
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 }

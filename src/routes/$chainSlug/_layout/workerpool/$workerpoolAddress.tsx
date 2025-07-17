@@ -2,7 +2,8 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -11,6 +12,8 @@ import { buildWorkerpoolDetails } from '@/modules/workerpools/workerpool/buildWo
 import { WorkerpoolBreadcrumbs } from '@/modules/workerpools/workerpool/workerpoolBreadcrumbs';
 import { workerpoolQuery } from '@/modules/workerpools/workerpool/workerpoolQuery';
 import useUserStore from '@/stores/useUser.store';
+import { NotFoundError } from '@/utils/NotFoundError';
+import { isValidWorkerpoolAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
@@ -20,27 +23,35 @@ export const Route = createFileRoute(
 });
 
 function useWorkerpoolData(workerpoolAddress: string, chainId: number) {
+  const isValid = isValidWorkerpoolAddress(workerpoolAddress);
   const queryKey = [chainId, 'workerpool', workerpoolAddress];
-  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
-    {
+  const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
+    useQuery({
       queryKey,
-      queryFn: () =>
-        execute(workerpoolQuery, chainId, {
+      enabled: !!chainId && isValid,
+      queryFn: async () => {
+        const result = await execute(workerpoolQuery, chainId, {
           length: TABLE_LENGTH,
           workerpoolAddress,
           workerpoolAddressString: workerpoolAddress,
-        }),
+        });
+        if (!result?.workerpool) {
+          throw new NotFoundError();
+        }
+        return result;
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
-    }
-  );
+    });
 
   return {
     data: data?.workerpool,
     isLoading,
     isRefetching,
     isError,
+    error,
     hasPastError: isError || errorUpdateCount > 0,
+    isValid,
   };
 }
 
@@ -53,11 +64,23 @@ function WorkerpoolsRoute() {
     isRefetching,
     isError,
     hasPastError,
+    isValid,
+    error,
   } = useWorkerpoolData(workerpoolAddress, chainId!);
 
   const workerpoolDetails = workerpool
     ? buildWorkerpoolDetails({ workerpool })
     : undefined;
+
+  if (!isValid) {
+    return (
+      <ErrorAlert className="my-16" message="Invalid workerpool address." />
+    );
+  }
+
+  if (isError && error instanceof NotFoundError) {
+    return <ErrorAlert className="my-16" message="Workerpool not found." />;
+  }
 
   return (
     <div className="mt-8 flex flex-col gap-6">
@@ -65,7 +88,7 @@ function WorkerpoolsRoute() {
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          <Box size="20" />
+          <WorkerpoolIcon size={24} />
           Workerpool details
           {workerpool && isError && (
             <span className="text-muted-foreground text-sm font-light">
@@ -81,9 +104,9 @@ function WorkerpoolsRoute() {
 
       <div className="space-y-10">
         {hasPastError && !workerpoolDetails ? (
-          <ErrorAlert message="An error occurred during deal details  loading." />
+          <ErrorAlert message="An error occurred during deal details loading." />
         ) : (
-          <DetailsTable details={workerpoolDetails} zebra={false} />
+          <DetailsTable details={workerpoolDetails || {}} zebra={false} />
         )}
         <WorkerpoolDealsTable workerpoolAddress={workerpoolAddress} />
       </div>

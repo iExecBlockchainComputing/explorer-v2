@@ -2,9 +2,10 @@ import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
+import DealIcon from '@/components/icons/DealIcon';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -38,7 +39,7 @@ export function DealsPreviewTable({ className }: { className?: string }) {
     <div className={cn(className, 'flex flex-col gap-2')}>
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
-          <Box size="16" className="text-secondary" />
+          <DealIcon size={20} className="text-secondary" />
           Latest deals
           {deals.data && deals.isError && (
             <span className="text-muted-foreground text-sm font-light">
@@ -48,7 +49,11 @@ export function DealsPreviewTable({ className }: { className?: string }) {
           {deals.isFetching && <LoaderCircle className="animate-spin" />}
         </h2>
         <Button variant="link" className="-mr-4" asChild>
-          <ChainLink to="/deals">View all</ChainLink>
+          <ChainLink to="/deals">
+            <span>
+              View all <span className="content hidden sm:inline">deals</span>
+            </span>
+          </ChainLink>
         </Button>
       </div>
       {(deals.isError || deals.errorUpdateCount > 0) && !deals.data ? (

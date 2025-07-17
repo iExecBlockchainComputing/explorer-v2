@@ -22,8 +22,8 @@ function Index() {
 
   return (
     <div className="flex flex-col gap-10 pt-10 sm:mt-6 sm:gap-20 md:mt-10">
-      <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full max-w-[1408px] sm:overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
-        <h1 className="mb-2 text-lg font-extrabold md:text-2xl">
+      <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full sm:overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
+        <h1 className="mx-auto mb-2 w-full max-w-[1024px] text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
         </h1>
         <SearcherBar initialSearch={initialSearch} />
@@ -39,11 +39,11 @@ function Index() {
         </div>
       </div>
       <div className="flex flex-col gap-x-6 gap-y-10 lg:grid lg:grid-cols-12">
-        <DealsPreviewTable className="lg:col-span-7" />
-        <TasksPreviewTable className="lg:col-span-5" />
-        <AppsPreviewTable className="lg:col-span-4" />
-        <DatasetsPreviewTable className="lg:col-span-4" />
-        <WorkerpoolsPreviewTable className="lg:col-span-4" />
+        <DealsPreviewTable className="3xl:col-span-7 lg:col-span-12" />
+        <TasksPreviewTable className="3xl:col-span-5 lg:col-span-6" />
+        <AppsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
+        <DatasetsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
+        <WorkerpoolsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
       </div>
     </div>
   );

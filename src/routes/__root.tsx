@@ -11,12 +11,14 @@ export const Route = createRootRoute({
 
 function Root() {
   return (
-    <div className="mx-auto mb-20 w-full px-4 md:px-10 lg:px-20">
+    <div className="mx-auto flex min-h-screen w-full flex-col px-4 md:px-10 lg:px-20">
       <ChainSyncManager />
       <Navbar />
       <UnsupportedChain />
-      <Outlet />
-      <Footer className="mt-32" />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer className="mt-32 mb-10 justify-end" />
       <TanStackRouterDevtools />
     </div>
   );

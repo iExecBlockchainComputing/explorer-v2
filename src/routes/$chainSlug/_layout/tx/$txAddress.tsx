@@ -2,7 +2,8 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
+import TransactionIcon from '@/components/icons/TransactionIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -11,6 +12,8 @@ import { buildTransactionDetails } from '@/modules/transactions/transaction/buil
 import { transactionEventQuery } from '@/modules/transactions/transaction/transactionEventQuery';
 import { transactionQuery } from '@/modules/transactions/transaction/transactionQuery';
 import useUserStore from '@/stores/useUser.store';
+import { NotFoundError } from '@/utils/NotFoundError';
+import { isValidTransactionAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
@@ -18,10 +21,12 @@ export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
 });
 
 function useTransactionData(transactionAddress: string, chainId: number) {
+  const isValid = isValidTransactionAddress(transactionAddress);
   const queryKey = [chainId, 'transaction', transactionAddress];
-  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
-    {
+  const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
+    useQuery({
       queryKey,
+      enabled: !!chainId && isValid,
       queryFn: async () => {
         const transactionData = await execute(transactionQuery, chainId, {
           length: TABLE_LENGTH,
@@ -35,9 +40,10 @@ function useTransactionData(transactionAddress: string, chainId: number) {
             transactionAddress,
           }
         );
-
         const allEvents = Object.values(transactionEventData).flat();
-
+        if (!transactionData?.transaction) {
+          throw new NotFoundError();
+        }
         const transaction = {
           ...transactionData.transaction,
           events: allEvents,
@@ -46,20 +52,21 @@ function useTransactionData(transactionAddress: string, chainId: number) {
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
-    }
-  );
+    });
 
   return {
     data: data?.transaction,
     isLoading,
     isRefetching,
     isError,
+    error,
     hasPastError: isError || errorUpdateCount > 0,
+    isValid,
   };
 }
 
 function TransactionsRoute() {
-  const { chainId, isConnected } = useUserStore();
+  const { chainId } = useUserStore();
   const { txAddress } = Route.useParams();
   const {
     data: transaction,
@@ -67,11 +74,23 @@ function TransactionsRoute() {
     isRefetching,
     isError,
     hasPastError,
+    isValid,
+    error,
   } = useTransactionData(txAddress, chainId!);
 
   const transactionDetails = transaction
-    ? buildTransactionDetails({ transaction, isConnected })
+    ? buildTransactionDetails({ transaction })
     : undefined;
+
+  if (!isValid) {
+    return (
+      <ErrorAlert className="my-16" message="Invalid transaction address." />
+    );
+  }
+
+  if (isError && error instanceof NotFoundError) {
+    return <ErrorAlert className="my-16" message="Transaction not found." />;
+  }
 
   return (
     <div className="mt-8 flex flex-col gap-6">
@@ -79,7 +98,7 @@ function TransactionsRoute() {
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-          <Box size="20" />
+          <TransactionIcon size={24} />
           Transaction details
           {!transaction && isError && (
             <span className="text-muted-foreground text-sm font-light">
@@ -94,9 +113,9 @@ function TransactionsRoute() {
       </div>
 
       {hasPastError && !transactionDetails ? (
-        <ErrorAlert message="An error occurred during transaction details  loading." />
+        <ErrorAlert message="An error occurred during transaction details loading." />
       ) : (
-        <DetailsTable details={transactionDetails} />
+        <DetailsTable details={transactionDetails || {}} />
       )}
     </div>
   );

@@ -2,12 +2,14 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
+import { WorkerpoolBreadcrumbsList } from '@/modules/workerpools/WorkerpoolBreadcrumbs';
 import { nextWorkerpoolsQuery } from '@/modules/workerpools/nextWorkerpoolsQuery';
 import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
@@ -82,18 +84,21 @@ function WorkerpoolsRoute() {
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-10" />
 
-      <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-        <Box size="20" />
-        Workerpools
-        {data.length > 0 && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h1>
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+          <WorkerpoolIcon size={24} />
+          Workerpools
+          {data.length > 0 && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {(isLoading || isRefetching) && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <WorkerpoolBreadcrumbsList />
+      </div>
 
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during workerpools details  loading." />

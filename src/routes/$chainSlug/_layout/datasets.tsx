@@ -2,11 +2,13 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import DatasetIcon from '@/components/icons/DatasetIcon';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { nextDatasetsQuery } from '@/modules/datasets/nextDatasetsQuery';
@@ -82,18 +84,21 @@ function DatasetsRoute() {
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-10" />
 
-      <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-        <Box size="20" />
-        Datasets
-        {data.length > 0 && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h1>
+      <div className="space-y-2">
+        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+          <DatasetIcon size={24} />
+          Datasets
+          {data.length > 0 && isError && (
+            <span className="text-muted-foreground text-sm font-light">
+              (outdated)
+            </span>
+          )}
+          {(isLoading || isRefetching) && (
+            <LoaderCircle className="animate-spin" />
+          )}
+        </h1>
+        <DatasetBreadcrumbsList />
+      </div>
 
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during datasets loading." />

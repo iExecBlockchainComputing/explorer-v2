@@ -2,8 +2,9 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { Box, LoaderCircle } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
+import AddressIcon from '@/components/icons/AddressIcon';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
@@ -20,6 +21,8 @@ import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools
 import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
+import { NotFoundError } from '@/utils/NotFoundError';
+import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
@@ -29,26 +32,34 @@ export const Route = createFileRoute(
 });
 
 function useAddressData(address: string, chainId: number) {
+  const isValid = isValidAddress(address);
   const queryKey = [chainId, 'address', address];
-  const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
-    {
+  const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
+    useQuery({
       queryKey,
-      queryFn: () =>
-        execute(addressQuery, chainId, {
+      enabled: !!chainId && isValid,
+      queryFn: async () => {
+        const result = await execute(addressQuery, chainId, {
           length: TABLE_LENGTH,
           address,
-        }),
+        });
+        if (!result?.account) {
+          throw new NotFoundError();
+        }
+        return result;
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
-    }
-  );
+    });
 
   return {
     data: data?.account,
     isLoading,
     isRefetching,
     isError,
+    error,
     hasPastError: isError || errorUpdateCount > 0,
+    isValid,
   };
 }
 
@@ -62,6 +73,8 @@ function AddressRoute() {
     isRefetching,
     isError,
     hasPastError,
+    isValid,
+    error,
   } = useAddressData(addressAddress, chainId!);
 
   const addressDetails = address ? buildAddressDetails({ address }) : undefined;
@@ -94,13 +107,21 @@ function AddressRoute() {
     disabledReasons[5] = 'No workerpools for this address.';
   }
 
+  if (!isValid) {
+    return <ErrorAlert className="my-16" message="Invalid address." />;
+  }
+
+  if (isError && error instanceof NotFoundError) {
+    return <ErrorAlert className="my-16" message="Address not found." />;
+  }
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <SearcherBar className="py-10" />
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-          <Box size="20" />
+          <AddressIcon size={24} />
           Address details
           {!address && isError && (
             <span className="text-muted-foreground text-sm font-light">
@@ -117,7 +138,7 @@ function AddressRoute() {
       {hasPastError && !addressOverview ? (
         <ErrorAlert message="An error occurred during address details loading." />
       ) : (
-        <DetailsTable details={addressOverview} zebra={false} />
+        <DetailsTable details={addressOverview || {}} zebra={false} />
       )}
 
       <Tabs
@@ -140,7 +161,7 @@ function AddressRoute() {
           (hasPastError && !addressDetails ? (
             <ErrorAlert message="An error occurred during address details loading." />
           ) : (
-            <DetailsTable details={addressDetails} />
+            <DetailsTable details={addressDetails || {}} />
           ))}
         {currentTab === 1 && (
           <>

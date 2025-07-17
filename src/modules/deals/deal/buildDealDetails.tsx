@@ -81,6 +81,7 @@ export function buildDealDetails({
     ...(deal.dataset && {
       Dataset: (
         <div className="flex flex-wrap items-center gap-1">
+          {deal.dataset.name}{' '}
           <SmartLinkGroup
             type="dataset"
             addressOrId={deal.dataset.address}

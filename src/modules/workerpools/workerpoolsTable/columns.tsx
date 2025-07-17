@@ -28,8 +28,12 @@ export const columns: ColumnDef<Workerpool>[] = [
     cell: ({ row }) => {
       const workerpoolDescription = row.original.description;
       return (
-        <div className="w-42 overflow-hidden overflow-ellipsis">
-          {workerpoolDescription}
+        <div className="w-42">
+          <CopyButton
+            displayText={workerpoolDescription}
+            textToCopy={workerpoolDescription}
+            tooltipWithText
+          />
         </div>
       );
     },
@@ -50,6 +54,14 @@ export const columns: ColumnDef<Workerpool>[] = [
     },
   },
   {
+    accessorKey: 'time',
+    header: 'Time',
+    cell: ({ row }) => {
+      const timestamp = row.original.timestamp;
+      return <div className="min-w-18">{formatElapsedTime(timestamp)}</div>;
+    },
+  },
+  {
     accessorKey: 'txHash',
     header: 'TxHash',
     cell: ({ row }) => {
@@ -62,14 +74,6 @@ export const columns: ColumnDef<Workerpool>[] = [
           textToCopy={txHash}
         />
       );
-    },
-  },
-  {
-    accessorKey: 'dataset.address',
-    header: 'Dataset',
-    cell: ({ row }) => {
-      const timestamp = row.original.timestamp;
-      return <div className="min-w-32">{formatElapsedTime(timestamp)}</div>;
     },
   },
 ];

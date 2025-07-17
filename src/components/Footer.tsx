@@ -47,17 +47,17 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'bg-grey-800 border-muted text-grey-200 rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
+        'bg-grey-800 border-muted text-grey-200 relative rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
         className
       )}
     >
-      <div className="grid place-items-center justify-center gap-10 xl:grid-cols-3 xl:place-items-stretch">
+      <div className="grid place-items-center justify-center gap-10 xl:grid-cols-2 xl:place-items-stretch">
         <ChainLink to="/" className="flex items-center gap-2 font-mono">
           <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
-          <span className="hidden sm:block">iExec Explorer</span>
+          <span>iExec Explorer</span>
         </ChainLink>
 
-        <nav className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-4">
+        <nav className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
           {navLinks.map(({ href, label }, idx) => (
             <div key={idx} className="flex items-center gap-2">
               <Button

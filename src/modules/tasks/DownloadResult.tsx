@@ -53,7 +53,11 @@ export function DownloadResult({
     },
   });
 
-  if (!taskid || !taskResults) return null;
+  const parsedResult = taskResultToObject(taskResults);
+
+  if (!taskid || !parsedResult || parsedResult.storage === 'none') {
+    return null;
+  }
 
   return (
     <>

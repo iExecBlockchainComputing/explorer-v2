@@ -1,4 +1,5 @@
 import { multiaddr } from '@multiformats/multiaddr';
+import { Buffer } from 'buffer';
 
 export const multiaddrHexToHuman = (hexString: string): string => {
   if (hexString.substring(0, 2) !== '0x') return hexString;
@@ -10,6 +11,12 @@ export const multiaddrHexToHuman = (hexString: string): string => {
     res = buffer.toString();
   }
   return res;
+};
+
+export const mrEnclaveHexToHuman = (hexString: string) => {
+  if (hexString.substring(0, 2) !== '0x') return hexString;
+  const buffer: Buffer = Buffer.from(hexString.substring(2), 'hex');
+  return buffer.toString();
 };
 
 export const taskResultToObject = (results?: string | null) => {

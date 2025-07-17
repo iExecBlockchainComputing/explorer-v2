@@ -125,6 +125,8 @@
   }
 
   --animate-shake: shake 0.4s ease-in-out;
+
+  --breakpoint-3xl: 124rem;
 }
 
 @theme inline {
@@ -218,7 +220,7 @@
   --muted: var(--color-grey-700);
   --muted-foreground: var(--color-grey-300);
 
-  --accent: var(--color-grey-700);
+  --accent: var(--color-grey-600);
   --accent-foreground: var(--color-white);
 
   --destructive: var(--color-red-500);
@@ -261,7 +263,20 @@
   h6 {
     @apply font-anybody font-semibold;
   }
-  button {
+  button,
+  a {
     @apply cursor-pointer;
+  }
+
+  *::-webkit-scrollbar {
+    height: 6px;
+    width: 6px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    @apply bg-grey-700 rounded-full;
+  }
+  *::-webkit-scrollbar-track {
+    @apply bg-grey-800 rounded-full;
   }
 }
