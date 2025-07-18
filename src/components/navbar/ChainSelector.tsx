@@ -1,6 +1,10 @@
-import { SUPPORTED_CHAINS } from '@/config.ts';
+import { LOCAL_STORAGE_PREFIX } from '@/config.ts';
+import { useSearch } from '@tanstack/react-router';
+import { useEffect } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 import { useChainSwitch } from '@/hooks/useChainSwitch.ts';
 import useUserStore from '@/stores/useUser.store.ts';
+import { getSupportedChains } from '@/utils/chain.utils.ts';
 import {
   Select,
   SelectContent,
@@ -12,6 +16,19 @@ import {
 export function ChainSelector({ className }: { className?: string }) {
   const { chainId } = useUserStore();
   const { requestChainChange } = useChainSwitch();
+  const search = useSearch({ strict: false });
+  const [, setExperimental] = useLocalStorageState<boolean>(
+    `${LOCAL_STORAGE_PREFIX}_experimental`,
+    { defaultValue: false }
+  );
+
+  useEffect(() => {
+    if (search?.feature === 'experimental') {
+      setExperimental(true);
+    }
+  }, [search?.feature, setExperimental]);
+
+  const filteredChains = getSupportedChains();
 
   const handleChainChange = async (value: string) => {
     requestChainChange(Number(value));
@@ -27,7 +44,7 @@ export function ChainSelector({ className }: { className?: string }) {
         <SelectValue placeholder="Select Chain" />
       </SelectTrigger>
       <SelectContent className={className}>
-        {SUPPORTED_CHAINS.map((chain) => (
+        {filteredChains.map((chain) => (
           <SelectItem
             key={chain.id}
             value={chain.id.toString()}
