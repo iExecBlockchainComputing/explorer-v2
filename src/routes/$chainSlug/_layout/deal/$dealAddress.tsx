@@ -3,8 +3,8 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import DealIcon from '@/components/icons/DealIcon';
+import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
@@ -55,7 +55,9 @@ function useDealData(dealAddress: string, chainId: number) {
 }
 
 function DealsRoute() {
-  const [currentTab, setCurrentTab] = useState(0);
+  // Use useTabParam to sync tab index with URL (dealTab param, using tab label)
+  const tabLabels = ['DETAILS', 'TASKS'];
+  const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
   const { chainId, isConnected } = useUserStore();
   const { dealAddress } = Route.useParams();
   const {
@@ -102,7 +104,7 @@ function DealsRoute() {
 
       <Tabs
         currentTab={currentTab}
-        tabLabels={['DETAILS', 'TASKS']}
+        tabLabels={tabLabels}
         onTabChange={setCurrentTab}
       />
       <div>
