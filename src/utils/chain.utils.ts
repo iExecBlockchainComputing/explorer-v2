@@ -14,7 +14,7 @@ function isExperimentalEnabled(): boolean {
 export function getSupportedChains() {
   const experimental = isExperimentalEnabled();
   return SUPPORTED_CHAINS.filter(
-    (chain) => chain.name !== 'Arbitrum Sepolia' || experimental
+    (chain) => !chain.isExperimental || experimental
   );
 }
 
