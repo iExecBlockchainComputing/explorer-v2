@@ -13,7 +13,7 @@ import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidDatasetAddress } from '@/utils/addressOrIdCheck';
+import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
@@ -23,7 +23,7 @@ export const Route = createFileRoute(
 });
 
 function useDatasetData(datasetAddress: string, chainId: number) {
-  const isValid = isValidDatasetAddress(datasetAddress);
+  const isValid = isValidAddress(datasetAddress);
   const queryKey = [chainId, 'dataset', datasetAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({

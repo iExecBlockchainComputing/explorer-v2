@@ -1,3 +1,4 @@
+import { ADDRESS_LENGTH } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ExternalLink } from 'lucide-react';
@@ -57,7 +58,8 @@ export default function SmartLinkGroup({
       }
       return resolved;
     },
-    enabled: !!chainId && !!addressOrId && addressOrId.length === 42,
+    enabled:
+      !!chainId && !!addressOrId && addressOrId.length === ADDRESS_LENGTH,
     staleTime: Infinity,
   });
 

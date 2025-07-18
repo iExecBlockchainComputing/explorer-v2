@@ -13,7 +13,7 @@ import { transactionEventQuery } from '@/modules/transactions/transaction/transa
 import { transactionQuery } from '@/modules/transactions/transaction/transactionQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidTransactionAddress } from '@/utils/addressOrIdCheck';
+import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
 });
 
 function useTransactionData(transactionAddress: string, chainId: number) {
-  const isValid = isValidTransactionAddress(transactionAddress);
+  const isValid = isValidId(transactionAddress);
   const queryKey = [chainId, 'transaction', transactionAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({

@@ -13,7 +13,7 @@ import { buildAppDetails } from '@/modules/apps/app/buildAppDetails';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidAppAddress } from '@/utils/addressOrIdCheck';
+import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')({
@@ -21,7 +21,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/app/$appAddress')({
 });
 
 function useAppData(appAddress: string, chainId: number) {
-  const isValid = isValidAppAddress(appAddress);
+  const isValid = isValidAddress(appAddress);
   const queryKey = [chainId, 'app', appAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({

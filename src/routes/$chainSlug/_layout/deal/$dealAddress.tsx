@@ -15,7 +15,7 @@ import { dealQuery } from '@/modules/deals/deal/dealQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidDealAddress } from '@/utils/addressOrIdCheck';
+import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
@@ -23,7 +23,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
 });
 
 function useDealData(dealAddress: string, chainId: number) {
-  const isValid = isValidDealAddress(dealAddress);
+  const isValid = isValidId(dealAddress);
   const queryKey = [chainId, 'deal', dealAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({

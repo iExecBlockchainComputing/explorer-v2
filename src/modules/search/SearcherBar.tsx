@@ -1,3 +1,4 @@
+import { ADDRESS_LENGTH, ID_OR_HASH_LENGTH } from '@/config';
 import { execute } from '@/graphql/execute';
 import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
@@ -59,8 +60,8 @@ export function SearcherBar({
     mutationKey: ['search', inputValue],
     mutationFn: async (value: string) => {
       const isValid =
-        value.length === 42 || // address
-        value.length === 66 || // tx, deal, task hash
+        value.length === ADDRESS_LENGTH || // address
+        value.length === ID_OR_HASH_LENGTH || // tx, deal, task hash
         value.endsWith('.eth'); // ENS
 
       if (!isValid) {

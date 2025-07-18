@@ -12,7 +12,7 @@ import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidTaskAddress } from '@/utils/addressOrIdCheck';
+import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
@@ -20,7 +20,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
 });
 
 function useTaskData(taskAddress: string, chainId: number) {
-  const isValid = isValidTaskAddress(taskAddress);
+  const isValid = isValidId(taskAddress);
   const queryKey = [chainId, 'task', taskAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
