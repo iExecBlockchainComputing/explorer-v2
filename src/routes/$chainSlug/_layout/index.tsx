@@ -21,7 +21,7 @@ function Index() {
   const currentChain = SUPPORTED_CHAINS.find((chain) => chain.id === chainId);
 
   return (
-    <div className="flex flex-col gap-10 pt-10 sm:mt-6 sm:gap-20 md:mt-10">
+    <div className="flex flex-col gap-10 sm:mt-6 md:mt-10">
       <div className="radial-bg sm:before:bg-grey-800 border-secondary relative z-0 mx-auto w-full sm:overflow-hidden sm:rounded-2xl sm:border sm:p-16 sm:px-12">
         <h1 className="mx-auto mb-2 w-full max-w-[1024px] text-lg font-extrabold md:text-2xl">
           The iExec Protocol Explorer
