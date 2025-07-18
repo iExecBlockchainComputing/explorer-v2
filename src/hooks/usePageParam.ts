@@ -21,3 +21,34 @@ export function usePageParam(paramName: string, defaultValue = 1) {
 
   return [page, setPage] as const;
 }
+
+export function useTabParam(
+  paramName: string,
+  tabLabels: string[],
+  defaultIndex = 0
+) {
+  const search = useSearch({ strict: false });
+  const navigate = useNavigate();
+
+  const labelFromUrl = search?.[paramName];
+  const tabIndex = labelFromUrl
+    ? tabLabels.indexOf(labelFromUrl)
+    : defaultIndex;
+  const currentTab = tabIndex >= 0 ? tabIndex : defaultIndex;
+
+  const setTab = (newTabIndex: number) => {
+    const newLabel = tabLabels[newTabIndex];
+    if (newLabel && newTabIndex !== currentTab) {
+      navigate({
+        search: (prev: any) => ({
+          ...prev,
+          [paramName]: newLabel,
+        }),
+        replace: true,
+        resetScroll: false,
+      });
+    }
+  };
+
+  return [currentTab, setTab] as const;
+}

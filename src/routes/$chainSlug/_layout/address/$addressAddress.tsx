@@ -3,8 +3,8 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
 import AddressIcon from '@/components/icons/AddressIcon';
+import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
@@ -64,7 +64,15 @@ function useAddressData(address: string, chainId: number) {
 }
 
 function AddressRoute() {
-  const [currentTab, setCurrentTab] = useState(0);
+  const tabLabels = [
+    'OVERVIEW',
+    'REQUESTS',
+    'WORKER',
+    'APPS',
+    'DATASETS',
+    'WORKERPOOLS',
+  ];
+  const [currentTab, setCurrentTab] = useTabParam('addressTab', tabLabels, 0);
   const { chainId } = useUserStore();
   const { addressAddress } = Route.useParams();
   const {
@@ -144,14 +152,7 @@ function AddressRoute() {
       <Tabs
         currentTab={currentTab}
         onTabChange={setCurrentTab}
-        tabLabels={[
-          'OVERVIEW',
-          'REQUESTS',
-          'WORKER',
-          'APPS',
-          'DATASETS',
-          'WORKERPOOLS',
-        ]}
+        tabLabels={tabLabels}
         disabledTabs={disabledTabs}
         disabledReasons={disabledReasons}
       />
