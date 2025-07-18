@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.10.0...iexec-explorer-v1.11.0) (2025-07-18)
+
+
+### 🚀 Features
+
+* Added the ability to enable experimental features via a URL parameter. ([#42](https://github.com/iExecBlockchainComputing/explorer-v2/issues/42)) ([414d4b0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/414d4b0a6f0ae1de85515aa2a84dfca079662ce4))
+
 ## [1.10.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.9.2...iexec-explorer-v1.10.0) (2025-07-17)
 
 
