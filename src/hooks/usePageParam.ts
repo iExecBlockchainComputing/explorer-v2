@@ -40,7 +40,7 @@ export function useTabParam(
     const newLabel = tabLabels[newTabIndex];
     if (newLabel && newTabIndex !== currentTab) {
       navigate({
-        search: (prev: any) => ({
+        search: (prev) => ({
           ...prev,
           [paramName]: newLabel,
         }),
