@@ -118,7 +118,10 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
     ...(task.status && {
       Status: (
         <div>
-          <StatusCell statusEnum={task.status} />
+          <StatusCell
+            statusEnum={task.status}
+            timeoutTimestamp={task.finalDeadline * 1000}
+          />
           <ClaimButton taskOrDeal={task} className="text-white underline" />
           <DownloadResult taskid={task.taskid} taskResults={task.results} />
         </div>
