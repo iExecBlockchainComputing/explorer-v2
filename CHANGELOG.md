@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.12.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.11.0...iexec-explorer-v1.12.0) (2025-07-21)
+
+
+### 🚀 Features
+
+* add BackButton component and integrate into various routes ([#41](https://github.com/iExecBlockchainComputing/explorer-v2/issues/41)) ([676996a](https://github.com/iExecBlockchainComputing/explorer-v2/commit/676996a0334ed27178261b7730acf6edbd4ec9e5))
+
 ## [1.11.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.10.0...iexec-explorer-v1.11.0) (2025-07-18)
 
 
