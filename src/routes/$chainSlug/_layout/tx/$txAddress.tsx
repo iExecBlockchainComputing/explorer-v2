@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import TransactionIcon from '@/components/icons/TransactionIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -109,7 +110,10 @@ function TransactionsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <TransactionBreadcrumbs transactionId={txAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <TransactionBreadcrumbs transactionId={txAddress} />
+        </div>
       </div>
 
       {hasPastError && !transactionDetails ? (

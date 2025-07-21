@@ -38,8 +38,8 @@ function TableBody({
     <tbody
       data-slot="table-body"
       className={cn(
-        '[&_tr]:border-muted *:bg-grey-900 [&_tr]:hover:*:bg-grey-700/80 [&_tr]:*:duration-150 [&_tr:last-child]:border-0',
-        zebra && '[&_tr]:odd:*:bg-grey-800 [&_tr]:odd:hover:*:bg-grey-700/80',
+        '[&_tr]:border-muted *:bg-grey-900 [&_tr]:hover:*:bg-grey-700 [&_tr]:*:duration-150 [&_tr:last-child]:border-0',
+        zebra && '[&_tr]:odd:*:bg-grey-800 [&_tr]:odd:hover:*:bg-grey-700',
         className
       )}
       {...props}

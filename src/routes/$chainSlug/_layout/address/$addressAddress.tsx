@@ -5,6 +5,7 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import { useState } from 'react';
 import AddressIcon from '@/components/icons/AddressIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
@@ -132,7 +133,10 @@ function AddressRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <AddressBreadcrumbs addressId={addressAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <AddressBreadcrumbs addressId={addressAddress} />
+        </div>
       </div>
 
       {hasPastError && !addressOverview ? (
