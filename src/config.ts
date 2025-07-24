@@ -22,6 +22,8 @@ export const SUPPORTED_CHAINS = [
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+    dataprotectorSubgraphUrl:
+      'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
     bridge: 'https://bridge-bellecour.iex.ec/',
     bridgeInformation:
       'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
@@ -37,6 +39,8 @@ export const SUPPORTED_CHAINS = [
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl:
       'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+    dataprotectorSubgraphUrl:
+      'https://gateway.thegraph.com/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
     isExperimental: true,

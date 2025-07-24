@@ -3,22 +3,27 @@ import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
 import { multiaddrHexToHuman } from '@/utils/format';
-import {
-  formatDateCompact,
-  formatElapsedTime,
-} from '@/utils/formatElapsedTime';
+import { formatDateCompact, formatElapsedTime } from '@/utils/formatElapsedTime';
+import { DatasetTypes } from './DatasetTypes';
 
 export function buildDatasetDetails({
   dataset,
+  schemaPaths,
+  isSchemaLoading,
 }: {
   dataset: DatasetQuery['dataset'];
+  schemaPaths?: Array<{ path?: string | null }>;
+  isSchemaLoading?: boolean;
 }) {
   if (!dataset) {
     return {};
   }
   const firstTransfer =
     Array.isArray(dataset?.transfers) && dataset?.transfers[0];
-  const firstTimestamp = firstTransfer?.transaction?.timestamp;
+  const firstTimestamp =
+    firstTransfer && 'transaction' in firstTransfer
+      ? firstTransfer.transaction?.timestamp
+      : undefined;
 
   return {
     ...(dataset.address && {
@@ -38,6 +43,9 @@ export function buildDatasetDetails({
         <SmartLinkGroup type={'address'} addressOrId={dataset.owner.address} />
       ),
     }),
+    Types: (
+      <DatasetTypes schemaPaths={schemaPaths} isLoading={isSchemaLoading} />
+    ),
     ...(firstTimestamp && {
       Created: (
         <p>

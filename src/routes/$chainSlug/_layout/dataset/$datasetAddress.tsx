@@ -1,5 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
+import { executeDataprotector } from '@/graphql/executeDataprotector';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
@@ -11,6 +12,7 @@ import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumb
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
 import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
+import { datasetSchemaQuery } from '@/modules/datasets/dataset/protectedDataQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
@@ -26,6 +28,9 @@ export const Route = createFileRoute(
 function useDatasetData(datasetAddress: string, chainId: number) {
   const isValid = isValidDatasetAddress(datasetAddress);
   const queryKey = [chainId, 'dataset', datasetAddress];
+  const schemaQueryKey = [chainId, 'datasetSchema', datasetAddress];
+
+  // Fetch main dataset data
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
       queryKey,
@@ -45,12 +50,34 @@ function useDatasetData(datasetAddress: string, chainId: number) {
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     });
 
+  // Fetch schema data from dataprotector subgraph
+  const {
+    data: schemaData,
+    isLoading: isSchemaLoading,
+    isError: isSchemaError,
+    error: schemaError,
+  } = useQuery({
+    queryKey: schemaQueryKey,
+    enabled: !!chainId && !!datasetAddress,
+    queryFn: async () => {
+      const result = await executeDataprotector(datasetSchemaQuery, chainId!, {
+        datasetAddress,
+      });
+      return result;
+    },
+    placeholderData: createPlaceholderDataFnForQueryKey(schemaQueryKey),
+  });
+
   return {
     data: data?.dataset,
+    schema: schemaData?.protectedData?.schema || [],
     isLoading,
+    isSchemaLoading,
     isRefetching,
     isError,
+    isSchemaError,
     error,
+    schemaError,
     hasPastError: isError || errorUpdateCount > 0,
     isValid,
   };
@@ -61,7 +88,9 @@ function DatasetsRoute() {
   const { datasetAddress } = Route.useParams();
   const {
     data: dataset,
+    schema: schemaPaths,
     isLoading,
+    isSchemaLoading,
     isRefetching,
     isError,
     hasPastError,
@@ -69,7 +98,13 @@ function DatasetsRoute() {
     error,
   } = useDatasetData(datasetAddress, chainId!);
 
-  const datasetDetails = dataset ? buildDatasetDetails({ dataset }) : undefined;
+  const datasetDetails = dataset
+    ? buildDatasetDetails({
+        dataset,
+        schemaPaths,
+        isSchemaLoading,
+      })
+    : undefined;
 
   if (!isValid) {
     return <ErrorAlert className="my-16" message="Invalid dataset address." />;
