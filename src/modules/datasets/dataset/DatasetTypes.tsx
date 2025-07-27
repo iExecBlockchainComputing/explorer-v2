@@ -1,49 +1,7 @@
-import React from 'react';
-
-interface DatasetType {
-  name: string;
-  color: string;
-  style?: {
-    backgroundColor: string;
-    borderColor: string;
-    color: string;
-  };
-}
-
-// Simple hash function to convert string to number
-function hashString(str: string): number {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  return Math.abs(hash);
-}
-
-// Function to create a dynamic type for any path
-function createDynamicType(path: string): DatasetType {
-  const hash = hashString(path);
-  const hue = hash % 360;
-  
-  // Convert path to a readable name (e.g., "targetPrivacyPassV2_prod" -> "Target Privacy Pass V2 Prod")
-  const name = path
-    .replace(/([A-Z])/g, ' $1') // Add space before capital letters
-    .replace(/_/g, ' ') // Replace underscores with spaces
-    .replace(/^./, str => str.toUpperCase()) // Capitalize first letter
-    .replace(/\s+./g, str => str.toUpperCase()) // Capitalize first letter of each word
-    .trim();
-
-  return {
-    name,
-    color: '', // We'll use inline styles instead
-    style: {
-      backgroundColor: `hsla(${hue}, 60%, 50%, 0.08)`,
-      borderColor: `hsla(${hue}, 60%, 50%, 0.2)`,
-      color: `hsl(${hue}, 60%, 40%)`
-    }
-  };
-}
+import {
+  processSchemaPathsToTypes,
+  DatasetTypeInfo,
+} from '../utils/datasetTypeUtils';
 
 interface DatasetTypesProps {
   schemaPaths?: Array<{ path?: string | null }>;
@@ -51,17 +9,9 @@ interface DatasetTypesProps {
 }
 
 export function DatasetTypes({ schemaPaths, isLoading }: DatasetTypesProps) {
-  // Create types from schema paths
-  let displayTypes: DatasetType[] = [];
-  
-  if (schemaPaths && schemaPaths.length > 0) {
-    displayTypes = schemaPaths
-      .map((item) => {
-        if (!item.path) return null;
-        return createDynamicType(item.path);
-      })
-      .filter(Boolean) as DatasetType[];
-  }
+  // Create types from schema paths using shared utility
+  const displayTypes: DatasetTypeInfo[] =
+    processSchemaPathsToTypes(schemaPaths);
 
   if (isLoading) {
     return (
@@ -69,11 +19,11 @@ export function DatasetTypes({ schemaPaths, isLoading }: DatasetTypesProps) {
         {[1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
-            className="flex-shrink-0 p-3 rounded-lg border bg-muted animate-pulse w-40"
+            className="bg-muted w-40 flex-shrink-0 animate-pulse rounded-lg border p-3"
           >
             <div className="flex-1">
-              <div className="h-4 bg-muted-foreground/20 rounded mb-2"></div>
-              <div className="h-3 bg-muted-foreground/10 rounded w-3/4"></div>
+              <div className="bg-muted-foreground/20 mb-2 h-4 rounded"></div>
+              <div className="bg-muted-foreground/10 h-3 w-3/4 rounded"></div>
             </div>
           </div>
         ))}
@@ -86,14 +36,16 @@ export function DatasetTypes({ schemaPaths, isLoading }: DatasetTypesProps) {
       {displayTypes.map((type) => (
         <div
           key={type.name}
-          className="flex-shrink-0 p-3 rounded-lg border hover:scale-105 transition-transform duration-200 cursor-pointer w-auto"
+          className="w-auto flex-shrink-0 cursor-pointer rounded-lg border p-3 transition-transform duration-200 hover:scale-105"
           style={type.style}
         >
           <div className="flex items-center justify-center">
-            <h3 className="font-semibold text-sm break-words leading-tight text-center whitespace-normal">{type.name}</h3>
+            <h3 className="text-center text-sm leading-tight font-semibold break-words whitespace-normal">
+              {type.name}
+            </h3>
           </div>
         </div>
       ))}
     </div>
   );
-} 
+}
