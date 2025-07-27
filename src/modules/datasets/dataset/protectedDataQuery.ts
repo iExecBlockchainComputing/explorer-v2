@@ -1,10 +1,12 @@
 import { graphql } from '@/graphql/dataprotector/gql';
 
+
 export const datasetSchemaQuery = graphql(`
   query DatasetSchema($datasetAddress: ID!) {
     protectedData(id: $datasetAddress) {
       schema {
         path
+        type
       }
     }
   }
@@ -17,6 +19,7 @@ export const optimizedProtectedDatasQueryString = graphql(`
       id
       schema {
         path
+        type
       }
     }
   }

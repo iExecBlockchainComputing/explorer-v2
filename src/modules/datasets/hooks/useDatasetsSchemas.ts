@@ -20,11 +20,11 @@ export function useDatasetsSchemas(datasetAddresses: string[], chainId: number) 
         );
         
         // Transform data into a map for easy lookup
-        const schemasMap = new Map<string, Array<{ path?: string | null }>>();
+        const schemasMap = new Map<string, Array<{ path?: string | null; type?: string | null }>>();
         
         if (result?.protectedDatas) {
-          result.protectedDatas.forEach((protectedData: any) => {
-            if (protectedData.id) {
+          result.protectedDatas.forEach((protectedData) => {
+            if (protectedData?.id) {
               schemasMap.set(protectedData.id, protectedData.schema || []);
             }
           });
@@ -54,7 +54,7 @@ export function useDatasetsSchemas(datasetAddresses: string[], chainId: number) 
         });
         
         const results = await Promise.allSettled(schemaPromises);
-        const schemasMap = new Map();
+        const schemasMap = new Map<string, Array<{ path?: string | null; type?: string | null }>>();
         
         results.forEach((result, index) => {
           if (result.status === 'fulfilled') {

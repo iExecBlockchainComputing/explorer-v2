@@ -1,7 +1,8 @@
 import { processSchemaPathsToTypes } from '@/modules/datasets/utils/datasetTypeUtils';
 
+
 interface DatasetTypesProps {
-  schemaPaths?: Array<{ path?: string | null }>;
+  schemaPaths?: Array<{ path?: string | null; type?: string | null }>;
   isLoading?: boolean;
   layout?: 'horizontal' | 'vertical';
   maxDisplay?: number;
@@ -56,14 +57,21 @@ export function DatasetTypes({
       className={`flex ${layout === 'vertical' ? 'flex-col' : 'flex-wrap'} gap-1 ${layout === 'vertical' ? 'max-w-40' : ''}`}
     >
       {typesToShow.map((type) => (
-        <span
+        <div
           key={type.name}
-          className="inline-block w-fit cursor-pointer rounded-lg border px-3 py-2 text-sm font-medium whitespace-nowrap transition-transform duration-200 hover:scale-105"
+          className="inline-block w-fit cursor-pointer rounded-lg border px-2 py-1 text-sm font-medium whitespace-nowrap transition-transform duration-200 hover:scale-105"
           style={type.style}
-          title={type.name}
+          title={type.type ? `${type.name} (${type.type})` : type.name}
         >
-          {type.name}
-        </span>
+          <div className="flex flex-col items-center gap-0.5">
+            <span>{type.name}</span>
+            {type.type && (
+              <span className="rounded bg-black/10 px-1 py-0.5 text-xs font-normal opacity-70">
+                {type.type}
+              </span>
+            )}
+          </div>
+        </div>
       ))}
       {showMoreCount && remainingCount > 0 && (
         <span
