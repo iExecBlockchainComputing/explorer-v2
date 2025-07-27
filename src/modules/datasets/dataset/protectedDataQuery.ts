@@ -24,3 +24,60 @@ export const optimizedProtectedDatasQueryString = graphql(`
     }
   }
 `);
+
+// Query pour la recherche par schéma avec pagination optimisée et filtrage côté serveur
+export const schemaSearchPaginatedQuery = graphql(`
+  query SchemaSearchPaginated(
+    $length: Int = 20
+    $skip: Int = 0
+    $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
+    $requiredSchema: [String!]
+  ) {
+    protectedDatas(
+      where: {
+        transactionHash_not: "0x"
+        schema_contains: $requiredSchema
+      }
+      skip: $skip
+      first: $length
+      orderBy: creationTimestamp
+      orderDirection: desc
+    ) {
+      id
+      name
+      creationTimestamp
+      owner {
+        id
+      }
+      schema {
+        path
+        type
+      }
+    }
+    protectedDatasHasNext: protectedDatas(
+      where: {
+        transactionHash_not: "0x"
+        schema_contains: $requiredSchema
+      }
+      first: 1
+      skip: $nextSkip
+      orderBy: creationTimestamp
+      orderDirection: desc
+    ) {
+      id
+    }
+    protectedDatasHasNextNext: protectedDatas(
+      where: {
+        transactionHash_not: "0x"
+        schema_contains: $requiredSchema
+      }
+      first: 1
+      skip: $nextNextSkip
+      orderBy: creationTimestamp
+      orderDirection: desc
+    ) {
+      id
+    }
+  }
+`);

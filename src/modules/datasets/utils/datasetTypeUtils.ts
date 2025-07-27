@@ -95,3 +95,42 @@ export function processSchemaPathsToTypes(
     })
     .filter(Boolean) as DatasetTypeInfo[];
 }
+
+// Type pour les résultats du SchemaSearch
+export interface ProtectedDataResult {
+  id: string;
+  name?: string | null;
+  creationTimestamp: string;
+  owner: { id: string };
+  schema: Array<{ path?: string | null; type?: string | null }>;
+}
+
+// Fonction utilitaire pour transformer les résultats de recherche en format Dataset
+export function transformProtectedDataToDataset(result: ProtectedDataResult) {
+  return {
+    __typename: 'Dataset' as const,
+    address: result.id,
+    destination: `/dataset/${result.id}`,
+    name: result.name || 'Unnamed Dataset',
+    timestamp: result.creationTimestamp,
+    multiaddr: null,
+    checksum: null,
+    owner: {
+      __typename: 'Account' as const,
+      address: result.owner.id,
+    },
+    transfers: [
+      {
+        __typename: 'DatasetTransfer' as const,
+        transaction: {
+          __typename: 'Transaction' as const,
+          txHash: result.id,
+          timestamp: result.creationTimestamp,
+          blockNumber: '0',
+        },
+      },
+    ],
+    schemaPaths: result.schema?.map((s) => ({ path: s.path, type: s.type })) || [],
+    isSchemaLoading: false,
+  };
+}

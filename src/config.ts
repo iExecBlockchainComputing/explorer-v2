@@ -46,3 +46,36 @@ export const SUPPORTED_CHAINS = [
     isExperimental: true,
   },
 ];
+
+// Schema filter type constants
+export const LEGACY_TYPES = ['boolean', 'number'] as const;
+
+export const SUPPORTED_MIME_TYPES = [
+  'application/octet-stream',
+  'application/pdf',
+  'application/xml',
+  'application/zip',
+  'audio/midi',
+  'audio/mpeg',
+  'audio/x-wav',
+  'image/bmp',
+  'image/gif',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'video/mp4',
+  'video/mpeg',
+  'video/x-msvideo',
+] as const;
+
+// Most commonly used types
+export const COMMON_DATA_TYPES = ['string', 'bool', 'f64', 'i128'] as const;
+
+// Popular file types
+export const POPULAR_MIME_TYPES = [
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'video/mp4',
+] as const;

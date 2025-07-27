@@ -3,6 +3,7 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState, useCallback } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DatasetIcon from '@/components/icons/DatasetIcon';
@@ -10,9 +11,14 @@ import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
+import {
+  SchemaSearch,
+  type SchemaFilter,
+} from '@/modules/datasets/SchemaSearch';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas';
+import { useSchemaSearchData } from '@/modules/datasets/hooks/useSchemaSearchPagination';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -80,24 +86,75 @@ function useDatasetsData(currentPage: number) {
 
 function DatasetsRoute() {
   const [currentPage, setCurrentPage] = usePageParam('datasetsPage');
+  const [schemaFilters, setSchemaFilters] = useState<SchemaFilter[]>([]);
+  const [schemaSearchCurrentPage, setSchemaSearchCurrentPage] = useState(1);
+
+  // Hook pour les données normales
   const {
-    data,
-    isLoading,
-    isRefetching,
-    isError,
-    hasPastError,
-    additionalPages,
+    data: normalData,
+    isLoading: normalIsLoading,
+    isRefetching: normalIsRefetching,
+    isError: normalIsError,
+    hasPastError: normalHasPastError,
+    additionalPages: normalAdditionalPages,
   } = useDatasetsData(currentPage - 1);
+
+  // Hook pour les données de recherche par schéma
+  const {
+    data: schemaData,
+    isLoading: schemaIsLoading,
+    isRefetching: schemaIsRefetching,
+    isError: schemaIsError,
+    hasPastError: schemaHasPastError,
+    additionalPages: schemaAdditionalPages,
+  } = useSchemaSearchData({
+    currentPage: schemaSearchCurrentPage - 1,
+    filters: schemaFilters,
+  });
+
+  const isUsingSchemaSearch = schemaFilters.length > 0;
+
+  // Données à afficher : soit les résultats du schema search, soit les données normales
+  // Pour schema search, utiliser directement les données transformées du hook (pas de transformProtectedDataToDataset)
+  const displayData = isUsingSchemaSearch
+    ? schemaData // Déjà transformées dans le hook useSchemaSearchData
+    : normalData;
+
+  const isLoading = isUsingSchemaSearch ? schemaIsLoading : normalIsLoading;
+  const isRefetching = isUsingSchemaSearch
+    ? schemaIsRefetching
+    : normalIsRefetching;
+  const isError = isUsingSchemaSearch ? schemaIsError : normalIsError;
+  const hasPastError = isUsingSchemaSearch
+    ? schemaHasPastError
+    : normalHasPastError;
+
+  // Gérer les changements de filtres
+  const handleFiltersChanged = useCallback(
+    (filters: SchemaFilter[]) => {
+      setSchemaFilters(filters);
+      setSchemaSearchCurrentPage(1); // Reset à la page 1 quand les filtres changent
+      setCurrentPage(1); // Reset aussi la page normale
+    },
+    [setCurrentPage]
+  );
 
   return (
     <div className="mt-8 grid gap-6">
       <SearcherBar className="py-10" />
 
+      {/* Advanced Schema Search */}
+      <SchemaSearch
+        className="mx-auto max-w-4xl"
+        onFiltersChanged={handleFiltersChanged}
+        filters={schemaFilters}
+      />
+
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
           <DatasetIcon size={24} />
-          Datasets
-          {data.length > 0 && isError && (
+          {isUsingSchemaSearch ? 'Filtered Datasets' : 'Datasets'}
+          {displayData.length > 0 && isError && (
             <span className="text-muted-foreground text-sm font-light">
               (outdated)
             </span>
@@ -112,21 +169,33 @@ function DatasetsRoute() {
         </div>
       </div>
 
-      {hasPastError && !data.length ? (
+      {hasPastError && !displayData.length ? (
         <ErrorAlert message="An error occurred during datasets loading." />
       ) : (
         <DataTable
           columns={columns}
-          data={data}
+          data={displayData}
           tableLength={TABLE_LENGTH}
           isLoading={isLoading || isRefetching}
         />
       )}
-      <PaginatedNavigation
-        currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
-        onPageChange={setCurrentPage}
-      />
+
+      {/* Pagination conditionnelle */}
+      {isUsingSchemaSearch ? (
+        // Pagination pour les résultats de recherche (même pattern que datasets normaux)
+        <PaginatedNavigation
+          currentPage={schemaSearchCurrentPage}
+          totalPages={schemaSearchCurrentPage + schemaAdditionalPages}
+          onPageChange={setSchemaSearchCurrentPage}
+        />
+      ) : (
+        // Pagination normale
+        <PaginatedNavigation
+          currentPage={currentPage}
+          totalPages={currentPage + normalAdditionalPages}
+          onPageChange={setCurrentPage}
+        />
+      )}
     </div>
   );
 }

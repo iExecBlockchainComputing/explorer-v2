@@ -6,7 +6,7 @@ import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 
 type Dataset = DatasetsQuery['datasets'][number] & {
-  schemaPaths?: Array<{ path?: string | null }>;
+  schemaPaths?: Array<{ path?: string | null; type?: string | null }>;
   isSchemaLoading?: boolean;
 };
 
