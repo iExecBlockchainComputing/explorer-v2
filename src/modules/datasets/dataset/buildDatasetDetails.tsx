@@ -1,10 +1,13 @@
 import { DatasetQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
+import { DatasetTypes } from '@/components/DatasetTypes';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
 import { multiaddrHexToHuman } from '@/utils/format';
-import { formatDateCompact, formatElapsedTime } from '@/utils/formatElapsedTime';
-import { DatasetTypes } from './DatasetTypes';
+import {
+  formatDateCompact,
+  formatElapsedTime,
+} from '@/utils/formatElapsedTime';
 
 export function buildDatasetDetails({
   dataset,
@@ -44,7 +47,11 @@ export function buildDatasetDetails({
       ),
     }),
     Types: (
-      <DatasetTypes schemaPaths={schemaPaths} isLoading={isSchemaLoading} />
+      <DatasetTypes
+        schemaPaths={schemaPaths}
+        isLoading={isSchemaLoading}
+        layout="horizontal"
+      />
     ),
     ...(firstTimestamp && {
       Created: (

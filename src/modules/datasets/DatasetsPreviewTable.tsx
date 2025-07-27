@@ -12,6 +12,7 @@ import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDat
 import { ErrorAlert } from '../ErrorAlert';
 import { datasetsQuery } from './datasetsQuery';
 import { columns } from './datasetsTable/columns';
+import { useDatasetsSchemas } from './hooks/useDatasetsSchemas';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
@@ -29,10 +30,21 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
     placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
+  const datasetsArray = datasets.data?.datasets ?? [];
+  
+  // Get schema data for each dataset using optimized hook
+  const datasetAddresses = datasetsArray.map((dataset) => dataset.address);
+  const { schemasMap, isLoading: isSchemasLoading } = useDatasetsSchemas(
+    datasetAddresses,
+    chainId!
+  );
+
   const formattedData =
-    datasets.data?.datasets.map((dataset) => ({
+    datasetsArray.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
+      schemaPaths: schemasMap.get(dataset.address) || [],
+      isSchemaLoading: isSchemasLoading,
     })) ?? [];
 
   return (
@@ -60,12 +72,14 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
       {(datasets.isError || datasets.errorUpdateCount > 0) && !datasets.data ? (
         <ErrorAlert message="A error occurred during datasets loading." />
       ) : (
-        <DataTable
-          columns={columns}
-          data={formattedData}
-          tableLength={PREVIEW_TABLE_LENGTH}
-          isLoading={datasets.isLoading || datasets.isRefetching}
-        />
+        <div className="h-[400px] overflow-auto">
+          <DataTable
+            columns={columns}
+            data={formattedData}
+            tableLength={PREVIEW_TABLE_LENGTH}
+            isLoading={datasets.isLoading || datasets.isRefetching}
+          />
+        </div>
       )}
     </div>
   );

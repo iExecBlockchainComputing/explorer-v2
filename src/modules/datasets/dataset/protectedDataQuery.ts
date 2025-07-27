@@ -8,4 +8,16 @@ export const datasetSchemaQuery = graphql(`
       }
     }
   }
-`); 
+`);
+
+// Query optimisée en string pour utiliser avec executeDataprotector
+export const optimizedProtectedDatasQueryString = graphql(`
+  query OptimizedProtectedDatasWithSchemas($datasetIds: [Bytes!]!) {
+    protectedDatas(where: { id_in: $datasetIds }) {
+      id
+      schema {
+        path
+      }
+    }
+  }
+`);

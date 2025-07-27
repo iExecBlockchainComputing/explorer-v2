@@ -1,10 +1,14 @@
 import { DatasetsQuery } from '@/graphql/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
+import { DatasetTypes } from '@/components/DatasetTypes';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 
-type Dataset = DatasetsQuery['datasets'][number];
+type Dataset = DatasetsQuery['datasets'][number] & {
+  schemaPaths?: Array<{ path?: string | null }>;
+  isSchemaLoading?: boolean;
+};
 
 export const columns: ColumnDef<Dataset>[] = [
   {
@@ -37,6 +41,23 @@ export const columns: ColumnDef<Dataset>[] = [
         </div>
       ) : (
         <span className="text-muted-foreground">No name</span>
+      );
+    },
+  },
+  {
+    accessorKey: 'type',
+    header: 'Type',
+    cell: ({ row }) => {
+      const schemaPaths = row.original.schemaPaths;
+      const isSchemaLoading = row.original.isSchemaLoading;
+      return (
+        <DatasetTypes
+          schemaPaths={schemaPaths}
+          isLoading={isSchemaLoading}
+          layout="vertical"
+          maxDisplay={3}
+          showMoreCount={true}
+        />
       );
     },
   },
