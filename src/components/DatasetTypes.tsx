@@ -7,6 +7,7 @@ interface DatasetTypesProps {
   layout?: 'horizontal' | 'vertical';
   maxDisplay?: number;
   showMoreCount?: boolean;
+  constrainWidth?: boolean; // Whether to constrain the width of each type card
 }
 
 export function DatasetTypes({
@@ -15,6 +16,7 @@ export function DatasetTypes({
   layout = 'horizontal',
   maxDisplay,
   showMoreCount = false,
+  constrainWidth = true, // Default to true for table views
 }: DatasetTypesProps) {
   const displayTypes = processSchemaPathsToTypes(schemaPaths);
 
@@ -59,14 +61,24 @@ export function DatasetTypes({
       {typesToShow.map((type) => (
         <div
           key={type.name}
-          className="inline-block w-fit cursor-pointer rounded-lg border px-2 py-1 text-sm font-medium whitespace-nowrap transition-transform duration-200 hover:scale-105"
+          className={`inline-block w-fit cursor-pointer rounded-lg border px-2 py-1 text-sm font-medium transition-transform duration-200 hover:scale-105 ${
+            constrainWidth ? 'max-w-40' : ''
+          }`}
           style={type.style}
-          title={type.type ? `${type.name} (${type.type})` : type.name}
+          title={type.type ? `${type.name} (${type.type})\nFull path: ${type.fullPath}` : `${type.name}\nFull path: ${type.fullPath}`}
         >
           <div className="flex flex-col items-center gap-0.5">
-            <span>{type.name}</span>
+            <span
+              className={`w-full text-center ${constrainWidth ? 'truncate' : ''}`}
+            >
+              {type.name}
+            </span>
             {type.type && (
-              <span className="rounded bg-black/10 px-1 py-0.5 text-xs font-normal opacity-70">
+              <span
+                className={`w-full rounded bg-black/10 px-1 py-0.5 text-center text-xs font-normal opacity-70 ${
+                  constrainWidth ? 'truncate' : ''
+                }`}
+              >
                 {type.type}
               </span>
             )}

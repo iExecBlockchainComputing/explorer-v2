@@ -1,5 +1,6 @@
 export interface DatasetTypeInfo {
   name: string;
+  fullPath: string; // Full path for tooltip
   type?: string; // Data type like 'string', 'boolean', etc.
   style: {
     backgroundColor: string;
@@ -57,8 +58,12 @@ export function createDynamicType(
   const hueVariation = (hash % 20) - 10; // -10 to +10 degrees variation
   const finalHue = (selectedHue + hueVariation + 360) % 360;
 
-  // Convert path to a readable name (e.g., "targetPrivacyPassV2_prod" -> "Target Privacy Pass V2 Prod")
-  const name = path
+  // Extract only the last part of the path after the last dot
+  const pathParts = path.split('.');
+  const displayName = pathParts[pathParts.length - 1];
+
+  // Convert to readable name if needed (e.g., "accessToken" -> "Access Token")
+  const name = displayName
     .replace(/([A-Z])/g, ' $1') // Add space before capital letters
     .replace(/_/g, ' ') // Replace underscores with spaces
     .replace(/^./, (str) => str.toUpperCase()) // Capitalize first letter
@@ -67,6 +72,7 @@ export function createDynamicType(
 
   return {
     name,
+    fullPath: path,
     type,
     style: {
       backgroundColor: `hsla(${finalHue}, 80%, 60%, 0.15)`,

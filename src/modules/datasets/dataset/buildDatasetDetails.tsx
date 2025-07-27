@@ -1,6 +1,7 @@
 import { DatasetQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
 import { DatasetTypes } from '@/components/DatasetTypes';
+import { InteractiveJsonViewer } from '@/components/InteractiveJsonViewer';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
 import { multiaddrHexToHuman } from '@/utils/format';
@@ -15,7 +16,10 @@ export function buildDatasetDetails({
   isSchemaLoading,
 }: {
   dataset: DatasetQuery['dataset'];
-  schemaPaths?: Array<{ path?: string | null }>;
+  schemaPaths?: Array<{
+    path?: string | null;
+    type?: string | null;
+  }>;
   isSchemaLoading?: boolean;
 }) {
   if (!dataset) {
@@ -51,7 +55,11 @@ export function buildDatasetDetails({
         schemaPaths={schemaPaths}
         isLoading={isSchemaLoading}
         layout="horizontal"
+        constrainWidth={false}
       />
+    ),
+    'Data Structure': (
+      <InteractiveJsonViewer schemaPaths={schemaPaths} className="mt-2" />
     ),
     ...(firstTimestamp && {
       Created: (
