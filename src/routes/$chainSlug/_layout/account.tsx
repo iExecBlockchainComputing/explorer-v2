@@ -1,4 +1,4 @@
-import { API_COINGECKO_URL, SUPPORTED_CHAINS } from '@/config';
+import { API_COINGECKO_URL } from '@/config';
 import { cn } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -149,14 +149,6 @@ function RouteComponent() {
   const [currentStep] = getStepState(currentTab);
   const token = getChainFromId(chainId)?.tokenSymbol;
 
-  const disabledTabs: number[] = [];
-  const disabledReasons: Record<number, string> = {};
-
-  if (chainId !== SUPPORTED_CHAINS[0].id) {
-    disabledTabs.push(2);
-    disabledReasons[2] = 'The selected chain has no bridge.';
-  }
-
   useEffect(() => {
     const chain = getChainFromId(chainId);
     const bridge = chain?.bridge;
@@ -276,8 +268,6 @@ function RouteComponent() {
           currentTab={currentTab}
           onTabChange={setCurrentTab}
           tabLabels={tabLabels}
-          disabledTabs={disabledTabs}
-          disabledReasons={disabledReasons}
         />
 
         {/* Mobile only previous steps */}
