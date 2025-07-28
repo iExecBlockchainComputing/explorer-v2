@@ -19,13 +19,13 @@ import { NotFoundError } from '@/utils/NotFoundError';
 import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
-export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
+export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealId')({
   component: DealsRoute,
 });
 
-function useDealData(dealAddress: string, chainId: number) {
-  const isValid = isValidId(dealAddress);
-  const queryKey = [chainId, 'deal', dealAddress];
+function useDealData(dealId: string, chainId: number) {
+  const isValid = isValidId(dealId);
+  const queryKey = [chainId, 'deal', dealId];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
       queryKey,
@@ -33,7 +33,7 @@ function useDealData(dealAddress: string, chainId: number) {
       queryFn: async () => {
         const result = await execute(dealQuery, chainId, {
           length: TABLE_LENGTH,
-          dealAddress,
+          dealId,
         });
         if (!result?.deal) {
           throw new NotFoundError();
@@ -60,7 +60,7 @@ function DealsRoute() {
   const tabLabels = ['DETAILS', 'TASKS'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
   const { chainId, isConnected } = useUserStore();
-  const { dealAddress } = Route.useParams();
+  const { dealId } = Route.useParams();
   const {
     data: deal,
     isLoading,
@@ -69,7 +69,7 @@ function DealsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useDealData(dealAddress, chainId!);
+  } = useDealData(dealId, chainId!);
 
   const dealDetails = deal
     ? buildDealDetails({ deal, isConnected })
@@ -102,7 +102,7 @@ function DealsRoute() {
         </h1>
         <div className="flex items-center gap-2">
           <BackButton />
-          <DealBreadcrumbs dealId={dealAddress} />
+          <DealBreadcrumbs dealId={dealId} />
         </div>
       </div>
 
@@ -118,7 +118,7 @@ function DealsRoute() {
           ) : (
             <DetailsTable details={dealDetails || {}} />
           ))}
-        {currentTab === 1 && <DealTasksTable dealAddress={dealAddress} />}
+        {currentTab === 1 && <DealTasksTable dealId={dealId} />}
       </div>
     </div>
   );

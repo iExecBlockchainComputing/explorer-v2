@@ -19,13 +19,13 @@ export const columns: ColumnDef<Deal>[] = [
     accessorKey: 'dealid',
     header: 'Deal',
     cell: ({ row }) => {
-      const dealAddress = row.original.dealid;
+      const dealId = row.original.dealid;
       return (
         <CopyButton
-          displayText={truncateAddress(dealAddress, {
+          displayText={truncateAddress(dealId, {
             startLen: 8,
           })}
-          textToCopy={dealAddress}
+          textToCopy={dealId}
         />
       );
     },

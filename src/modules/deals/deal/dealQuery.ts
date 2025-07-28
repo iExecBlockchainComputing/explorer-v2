@@ -1,8 +1,8 @@
 import { graphql } from '@/graphql/gql';
 
 export const dealQuery = graphql(`
-  query Deal($dealAddress: ID!) {
-    deal(id: $dealAddress) {
+  query Deal($dealId: ID!) {
+    deal(id: $dealId) {
       dealid: id
       timestamp
       startTime
