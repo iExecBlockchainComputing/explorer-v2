@@ -2,9 +2,6 @@ import arbitrumSepoliaIcon from './assets/chain-icons/arbitrum-sepolia.svg';
 import iexecLogo from './assets/iexec-logo.svg';
 import { bellecour, arbitrumSepolia } from './utils/wagmiNetworks';
 
-export const ADDRESS_LENGTH = 42;
-export const ID_OR_HASH_LENGTH = 66;
-
 export const LOCAL_STORAGE_PREFIX = 'Explorer';
 
 export const PREVIEW_TABLE_LENGTH = 5;
