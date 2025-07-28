@@ -1,7 +1,7 @@
 import { ADDRESS_LENGTH, ID_OR_HASH_LENGTH } from '@/config';
 
 export function isValidId(address: string): boolean {
-  // Ethereum address: 66 chars, starts with 0x
+  // Transaction hash or task ID: 66 chars, starts with 0x
   return (
     typeof address === 'string' &&
     address.length === ID_OR_HASH_LENGTH &&
