@@ -1,8 +1,8 @@
 import { graphql } from '@/graphql/gql';
 
 export const transactionQuery = graphql(`
-  query Transaction($transactionAddress: ID!) {
-    transaction(id: $transactionAddress) {
+  query Transaction($transactionHash: ID!) {
+    transaction(id: $transactionHash) {
       txHash: id
       from {
         address: id

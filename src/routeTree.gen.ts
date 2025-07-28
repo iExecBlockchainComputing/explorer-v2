@@ -24,7 +24,7 @@ import { Route as ChainSlugLayoutAppsImport } from './routes/$chainSlug/_layout/
 import { Route as ChainSlugLayoutAccountImport } from './routes/$chainSlug/_layout/account'
 import { Route as ChainSlugLayoutSplatImport } from './routes/$chainSlug/_layout/$'
 import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
-import { Route as ChainSlugLayoutTxTxAddressImport } from './routes/$chainSlug/_layout/tx/$txAddress'
+import { Route as ChainSlugLayoutTxTxHashImport } from './routes/$chainSlug/_layout/tx/$txHash'
 import { Route as ChainSlugLayoutTaskTaskIdImport } from './routes/$chainSlug/_layout/task/$taskId'
 import { Route as ChainSlugLayoutSearchSearchImport } from './routes/$chainSlug/_layout/search/$search'
 import { Route as ChainSlugLayoutDealDealIdImport } from './routes/$chainSlug/_layout/deal/$dealId'
@@ -112,13 +112,11 @@ const ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute =
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
 
-const ChainSlugLayoutTxTxAddressRoute = ChainSlugLayoutTxTxAddressImport.update(
-  {
-    id: '/tx/$txAddress',
-    path: '/tx/$txAddress',
-    getParentRoute: () => ChainSlugLayoutRoute,
-  } as any,
-)
+const ChainSlugLayoutTxTxHashRoute = ChainSlugLayoutTxTxHashImport.update({
+  id: '/tx/$txHash',
+  path: '/tx/$txHash',
+  getParentRoute: () => ChainSlugLayoutRoute,
+} as any)
 
 const ChainSlugLayoutTaskTaskIdRoute = ChainSlugLayoutTaskTaskIdImport.update({
   id: '/task/$taskId',
@@ -283,11 +281,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChainSlugLayoutTaskTaskIdImport
       parentRoute: typeof ChainSlugLayoutImport
     }
-    '/$chainSlug/_layout/tx/$txAddress': {
-      id: '/$chainSlug/_layout/tx/$txAddress'
-      path: '/tx/$txAddress'
-      fullPath: '/$chainSlug/tx/$txAddress'
-      preLoaderRoute: typeof ChainSlugLayoutTxTxAddressImport
+    '/$chainSlug/_layout/tx/$txHash': {
+      id: '/$chainSlug/_layout/tx/$txHash'
+      path: '/tx/$txHash'
+      fullPath: '/$chainSlug/tx/$txHash'
+      preLoaderRoute: typeof ChainSlugLayoutTxTxHashImport
       parentRoute: typeof ChainSlugLayoutImport
     }
     '/$chainSlug/_layout/workerpool/$workerpoolAddress': {
@@ -317,7 +315,7 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutDealDealIdRoute: typeof ChainSlugLayoutDealDealIdRoute
   ChainSlugLayoutSearchSearchRoute: typeof ChainSlugLayoutSearchSearchRoute
   ChainSlugLayoutTaskTaskIdRoute: typeof ChainSlugLayoutTaskTaskIdRoute
-  ChainSlugLayoutTxTxAddressRoute: typeof ChainSlugLayoutTxTxAddressRoute
+  ChainSlugLayoutTxTxHashRoute: typeof ChainSlugLayoutTxTxHashRoute
   ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -338,7 +336,7 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
   ChainSlugLayoutDealDealIdRoute: ChainSlugLayoutDealDealIdRoute,
   ChainSlugLayoutSearchSearchRoute: ChainSlugLayoutSearchSearchRoute,
   ChainSlugLayoutTaskTaskIdRoute: ChainSlugLayoutTaskTaskIdRoute,
-  ChainSlugLayoutTxTxAddressRoute: ChainSlugLayoutTxTxAddressRoute,
+  ChainSlugLayoutTxTxHashRoute: ChainSlugLayoutTxTxHashRoute,
   ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
     ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
 }
@@ -376,7 +374,7 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/deal/$dealId': typeof ChainSlugLayoutDealDealIdRoute
   '/$chainSlug/search/$search': typeof ChainSlugLayoutSearchSearchRoute
   '/$chainSlug/task/$taskId': typeof ChainSlugLayoutTaskTaskIdRoute
-  '/$chainSlug/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
+  '/$chainSlug/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -396,7 +394,7 @@ export interface FileRoutesByTo {
   '/$chainSlug/deal/$dealId': typeof ChainSlugLayoutDealDealIdRoute
   '/$chainSlug/search/$search': typeof ChainSlugLayoutSearchSearchRoute
   '/$chainSlug/task/$taskId': typeof ChainSlugLayoutTaskTaskIdRoute
-  '/$chainSlug/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
+  '/$chainSlug/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -419,7 +417,7 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/deal/$dealId': typeof ChainSlugLayoutDealDealIdRoute
   '/$chainSlug/_layout/search/$search': typeof ChainSlugLayoutSearchSearchRoute
   '/$chainSlug/_layout/task/$taskId': typeof ChainSlugLayoutTaskTaskIdRoute
-  '/$chainSlug/_layout/tx/$txAddress': typeof ChainSlugLayoutTxTxAddressRoute
+  '/$chainSlug/_layout/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/_layout/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
 
@@ -442,7 +440,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/deal/$dealId'
     | '/$chainSlug/search/$search'
     | '/$chainSlug/task/$taskId'
-    | '/$chainSlug/tx/$txAddress'
+    | '/$chainSlug/tx/$txHash'
     | '/$chainSlug/workerpool/$workerpoolAddress'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -461,7 +459,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/deal/$dealId'
     | '/$chainSlug/search/$search'
     | '/$chainSlug/task/$taskId'
-    | '/$chainSlug/tx/$txAddress'
+    | '/$chainSlug/tx/$txHash'
     | '/$chainSlug/workerpool/$workerpoolAddress'
   id:
     | '__root__'
@@ -482,7 +480,7 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/deal/$dealId'
     | '/$chainSlug/_layout/search/$search'
     | '/$chainSlug/_layout/task/$taskId'
-    | '/$chainSlug/_layout/tx/$txAddress'
+    | '/$chainSlug/_layout/tx/$txHash'
     | '/$chainSlug/_layout/workerpool/$workerpoolAddress'
   fileRoutesById: FileRoutesById
 }
@@ -538,7 +536,7 @@ export const routeTree = rootRoute
         "/$chainSlug/_layout/deal/$dealId",
         "/$chainSlug/_layout/search/$search",
         "/$chainSlug/_layout/task/$taskId",
-        "/$chainSlug/_layout/tx/$txAddress",
+        "/$chainSlug/_layout/tx/$txHash",
         "/$chainSlug/_layout/workerpool/$workerpoolAddress"
       ]
     },
@@ -598,8 +596,8 @@ export const routeTree = rootRoute
       "filePath": "$chainSlug/_layout/task/$taskId.tsx",
       "parent": "/$chainSlug/_layout"
     },
-    "/$chainSlug/_layout/tx/$txAddress": {
-      "filePath": "$chainSlug/_layout/tx/$txAddress.tsx",
+    "/$chainSlug/_layout/tx/$txHash": {
+      "filePath": "$chainSlug/_layout/tx/$txHash.tsx",
       "parent": "/$chainSlug/_layout"
     },
     "/$chainSlug/_layout/workerpool/$workerpoolAddress": {

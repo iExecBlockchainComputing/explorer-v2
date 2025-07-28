@@ -1,8 +1,8 @@
 import { graphql } from '@/graphql/gql';
 
 export const transactionEventQuery = graphql(`
-  query TransactionEvent($transactionAddress: String!) {
-    appTransfers(where: { transaction: $transactionAddress }) {
+  query TransactionEvent($transactionHash: String!) {
+    appTransfers(where: { transaction: $transactionHash }) {
       id
       type: __typename
       app {
@@ -15,7 +15,7 @@ export const transactionEventQuery = graphql(`
         address: id
       }
     }
-    datasetTransfers(where: { transaction: $transactionAddress }) {
+    datasetTransfers(where: { transaction: $transactionHash }) {
       id
       type: __typename
       dataset {
@@ -28,7 +28,7 @@ export const transactionEventQuery = graphql(`
         address: id
       }
     }
-    workerpoolTransfers(where: { transaction: $transactionAddress }) {
+    workerpoolTransfers(where: { transaction: $transactionHash }) {
       id
       type: __typename
       workerpool {
@@ -41,7 +41,7 @@ export const transactionEventQuery = graphql(`
         address: id
       }
     }
-    rewards(where: { transaction: $transactionAddress }) {
+    rewards(where: { transaction: $transactionHash }) {
       id
       type: __typename
       account {
@@ -52,7 +52,7 @@ export const transactionEventQuery = graphql(`
         taskid: id
       }
     }
-    seizes(where: { transaction: $transactionAddress }) {
+    seizes(where: { transaction: $transactionHash }) {
       id
       type: __typename
       account {
@@ -63,7 +63,7 @@ export const transactionEventQuery = graphql(`
         taskid: id
       }
     }
-    locks(where: { transaction: $transactionAddress }) {
+    locks(where: { transaction: $transactionHash }) {
       id
       type: __typename
       account {
@@ -71,7 +71,7 @@ export const transactionEventQuery = graphql(`
       }
       value
     }
-    unlocks(where: { transaction: $transactionAddress }) {
+    unlocks(where: { transaction: $transactionHash }) {
       id
       type: __typename
       account {
@@ -79,35 +79,35 @@ export const transactionEventQuery = graphql(`
       }
       value
     }
-    accurateContributions(where: { transaction: $transactionAddress }) {
+    accurateContributions(where: { transaction: $transactionHash }) {
       id
       type: __typename
       account {
         address: id
       }
     }
-    faultyContributions(where: { transaction: $transactionAddress }) {
+    faultyContributions(where: { transaction: $transactionHash }) {
       id
       type: __typename
       account {
         address: id
       }
     }
-    policyUpdates(where: { transaction: $transactionAddress }) {
+    policyUpdates(where: { transaction: $transactionHash }) {
       id
       type: __typename
       workerpool {
         address: id
       }
     }
-    ordersMatcheds(where: { transaction: $transactionAddress }) {
+    ordersMatcheds(where: { transaction: $transactionHash }) {
       id
       type: __typename
       deal {
         dealid: id
       }
     }
-    schedulerNotices(where: { transaction: $transactionAddress }) {
+    schedulerNotices(where: { transaction: $transactionHash }) {
       id
       type: __typename
       deal {
@@ -117,14 +117,14 @@ export const transactionEventQuery = graphql(`
         address: id
       }
     }
-    taskInitializes(where: { transaction: $transactionAddress }) {
+    taskInitializes(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
         taskid: id
       }
     }
-    taskContributes(where: { transaction: $transactionAddress }) {
+    taskContributes(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
@@ -134,35 +134,35 @@ export const transactionEventQuery = graphql(`
         address: id
       }
     }
-    taskConsensuses(where: { transaction: $transactionAddress }) {
+    taskConsensuses(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
         taskid: id
       }
     }
-    taskReveals(where: { transaction: $transactionAddress }) {
+    taskReveals(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
         taskid: id
       }
     }
-    taskReopens(where: { transaction: $transactionAddress }) {
+    taskReopens(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
         taskid: id
       }
     }
-    taskFinalizes(where: { transaction: $transactionAddress }) {
+    taskFinalizes(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
         taskid: id
       }
     }
-    taskClaimeds(where: { transaction: $transactionAddress }) {
+    taskClaimeds(where: { transaction: $transactionHash }) {
       id
       type: __typename
       task {
