@@ -1,8 +1,8 @@
 import { graphql } from '@/graphql/gql';
 
 export const taskQuery = graphql(`
-  query Task($taskAddress: ID!) {
-    task(id: $taskAddress) {
+  query Task($taskId: ID!) {
+    task(id: $taskId) {
       taskid: id
       timestamp
       deal {

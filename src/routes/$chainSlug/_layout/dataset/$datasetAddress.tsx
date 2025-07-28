@@ -14,7 +14,7 @@ import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidDatasetAddress } from '@/utils/addressOrIdCheck';
+import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
@@ -24,7 +24,7 @@ export const Route = createFileRoute(
 });
 
 function useDatasetData(datasetAddress: string, chainId: number) {
-  const isValid = isValidDatasetAddress(datasetAddress);
+  const isValid = isValidAddress(datasetAddress);
   const queryKey = [chainId, 'dataset', datasetAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
@@ -81,7 +81,7 @@ function DatasetsRoute() {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-10" />
+      <SearcherBar className="py-6" />
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">

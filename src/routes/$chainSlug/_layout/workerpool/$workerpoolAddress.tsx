@@ -14,7 +14,7 @@ import { WorkerpoolBreadcrumbs } from '@/modules/workerpools/workerpool/workerpo
 import { workerpoolQuery } from '@/modules/workerpools/workerpool/workerpoolQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidWorkerpoolAddress } from '@/utils/addressOrIdCheck';
+import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
@@ -24,7 +24,7 @@ export const Route = createFileRoute(
 });
 
 function useWorkerpoolData(workerpoolAddress: string, chainId: number) {
-  const isValid = isValidWorkerpoolAddress(workerpoolAddress);
+  const isValid = isValidAddress(workerpoolAddress);
   const queryKey = [chainId, 'workerpool', workerpoolAddress];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
@@ -85,7 +85,7 @@ function WorkerpoolsRoute() {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-10" />
+      <SearcherBar className="py-6" />
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">

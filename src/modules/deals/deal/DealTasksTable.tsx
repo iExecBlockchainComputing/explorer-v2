@@ -8,17 +8,17 @@ import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { dealTasksQuery } from './dealTasksQuery';
 
-function useDealTasksData({ dealAddress }: { dealAddress: string }) {
+function useDealTasksData({ dealId }: { dealId: string }) {
   const { chainId } = useUserStore();
 
-  const queryKey = [chainId, 'deal', 'tasks', dealAddress];
+  const queryKey = [chainId, 'deal', 'tasks', dealId];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
         execute(dealTasksQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
-          dealAddress,
+          dealId,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
@@ -40,8 +40,8 @@ function useDealTasksData({ dealAddress }: { dealAddress: string }) {
   };
 }
 
-export function DealTasksTable({ dealAddress }: { dealAddress: string }) {
-  const { data: tasks, hasPastError } = useDealTasksData({ dealAddress });
+export function DealTasksTable({ dealId }: { dealId: string }) {
+  const { data: tasks, hasPastError } = useDealTasksData({ dealId });
 
   // TODO: handle loading state
 

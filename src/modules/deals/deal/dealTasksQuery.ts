@@ -1,8 +1,8 @@
 import { graphql } from '@/graphql/gql';
 
 export const dealTasksQuery = graphql(`
-  query DealTasks($dealAddress: ID!) {
-    deal(id: $dealAddress) {
+  query DealTasks($dealId: ID!) {
+    deal(id: $dealId) {
       tasks(orderBy: index, orderDirection: asc) {
         taskid: id
         index

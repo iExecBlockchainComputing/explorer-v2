@@ -1,4 +1,4 @@
-import { API_COINGECKO_URL, SUPPORTED_CHAINS } from '@/config';
+import { API_COINGECKO_URL } from '@/config';
 import { cn } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
@@ -14,6 +14,7 @@ import { BackButton } from '@/components/ui/BackButton';
 import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
+import { useTabParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AccountBreadcrumbs } from '@/modules/account/AccountBreadcrumbs';
@@ -30,30 +31,10 @@ export const Route = createFileRoute('/$chainSlug/_layout/account')({
 function RouteComponent() {
   const { address: userAddress, chainId } = useUserStore();
   const { login } = useLoginLogout();
-  const [currentTab, setCurrentTab] = useState(0);
   const [depositStep, setDepositStep] = useState(0);
   const [withdrawStep, setWithdrawStep] = useState(0);
   const [depositAmount, setDepositAmount] = useState('0');
   const [withdrawAmount, setWithdrawAmount] = useState('0');
-  const getStepState = (): [
-    number,
-    React.Dispatch<React.SetStateAction<number>>,
-  ] => {
-    return currentTab === 1
-      ? [withdrawStep, setWithdrawStep]
-      : [depositStep, setDepositStep];
-  };
-
-  const [currentStep] = getStepState();
-  const token = getChainFromId(chainId)?.tokenSymbol;
-
-  const disabledTabs: number[] = [];
-  const disabledReasons: Record<number, string> = {};
-
-  if (chainId !== SUPPORTED_CHAINS[0].id) {
-    disabledTabs.push(2);
-    disabledReasons[2] = 'The selected chain has no bridge.';
-  }
 
   const { data: rlcPrice = 0 } = useQuery({
     queryKey: ['rlcPrice'],
@@ -156,6 +137,17 @@ function RouteComponent() {
     withdraw,
     chainId: chainId!,
   });
+  const tabLabels = tabs.map((tab) => tab.title);
+  const [currentTab, setCurrentTab] = useTabParam('accountTab', tabLabels, 0);
+  const getStepState = (
+    tabIdx: number
+  ): [number, React.Dispatch<React.SetStateAction<number>>] => {
+    return tabIdx === 1
+      ? [withdrawStep, setWithdrawStep]
+      : [depositStep, setDepositStep];
+  };
+  const [currentStep] = getStepState(currentTab);
+  const token = getChainFromId(chainId)?.tokenSymbol;
 
   useEffect(() => {
     const chain = getChainFromId(chainId);
@@ -274,14 +266,8 @@ function RouteComponent() {
       <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col gap-6">
         <Tabs
           currentTab={currentTab}
-          onTabChange={(tab) => {
-            setCurrentTab(tab);
-            if (tab === 0 && depositStep === 2) setDepositStep(0);
-            if (tab === 1 && withdrawStep === 2) setWithdrawStep(0);
-          }}
-          tabLabels={tabs.map((tab) => tab.title)}
-          disabledTabs={disabledTabs}
-          disabledReasons={disabledReasons}
+          onTabChange={setCurrentTab}
+          tabLabels={tabLabels}
         />
 
         {/* Mobile only previous steps */}

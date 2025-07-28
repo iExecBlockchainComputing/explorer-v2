@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
+import { isValidAddress, isValidId } from '@/utils/addressOrIdCheck';
 import { getChainFromId, getChainFromSlug } from '@/utils/chain.utils';
 import { searchQuery } from './searchQuery';
 
@@ -59,9 +60,7 @@ export function SearcherBar({
     mutationKey: ['search', inputValue],
     mutationFn: async (value: string) => {
       const isValid =
-        value.length === 42 || // address
-        value.length === 66 || // tx, deal, task hash
-        value.endsWith('.eth'); // ENS
+        isValidAddress(value) || isValidId(value) || value.endsWith('.eth'); // ENS
 
       if (!isValid) {
         throw new Error('Invalid value');

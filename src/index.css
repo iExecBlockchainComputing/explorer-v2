@@ -175,17 +175,17 @@
   --color-success-foreground: var(--color-green-600);
   --color-success-border: var(--color-green-600);
 
-  --color-danger: var(--color-red-900);
-  --color-danger-foreground: var(--color-red-100);
-  --color-danger-border: var(--color-red-500);
+  --color-danger: var(--color-red-100);
+  --color-danger-foreground: var(--color-red-300);
+  --color-danger-border: var(--color-red-300);
 
   --color-warning: var(--color-orange-100);
-  --color-warning-foreground: var(--color-orange-600);
-  --color-warning-border: var(--color-orange-500);
+  --color-warning-foreground: var(--color-orange-300);
+  --color-warning-border: var(--color-orange-300);
 
   --color-info: var(--color-blue-100);
-  --color-info-foreground: var(--color-blue-600);
-  --color-info-border: var(--color-blue-600);
+  --color-info-foreground: var(--color-blue-300);
+  --color-info-border: var(--color-blue-300);
 
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);

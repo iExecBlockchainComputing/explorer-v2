@@ -88,9 +88,9 @@ const StatusCell = ({
       break;
     default:
       label = 'UNSET';
-      colorClass = 'text-warning-foreground';
-      bgClass = 'bg-warning-foreground/10';
-      borderClass = 'border-warning-border';
+      colorClass = 'text-orange-50';
+      bgClass = 'bg-orange-50/10';
+      borderClass = 'border-orange-50';
       break;
   }
 

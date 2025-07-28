@@ -14,16 +14,16 @@ import { transactionEventQuery } from '@/modules/transactions/transaction/transa
 import { transactionQuery } from '@/modules/transactions/transaction/transactionQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidTransactionAddress } from '@/utils/addressOrIdCheck';
+import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
-export const Route = createFileRoute('/$chainSlug/_layout/tx/$txAddress')({
+export const Route = createFileRoute('/$chainSlug/_layout/tx/$txHash')({
   component: TransactionsRoute,
 });
 
-function useTransactionData(transactionAddress: string, chainId: number) {
-  const isValid = isValidTransactionAddress(transactionAddress);
-  const queryKey = [chainId, 'transaction', transactionAddress];
+function useTransactionData(transactionHash: string, chainId: number) {
+  const isValid = isValidId(transactionHash);
+  const queryKey = [chainId, 'transaction', transactionHash];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
       queryKey,
@@ -31,14 +31,14 @@ function useTransactionData(transactionAddress: string, chainId: number) {
       queryFn: async () => {
         const transactionData = await execute(transactionQuery, chainId, {
           length: TABLE_LENGTH,
-          transactionAddress,
+          transactionHash,
         });
         const transactionEventData = await execute(
           transactionEventQuery,
           chainId,
           {
             length: TABLE_LENGTH,
-            transactionAddress,
+            transactionHash,
           }
         );
         const allEvents = Object.values(transactionEventData).flat();
@@ -68,7 +68,7 @@ function useTransactionData(transactionAddress: string, chainId: number) {
 
 function TransactionsRoute() {
   const { chainId } = useUserStore();
-  const { txAddress } = Route.useParams();
+  const { txHash } = Route.useParams();
   const {
     data: transaction,
     isLoading,
@@ -77,7 +77,7 @@ function TransactionsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useTransactionData(txAddress, chainId!);
+  } = useTransactionData(txHash, chainId!);
 
   const transactionDetails = transaction
     ? buildTransactionDetails({ transaction })
@@ -95,7 +95,7 @@ function TransactionsRoute() {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-10" />
+      <SearcherBar className="py-6" />
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
@@ -112,7 +112,7 @@ function TransactionsRoute() {
         </h1>
         <div className="flex items-center gap-2">
           <BackButton />
-          <TransactionBreadcrumbs transactionId={txAddress} />
+          <TransactionBreadcrumbs transactionId={txHash} />
         </div>
       </div>
 

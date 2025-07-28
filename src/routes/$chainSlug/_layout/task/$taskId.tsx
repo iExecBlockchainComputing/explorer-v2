@@ -3,39 +3,36 @@ import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
-import { useState } from 'react';
-import DealIcon from '@/components/icons/DealIcon';
+import TaskIcon from '@/components/icons/TaskIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { Tabs } from '@/modules/Tabs';
-import { DealBreadcrumbs } from '@/modules/deals/deal/DealBreadcrumbs';
-import { DealTasksTable } from '@/modules/deals/deal/DealTasksTable';
-import { buildDealDetails } from '@/modules/deals/deal/buildDealDetails';
-import { dealQuery } from '@/modules/deals/deal/dealQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
+import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
+import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
+import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
-import { isValidDealAddress } from '@/utils/addressOrIdCheck';
+import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
-export const Route = createFileRoute('/$chainSlug/_layout/deal/$dealAddress')({
-  component: DealsRoute,
+export const Route = createFileRoute('/$chainSlug/_layout/task/$taskId')({
+  component: TasksRoute,
 });
 
-function useDealData(dealAddress: string, chainId: number) {
-  const isValid = isValidDealAddress(dealAddress);
-  const queryKey = [chainId, 'deal', dealAddress];
+function useTaskData(taskId: string, chainId: number) {
+  const isValid = isValidId(taskId);
+  const queryKey = [chainId, 'task', taskId];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
       queryKey,
       enabled: !!chainId && isValid,
       queryFn: async () => {
-        const result = await execute(dealQuery, chainId, {
+        const result = await execute(taskQuery, chainId, {
           length: TABLE_LENGTH,
-          dealAddress,
+          taskId,
         });
-        if (!result?.deal) {
+        if (!result?.task) {
           throw new NotFoundError();
         }
         return result;
@@ -45,7 +42,7 @@ function useDealData(dealAddress: string, chainId: number) {
     });
 
   return {
-    data: data?.deal,
+    data: data?.task,
     isLoading,
     isRefetching,
     isError,
@@ -55,41 +52,38 @@ function useDealData(dealAddress: string, chainId: number) {
   };
 }
 
-function DealsRoute() {
-  const [currentTab, setCurrentTab] = useState(0);
-  const { chainId, isConnected } = useUserStore();
-  const { dealAddress } = Route.useParams();
+function TasksRoute() {
+  const { chainId } = useUserStore();
+  const { taskId } = Route.useParams();
   const {
-    data: deal,
+    data: task,
     isLoading,
     isRefetching,
     isError,
     hasPastError,
     isValid,
     error,
-  } = useDealData(dealAddress, chainId!);
+  } = useTaskData(taskId, chainId!);
 
-  const dealDetails = deal
-    ? buildDealDetails({ deal, isConnected })
-    : undefined;
+  const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
   if (!isValid) {
-    return <ErrorAlert className="my-16" message="Invalid deal address." />;
+    return <ErrorAlert className="my-16" message="Invalid task address." />;
   }
 
   if (isError && error instanceof NotFoundError) {
-    return <ErrorAlert className="my-16" message="Deal not found." />;
+    return <ErrorAlert message="Task not found." />;
   }
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-10" />
+      <SearcherBar className="py-6" />
 
       <div className="space-y-2">
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-          <DealIcon size={24} />
-          Deal details
-          {!deal && isError && (
+          <TaskIcon size={24} />
+          Task details
+          {!task && isError && (
             <span className="text-muted-foreground text-sm font-light">
               (outdated)
             </span>
@@ -100,24 +94,15 @@ function DealsRoute() {
         </h1>
         <div className="flex items-center gap-2">
           <BackButton />
-          <DealBreadcrumbs dealId={dealAddress} />
+          <TaskBreadcrumbs taskId={taskId} />
         </div>
       </div>
 
-      <Tabs
-        currentTab={currentTab}
-        tabLabels={['DETAILS', 'TASKS']}
-        onTabChange={setCurrentTab}
-      />
-      <div>
-        {currentTab === 0 &&
-          (hasPastError && !dealDetails ? (
-            <ErrorAlert message="An error occurred during deal details loading." />
-          ) : (
-            <DetailsTable details={dealDetails || {}} />
-          ))}
-        {currentTab === 1 && <DealTasksTable dealAddress={dealAddress} />}
-      </div>
+      {hasPastError && !taskDetails ? (
+        <ErrorAlert message="An error occurred during task details loading." />
+      ) : (
+        <DetailsTable details={taskDetails || {}} />
+      )}
     </div>
   );
 }

@@ -5,6 +5,7 @@ import CopyButton from '@/components/CopyButton';
 import { Button } from '@/components/ui/button';
 import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
+import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { getBlockExplorerUrl, getChainFromId } from '@/utils/chain.utils';
 import { truncateAddress } from '@/utils/truncateAddress';
 import {
@@ -57,7 +58,7 @@ export default function SmartLinkGroup({
       }
       return resolved;
     },
-    enabled: !!chainId && !!addressOrId && addressOrId.length === 42,
+    enabled: !!chainId && isValidAddress(addressOrId),
     staleTime: Infinity,
   });
 
