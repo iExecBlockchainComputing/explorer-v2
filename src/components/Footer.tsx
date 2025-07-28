@@ -13,15 +13,7 @@ import iExecLogo from '../assets/iexec-logo.svg';
 import { ChainLink } from './ChainLink';
 import { Button } from './ui/button';
 
-export function Footer({ className }: { className?: string }) {
-  const { chainId } = useUserStore();
-
-  const navLinks = [
-    { href: 'https://www.iex.ec/', label: 'iExec Website' },
-    { href: getBlockExplorerUrl(chainId), label: 'Block explorer' },
-    { href: 'https://www.iex.ec/contact', label: 'Contact Us' },
-  ];
-
+function SocialLinksItems({ className }: { className?: string }) {
   const socialLinks = [
     { href: 'https://twitter.com/iEx_ec', icon: <SiX size={16} /> },
     { href: 'https://discord.gg/pbt9m98wnU', icon: <SiDiscord size={16} /> },
@@ -36,6 +28,36 @@ export function Footer({ className }: { className?: string }) {
     },
     { href: 'https://medium.com/iex-ec', icon: <SiMedium size={16} /> },
   ];
+  return (
+    <div className={cn('flex', className)}>
+      {socialLinks.map(({ href, icon }, idx) => (
+        <Button key={idx} asChild variant="link" className="text-grey-200 p-2">
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Social link"
+          >
+            {icon}
+          </a>
+        </Button>
+      ))}
+    </div>
+  );
+}
+
+export function Footer({ className }: { className?: string }) {
+  const { chainId } = useUserStore();
+
+  const navLinks = [
+    { href: 'https://www.iex.ec/', label: 'iExec Website' },
+    { href: 'https://tools.docs.iex.ec/', label: 'Doc tools' },
+    { href: 'https://protocol.docs.iex.ec/', label: 'Doc protocol' },
+    ...(chainId !== undefined
+      ? [{ href: getBlockExplorerUrl(chainId), label: 'Block explorer' }]
+      : []),
+    { href: 'https://www.iex.ec/contact', label: 'Contact Us' },
+  ];
 
   const startYear = 2017;
   const currentYear = new Date().getFullYear();
@@ -47,17 +69,17 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'bg-grey-800 border-muted text-grey-200 relative rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
+        'bg-grey-800 border-muted text-grey-200 flex flex-col gap-6 rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
         className
       )}
     >
-      <div className="grid place-items-center justify-center gap-10 xl:grid-cols-2 xl:place-items-stretch">
+      <div className="flex flex-col items-center justify-between gap-10 xl:flex-row">
         <ChainLink to="/" className="flex items-center gap-2 font-mono">
           <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
           <span>iExec Explorer</span>
         </ChainLink>
 
-        <nav className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4 xl:absolute xl:left-1/2 xl:-translate-x-1/2">
+        <nav className="flex flex-col items-center gap-2 md:flex-row md:gap-4">
           {navLinks.map(({ href, label }, idx) => (
             <div key={idx} className="flex items-center gap-2">
               <Button
@@ -70,37 +92,22 @@ export function Footer({ className }: { className?: string }) {
                 </a>
               </Button>
               {idx < navLinks.length - 1 && (
-                <span className="bg-grey-200 hidden size-1.5 rounded-full sm:block" />
+                <span className="bg-grey-200 hidden size-1.5 rounded-full md:block" />
               )}
             </div>
           ))}
         </nav>
-
-        <div className="flex items-center xl:justify-end">
-          {socialLinks.map(({ href, icon }, idx) => (
-            <Button
-              key={idx}
-              asChild
-              variant="link"
-              className="text-grey-200 p-2"
-            >
-              <a
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Social link"
-              >
-                {icon}
-              </a>
-            </Button>
-          ))}
-        </div>
+        <SocialLinksItems className="xl:hidden" />
       </div>
 
-      <hr className="border-grey-500 mt-10 mb-4" />
-      <p className="w-full text-center text-sm">
-        © All Rights Reserved {displayYear}
-      </p>
+      <hr className="border-grey-500" />
+
+      <div className="flex justify-between">
+        <p className="w-full text-center text-sm xl:text-left">
+          © All Rights Reserved {displayYear}
+        </p>
+        <SocialLinksItems className="hidden xl:flex" />
+      </div>
     </footer>
   );
 }

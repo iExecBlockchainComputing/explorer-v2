@@ -6,6 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import AppIcon from '@/components/icons/AppIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AppBreadcrumbsList } from '@/modules/apps/AppBreadcrumbs';
@@ -94,7 +95,10 @@ function AppsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <AppBreadcrumbsList />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <AppBreadcrumbsList />
+        </div>
       </div>
 
       {hasPastError && !data.length ? (

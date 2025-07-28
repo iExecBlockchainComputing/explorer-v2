@@ -10,6 +10,7 @@ import { Stepper } from '@/components/Stepper';
 import IexecAccountIcon from '@/components/icons/IexecAccountIcon';
 import WalletIcon from '@/components/icons/WalletIcon';
 import { ChainSelector } from '@/components/navbar/ChainSelector';
+import { BackButton } from '@/components/ui/BackButton';
 import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
@@ -184,7 +185,10 @@ function RouteComponent() {
 
   return (
     <div className="mt-8 flex flex-col gap-10">
-      <AccountBreadcrumbs />
+      <div className="flex items-center gap-2">
+        <BackButton />
+        <AccountBreadcrumbs />
+      </div>
       <div className="flex flex-col items-center gap-2">
         <h1 className="flex items-center gap-2 text-2xl font-extrabold">
           IExec Wallet Manager

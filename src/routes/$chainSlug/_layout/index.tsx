@@ -1,4 +1,3 @@
-import { SUPPORTED_CHAINS } from '@/config';
 import { createFileRoute, useSearch } from '@tanstack/react-router';
 import { AppsPreviewTable } from '@/modules/apps/AppsPreviewTable';
 import { DatasetsPreviewTable } from '@/modules/datasets/DatasetsPreviewTable';
@@ -7,6 +6,7 @@ import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TasksPreviewTable } from '@/modules/tasks/TasksPreviewTable';
 import { WorkerpoolsPreviewTable } from '@/modules/workerpools/WorkerpoolsPreviewTable';
 import useUserStore from '@/stores/useUser.store';
+import { getSupportedChains } from '@/utils/chain.utils';
 
 export const Route = createFileRoute('/$chainSlug/_layout/')({
   component: Index,
@@ -18,7 +18,9 @@ function Index() {
 
   const initialSearch = search?.search;
 
-  const currentChain = SUPPORTED_CHAINS.find((chain) => chain.id === chainId);
+  const currentChain = getSupportedChains().find(
+    (chain) => chain.id === chainId
+  );
 
   return (
     <div className="flex flex-col gap-10 sm:mt-6 md:mt-10">

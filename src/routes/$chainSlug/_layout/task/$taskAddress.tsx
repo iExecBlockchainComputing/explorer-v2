@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import TaskIcon from '@/components/icons/TaskIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -91,7 +92,10 @@ function TasksRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <TaskBreadcrumbs taskId={taskAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <TaskBreadcrumbs taskId={taskAddress} />
+        </div>
       </div>
 
       {hasPastError && !taskDetails ? (

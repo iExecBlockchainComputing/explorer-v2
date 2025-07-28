@@ -6,6 +6,7 @@ import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import TaskIcon from '@/components/icons/TaskIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -94,7 +95,10 @@ function TasksRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <TaskBreadcrumbsList />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <TaskBreadcrumbsList />
+        </div>
       </div>
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during tasks loading." />

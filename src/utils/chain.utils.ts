@@ -1,7 +1,25 @@
-import { SUPPORTED_CHAINS } from '@/config';
+import { SUPPORTED_CHAINS, LOCAL_STORAGE_PREFIX } from '@/config';
+
+function isExperimentalEnabled(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return (
+      localStorage.getItem(`${LOCAL_STORAGE_PREFIX}_experimental`) === 'true'
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function getSupportedChains() {
+  const experimental = isExperimentalEnabled();
+  return SUPPORTED_CHAINS.filter(
+    (chain) => !chain.isExperimental || experimental
+  );
+}
 
 export function getSubgraphUrl(chainId: number) {
-  const subgraphUrl = SUPPORTED_CHAINS.find(
+  const subgraphUrl = getSupportedChains().find(
     (chain) => chain.id === chainId
   )?.subgraphUrl;
   if (!subgraphUrl) {
@@ -11,11 +29,11 @@ export function getSubgraphUrl(chainId: number) {
 }
 
 export function getChainFromSlug(slug: string | undefined) {
-  return SUPPORTED_CHAINS.find((c) => c.slug === slug);
+  return getSupportedChains().find((c) => c.slug === slug);
 }
 
 export function getChainFromId(id: number | undefined) {
-  return SUPPORTED_CHAINS.find((c) => c.id === id);
+  return getSupportedChains().find((c) => c.id === id);
 }
 
 export function getBlockExplorerUrl(chainId: number) {
@@ -28,4 +46,4 @@ export function getBlockExplorerUrl(chainId: number) {
  */
 export const INITIAL_CHAIN =
   getChainFromSlug(new URL(window.location.href).pathname.split('/')[1]) ||
-  SUPPORTED_CHAINS[0];
+  getSupportedChains()[0];

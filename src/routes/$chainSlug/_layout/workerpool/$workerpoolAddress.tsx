@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { SearcherBar } from '@/modules/search/SearcherBar';
@@ -99,7 +100,10 @@ function WorkerpoolsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <WorkerpoolBreadcrumbs workerpoolId={workerpoolAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <WorkerpoolBreadcrumbs workerpoolId={workerpoolAddress} />
+        </div>
       </div>
 
       <div className="space-y-10">

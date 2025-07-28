@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import DatasetIcon from '@/components/icons/DatasetIcon';
+import { BackButton } from '@/components/ui/BackButton';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
@@ -95,7 +96,10 @@ function DatasetsRoute() {
             <LoaderCircle className="animate-spin" />
           )}
         </h1>
-        <DatasetBreadcrumbs datasetId={datasetAddress} />
+        <div className="flex items-center gap-2">
+          <BackButton />
+          <DatasetBreadcrumbs datasetId={datasetAddress} />
+        </div>
       </div>
 
       <div className="space-y-10">

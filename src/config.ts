@@ -5,6 +5,8 @@ import { bellecour, arbitrumSepolia } from './utils/wagmiNetworks';
 export const ADDRESS_LENGTH = 42;
 export const ID_OR_HASH_LENGTH = 66;
 
+export const LOCAL_STORAGE_PREFIX = 'Explorer';
+
 export const PREVIEW_TABLE_LENGTH = 5;
 export const DETAIL_TABLE_LENGTH = 8;
 export const TABLE_LENGTH = 16;
@@ -40,5 +42,6 @@ export const SUPPORTED_CHAINS = [
       'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
+    isExperimental: true,
   },
 ];
