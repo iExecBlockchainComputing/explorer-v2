@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.12.0...iexec-explorer-v1.13.0) (2025-07-28)
+
+
+### 🚀 Features
+
+* enhance address and id validation, fix status color, save tabs in URL ([#43](https://github.com/iExecBlockchainComputing/explorer-v2/issues/43)) ([1e76e84](https://github.com/iExecBlockchainComputing/explorer-v2/commit/1e76e84c343e68b73e2119b9c4687012fd993c5a))
+
 ## [1.12.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.11.0...iexec-explorer-v1.12.0) (2025-07-21)
 
 
