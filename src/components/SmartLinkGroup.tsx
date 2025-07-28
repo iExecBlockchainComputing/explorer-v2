@@ -1,4 +1,3 @@
-import { ADDRESS_LENGTH } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ExternalLink } from 'lucide-react';
