@@ -16,13 +16,13 @@ import { NotFoundError } from '@/utils/NotFoundError';
 import { isValidId } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
-export const Route = createFileRoute('/$chainSlug/_layout/task/$taskAddress')({
+export const Route = createFileRoute('/$chainSlug/_layout/task/$taskId')({
   component: TasksRoute,
 });
 
-function useTaskData(taskAddress: string, chainId: number) {
-  const isValid = isValidId(taskAddress);
-  const queryKey = [chainId, 'task', taskAddress];
+function useTaskData(taskId: string, chainId: number) {
+  const isValid = isValidId(taskId);
+  const queryKey = [chainId, 'task', taskId];
   const { data, isLoading, isRefetching, isError, error, errorUpdateCount } =
     useQuery({
       queryKey,
@@ -30,7 +30,7 @@ function useTaskData(taskAddress: string, chainId: number) {
       queryFn: async () => {
         const result = await execute(taskQuery, chainId, {
           length: TABLE_LENGTH,
-          taskAddress,
+          taskId,
         });
         if (!result?.task) {
           throw new NotFoundError();
@@ -54,7 +54,7 @@ function useTaskData(taskAddress: string, chainId: number) {
 
 function TasksRoute() {
   const { chainId } = useUserStore();
-  const { taskAddress } = Route.useParams();
+  const { taskId } = Route.useParams();
   const {
     data: task,
     isLoading,
@@ -63,7 +63,7 @@ function TasksRoute() {
     hasPastError,
     isValid,
     error,
-  } = useTaskData(taskAddress, chainId!);
+  } = useTaskData(taskId, chainId!);
 
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
@@ -94,7 +94,7 @@ function TasksRoute() {
         </h1>
         <div className="flex items-center gap-2">
           <BackButton />
-          <TaskBreadcrumbs taskId={taskAddress} />
+          <TaskBreadcrumbs taskId={taskId} />
         </div>
       </div>
 

@@ -14,13 +14,13 @@ export const columns: ColumnDef<AddressContribution>[] = [
     accessorKey: 'taskid',
     header: 'Task',
     cell: ({ row }) => {
-      const taskAddress = row.original.task.taskid;
+      const taskId = row.original.task.taskid;
       return (
         <CopyButton
-          displayText={truncateAddress(taskAddress, {
+          displayText={truncateAddress(taskId, {
             startLen: 8,
           })}
-          textToCopy={taskAddress}
+          textToCopy={taskId}
         />
       );
     },
