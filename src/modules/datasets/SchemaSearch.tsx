@@ -36,7 +36,7 @@ export function SchemaSearch({
   onFiltersChanged,
   filters,
 }: SchemaSearchProps) {
-  const [isOpen, setIsOpen] = useState(true); // Ouvert par défaut pour une meilleure UX
+  const [isOpen, setIsOpen] = useState(false); // Fermé par défaut
   const [newPath, setNewPath] = useState('');
   const [newType, setNewType] = useState<string>('');
 
