@@ -1,6 +1,6 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
-import { executeDataprotector } from '@/graphql/executeDataprotector';
+import { executeDataprotector } from '@/graphql/executeDataprotector.ts';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';

@@ -1,5 +1,5 @@
 import { TABLE_LENGTH } from '@/config';
-import { executeDataprotector } from '@/graphql/executeDataprotector';
+import { executeDataprotector } from '@/graphql/executeDataprotector.ts';
 import { useQuery } from '@tanstack/react-query';
 import { schemaSearchPaginatedQuery } from '@/modules/datasets/dataset/protectedDataQuery';
 import { transformProtectedDataToDataset } from '@/modules/datasets/utils/datasetTypeUtils';
