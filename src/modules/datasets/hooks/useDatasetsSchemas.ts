@@ -1,4 +1,4 @@
-import { executeDataprotector } from '@/graphql/executeDataprotector';
+import { executeDataprotector } from '@/graphql/executeDataprotector.ts';
 import { useQuery } from '@tanstack/react-query';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { datasetSchemaQuery, optimizedProtectedDatasQueryString } from '@/modules/datasets/dataset/protectedDataQuery';
