@@ -11,6 +11,6 @@ export function getAvatarVisualNumber({
   const sum = digitGroups.reduce((accu, current) => {
     return accu + Number(current);
   }, 0);
-  const chosenImageIndex = (sum % 13) + 1;
+  const chosenImageIndex = (sum % 61) + 1;
   return `profile-avatar-bg-${chosenImageIndex}`;
 }
