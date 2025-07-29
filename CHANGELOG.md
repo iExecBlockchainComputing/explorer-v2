@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.13.0...iexec-explorer-v1.14.0) (2025-07-29)
+
+
+### 🚀 Features
+
+* add new profile avatars ([#48](https://github.com/iExecBlockchainComputing/explorer-v2/issues/48)) ([15a74bc](https://github.com/iExecBlockchainComputing/explorer-v2/commit/15a74bcb7099851ef804202ac57af478c22448b4))
+* add new profile avatars and update CSS for avatar backgrounds ([15a74bc](https://github.com/iExecBlockchainComputing/explorer-v2/commit/15a74bcb7099851ef804202ac57af478c22448b4))
+
 ## [1.13.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.12.0...iexec-explorer-v1.13.0) (2025-07-28)
 
 
