@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.14.0...iexec-explorer-v1.14.1) (2025-07-30)
+
+
+### 🐞 Bug Fixes
+
+* move to latest poco deployment on arbitrum-sepolia-testnet ([#50](https://github.com/iExecBlockchainComputing/explorer-v2/issues/50)) ([e921a41](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e921a417affe5f4c2f74294aa087aac58af39dbf))
+
 ## [1.14.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.13.0...iexec-explorer-v1.14.0) (2025-07-29)
 
 
