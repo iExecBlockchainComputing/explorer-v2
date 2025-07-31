@@ -20,8 +20,8 @@
 ## Quick Start
 
 ### Prerequisites
-- Node.js >= 18
-- npm >= 9
+- Node.js >= 22
+- npm >= 10
 
 ### Install
 ```bash
