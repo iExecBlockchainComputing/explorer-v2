@@ -77,7 +77,7 @@ function TransactionsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useTransactionData(txHash, chainId!);
+  } = useTransactionData((txHash as string).toLowerCase(), chainId!);
 
   const transactionDetails = transaction
     ? buildTransactionDetails({ transaction })

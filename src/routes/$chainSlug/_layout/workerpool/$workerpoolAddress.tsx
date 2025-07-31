@@ -67,7 +67,7 @@ function WorkerpoolsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useWorkerpoolData(workerpoolAddress, chainId!);
+  } = useWorkerpoolData((workerpoolAddress as string).toLowerCase(), chainId!);
 
   const workerpoolDetails = workerpool
     ? buildWorkerpoolDetails({ workerpool })

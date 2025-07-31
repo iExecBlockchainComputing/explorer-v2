@@ -63,7 +63,7 @@ function TasksRoute() {
     hasPastError,
     isValid,
     error,
-  } = useTaskData(taskId, chainId!);
+  } = useTaskData((taskId as string).toLowerCase(), chainId!);
 
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 

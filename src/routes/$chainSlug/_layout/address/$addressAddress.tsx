@@ -84,7 +84,7 @@ function AddressRoute() {
     hasPastError,
     isValid,
     error,
-  } = useAddressData(addressAddress, chainId!);
+  } = useAddressData((addressAddress as string).toLowerCase(), chainId!);
 
   const addressDetails = address ? buildAddressDetails({ address }) : undefined;
   const addressOverview = address

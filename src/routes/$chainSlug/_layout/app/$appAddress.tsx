@@ -65,7 +65,7 @@ function AppsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useAppData(appAddress, chainId!);
+  } = useAppData((appAddress as string).toLowerCase(), chainId!);
 
   const appDetails = app ? buildAppDetails({ app }) : undefined;
 
