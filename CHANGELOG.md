@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.14.1...iexec-explorer-v1.14.2) (2025-08-01)
+
+
+### 🐞 Bug Fixes
+
+* normalize address and ID inputs to lowercase in details pages ([#52](https://github.com/iExecBlockchainComputing/explorer-v2/issues/52)) ([89201e4](https://github.com/iExecBlockchainComputing/explorer-v2/commit/89201e49845a6ec48a8e0d7f7a4623e4cb31a7c3))
+
 ## [1.14.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.14.0...iexec-explorer-v1.14.1) (2025-07-30)
 
 
