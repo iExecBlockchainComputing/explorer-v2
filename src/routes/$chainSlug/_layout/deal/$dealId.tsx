@@ -69,7 +69,7 @@ function DealsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useDealData(dealId, chainId!);
+  } = useDealData((dealId as string).toLowerCase(), chainId!);
 
   const dealDetails = deal
     ? buildDealDetails({ deal, isConnected })

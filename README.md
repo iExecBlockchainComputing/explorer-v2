@@ -20,8 +20,8 @@
 ## Quick Start
 
 ### Prerequisites
-- Node.js >= 18
-- npm >= 9
+- Node.js >= 22
+- npm >= 10
 
 ### Install
 ```bash
@@ -56,13 +56,13 @@ npm run preview
 ```
 
 ## Useful Scripts
+- `npm run codegen` — GraphQL types
 - `npm run dev` — start dev server
 - `npm run build` — production build
 - `npm run preview` — preview build
 - `npm run lint` — lint code
 - `npm run check-type` — TypeScript check
 - `npm run format` — Prettier format
-- `npm run codegen` — GraphQL types
 
 ## Tech Stack
 - **React 19** + TypeScript

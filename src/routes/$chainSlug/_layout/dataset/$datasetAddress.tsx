@@ -67,7 +67,7 @@ function DatasetsRoute() {
     hasPastError,
     isValid,
     error,
-  } = useDatasetData(datasetAddress, chainId!);
+  } = useDatasetData((datasetAddress as string).toLowerCase(), chainId!);
 
   const datasetDetails = dataset ? buildDatasetDetails({ dataset }) : undefined;
 
