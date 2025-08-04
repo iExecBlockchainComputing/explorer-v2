@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.15.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.14.2...iexec-explorer-v1.15.0) (2025-08-04)
+
+
+### 🚀 Features
+
+* add meta tags for SEO and social sharing ([#54](https://github.com/iExecBlockchainComputing/explorer-v2/issues/54)) ([f08f425](https://github.com/iExecBlockchainComputing/explorer-v2/commit/f08f425e21dc7584cce518f0d0845b3920ac4648))
+
 ## [1.14.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.14.1...iexec-explorer-v1.14.2) (2025-08-01)
 
 
