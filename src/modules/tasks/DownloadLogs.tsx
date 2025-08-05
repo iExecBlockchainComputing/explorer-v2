@@ -25,8 +25,34 @@ export function DownloadLogs({
       const iexec = await getIExec();
       const logs = await iexec.task.fetchLogs(taskid);
 
+      if (!logs || logs.length === 0) {
+        throw new Error('No logs available for this task');
+      }
+
+      const timestamp = new Date().toISOString();
+      const header = `Task Logs for ${taskid}\nGenerated on: ${timestamp}\nTotal workers: ${logs.length}\n\n${'='.repeat(80)}\n`;
+
       const logsString =
-        typeof logs === 'string' ? logs : JSON.stringify(logs, null, 2);
+        header +
+        logs
+          .map(({ worker, stdout, stderr }) => {
+            let workerLog = `\n----- worker ${worker} -----\n\n`;
+
+            if (stdout && stdout.trim()) {
+              workerLog += `stdout:\n${stdout.trim()}\n\n`;
+            } else {
+              workerLog += `stdout: (empty)\n\n`;
+            }
+
+            if (stderr && stderr.trim()) {
+              workerLog += `stderr:\n${stderr.trim()}\n\n`;
+            } else {
+              workerLog += `stderr: (empty)\n\n`;
+            }
+
+            return workerLog;
+          })
+          .join('\n' + '='.repeat(80) + '\n');
 
       const blob = new Blob([logsString], { type: 'text/plain' });
       const url = URL.createObjectURL(blob);
@@ -64,7 +90,9 @@ export function DownloadLogs({
         {isPending ? 'Downloading...' : 'Download logs'}
       </Button>
       {isError && (
-        <p className="text-sm text-red-500">Failed to download logs</p>
+        <p className="text-sm text-red-500">
+          Failed to download logs, please retry later
+        </p>
       )}
     </div>
   );
