@@ -4,6 +4,7 @@ import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
 import TaskEvent from '@/modules/events/TaskEvent';
+import useUserStore from '@/stores/useUser.store';
 import { taskResultToObject } from '@/utils/format';
 import {
   formatDateCompact,
@@ -11,6 +12,7 @@ import {
 } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
 import { ClaimButton } from '../ClaimButton';
+import { DownloadLogs } from '../DownloadLogs';
 import { DownloadResult } from '../DownloadResult';
 import StatusCell from '../StatusCell';
 
@@ -18,6 +20,10 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
   if (!task) {
     return {};
   }
+
+  const { address: userAddress } = useUserStore.getState();
+  const isCurrentUser = task.requester.address === userAddress;
+
   return {
     ...(task.taskid && {
       Taskid: (
@@ -135,6 +141,9 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
     }),
     ...(task.resultDigest && {
       'Result digest': <Bytes>{task.resultDigest}</Bytes>,
+    }),
+    ...(isCurrentUser && {
+      Logs: <DownloadLogs taskid={task.taskid} />,
     }),
     ...(task.finalDeadline && {
       Deadline: (
