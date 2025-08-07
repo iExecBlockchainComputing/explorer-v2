@@ -1,6 +1,6 @@
 import arbitrumSepoliaIcon from './assets/chain-icons/arbitrum-sepolia.svg';
 import iexecLogo from './assets/iexec-logo.svg';
-import { bellecour, arbitrumSepolia } from './utils/wagmiNetworks';
+import { bellecour, arbitrumSepolia, arbitrum } from './utils/wagmiNetworks';
 
 export const LOCAL_STORAGE_PREFIX = 'Explorer';
 
@@ -27,6 +27,18 @@ export const SUPPORTED_CHAINS = [
       'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
     wagmiNetwork: bellecour,
     tokenSymbol: 'xRLC',
+  },
+  {
+    id: 42161,
+    name: 'Arbitrum',
+    slug: 'arbitrum-mainnet',
+    color: '#F4942566',
+    icon: arbitrumSepoliaIcon,
+    blockExplorerUrl: 'https://arbiscan.io/',
+    subgraphUrl:
+      'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
+    wagmiNetwork: arbitrum,
+    tokenSymbol: 'RLC',
   },
   {
     id: 421614,
