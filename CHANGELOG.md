@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.15.0...iexec-explorer-v1.16.0) (2025-08-07)
+
+
+### 🚀 Features
+
+* update dependencies and add Arbitrum network support ([#57](https://github.com/iExecBlockchainComputing/explorer-v2/issues/57)) ([f37b15e](https://github.com/iExecBlockchainComputing/explorer-v2/commit/f37b15ea6086c5559a288fca580c2f18b45f6acd))
+
 ## [1.15.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.14.2...iexec-explorer-v1.15.0) (2025-08-04)
 
 
