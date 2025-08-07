@@ -1,4 +1,8 @@
-import { AppKitNetwork, arbitrumSepolia, arbitrum } from '@reown/appkit/networks';
+import {
+  AppKitNetwork,
+  arbitrumSepolia,
+  arbitrum,
+} from '@reown/appkit/networks';
 
 export { arbitrumSepolia, arbitrum } from '@reown/appkit/networks';
 

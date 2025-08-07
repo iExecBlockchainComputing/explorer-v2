@@ -35,7 +35,8 @@ export const SUPPORTED_CHAINS = [
     color: '#F4942566',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://arbiscan.io/',
-    subgraphUrl: 'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
+    subgraphUrl:
+      'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
     bridge: 'https://bridge-arbitrum.iex.ec/',
     bridgeInformation:
       'Move your xRLC in your wallet between arbitrum and Ethereum Mainnet with our bridge.',
