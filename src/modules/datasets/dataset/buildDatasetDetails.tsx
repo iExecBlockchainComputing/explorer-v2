@@ -1,5 +1,7 @@
 import { DatasetQuery } from '@/graphql/graphql';
 import CopyButton from '@/components/CopyButton';
+import { DatasetTypes } from '@/components/DatasetTypes';
+import { InteractiveJsonViewer } from '@/components/InteractiveJsonViewer';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
 import { multiaddrHexToHuman } from '@/utils/format';
@@ -10,15 +12,25 @@ import {
 
 export function buildDatasetDetails({
   dataset,
+  schemaPaths,
+  isSchemaLoading,
 }: {
   dataset: DatasetQuery['dataset'];
+  schemaPaths?: Array<{
+    path?: string | null;
+    type?: string | null;
+  }>;
+  isSchemaLoading?: boolean;
 }) {
   if (!dataset) {
     return {};
   }
   const firstTransfer =
     Array.isArray(dataset?.transfers) && dataset?.transfers[0];
-  const firstTimestamp = firstTransfer?.transaction?.timestamp;
+  const firstTimestamp =
+    firstTransfer && 'transaction' in firstTransfer
+      ? firstTransfer.transaction?.timestamp
+      : undefined;
 
   return {
     ...(dataset.address && {
@@ -38,6 +50,17 @@ export function buildDatasetDetails({
         <SmartLinkGroup type={'address'} addressOrId={dataset.owner.address} />
       ),
     }),
+    Types: (
+      <DatasetTypes
+        schemaPaths={schemaPaths}
+        isLoading={isSchemaLoading}
+        layout="horizontal"
+        constrainWidth={false}
+      />
+    ),
+    'Data Structure': (
+      <InteractiveJsonViewer schemaPaths={schemaPaths} className="mt-2" />
+    ),
     ...(firstTimestamp && {
       Created: (
         <p>
