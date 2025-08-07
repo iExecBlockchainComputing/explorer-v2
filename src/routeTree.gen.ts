@@ -10,352 +10,130 @@
 
 import { createFileRoute } from '@tanstack/react-router'
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as ChainSlugLayoutRouteImport } from './routes/$chainSlug/_layout'
+import { Route as ChainSlugLayoutIndexRouteImport } from './routes/$chainSlug/_layout/index'
+import { Route as ChainSlugLayoutWorkerpoolsRouteImport } from './routes/$chainSlug/_layout/workerpools'
+import { Route as ChainSlugLayoutTasksRouteImport } from './routes/$chainSlug/_layout/tasks'
+import { Route as ChainSlugLayoutDealsRouteImport } from './routes/$chainSlug/_layout/deals'
+import { Route as ChainSlugLayoutDatasetsRouteImport } from './routes/$chainSlug/_layout/datasets'
+import { Route as ChainSlugLayoutAppsRouteImport } from './routes/$chainSlug/_layout/apps'
+import { Route as ChainSlugLayoutAccountRouteImport } from './routes/$chainSlug/_layout/account'
+import { Route as ChainSlugLayoutSplatRouteImport } from './routes/$chainSlug/_layout/$'
+import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressRouteImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
+import { Route as ChainSlugLayoutTxTxHashRouteImport } from './routes/$chainSlug/_layout/tx/$txHash'
+import { Route as ChainSlugLayoutTaskTaskIdRouteImport } from './routes/$chainSlug/_layout/task/$taskId'
+import { Route as ChainSlugLayoutSearchSearchRouteImport } from './routes/$chainSlug/_layout/search/$search'
+import { Route as ChainSlugLayoutDealDealIdRouteImport } from './routes/$chainSlug/_layout/deal/$dealId'
+import { Route as ChainSlugLayoutDatasetDatasetAddressRouteImport } from './routes/$chainSlug/_layout/dataset/$datasetAddress'
+import { Route as ChainSlugLayoutAppAppAddressRouteImport } from './routes/$chainSlug/_layout/app/$appAddress'
+import { Route as ChainSlugLayoutAddressAddressAddressRouteImport } from './routes/$chainSlug/_layout/address/$addressAddress'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as ChainSlugLayoutImport } from './routes/$chainSlug/_layout'
-import { Route as ChainSlugLayoutIndexImport } from './routes/$chainSlug/_layout/index'
-import { Route as ChainSlugLayoutWorkerpoolsImport } from './routes/$chainSlug/_layout/workerpools'
-import { Route as ChainSlugLayoutTasksImport } from './routes/$chainSlug/_layout/tasks'
-import { Route as ChainSlugLayoutDealsImport } from './routes/$chainSlug/_layout/deals'
-import { Route as ChainSlugLayoutDatasetsImport } from './routes/$chainSlug/_layout/datasets'
-import { Route as ChainSlugLayoutAppsImport } from './routes/$chainSlug/_layout/apps'
-import { Route as ChainSlugLayoutAccountImport } from './routes/$chainSlug/_layout/account'
-import { Route as ChainSlugLayoutSplatImport } from './routes/$chainSlug/_layout/$'
-import { Route as ChainSlugLayoutWorkerpoolWorkerpoolAddressImport } from './routes/$chainSlug/_layout/workerpool/$workerpoolAddress'
-import { Route as ChainSlugLayoutTxTxHashImport } from './routes/$chainSlug/_layout/tx/$txHash'
-import { Route as ChainSlugLayoutTaskTaskIdImport } from './routes/$chainSlug/_layout/task/$taskId'
-import { Route as ChainSlugLayoutSearchSearchImport } from './routes/$chainSlug/_layout/search/$search'
-import { Route as ChainSlugLayoutDealDealIdImport } from './routes/$chainSlug/_layout/deal/$dealId'
-import { Route as ChainSlugLayoutDatasetDatasetAddressImport } from './routes/$chainSlug/_layout/dataset/$datasetAddress'
-import { Route as ChainSlugLayoutAppAppAddressImport } from './routes/$chainSlug/_layout/app/$appAddress'
-import { Route as ChainSlugLayoutAddressAddressAddressImport } from './routes/$chainSlug/_layout/address/$addressAddress'
+const ChainSlugRouteImport = createFileRoute('/$chainSlug')()
 
-// Create Virtual Routes
-
-const ChainSlugImport = createFileRoute('/$chainSlug')()
-
-// Create/Update Routes
-
-const ChainSlugRoute = ChainSlugImport.update({
+const ChainSlugRoute = ChainSlugRouteImport.update({
   id: '/$chainSlug',
   path: '/$chainSlug',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ChainSlugLayoutRoute = ChainSlugLayoutImport.update({
+const ChainSlugLayoutRoute = ChainSlugLayoutRouteImport.update({
   id: '/_layout',
   getParentRoute: () => ChainSlugRoute,
 } as any)
-
-const ChainSlugLayoutIndexRoute = ChainSlugLayoutIndexImport.update({
+const ChainSlugLayoutIndexRoute = ChainSlugLayoutIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutWorkerpoolsRoute = ChainSlugLayoutWorkerpoolsImport.update(
-  {
+const ChainSlugLayoutWorkerpoolsRoute =
+  ChainSlugLayoutWorkerpoolsRouteImport.update({
     id: '/workerpools',
     path: '/workerpools',
     getParentRoute: () => ChainSlugLayoutRoute,
-  } as any,
-)
-
-const ChainSlugLayoutTasksRoute = ChainSlugLayoutTasksImport.update({
+  } as any)
+const ChainSlugLayoutTasksRoute = ChainSlugLayoutTasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutDealsRoute = ChainSlugLayoutDealsImport.update({
+const ChainSlugLayoutDealsRoute = ChainSlugLayoutDealsRouteImport.update({
   id: '/deals',
   path: '/deals',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutDatasetsRoute = ChainSlugLayoutDatasetsImport.update({
+const ChainSlugLayoutDatasetsRoute = ChainSlugLayoutDatasetsRouteImport.update({
   id: '/datasets',
   path: '/datasets',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutAppsRoute = ChainSlugLayoutAppsImport.update({
+const ChainSlugLayoutAppsRoute = ChainSlugLayoutAppsRouteImport.update({
   id: '/apps',
   path: '/apps',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutAccountRoute = ChainSlugLayoutAccountImport.update({
+const ChainSlugLayoutAccountRoute = ChainSlugLayoutAccountRouteImport.update({
   id: '/account',
   path: '/account',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutSplatRoute = ChainSlugLayoutSplatImport.update({
+const ChainSlugLayoutSplatRoute = ChainSlugLayoutSplatRouteImport.update({
   id: '/$',
   path: '/$',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
 const ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute =
-  ChainSlugLayoutWorkerpoolWorkerpoolAddressImport.update({
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRouteImport.update({
     id: '/workerpool/$workerpoolAddress',
     path: '/workerpool/$workerpoolAddress',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
-
-const ChainSlugLayoutTxTxHashRoute = ChainSlugLayoutTxTxHashImport.update({
+const ChainSlugLayoutTxTxHashRoute = ChainSlugLayoutTxTxHashRouteImport.update({
   id: '/tx/$txHash',
   path: '/tx/$txHash',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
-
-const ChainSlugLayoutTaskTaskIdRoute = ChainSlugLayoutTaskTaskIdImport.update({
-  id: '/task/$taskId',
-  path: '/task/$taskId',
-  getParentRoute: () => ChainSlugLayoutRoute,
-} as any)
-
+const ChainSlugLayoutTaskTaskIdRoute =
+  ChainSlugLayoutTaskTaskIdRouteImport.update({
+    id: '/task/$taskId',
+    path: '/task/$taskId',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
 const ChainSlugLayoutSearchSearchRoute =
-  ChainSlugLayoutSearchSearchImport.update({
+  ChainSlugLayoutSearchSearchRouteImport.update({
     id: '/search/$search',
     path: '/search/$search',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
-
-const ChainSlugLayoutDealDealIdRoute = ChainSlugLayoutDealDealIdImport.update({
-  id: '/deal/$dealId',
-  path: '/deal/$dealId',
-  getParentRoute: () => ChainSlugLayoutRoute,
-} as any)
-
+const ChainSlugLayoutDealDealIdRoute =
+  ChainSlugLayoutDealDealIdRouteImport.update({
+    id: '/deal/$dealId',
+    path: '/deal/$dealId',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
 const ChainSlugLayoutDatasetDatasetAddressRoute =
-  ChainSlugLayoutDatasetDatasetAddressImport.update({
+  ChainSlugLayoutDatasetDatasetAddressRouteImport.update({
     id: '/dataset/$datasetAddress',
     path: '/dataset/$datasetAddress',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
-
 const ChainSlugLayoutAppAppAddressRoute =
-  ChainSlugLayoutAppAppAddressImport.update({
+  ChainSlugLayoutAppAppAddressRouteImport.update({
     id: '/app/$appAddress',
     path: '/app/$appAddress',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
-
 const ChainSlugLayoutAddressAddressAddressRoute =
-  ChainSlugLayoutAddressAddressAddressImport.update({
+  ChainSlugLayoutAddressAddressAddressRouteImport.update({
     id: '/address/$addressAddress',
     path: '/address/$addressAddress',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/$chainSlug': {
-      id: '/$chainSlug'
-      path: '/$chainSlug'
-      fullPath: '/$chainSlug'
-      preLoaderRoute: typeof ChainSlugImport
-      parentRoute: typeof rootRoute
-    }
-    '/$chainSlug/_layout': {
-      id: '/$chainSlug/_layout'
-      path: '/$chainSlug'
-      fullPath: '/$chainSlug'
-      preLoaderRoute: typeof ChainSlugLayoutImport
-      parentRoute: typeof ChainSlugRoute
-    }
-    '/$chainSlug/_layout/$': {
-      id: '/$chainSlug/_layout/$'
-      path: '/$'
-      fullPath: '/$chainSlug/$'
-      preLoaderRoute: typeof ChainSlugLayoutSplatImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/account': {
-      id: '/$chainSlug/_layout/account'
-      path: '/account'
-      fullPath: '/$chainSlug/account'
-      preLoaderRoute: typeof ChainSlugLayoutAccountImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/apps': {
-      id: '/$chainSlug/_layout/apps'
-      path: '/apps'
-      fullPath: '/$chainSlug/apps'
-      preLoaderRoute: typeof ChainSlugLayoutAppsImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/datasets': {
-      id: '/$chainSlug/_layout/datasets'
-      path: '/datasets'
-      fullPath: '/$chainSlug/datasets'
-      preLoaderRoute: typeof ChainSlugLayoutDatasetsImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/deals': {
-      id: '/$chainSlug/_layout/deals'
-      path: '/deals'
-      fullPath: '/$chainSlug/deals'
-      preLoaderRoute: typeof ChainSlugLayoutDealsImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/tasks': {
-      id: '/$chainSlug/_layout/tasks'
-      path: '/tasks'
-      fullPath: '/$chainSlug/tasks'
-      preLoaderRoute: typeof ChainSlugLayoutTasksImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/workerpools': {
-      id: '/$chainSlug/_layout/workerpools'
-      path: '/workerpools'
-      fullPath: '/$chainSlug/workerpools'
-      preLoaderRoute: typeof ChainSlugLayoutWorkerpoolsImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/': {
-      id: '/$chainSlug/_layout/'
-      path: '/'
-      fullPath: '/$chainSlug/'
-      preLoaderRoute: typeof ChainSlugLayoutIndexImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/address/$addressAddress': {
-      id: '/$chainSlug/_layout/address/$addressAddress'
-      path: '/address/$addressAddress'
-      fullPath: '/$chainSlug/address/$addressAddress'
-      preLoaderRoute: typeof ChainSlugLayoutAddressAddressAddressImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/app/$appAddress': {
-      id: '/$chainSlug/_layout/app/$appAddress'
-      path: '/app/$appAddress'
-      fullPath: '/$chainSlug/app/$appAddress'
-      preLoaderRoute: typeof ChainSlugLayoutAppAppAddressImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/dataset/$datasetAddress': {
-      id: '/$chainSlug/_layout/dataset/$datasetAddress'
-      path: '/dataset/$datasetAddress'
-      fullPath: '/$chainSlug/dataset/$datasetAddress'
-      preLoaderRoute: typeof ChainSlugLayoutDatasetDatasetAddressImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/deal/$dealId': {
-      id: '/$chainSlug/_layout/deal/$dealId'
-      path: '/deal/$dealId'
-      fullPath: '/$chainSlug/deal/$dealId'
-      preLoaderRoute: typeof ChainSlugLayoutDealDealIdImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/search/$search': {
-      id: '/$chainSlug/_layout/search/$search'
-      path: '/search/$search'
-      fullPath: '/$chainSlug/search/$search'
-      preLoaderRoute: typeof ChainSlugLayoutSearchSearchImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/task/$taskId': {
-      id: '/$chainSlug/_layout/task/$taskId'
-      path: '/task/$taskId'
-      fullPath: '/$chainSlug/task/$taskId'
-      preLoaderRoute: typeof ChainSlugLayoutTaskTaskIdImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/tx/$txHash': {
-      id: '/$chainSlug/_layout/tx/$txHash'
-      path: '/tx/$txHash'
-      fullPath: '/$chainSlug/tx/$txHash'
-      preLoaderRoute: typeof ChainSlugLayoutTxTxHashImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-    '/$chainSlug/_layout/workerpool/$workerpoolAddress': {
-      id: '/$chainSlug/_layout/workerpool/$workerpoolAddress'
-      path: '/workerpool/$workerpoolAddress'
-      fullPath: '/$chainSlug/workerpool/$workerpoolAddress'
-      preLoaderRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressImport
-      parentRoute: typeof ChainSlugLayoutImport
-    }
-  }
-}
-
-// Create and export the route tree
-
-interface ChainSlugLayoutRouteChildren {
-  ChainSlugLayoutSplatRoute: typeof ChainSlugLayoutSplatRoute
-  ChainSlugLayoutAccountRoute: typeof ChainSlugLayoutAccountRoute
-  ChainSlugLayoutAppsRoute: typeof ChainSlugLayoutAppsRoute
-  ChainSlugLayoutDatasetsRoute: typeof ChainSlugLayoutDatasetsRoute
-  ChainSlugLayoutDealsRoute: typeof ChainSlugLayoutDealsRoute
-  ChainSlugLayoutTasksRoute: typeof ChainSlugLayoutTasksRoute
-  ChainSlugLayoutWorkerpoolsRoute: typeof ChainSlugLayoutWorkerpoolsRoute
-  ChainSlugLayoutIndexRoute: typeof ChainSlugLayoutIndexRoute
-  ChainSlugLayoutAddressAddressAddressRoute: typeof ChainSlugLayoutAddressAddressAddressRoute
-  ChainSlugLayoutAppAppAddressRoute: typeof ChainSlugLayoutAppAppAddressRoute
-  ChainSlugLayoutDatasetDatasetAddressRoute: typeof ChainSlugLayoutDatasetDatasetAddressRoute
-  ChainSlugLayoutDealDealIdRoute: typeof ChainSlugLayoutDealDealIdRoute
-  ChainSlugLayoutSearchSearchRoute: typeof ChainSlugLayoutSearchSearchRoute
-  ChainSlugLayoutTaskTaskIdRoute: typeof ChainSlugLayoutTaskTaskIdRoute
-  ChainSlugLayoutTxTxHashRoute: typeof ChainSlugLayoutTxTxHashRoute
-  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
-}
-
-const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
-  ChainSlugLayoutSplatRoute: ChainSlugLayoutSplatRoute,
-  ChainSlugLayoutAccountRoute: ChainSlugLayoutAccountRoute,
-  ChainSlugLayoutAppsRoute: ChainSlugLayoutAppsRoute,
-  ChainSlugLayoutDatasetsRoute: ChainSlugLayoutDatasetsRoute,
-  ChainSlugLayoutDealsRoute: ChainSlugLayoutDealsRoute,
-  ChainSlugLayoutTasksRoute: ChainSlugLayoutTasksRoute,
-  ChainSlugLayoutWorkerpoolsRoute: ChainSlugLayoutWorkerpoolsRoute,
-  ChainSlugLayoutIndexRoute: ChainSlugLayoutIndexRoute,
-  ChainSlugLayoutAddressAddressAddressRoute:
-    ChainSlugLayoutAddressAddressAddressRoute,
-  ChainSlugLayoutAppAppAddressRoute: ChainSlugLayoutAppAppAddressRoute,
-  ChainSlugLayoutDatasetDatasetAddressRoute:
-    ChainSlugLayoutDatasetDatasetAddressRoute,
-  ChainSlugLayoutDealDealIdRoute: ChainSlugLayoutDealDealIdRoute,
-  ChainSlugLayoutSearchSearchRoute: ChainSlugLayoutSearchSearchRoute,
-  ChainSlugLayoutTaskTaskIdRoute: ChainSlugLayoutTaskTaskIdRoute,
-  ChainSlugLayoutTxTxHashRoute: ChainSlugLayoutTxTxHashRoute,
-  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
-    ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
-}
-
-const ChainSlugLayoutRouteWithChildren = ChainSlugLayoutRoute._addFileChildren(
-  ChainSlugLayoutRouteChildren,
-)
-
-interface ChainSlugRouteChildren {
-  ChainSlugLayoutRoute: typeof ChainSlugLayoutRouteWithChildren
-}
-
-const ChainSlugRouteChildren: ChainSlugRouteChildren = {
-  ChainSlugLayoutRoute: ChainSlugLayoutRouteWithChildren,
-}
-
-const ChainSlugRouteWithChildren = ChainSlugRoute._addFileChildren(
-  ChainSlugRouteChildren,
-)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -377,7 +155,6 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$chainSlug': typeof ChainSlugLayoutIndexRoute
@@ -397,9 +174,8 @@ export interface FileRoutesByTo {
   '/$chainSlug/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/$chainSlug': typeof ChainSlugRouteWithChildren
   '/$chainSlug/_layout': typeof ChainSlugLayoutRouteWithChildren
@@ -420,7 +196,6 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/_layout/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -484,126 +259,210 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/workerpool/$workerpoolAddress'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ChainSlugRoute: typeof ChainSlugRouteWithChildren
 }
 
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/$chainSlug': {
+      id: '/$chainSlug'
+      path: '/$chainSlug'
+      fullPath: '/$chainSlug'
+      preLoaderRoute: typeof ChainSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$chainSlug/_layout': {
+      id: '/$chainSlug/_layout'
+      path: '/$chainSlug'
+      fullPath: '/$chainSlug'
+      preLoaderRoute: typeof ChainSlugLayoutRouteImport
+      parentRoute: typeof ChainSlugRoute
+    }
+    '/$chainSlug/_layout/': {
+      id: '/$chainSlug/_layout/'
+      path: '/'
+      fullPath: '/$chainSlug/'
+      preLoaderRoute: typeof ChainSlugLayoutIndexRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/workerpools': {
+      id: '/$chainSlug/_layout/workerpools'
+      path: '/workerpools'
+      fullPath: '/$chainSlug/workerpools'
+      preLoaderRoute: typeof ChainSlugLayoutWorkerpoolsRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/tasks': {
+      id: '/$chainSlug/_layout/tasks'
+      path: '/tasks'
+      fullPath: '/$chainSlug/tasks'
+      preLoaderRoute: typeof ChainSlugLayoutTasksRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/deals': {
+      id: '/$chainSlug/_layout/deals'
+      path: '/deals'
+      fullPath: '/$chainSlug/deals'
+      preLoaderRoute: typeof ChainSlugLayoutDealsRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/datasets': {
+      id: '/$chainSlug/_layout/datasets'
+      path: '/datasets'
+      fullPath: '/$chainSlug/datasets'
+      preLoaderRoute: typeof ChainSlugLayoutDatasetsRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/apps': {
+      id: '/$chainSlug/_layout/apps'
+      path: '/apps'
+      fullPath: '/$chainSlug/apps'
+      preLoaderRoute: typeof ChainSlugLayoutAppsRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/account': {
+      id: '/$chainSlug/_layout/account'
+      path: '/account'
+      fullPath: '/$chainSlug/account'
+      preLoaderRoute: typeof ChainSlugLayoutAccountRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/$': {
+      id: '/$chainSlug/_layout/$'
+      path: '/$'
+      fullPath: '/$chainSlug/$'
+      preLoaderRoute: typeof ChainSlugLayoutSplatRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/workerpool/$workerpoolAddress': {
+      id: '/$chainSlug/_layout/workerpool/$workerpoolAddress'
+      path: '/workerpool/$workerpoolAddress'
+      fullPath: '/$chainSlug/workerpool/$workerpoolAddress'
+      preLoaderRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/tx/$txHash': {
+      id: '/$chainSlug/_layout/tx/$txHash'
+      path: '/tx/$txHash'
+      fullPath: '/$chainSlug/tx/$txHash'
+      preLoaderRoute: typeof ChainSlugLayoutTxTxHashRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/task/$taskId': {
+      id: '/$chainSlug/_layout/task/$taskId'
+      path: '/task/$taskId'
+      fullPath: '/$chainSlug/task/$taskId'
+      preLoaderRoute: typeof ChainSlugLayoutTaskTaskIdRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/search/$search': {
+      id: '/$chainSlug/_layout/search/$search'
+      path: '/search/$search'
+      fullPath: '/$chainSlug/search/$search'
+      preLoaderRoute: typeof ChainSlugLayoutSearchSearchRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/deal/$dealId': {
+      id: '/$chainSlug/_layout/deal/$dealId'
+      path: '/deal/$dealId'
+      fullPath: '/$chainSlug/deal/$dealId'
+      preLoaderRoute: typeof ChainSlugLayoutDealDealIdRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/dataset/$datasetAddress': {
+      id: '/$chainSlug/_layout/dataset/$datasetAddress'
+      path: '/dataset/$datasetAddress'
+      fullPath: '/$chainSlug/dataset/$datasetAddress'
+      preLoaderRoute: typeof ChainSlugLayoutDatasetDatasetAddressRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/app/$appAddress': {
+      id: '/$chainSlug/_layout/app/$appAddress'
+      path: '/app/$appAddress'
+      fullPath: '/$chainSlug/app/$appAddress'
+      preLoaderRoute: typeof ChainSlugLayoutAppAppAddressRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/address/$addressAddress': {
+      id: '/$chainSlug/_layout/address/$addressAddress'
+      path: '/address/$addressAddress'
+      fullPath: '/$chainSlug/address/$addressAddress'
+      preLoaderRoute: typeof ChainSlugLayoutAddressAddressAddressRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+  }
+}
+
+interface ChainSlugLayoutRouteChildren {
+  ChainSlugLayoutSplatRoute: typeof ChainSlugLayoutSplatRoute
+  ChainSlugLayoutAccountRoute: typeof ChainSlugLayoutAccountRoute
+  ChainSlugLayoutAppsRoute: typeof ChainSlugLayoutAppsRoute
+  ChainSlugLayoutDatasetsRoute: typeof ChainSlugLayoutDatasetsRoute
+  ChainSlugLayoutDealsRoute: typeof ChainSlugLayoutDealsRoute
+  ChainSlugLayoutTasksRoute: typeof ChainSlugLayoutTasksRoute
+  ChainSlugLayoutWorkerpoolsRoute: typeof ChainSlugLayoutWorkerpoolsRoute
+  ChainSlugLayoutIndexRoute: typeof ChainSlugLayoutIndexRoute
+  ChainSlugLayoutAddressAddressAddressRoute: typeof ChainSlugLayoutAddressAddressAddressRoute
+  ChainSlugLayoutAppAppAddressRoute: typeof ChainSlugLayoutAppAppAddressRoute
+  ChainSlugLayoutDatasetDatasetAddressRoute: typeof ChainSlugLayoutDatasetDatasetAddressRoute
+  ChainSlugLayoutDealDealIdRoute: typeof ChainSlugLayoutDealDealIdRoute
+  ChainSlugLayoutSearchSearchRoute: typeof ChainSlugLayoutSearchSearchRoute
+  ChainSlugLayoutTaskTaskIdRoute: typeof ChainSlugLayoutTaskTaskIdRoute
+  ChainSlugLayoutTxTxHashRoute: typeof ChainSlugLayoutTxTxHashRoute
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
+}
+
+const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
+  ChainSlugLayoutSplatRoute: ChainSlugLayoutSplatRoute,
+  ChainSlugLayoutAccountRoute: ChainSlugLayoutAccountRoute,
+  ChainSlugLayoutAppsRoute: ChainSlugLayoutAppsRoute,
+  ChainSlugLayoutDatasetsRoute: ChainSlugLayoutDatasetsRoute,
+  ChainSlugLayoutDealsRoute: ChainSlugLayoutDealsRoute,
+  ChainSlugLayoutTasksRoute: ChainSlugLayoutTasksRoute,
+  ChainSlugLayoutWorkerpoolsRoute: ChainSlugLayoutWorkerpoolsRoute,
+  ChainSlugLayoutIndexRoute: ChainSlugLayoutIndexRoute,
+  ChainSlugLayoutAddressAddressAddressRoute:
+    ChainSlugLayoutAddressAddressAddressRoute,
+  ChainSlugLayoutAppAppAddressRoute: ChainSlugLayoutAppAppAddressRoute,
+  ChainSlugLayoutDatasetDatasetAddressRoute:
+    ChainSlugLayoutDatasetDatasetAddressRoute,
+  ChainSlugLayoutDealDealIdRoute: ChainSlugLayoutDealDealIdRoute,
+  ChainSlugLayoutSearchSearchRoute: ChainSlugLayoutSearchSearchRoute,
+  ChainSlugLayoutTaskTaskIdRoute: ChainSlugLayoutTaskTaskIdRoute,
+  ChainSlugLayoutTxTxHashRoute: ChainSlugLayoutTxTxHashRoute,
+  ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
+    ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
+}
+
+const ChainSlugLayoutRouteWithChildren = ChainSlugLayoutRoute._addFileChildren(
+  ChainSlugLayoutRouteChildren,
+)
+
+interface ChainSlugRouteChildren {
+  ChainSlugLayoutRoute: typeof ChainSlugLayoutRouteWithChildren
+}
+
+const ChainSlugRouteChildren: ChainSlugRouteChildren = {
+  ChainSlugLayoutRoute: ChainSlugLayoutRouteWithChildren,
+}
+
+const ChainSlugRouteWithChildren = ChainSlugRoute._addFileChildren(
+  ChainSlugRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ChainSlugRoute: ChainSlugRouteWithChildren,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/$chainSlug"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/$chainSlug": {
-      "filePath": "$chainSlug",
-      "children": [
-        "/$chainSlug/_layout"
-      ]
-    },
-    "/$chainSlug/_layout": {
-      "filePath": "$chainSlug/_layout.tsx",
-      "parent": "/$chainSlug",
-      "children": [
-        "/$chainSlug/_layout/$",
-        "/$chainSlug/_layout/account",
-        "/$chainSlug/_layout/apps",
-        "/$chainSlug/_layout/datasets",
-        "/$chainSlug/_layout/deals",
-        "/$chainSlug/_layout/tasks",
-        "/$chainSlug/_layout/workerpools",
-        "/$chainSlug/_layout/",
-        "/$chainSlug/_layout/address/$addressAddress",
-        "/$chainSlug/_layout/app/$appAddress",
-        "/$chainSlug/_layout/dataset/$datasetAddress",
-        "/$chainSlug/_layout/deal/$dealId",
-        "/$chainSlug/_layout/search/$search",
-        "/$chainSlug/_layout/task/$taskId",
-        "/$chainSlug/_layout/tx/$txHash",
-        "/$chainSlug/_layout/workerpool/$workerpoolAddress"
-      ]
-    },
-    "/$chainSlug/_layout/$": {
-      "filePath": "$chainSlug/_layout/$.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/account": {
-      "filePath": "$chainSlug/_layout/account.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/apps": {
-      "filePath": "$chainSlug/_layout/apps.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/datasets": {
-      "filePath": "$chainSlug/_layout/datasets.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/deals": {
-      "filePath": "$chainSlug/_layout/deals.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/tasks": {
-      "filePath": "$chainSlug/_layout/tasks.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/workerpools": {
-      "filePath": "$chainSlug/_layout/workerpools.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/": {
-      "filePath": "$chainSlug/_layout/index.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/address/$addressAddress": {
-      "filePath": "$chainSlug/_layout/address/$addressAddress.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/app/$appAddress": {
-      "filePath": "$chainSlug/_layout/app/$appAddress.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/dataset/$datasetAddress": {
-      "filePath": "$chainSlug/_layout/dataset/$datasetAddress.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/deal/$dealId": {
-      "filePath": "$chainSlug/_layout/deal/$dealId.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/search/$search": {
-      "filePath": "$chainSlug/_layout/search/$search.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/task/$taskId": {
-      "filePath": "$chainSlug/_layout/task/$taskId.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/tx/$txHash": {
-      "filePath": "$chainSlug/_layout/tx/$txHash.tsx",
-      "parent": "/$chainSlug/_layout"
-    },
-    "/$chainSlug/_layout/workerpool/$workerpoolAddress": {
-      "filePath": "$chainSlug/_layout/workerpool/$workerpoolAddress.tsx",
-      "parent": "/$chainSlug/_layout"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
