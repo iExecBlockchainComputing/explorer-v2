@@ -18,6 +18,7 @@ export function getSupportedChains() {
   );
 }
 
+//TODO: merge both function by adding a new param
 export function getSubgraphUrl(chainId: number) {
   const subgraphUrl = getSupportedChains().find(
     (chain) => chain.id === chainId
@@ -26,6 +27,18 @@ export function getSubgraphUrl(chainId: number) {
     throw new Error(`Subgraph URL not found for chain ID: ${chainId}`);
   }
   return subgraphUrl;
+}
+
+export function getDataprotectorSubgraphUrl(chainId: number) {
+  const dataprotectorSubgraphUrl = getSupportedChains().find(
+    (chain) => chain.id === chainId
+  )?.dataprotectorSubgraphUrl;
+  if (!dataprotectorSubgraphUrl) {
+    throw new Error(
+      `Dataprotector subgraph URL not found for chain ID: ${chainId}`
+    );
+  }
+  return dataprotectorSubgraphUrl;
 }
 
 export function getChainFromSlug(slug: string | undefined) {
@@ -37,8 +50,13 @@ export function getChainFromId(id: number | undefined) {
 }
 
 export function getBlockExplorerUrl(chainId: number) {
-  const chain = getChainFromId(chainId);
-  return chain?.blockExplorerUrl ?? 'https://blockscout.com/';
+  const blockExplorerUrl = getSupportedChains().find(
+    (chain) => chain.id === chainId
+  )?.blockExplorerUrl;
+  if (!blockExplorerUrl) {
+    throw new Error(`Block explorer URL not found for chain ID: ${chainId}`);
+  }
+  return blockExplorerUrl;
 }
 
 /**

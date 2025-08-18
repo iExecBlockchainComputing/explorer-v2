@@ -13,6 +13,7 @@ dist-ssr
 *.local
 src/graphql/*
 !src/graphql/execute.ts
+!src/graphql/executeDataprotector.ts
 
 # misc
 .DS_Store

@@ -22,6 +22,8 @@ export const SUPPORTED_CHAINS = [
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+    dataprotectorSubgraphUrl:
+      'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
     bridge: 'https://bridge-bellecour.iex.ec/',
     bridgeInformation:
       'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
@@ -49,8 +51,43 @@ export const SUPPORTED_CHAINS = [
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl:
       'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+    dataprotectorSubgraphUrl:
+      'https://gateway.thegraph.com/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
     isExperimental: true,
   },
 ];
+
+// Schema filter type constants
+export const LEGACY_TYPES = ['boolean', 'number'] as const;
+
+export const SUPPORTED_MIME_TYPES = [
+  'application/octet-stream',
+  'application/pdf',
+  'application/xml',
+  'application/zip',
+  'audio/midi',
+  'audio/mpeg',
+  'audio/x-wav',
+  'image/bmp',
+  'image/gif',
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'video/mp4',
+  'video/mpeg',
+  'video/x-msvideo',
+] as const;
+
+// Most commonly used types
+export const COMMON_DATA_TYPES = ['string', 'bool', 'f64', 'i128'] as const;
+
+// Popular file types
+export const POPULAR_MIME_TYPES = [
+  'application/pdf',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+  'video/mp4',
+] as const;
