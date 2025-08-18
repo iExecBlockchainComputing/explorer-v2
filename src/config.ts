@@ -32,7 +32,7 @@ export const SUPPORTED_CHAINS = [
     id: 42161,
     name: 'Arbitrum',
     slug: 'arbitrum-mainnet',
-    color: '#F4942566',
+    color: '#28A0F080',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://arbiscan.io/',
     subgraphUrl:
