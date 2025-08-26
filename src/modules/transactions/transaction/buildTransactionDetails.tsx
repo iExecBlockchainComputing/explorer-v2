@@ -18,7 +18,7 @@ export function buildTransactionDetails({
       TxHash: (
         <div className="flex flex-wrap items-center gap-1">
           <SmartLinkGroup
-            type="address"
+            type="transaction"
             isCurrentPage={true}
             addressOrId={transaction.txHash}
             label={transaction.txHash}
