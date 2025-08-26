@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.17.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.16.0...iexec-explorer-v1.17.0) (2025-08-26)
+
+
+### 🚀 Features
+
+* add DownloadLogs component and integrate into task details ([#56](https://github.com/iExecBlockchainComputing/explorer-v2/issues/56)) ([6c0c6d1](https://github.com/iExecBlockchainComputing/explorer-v2/commit/6c0c6d106030450d9269c0f69fe7a254ec586f8c))
+
+
+### 🐞 Bug Fixes
+
+* use `tx` instead of `address` for TxHash in buildTransactionDetails ([#61](https://github.com/iExecBlockchainComputing/explorer-v2/issues/61)) ([19a3991](https://github.com/iExecBlockchainComputing/explorer-v2/commit/19a399186e04ed6a71bc3ca32c8d424cbd9f988a))
+
+
+### ✨ Polish
+
+* fix arbitrum color ([#60](https://github.com/iExecBlockchainComputing/explorer-v2/issues/60)) ([bd36e47](https://github.com/iExecBlockchainComputing/explorer-v2/commit/bd36e47bb21f4a2082ec0d6c4c92f8e25483e95f))
+
 ## [1.16.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.15.0...iexec-explorer-v1.16.0) (2025-08-07)
 
 
