@@ -101,7 +101,7 @@ function AddressRoute() {
     ) {
       navigate({
         to: `/${chainSlug}/address/${userAddress}`,
-        search: (prev: Record<string, any>) => ({
+        search: (prev: Record<string, unknown>) => ({
           ...prev,
           from: 'my_activity',
         }),
