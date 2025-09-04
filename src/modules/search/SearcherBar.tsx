@@ -179,7 +179,9 @@ export function SearcherBar({
             className="bg-muted hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
             asChild
           >
-            <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
+            <ChainLink to={`/address/${userAddress}?from=my_activity`}>
+              My activity
+            </ChainLink>
           </Button>
         )}
       </div>
@@ -193,7 +195,9 @@ export function SearcherBar({
 
         {isConnected && (
           <Button variant="outline" className="sm:hidden" asChild>
-            <ChainLink to={`/address/${userAddress}`}>My activity</ChainLink>
+            <ChainLink to={`/address/${userAddress}?from=my_activity`}>
+              My activity
+            </ChainLink>
           </Button>
         )}
       </div>
