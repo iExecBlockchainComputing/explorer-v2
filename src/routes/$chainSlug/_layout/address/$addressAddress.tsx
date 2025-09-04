@@ -121,7 +121,9 @@ function AddressRoute() {
   }
 
   if (isError && error instanceof NotFoundError) {
-    return <ErrorAlert className="my-16" message="Address not found." />;
+    return (
+      <ErrorAlert className="my-16" message="No data found for this address." />
+    );
   }
 
   return (
@@ -129,6 +131,9 @@ function AddressRoute() {
       <SearcherBar className="py-6" />
 
       <div className="space-y-2">
+        {isError && error instanceof NotFoundError ? (
+          <ErrorAlert message="Address not found." />
+        ) : null}
         <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
           <AddressIcon size={24} />
           Address details
