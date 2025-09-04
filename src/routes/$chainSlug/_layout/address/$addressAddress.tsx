@@ -2,7 +2,9 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
+import { useSearch, useNavigate } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useEffect } from 'react';
 import AddressIcon from '@/components/icons/AddressIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -74,7 +76,7 @@ function AddressRoute() {
     'WORKERPOOLS',
   ];
   const [currentTab, setCurrentTab] = useTabParam('addressTab', tabLabels, 0);
-  const { chainId } = useUserStore();
+  const { chainId, address: userAddress } = useUserStore();
   const { addressAddress } = Route.useParams();
   const {
     data: address,
@@ -85,6 +87,29 @@ function AddressRoute() {
     isValid,
     error,
   } = useAddressData((addressAddress as string).toLowerCase(), chainId!);
+
+  const navigate = useNavigate();
+  const search = useSearch({ strict: false });
+  const { chainSlug } = Route.useParams();
+  const fromMyActivity = search?.['from'] === 'my_activity';
+
+  useEffect(() => {
+    if (
+      fromMyActivity &&
+      userAddress &&
+      addressAddress?.toLowerCase() !== userAddress?.toLowerCase()
+    ) {
+      navigate({
+        to: `/${chainSlug}/address/${userAddress}`,
+        search: (prev: Record<string, any>) => ({
+          ...prev,
+          from: 'my_activity',
+        }),
+        replace: true,
+        resetScroll: false,
+      });
+    }
+  }, [userAddress, addressAddress, fromMyActivity, navigate, chainSlug]);
 
   const addressDetails = address ? buildAddressDetails({ address }) : undefined;
   const addressOverview = address
