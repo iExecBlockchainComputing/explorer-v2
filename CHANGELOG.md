@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.18.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.17.0...iexec-explorer-v1.18.0) (2025-09-05)
+
+
+### 🚀 Features
+
+* update navigation links in Footer component ([#62](https://github.com/iExecBlockchainComputing/explorer-v2/issues/62)) ([281c752](https://github.com/iExecBlockchainComputing/explorer-v2/commit/281c752b48fef3b92c9471aeb5c659ceaacc244d))
+
+
+### 🐞 Bug Fixes
+
+* update navigation links in Footer component ([281c752](https://github.com/iExecBlockchainComputing/explorer-v2/commit/281c752b48fef3b92c9471aeb5c659ceaacc244d))
+
 ## [1.17.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.16.0...iexec-explorer-v1.17.0) (2025-08-26)
 
 
