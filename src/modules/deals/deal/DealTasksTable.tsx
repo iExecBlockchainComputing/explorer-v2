@@ -1,5 +1,5 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/execute';
+import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { DataTable } from '@/components/DataTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';

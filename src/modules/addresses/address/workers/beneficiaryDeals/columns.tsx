@@ -1,4 +1,4 @@
-import { AddressContributionQuery } from '@/graphql/graphql';
+import { AddressContributionQuery } from '@/graphql/poco/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import StatusCell from '@/modules/tasks/StatusCell';

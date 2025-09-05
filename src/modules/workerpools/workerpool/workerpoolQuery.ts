@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const workerpoolQuery = graphql(`
   query Workerpool($workerpoolAddress: ID!, $workerpoolAddressString: String!) {

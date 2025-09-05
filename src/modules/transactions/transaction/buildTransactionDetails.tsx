@@ -1,4 +1,4 @@
-import { TransactionQuery } from '@/graphql/graphql';
+import { TransactionQuery } from '@/graphql/poco/graphql';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import AccountEvent from '@/modules/events/AccountEvent';
 import DealEvent from '@/modules/events/DealEvent';

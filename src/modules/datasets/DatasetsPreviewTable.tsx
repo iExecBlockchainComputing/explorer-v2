@@ -1,5 +1,5 @@
 import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/execute';
+import { execute } from '@/graphql/poco/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';

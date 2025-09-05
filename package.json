@@ -11,9 +11,10 @@
     "format": "prettier --write src",
     "check-format": "prettier --check src",
     "preview": "vite preview",
-    "codegen": "npm run codegen:poco",
+    "codegen": "npm run codegen:poco && npm run codegen:dataprotector",
     "watch:codegen": "npm run watch:codegen:poco",
     "codegen:poco": "graphql-codegen --config codegenPoco.ts",
+    "codegen:dataprotector": "graphql-codegen --config codegenDataprotector.ts",
     "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch"
   },
   "dependencies": {

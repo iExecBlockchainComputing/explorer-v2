@@ -1,4 +1,4 @@
-import { AddressQuery } from '@/graphql/graphql';
+import { AddressQuery } from '@/graphql/poco/graphql';
 
 function formatCount(count: number) {
   return count >= 1000 ? '1000+' : count;

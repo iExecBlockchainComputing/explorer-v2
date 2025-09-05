@@ -1,4 +1,4 @@
-import { AppQuery } from '@/graphql/graphql';
+import { AppQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import JsonBlock from '@/modules/JsonBlock';
