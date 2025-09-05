@@ -1,4 +1,4 @@
-import { DatasetQuery } from '@/graphql/graphql';
+import { DatasetQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';

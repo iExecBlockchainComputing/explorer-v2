@@ -1,4 +1,4 @@
-import { DealQuery, TaskQuery } from '@/graphql/graphql';
+import { DealQuery, TaskQuery } from '@/graphql/poco/graphql';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';

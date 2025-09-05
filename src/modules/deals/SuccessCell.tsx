@@ -1,4 +1,4 @@
-import { Deal } from '@/graphql/graphql';
+import { Deal } from '@/graphql/poco/graphql';
 
 export function SuccessCell({ deal }: { deal: Deal }) {
   const timeoutTimestamp =
