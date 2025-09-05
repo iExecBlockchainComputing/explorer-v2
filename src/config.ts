@@ -23,7 +23,8 @@ export const SUPPORTED_CHAINS = [
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: {
       poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
-      dataprotector: 'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector',
+      dataprotector:
+        'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector',
     },
     bridge: 'https://bridge-bellecour.iex.ec/',
     bridgeInformation:
