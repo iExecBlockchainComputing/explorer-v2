@@ -3,6 +3,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
+import TypeBadge from './TypeBadge';
 
 type Dataset = DatasetsQuery['datasets'][number];
 
@@ -38,6 +39,20 @@ export const columns: ColumnDef<Dataset>[] = [
       ) : (
         <span className="text-muted-foreground">No name</span>
       );
+    },
+  },
+  {
+    accessorKey: 'datasetName',
+    header: 'Type',
+    cell: ({ row }) => {
+      // const datasetType = row.original.type;
+      const datasetType = [
+        { name: 'Email', type: 'string' },
+        { name: 'Photo', type: 'image' },
+        { name: 'Agent IA', type: 'bool' },
+        { name: 'Credit score', type: 'f64' },
+      ]; // Temporary until TheGraph supports dataset type
+      return <TypeBadge datasetType={datasetType} />;
     },
   },
   {

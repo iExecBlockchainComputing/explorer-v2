@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const datasetsQuery = graphql(`
   query Datasets(

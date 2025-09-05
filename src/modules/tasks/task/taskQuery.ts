@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const taskQuery = graphql(`
   query Task($taskId: ID!) {
