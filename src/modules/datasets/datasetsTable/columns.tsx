@@ -3,7 +3,6 @@ import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
-import TypeBadge from './TypeBadge';
 
 type Dataset = DatasetsQuery['datasets'][number];
 
