@@ -1,4 +1,5 @@
-import { DatasetQuery } from '@/graphql/graphql';
+import { DatasetSchemaQuery } from '@/graphql/dataprotector/graphql';
+import { DatasetQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
@@ -7,15 +8,23 @@ import {
   formatDateCompact,
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
+import TypeBadge from './schema/TypeBadge';
 
 export function buildDatasetDetails({
   dataset,
+  schema,
+  isSchemaLoading,
 }: {
   dataset: DatasetQuery['dataset'];
+  schema?: NonNullable<
+    NonNullable<DatasetSchemaQuery['protectedData']>['schema']
+  >;
+  isSchemaLoading: boolean;
 }) {
   if (!dataset) {
     return {};
   }
+
   const firstTransfer =
     Array.isArray(dataset?.transfers) && dataset?.transfers[0];
   const firstTimestamp = firstTransfer?.transaction?.timestamp;
@@ -36,6 +45,17 @@ export function buildDatasetDetails({
     ...(dataset.owner && {
       Owner: (
         <SmartLinkGroup type={'address'} addressOrId={dataset.owner.address} />
+      ),
+    }),
+    ...(schema && {
+      Type: (
+        <TypeBadge
+          isLoading={isSchemaLoading}
+          schemaPaths={schema}
+          maxVisible={Infinity}
+          direction="horizontal"
+          overflowHidden={false}
+        />
       ),
     }),
     ...(firstTimestamp && {

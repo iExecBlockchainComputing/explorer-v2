@@ -12,6 +12,7 @@ import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDat
 import { ErrorAlert } from '../ErrorAlert';
 import { datasetsQuery } from './datasetsQuery';
 import { columns } from './datasetsTable/columns';
+import { useDatasetsSchemas } from './hooks/useDatasetsSchemas';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
@@ -29,10 +30,20 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
     placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
+  const datasetsArray = datasets.data?.datasets ?? [];
+
+  const datasetAddresses = datasetsArray.map((dataset) => dataset.address);
+  const { schemasMap, isLoading: isSchemasLoading } = useDatasetsSchemas(
+    datasetAddresses,
+    chainId!
+  );
+
   const formattedData =
     datasets.data?.datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
+      schema: schemasMap.get(dataset.address) || [],
+      isSchemasLoading,
     })) ?? [];
 
   return (

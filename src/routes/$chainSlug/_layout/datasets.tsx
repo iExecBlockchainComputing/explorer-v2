@@ -12,6 +12,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
+import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -51,10 +52,18 @@ function useDatasetsData(currentPage: number) {
     Boolean(data?.datasetsHasNextNext?.length)
   );
 
+  const datasetAddresses = datasets.map((dataset) => dataset.address);
+  const { schemasMap, isLoading: isSchemasLoading } = useDatasetsSchemas(
+    datasetAddresses,
+    chainId!
+  );
+
   const formattedDatasets =
     datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
+      schema: schemasMap.get(dataset.address) || [],
+      isSchemasLoading,
     })) ?? [];
 
   return {

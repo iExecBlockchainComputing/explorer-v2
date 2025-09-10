@@ -3,10 +3,12 @@ import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
-import TypeBadge from './TypeBadge';
+import TypeBadge from '../dataset/schema/TypeBadge';
 
-type Dataset = DatasetsQuery['datasets'][number];
-
+type Dataset = DatasetsQuery['datasets'][number] & {
+  schema?: Array<{ path?: string | null; type?: string | null }>;
+  isSchemasLoading?: boolean;
+};
 export const columns: ColumnDef<Dataset>[] = [
   {
     accessorKey: 'datasetAddress',
@@ -42,17 +44,14 @@ export const columns: ColumnDef<Dataset>[] = [
     },
   },
   {
-    accessorKey: 'datasetName',
+    accessorKey: 'datasetSchema',
     header: 'Type',
     cell: ({ row }) => {
-      // const datasetType = row.original.type;
-      const datasetType = [
-        { name: 'Email', type: 'string' },
-        { name: 'Photo', type: 'image' },
-        { name: 'Agent IA', type: 'bool' },
-        { name: 'Credit score', type: 'f64' },
-      ]; // Temporary until TheGraph supports dataset type
-      return <TypeBadge datasetType={datasetType} />;
+      const datasetSchema = row.original.schema;
+      const isSchemasLoading = row.original.isSchemasLoading;
+      return (
+        <TypeBadge isLoading={isSchemasLoading} schemaPaths={datasetSchema} />
+      );
     },
   },
   {
