@@ -5,7 +5,7 @@ dotenv.config();
 
 const config: CodegenConfig = {
   schema: process.env.VITE_DATAPROTECTOR_SUBGRAPH_URL,
-  // documents: ['src/**/*.tsx', "src/**/*.ts"],
+  documents: ['src/**/*DpQuery.ts'],
   ignoreNoDocuments: true,
   generates: {
     './src/graphql/dataprotector/': {

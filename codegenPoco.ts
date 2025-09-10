@@ -5,7 +5,7 @@ dotenv.config();
 
 const config: CodegenConfig = {
   schema: process.env.VITE_POCO_SUBGRAPH_URL,
-  documents: ['src/**/*.tsx', "src/**/*.ts"],
+  documents: ['src/**/*.tsx', "src/**/*.ts", '!src/**/*DpQuery.ts'],
   ignoreNoDocuments: true,
   generates: {
     './src/graphql/poco/': {
