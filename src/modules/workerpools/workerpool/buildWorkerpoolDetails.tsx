@@ -1,4 +1,4 @@
-import { WorkerpoolQuery } from '@/graphql/graphql';
+import { WorkerpoolQuery } from '@/graphql/poco/graphql';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import TransferEvent from '@/modules/events/TransferEvent';
 import {

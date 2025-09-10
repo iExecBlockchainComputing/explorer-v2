@@ -1,4 +1,4 @@
-import { AddressQuery } from '@/graphql/graphql';
+import { AddressQuery } from '@/graphql/poco/graphql';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 
 export function buildAddressOverview({

@@ -1,4 +1,4 @@
-import { TaskQuery } from '@/graphql/graphql';
+import { TaskQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';

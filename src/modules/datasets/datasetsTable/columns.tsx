@@ -1,4 +1,4 @@
-import { DatasetsQuery } from '@/graphql/graphql';
+import { DatasetsQuery } from '@/graphql/poco/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
