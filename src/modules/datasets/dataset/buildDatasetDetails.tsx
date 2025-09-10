@@ -8,6 +8,7 @@ import {
   formatDateCompact,
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
+import { InteractiveJsonViewer } from './schema/InteractiveJsonViewer';
 import TypeBadge from './schema/TypeBadge';
 
 export function buildDatasetDetails({
@@ -58,6 +59,9 @@ export function buildDatasetDetails({
         />
       ),
     }),
+    'Data Structure': (
+      <InteractiveJsonViewer schemaPaths={schema} className="mt-2" />
+    ),
     ...(firstTimestamp && {
       Created: (
         <p>
