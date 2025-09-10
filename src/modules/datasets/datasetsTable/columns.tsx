@@ -44,7 +44,7 @@ export const columns: ColumnDef<Dataset>[] = [
   {
     accessorKey: 'datasetName',
     header: 'Type',
-    cell: ({ row }) => {
+    cell: () => {
       // const datasetType = row.original.type;
       const datasetType = [
         { name: 'Email', type: 'string' },
