@@ -42,20 +42,6 @@ export const columns: ColumnDef<Dataset>[] = [
     },
   },
   {
-    accessorKey: 'datasetName',
-    header: 'Type',
-    cell: () => {
-      // const datasetType = row.original.type;
-      const datasetType = [
-        { name: 'Email', type: 'string' },
-        { name: 'Photo', type: 'image' },
-        { name: 'Agent IA', type: 'bool' },
-        { name: 'Credit score', type: 'f64' },
-      ]; // Temporary until TheGraph supports dataset type
-      return <TypeBadge datasetType={datasetType} />;
-    },
-  },
-  {
     accessorKey: 'owner.address',
     header: 'Owner',
     cell: ({ row }) => {
