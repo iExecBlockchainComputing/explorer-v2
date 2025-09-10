@@ -14,7 +14,7 @@ const config: CodegenConfig = {
         documentMode: 'string'
       }
     },
-    './src/graphql/schemaPoco.graphql': {
+    './src/graphql/poco/schema.graphql': {
       plugins: ['schema-ast'],
       config: {
         includeDirectives: true

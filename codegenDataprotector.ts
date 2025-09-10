@@ -14,7 +14,7 @@ const config: CodegenConfig = {
         documentMode: 'string'
       }
     },
-    './src/graphql/schemaDataProtector.graphql': {
+    './src/graphql/dataprotector/schema.graphql': {
       plugins: ['schema-ast'],
       config: {
         includeDirectives: true
