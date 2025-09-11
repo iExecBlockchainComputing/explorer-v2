@@ -10,6 +10,7 @@ import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
+import { SchemaSearch } from '@/modules/datasets/SchemaSearch';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas';
@@ -109,6 +110,8 @@ function DatasetsRoute() {
           <DatasetBreadcrumbsList />
         </div>
       </div>
+
+      <SchemaSearch />
 
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during datasets loading." />
