@@ -207,7 +207,7 @@
   --popover: var(--color-grey-800);
   --popover-foreground: var(--color-grey-50);
 
-  --tooltip: var(--color-grey-800);
+  --tooltip: var(--color-grey-600);
   --tooltip-foreground: var(--color-grey-50);
   --tooltip-border: var(--color-grey-700);
 
