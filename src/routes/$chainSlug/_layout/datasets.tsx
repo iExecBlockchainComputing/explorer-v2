@@ -2,7 +2,7 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { LOCAL_STORAGE_PREFIX } from '@/config';
 import { execute as executeDp } from '@/graphql/dataprotector/execute';
 import { execute } from '@/graphql/poco/execute';
-import { useQuery, UseQueryResult } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
   createFileRoute,
   useSearch,
@@ -37,15 +37,6 @@ export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
   component: DatasetsRoute,
 });
 
-function getPaginationSkips(page: number, length: number) {
-  const skip = (page - 1) * length;
-  return {
-    skip,
-    nextSkip: skip + length,
-    nextNextSkip: skip + 2 * length,
-  };
-}
-
 function formatDataset(dataset: any) {
   return {
     address: dataset.address ?? dataset.id ?? '',
@@ -69,10 +60,10 @@ function formatDataset(dataset: any) {
 
 function useDatasetsData(currentPage: number) {
   const { chainId } = useUserStore();
-  const { skip, nextSkip, nextNextSkip } = getPaginationSkips(
-    currentPage + 1,
-    TABLE_LENGTH
-  );
+  const skip = currentPage * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
+
   const queryKey = [chainId, 'datasets', currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
@@ -122,6 +113,35 @@ function useDatasetsData(currentPage: number) {
   };
 }
 
+const getDisplayData = (
+  useSchemaSearch: boolean,
+  schemaResult: any,
+  datasetsData: any
+) => {
+  if (useSchemaSearch) {
+    return {
+      data: (schemaResult.data?.protectedDatas ?? []).map(formatDataset),
+      isLoading: schemaResult.isLoading,
+      isRefetching: schemaResult.isRefetching,
+      isError: schemaResult.isError,
+      hasPastError: schemaResult.isError || schemaResult.errorUpdateCount > 0,
+      additionalPages: getAdditionalPages(
+        Boolean(schemaResult.data?.protectedDatasHasNext?.length),
+        Boolean(schemaResult.data?.protectedDatasHasNextNext?.length)
+      ),
+    };
+  }
+
+  return {
+    data: datasetsData.data ?? [],
+    isLoading: datasetsData.isLoading,
+    isRefetching: datasetsData.isRefetching,
+    isError: datasetsData.isError,
+    hasPastError: datasetsData.hasPastError,
+    additionalPages: datasetsData.additionalPages,
+  };
+};
+
 function DatasetsRoute() {
   const [currentPage, setCurrentPage] = usePageParam('datasetsPage');
   const [isSchemaSearchOpen, setIsSchemaSearchOpen] =
@@ -141,6 +161,9 @@ function DatasetsRoute() {
   }, []);
 
   const handleAddFilter = (filter: SchemaFilter) => {
+    console.log('add filter', filter);
+    console.log('current filters', filters);
+    
     const newFilters: SchemaFilter[] = [
       ...filters.filter(
         (f) => !(f.path === filter.path && f.type === filter.type)
@@ -195,19 +218,13 @@ function DatasetsRoute() {
     }
   };
 
-  const { skip, nextSkip, nextNextSkip } = getPaginationSkips(
-    currentPage,
-    TABLE_LENGTH
-  );
+  const skip = (currentPage - 1) * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
   const requiredSchema = filters.map((f) => `${f.path}:${f.type}`);
   const useSchemaSearch = filters.length > 0;
 
-  type QueryResultShape = {
-    protectedDatas: any[];
-    protectedDatasHasNext: any[];
-    protectedDatasHasNextNext: any[];
-  };
-  const schemaResult: UseQueryResult<QueryResultShape, Error> = useQuery({
+  const schemaResult = useQuery({
     queryKey: [
       chainId,
       'protectedDatas',
@@ -215,7 +232,7 @@ function DatasetsRoute() {
       currentPage,
       requiredSchema.join(','),
     ],
-    queryFn: async (): Promise<QueryResultShape> => {
+    queryFn: async () => {
       const res = await executeDp(schemaSearchPaginatedQuery, chainId, {
         length: TABLE_LENGTH,
         skip,
@@ -247,26 +264,7 @@ function DatasetsRoute() {
     isError,
     hasPastError,
     additionalPages,
-  } = useSchemaSearch
-    ? {
-        data: (schemaResult.data?.protectedDatas ?? []).map(formatDataset),
-        isLoading: schemaResult.isLoading,
-        isRefetching: schemaResult.isRefetching,
-        isError: schemaResult.isError,
-        hasPastError: schemaResult.isError || schemaResult.errorUpdateCount > 0,
-        additionalPages: getAdditionalPages(
-          Boolean(schemaResult.data?.protectedDatasHasNext?.length),
-          Boolean(schemaResult.data?.protectedDatasHasNextNext?.length)
-        ),
-      }
-    : {
-        data: datasetsData.data ?? [],
-        isLoading: datasetsData.isLoading,
-        isRefetching: datasetsData.isRefetching,
-        isError: datasetsData.isError,
-        hasPastError: datasetsData.hasPastError,
-        additionalPages: datasetsData.additionalPages,
-      };
+  } = getDisplayData(useSchemaSearch, schemaResult, datasetsData);
 
   const columns = createColumns(handleSchemaSearch);
 
