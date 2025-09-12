@@ -17,7 +17,10 @@ import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable'
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
 import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
 import { datasetSchemaQuery } from '@/modules/datasets/dataset/schema/datasetSchemaDpQuery';
-import { encodeSchemaFilters } from '@/modules/datasets/schemaFilters';
+import {
+  encodeSchemaFilters,
+  SchemaFilter,
+} from '@/modules/datasets/schemaFilters';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
@@ -101,7 +104,7 @@ function DatasetsRoute() {
     chainId!
   );
 
-  const handleSchemaSearch = (schemaFilters: any) => {
+  const handleSchemaSearch = (schemaFilters: SchemaFilter[]) => {
     const encoded = encodeSchemaFilters(schemaFilters);
     navigate({
       to: `/${getChainFromId(chainId)?.slug}/datasets`,

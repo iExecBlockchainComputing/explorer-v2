@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/tooltip';
 import { pluralize } from '@/utils/pluralize';
 import { borderTypeColor } from '../../borderTypeColor';
+import { SchemaFilter } from '../../schemaFilters';
 
 export interface TypeBadgeProps {
   schemaPaths?: NonNullable<
@@ -67,7 +68,7 @@ const renderBadge = (
 
 const renderTooltipContent = (
   schemaPaths: { path: string; type: string }[],
-  onSchemaSearch?: (schema: any) => void
+  onSchemaSearch?: (schema: SchemaFilter[]) => void
 ) => (
   <div className="flex flex-col gap-1">
     {schemaPaths.map((schema) => (
