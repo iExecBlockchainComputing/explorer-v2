@@ -98,6 +98,15 @@ export function SchemaSearch({
                   </span>
                 );
               })}
+              {filters.length > 0 && (
+                <button
+                  className="text-xs text-white"
+                  type="button"
+                  onClick={() => filters.forEach((_, i) => onRemoveFilter(0))}
+                >
+                  Clear all
+                </button>
+              )}
             </div>
           </div>
           <div className="mt-6 mb-6 flex translate-y-1 flex-col items-center gap-4 sm:flex-row">
@@ -105,6 +114,7 @@ export function SchemaSearch({
               type="text"
               id="schema-path"
               autoComplete="off"
+              autoCapitalize="off"
               value={inputPathValue}
               onChange={(e) => setInputPathValue(e.target.value)}
               className={cn(
