@@ -1,7 +1,7 @@
 import { datasetSchemaTypeGroups } from '@/config';
 import { cn } from '@/lib/utils';
 import { SelectLabel } from '@radix-ui/react-select';
-import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+import { ChevronDown, Plus, SlidersHorizontal, X } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -100,8 +100,11 @@ export function SchemaSearch({
               })}
             </div>
           </div>
-          <div className="mt-6 mb-6 flex translate-y-1 gap-4">
+          <div className="mt-6 mb-6 flex translate-y-1 flex-col items-center gap-4 sm:flex-row">
             <Input
+              type="text"
+              id="schema-path"
+              autoComplete="off"
               value={inputPathValue}
               onChange={(e) => setInputPathValue(e.target.value)}
               className={cn(
@@ -111,7 +114,7 @@ export function SchemaSearch({
             />
 
             <Select value={selectedType} onValueChange={setSelectedType}>
-              <SelectTrigger className="bg-muted border-secondary w-full max-w-1/3 rounded-2xl px-4 py-6 text-sm text-white">
+              <SelectTrigger className="bg-muted border-secondary w-full rounded-2xl px-4 py-6 text-sm text-white sm:max-w-1/3">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent className="bg-muted border-secondary overflow-visible p-6">
@@ -137,10 +140,12 @@ export function SchemaSearch({
               </SelectContent>
             </Select>
             <Button
+              size="lg"
               onClick={handleAdd}
               disabled={!inputPathValue.trim() || !selectedType}
             >
               Add filter
+              <Plus size={20} />
             </Button>
           </div>
         </div>
