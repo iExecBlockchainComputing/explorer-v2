@@ -9,6 +9,7 @@ import {
   useNavigate,
 } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useEffect } from 'react';
 import useLocalStorageState from 'use-local-storage-state';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
@@ -132,6 +133,12 @@ function DatasetsRoute() {
   const navigate = useNavigate();
   const filters: SchemaFilter[] = decodeSchemaFilters(search?.schema);
   const { chainId } = useUserStore();
+
+  useEffect(() => {
+    if (!isSchemaSearchOpen && filters.length > 0) {
+      setIsSchemaSearchOpen(true);
+    }
+  }, []);
 
   const handleAddFilter = (filter: SchemaFilter) => {
     const newFilters: SchemaFilter[] = [
