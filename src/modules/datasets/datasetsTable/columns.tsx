@@ -50,7 +50,11 @@ export const columns: ColumnDef<Dataset>[] = [
       const datasetSchema = row.original.schema;
       const isSchemasLoading = row.original.isSchemasLoading;
       return (
-        <TypeBadge isLoading={isSchemasLoading} schemaPaths={datasetSchema} />
+        <TypeBadge
+          isLoading={isSchemasLoading}
+          schemaPaths={datasetSchema}
+          enableTooltip={true}
+        />
       );
     },
   },
