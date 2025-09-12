@@ -1,5 +1,5 @@
 export const borderTypeColor = [
-  { keywords: ['string'], color: 'border-yellow-500 text-yellow-200' },
+  { keywords: ['string'], color: 'border-yellow-200 text-yellow-200' },
   { keywords: ['video'], color: 'border-orange-300 text-orange-300' },
   { keywords: ['bool'], color: 'border-blue-200 text-blue-200' },
   { keywords: ['application'], color: 'border-blue-400 text-blue-400' },
