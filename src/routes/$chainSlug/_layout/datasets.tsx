@@ -21,7 +21,7 @@ import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
 import { SchemaSearch } from '@/modules/datasets/SchemaSearch';
 import { schemaSearchPaginatedQuery } from '@/modules/datasets/dataset/schemaSearchPaginatedDpQuery';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
-import { columns } from '@/modules/datasets/datasetsTable/columns';
+import { createColumns } from '@/modules/datasets/datasetsTable/columns';
 import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas';
 import {
   decodeSchemaFilters,
@@ -170,6 +170,19 @@ function DatasetsRoute() {
     });
   };
 
+  const handleSchemaSearch = (schemaFilters: any) => {
+    navigate({
+      search: { ...search, schema: encodeSchemaFilters(schemaFilters) },
+      replace: false,
+      resetScroll: true,
+    });
+    setCurrentPage(0);
+
+    if (!isSchemaSearchOpen) {
+      setIsSchemaSearchOpen(true);
+    }
+  };
+
   const { skip, nextSkip, nextNextSkip } = getPaginationSkips(
     currentPage,
     TABLE_LENGTH
@@ -242,6 +255,8 @@ function DatasetsRoute() {
         hasPastError: datasetsData.hasPastError,
         additionalPages: datasetsData.additionalPages,
       };
+
+  const columns = createColumns(handleSchemaSearch);
 
   return (
     <div className="mt-8 grid gap-6">

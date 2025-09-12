@@ -9,7 +9,12 @@ type Dataset = DatasetsQuery['datasets'][number] & {
   schema?: Array<{ path?: string | null; type?: string | null }>;
   isSchemasLoading?: boolean;
 };
-export const columns: ColumnDef<Dataset>[] = [
+
+export const createColumns = (
+  onSchemaSearch?: (
+    schema: Array<{ path?: string | null; type?: string | null }>
+  ) => void
+): ColumnDef<Dataset>[] => [
   {
     accessorKey: 'datasetAddress',
     header: 'Dataset',
@@ -54,6 +59,7 @@ export const columns: ColumnDef<Dataset>[] = [
           isLoading={isSchemasLoading}
           schemaPaths={datasetSchema}
           enableTooltip={true}
+          onSchemaSearch={onSchemaSearch}
         />
       );
     },
@@ -97,3 +103,5 @@ export const columns: ColumnDef<Dataset>[] = [
     },
   },
 ];
+
+export const columns = createColumns();

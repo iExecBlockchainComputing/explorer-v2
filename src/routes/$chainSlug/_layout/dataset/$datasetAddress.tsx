@@ -2,7 +2,11 @@ import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute as dataprotectorExecute } from '@/graphql/dataprotector/execute';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  useNavigate,
+  useSearch,
+} from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { BackButton } from '@/components/ui/BackButton';
@@ -13,10 +17,12 @@ import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable'
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
 import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
 import { datasetSchemaQuery } from '@/modules/datasets/dataset/schema/datasetSchemaDpQuery';
+import { encodeSchemaFilters } from '@/modules/datasets/schemaFilters';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
 import { isValidAddress } from '@/utils/addressOrIdCheck';
+import { getChainFromId } from '@/utils/chain.utils';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
 export const Route = createFileRoute(
@@ -87,16 +93,30 @@ function useDatasetData(datasetAddress: string, chainId: number) {
 function DatasetsRoute() {
   const { chainId } = useUserStore();
   const { datasetAddress } = Route.useParams();
+  const navigate = useNavigate();
+  const search = useSearch({ strict: false });
+
   const { dataset, schema } = useDatasetData(
     (datasetAddress as string).toLowerCase(),
     chainId!
   );
+
+  const handleSchemaSearch = (schemaFilters: any) => {
+    const encoded = encodeSchemaFilters(schemaFilters);
+    navigate({
+      to: `/${getChainFromId(chainId)?.slug}/datasets`,
+      search: { ...search, schema: encoded },
+      replace: false,
+      resetScroll: true,
+    });
+  };
 
   const datasetDetails = dataset.data
     ? buildDatasetDetails({
         dataset: dataset.data,
         schema: schema.data,
         isSchemaLoading: schema.isLoading,
+        onSchemaSearch: handleSchemaSearch,
       })
     : undefined;
 

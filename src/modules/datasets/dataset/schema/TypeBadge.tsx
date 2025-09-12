@@ -20,6 +20,11 @@ export interface TypeBadgeProps {
   className?: string;
   overflowHidden?: boolean;
   enableTooltip?: boolean;
+  onSchemaSearch?: (
+    schema: NonNullable<
+      NonNullable<DatasetSchemaQuery['protectedData']>['schema']
+    >
+  ) => void;
 }
 
 const getBorderColor = (type: string) => {
@@ -61,7 +66,8 @@ const renderBadge = (
 );
 
 const renderTooltipContent = (
-  schemaPaths: { path: string; type: string }[]
+  schemaPaths: { path: string; type: string }[],
+  onSchemaSearch?: (schema: any) => void
 ) => (
   <div className="flex flex-col gap-1">
     {schemaPaths.map((schema) => (
@@ -76,6 +82,18 @@ const renderTooltipContent = (
         <span>: {schema.type}</span>
       </div>
     ))}
+    {onSchemaSearch && (
+      <button
+        className="text-xs hover:underline"
+        onClick={(event) => {
+          event.stopPropagation();
+          event.preventDefault();
+          onSchemaSearch(schemaPaths);
+        }}
+      >
+        Search schemas
+      </button>
+    )}
   </div>
 );
 
@@ -87,6 +105,7 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
   className,
   overflowHidden = true,
   enableTooltip = false,
+  onSchemaSearch,
 }) => {
   if (isLoading && schemaPaths && schemaPaths.length === 0) {
     return (
@@ -137,6 +156,18 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
       )}
     >
       {badges}
+      {!enableTooltip && onSchemaSearch && (
+        <button
+          className="text-xs hover:underline"
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            onSchemaSearch(schemaPaths);
+          }}
+        >
+          Search schemas
+        </button>
+      )}
     </div>
   );
 
@@ -147,7 +178,7 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
       <Tooltip>
         <TooltipTrigger asChild>{content}</TooltipTrigger>
         <TooltipContent className="max-w-xs p-4">
-          {renderTooltipContent(safeSchemaPaths)}
+          {renderTooltipContent(safeSchemaPaths, onSchemaSearch)}
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>

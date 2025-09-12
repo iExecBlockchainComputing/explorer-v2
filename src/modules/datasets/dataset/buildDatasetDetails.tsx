@@ -15,12 +15,18 @@ export function buildDatasetDetails({
   dataset,
   schema,
   isSchemaLoading,
+  onSchemaSearch,
 }: {
   dataset: DatasetQuery['dataset'];
   schema?: NonNullable<
     NonNullable<DatasetSchemaQuery['protectedData']>['schema']
   >;
   isSchemaLoading: boolean;
+  onSchemaSearch?: (
+    schema: NonNullable<
+      NonNullable<DatasetSchemaQuery['protectedData']>['schema']
+    >
+  ) => void;
 }) {
   if (!dataset) {
     return {};
@@ -28,7 +34,7 @@ export function buildDatasetDetails({
 
   const firstTransfer =
     Array.isArray(dataset?.transfers) && dataset?.transfers[0];
-  const firstTimestamp = firstTransfer?.transaction?.timestamp;
+  const firstTimestamp = firstTransfer && firstTransfer.transaction?.timestamp;
 
   return {
     ...(dataset.address && {
@@ -56,6 +62,7 @@ export function buildDatasetDetails({
           maxVisible={Infinity}
           direction="horizontal"
           overflowHidden={false}
+          onSchemaSearch={onSchemaSearch}
         />
       ),
     }),
