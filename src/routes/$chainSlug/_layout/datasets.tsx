@@ -168,6 +168,18 @@ function DatasetsRoute() {
       replace: true,
       resetScroll: false,
     });
+    setCurrentPage(0);
+  };
+
+  const handleClearAllFilters = () => {
+    const newSearch = { ...search };
+    delete newSearch.schema;
+    navigate({
+      search: newSearch,
+      replace: true,
+      resetScroll: false,
+    });
+    setCurrentPage(0);
   };
 
   const handleSchemaSearch = (schemaFilters: any) => {
@@ -285,6 +297,7 @@ function DatasetsRoute() {
         filters={filters}
         onAddFilter={handleAddFilter}
         onRemoveFilter={handleRemoveFilter}
+        onClearAllFilters={handleClearAllFilters}
         isOpen={isSchemaSearchOpen}
         setIsOpen={setIsSchemaSearchOpen}
       />

@@ -20,6 +20,7 @@ export interface SchemaSearchProps {
   filters: SchemaFilter[];
   onAddFilter: (filter: SchemaFilter) => void;
   onRemoveFilter: (index: number) => void;
+  onClearAllFilters?: () => void;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
 }
@@ -28,6 +29,7 @@ export function SchemaSearch({
   filters,
   onAddFilter,
   onRemoveFilter,
+  onClearAllFilters,
   isOpen,
   setIsOpen,
 }: SchemaSearchProps) {
@@ -102,7 +104,7 @@ export function SchemaSearch({
                 <button
                   className="text-xs text-white"
                   type="button"
-                  onClick={() => filters.forEach((_, i) => onRemoveFilter(0))}
+                  onClick={onClearAllFilters}
                 >
                   Clear all
                 </button>
