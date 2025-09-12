@@ -1,6 +1,5 @@
 import { graphql } from '@/graphql/dataprotector/gql';
 
-// Query pour la recherche par schéma avec pagination optimisée et filtrage côté serveur
 export const schemaSearchPaginatedQuery = graphql(`
   query SchemaSearchPaginated(
     $length: Int = 20

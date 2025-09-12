@@ -1,10 +1,8 @@
-import { LOCAL_STORAGE_PREFIX } from '@/config';
+import { datasetSchemaTypeGroups } from '@/config';
 import { cn } from '@/lib/utils';
 import { SelectLabel } from '@radix-ui/react-select';
-import { useSearch, useNavigate } from '@tanstack/react-router';
 import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import useLocalStorageState from 'use-local-storage-state';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -15,105 +13,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { usePageParam } from '@/hooks/usePageParam';
 import { borderTypeColor } from './borderTypeColor';
-import {
-  decodeSchemaFilters,
-  encodeSchemaFilters,
-  SchemaFilter,
-} from './schemaFilters';
+import { SchemaFilter } from './schemaFilters';
 
-const typeGroups = [
-  {
-    label: 'Common types',
-    items: [
-      { value: 'string' },
-      { value: 'f64' },
-      { value: 'i128' },
-      { value: 'bool' },
-    ],
-  },
-  {
-    label: 'Legacy Common Types (deprecated)',
-    items: [{ value: 'number' }, { value: 'boolean' }],
-  },
-  {
-    label: 'Popular File Types',
-    items: [
-      { value: 'application/pdf' },
-      { value: 'image/jpeg' },
-      { value: 'image/png' },
-      { value: 'image/gif' },
-      { value: 'video/mp4' },
-    ],
-  },
-  {
-    label: 'Other File Types',
-    items: [
-      { value: 'application/octet-stream' },
-      { value: 'application/xml' },
-      { value: 'application/zip' },
-      { value: 'image/bmp' },
-      { value: 'image/webp' },
-      { value: 'video/mpeg' },
-      { value: 'video/x-msvideo' },
-      { value: 'audio/midi' },
-      { value: 'audio/mpeg' },
-      { value: 'audio/x-wav' },
-    ],
-  },
-];
+export interface SchemaSearchProps {
+  filters: SchemaFilter[];
+  onAddFilter: (filter: SchemaFilter) => void;
+  onRemoveFilter: (index: number) => void;
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+}
 
-export function SchemaSearch(onFiltersChanged?: () => void) {
-  const [isOpen, setIsOpen] = useLocalStorageState<boolean>(
-    `${LOCAL_STORAGE_PREFIX}_is_datasets_schema_search_open`,
-    { defaultValue: true }
-  );
+export function SchemaSearch({
+  filters,
+  onAddFilter,
+  onRemoveFilter,
+  isOpen,
+  setIsOpen,
+}: SchemaSearchProps) {
   const [inputPathValue, setInputPathValue] = useState('');
   const [selectedType, setSelectedType] = useState<string>('');
-  const [, setCurrentPage] = usePageParam('datasetsPage');
 
-  const search = useSearch({ strict: false });
-  const navigate = useNavigate();
-  const filters: SchemaFilter[] = decodeSchemaFilters(search?.schema);
-
-  useEffect(() => {
-    if (!isOpen && filters.length > 0) {
-      setIsOpen(true);
-    }
-  }, []);
-
-  const handleAddFilter = () => {
+  const handleAdd = () => {
     if (!inputPathValue.trim() || !selectedType) return;
-    const newFilters: SchemaFilter[] = [
-      ...filters.filter(
-        (f) => !(f.path === inputPathValue && f.type === selectedType)
-      ),
-      { path: inputPathValue.trim(), type: selectedType },
-    ];
-    navigate({
-      search: { ...search, schema: encodeSchemaFilters(newFilters) },
-      replace: true,
-      resetScroll: false,
-    });
+    onAddFilter({ path: inputPathValue.trim(), type: selectedType });
     setInputPathValue('');
     setSelectedType('');
-    setCurrentPage(0);
-  };
-
-  const handleRemoveFilter = (index: number) => {
-    const newFilters = filters.filter((_, i) => i !== index);
-    const newSearch = { ...search };
-    if (newFilters.length === 0) {
-      delete newSearch.schema;
-    } else {
-      newSearch.schema = encodeSchemaFilters(newFilters);
-    }
-    navigate({
-      search: newSearch,
-      replace: true,
-      resetScroll: false,
-    });
   };
 
   return (
@@ -167,7 +92,7 @@ export function SchemaSearch(onFiltersChanged?: () => void) {
                   >
                     <span className={cn('inline-block')}>{schema.path}</span>
                     <span className={cn('inline-block')}>: {schema.type}</span>
-                    <button onClick={() => handleRemoveFilter(index)}>
+                    <button onClick={() => onRemoveFilter(index)}>
                       <X className="ml-1 text-white" size={12} />
                     </button>
                   </span>
@@ -190,7 +115,7 @@ export function SchemaSearch(onFiltersChanged?: () => void) {
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent className="bg-muted border-secondary overflow-visible p-6">
-                {typeGroups.map((group) => (
+                {datasetSchemaTypeGroups.map((group) => (
                   <SelectGroup
                     key={group.label}
                     className="overflow-visible not-first:mt-2"
@@ -212,17 +137,12 @@ export function SchemaSearch(onFiltersChanged?: () => void) {
               </SelectContent>
             </Select>
             <Button
-              onClick={handleAddFilter}
+              onClick={handleAdd}
               disabled={!inputPathValue.trim() || !selectedType}
             >
               Add filter
             </Button>
           </div>
-          {/* {(localError || error) && (
-            <p className="bg-danger text-danger-foreground border-danger-border absolute -bottom-8 rounded-full border px-4">
-              {localError ? localError.message : error?.message}
-            </p>
-          )} */}
         </div>
       </div>
     </div>
