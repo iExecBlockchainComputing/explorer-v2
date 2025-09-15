@@ -16,6 +16,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
+import { useSchemaSearch } from '@/hooks/useSchemaSearch';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
 import { SchemaSearch } from '@/modules/datasets/SchemaSearch';
@@ -122,6 +123,7 @@ function DatasetsRoute() {
   const navigate = useNavigate();
   const filters: SchemaFilter[] = decodeSchemaFilters(search?.schema);
   const { chainId } = useUserStore();
+  const { updateCurrentPage } = useSchemaSearch();
 
   useEffect(() => {
     if (!isSchemaSearchOpen && filters.length > 0) {
@@ -166,20 +168,15 @@ function DatasetsRoute() {
     setCurrentPage(0);
   };
 
-  const handleSchemaSearch = (schemaFilters: any) => {
-    navigate({
-      search: { ...search, schema: encodeSchemaFilters(schemaFilters) },
-      replace: false,
-      resetScroll: true,
-    });
-    setCurrentPage(0);
+  const handleSchemaSearch = (schemaFields: SchemaFilter[]) => {
+    updateCurrentPage(schemaFields, setCurrentPage);
 
     if (!isSchemaSearchOpen) {
       setIsSchemaSearchOpen(true);
     }
   };
 
-  const useSchemaSearch = filters.length > 0;
+  const hasSchemaFilters = filters.length > 0;
 
   const datasetsData = useDatasetsData(currentPage - 1);
 
@@ -211,7 +208,7 @@ function DatasetsRoute() {
       };
     },
     refetchInterval: TABLE_REFETCH_INTERVAL,
-    enabled: !!chainId && useSchemaSearch,
+    enabled: !!chainId && hasSchemaFilters,
     placeholderData: {
       protectedDatas: [],
       protectedDatasHasNext: [],
@@ -219,21 +216,29 @@ function DatasetsRoute() {
     },
   });
 
-  const data = useSchemaSearch
-    ? (schemaResult.data?.protectedDatas ?? []).map(formatDataset)
+  const data = hasSchemaFilters
+    ? (schemaResult.data?.protectedDatas ?? []).map((dataset) =>
+        formatDataset({
+          dataset,
+          schema: dataset,
+          isSchemasLoading: false,
+        })
+      )
     : datasetsData.data;
 
-  const isLoading = useSchemaSearch
+  const isLoading = hasSchemaFilters
     ? schemaResult.isLoading
     : datasetsData.isLoading;
-  const isRefetching = useSchemaSearch
+  const isRefetching = hasSchemaFilters
     ? schemaResult.isRefetching
     : datasetsData.isRefetching;
-  const isError = useSchemaSearch ? schemaResult.isError : datasetsData.isError;
-  const hasPastError = useSchemaSearch
+  const isError = hasSchemaFilters
+    ? schemaResult.isError
+    : datasetsData.isError;
+  const hasPastError = hasSchemaFilters
     ? schemaResult.isError || schemaResult.errorUpdateCount > 0
     : datasetsData.hasPastError;
-  const additionalPages = useSchemaSearch
+  const additionalPages = hasSchemaFilters
     ? getAdditionalPages(
         Boolean(schemaResult.data?.protectedDatasHasNext?.length),
         Boolean(schemaResult.data?.protectedDatasHasNextNext?.length)
