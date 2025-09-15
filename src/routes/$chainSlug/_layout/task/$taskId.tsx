@@ -77,24 +77,25 @@ function TasksRoute() {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-6" />
-
-      <div className="space-y-2">
-        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-          <TaskIcon size={24} />
-          Task details
-          {!task && isError && (
-            <span className="text-muted-foreground text-sm font-light">
-              (outdated)
-            </span>
-          )}
-          {(isLoading || isRefetching) && (
-            <LoaderCircle className="animate-spin" />
-          )}
-        </h1>
-        <div className="flex items-center gap-2">
-          <BackButton />
-          <TaskBreadcrumbs taskId={taskId} />
+      <div className="flex flex-col justify-between lg:flex-row">
+        <SearcherBar className="py-6 lg:order-last lg:mr-0 lg:max-w-md lg:py-0" />
+        <div className="space-y-2">
+          <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
+            <TaskIcon size={24} />
+            Task details
+            {!task && isError && (
+              <span className="text-muted-foreground text-sm font-light">
+                (outdated)
+              </span>
+            )}
+            {(isLoading || isRefetching) && (
+              <LoaderCircle className="animate-spin" />
+            )}
+          </h1>
+          <div className="flex items-center gap-2">
+            <BackButton />
+            <TaskBreadcrumbs taskId={taskId} />
+          </div>
         </div>
       </div>
 
