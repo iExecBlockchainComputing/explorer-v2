@@ -4,6 +4,7 @@ import { useLoginLogout } from '@/hooks/useLoginLogout';
 import useUserStore from '@/stores/useUser.store';
 import iExecLogo from '../../assets/iexec-logo.svg';
 import { ChainLink } from '../ChainLink.tsx';
+import { ModeToggle } from '../ModeToggle.tsx';
 import { Button } from '../ui/button.tsx';
 import { AddressChip } from './AddressChip.tsx';
 import { ChainSelector } from './ChainSelector.tsx';
@@ -25,13 +26,14 @@ export function Navbar() {
       <div className="mr-8 flex items-center gap-4 md:mr-0">
         {isConnected && (
           <div className="hidden md:flex">
-            <Button variant="link" asChild className="text-white">
+            <Button variant="link" asChild className="text-foreground">
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
             <span className="border-secondary border-l" />
           </div>
         )}
         <div className="content hidden md:flex">
+          <ModeToggle />
           <ChainSelector />
         </div>
         {isConnected ? (
@@ -72,7 +74,7 @@ export function Navbar() {
           <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
         </label>
 
-        <div className="border-grey-600 bg-grey-900 pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-300 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
+        <div className="border-secondary bg-primary-foreground pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-300 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
           <div className="-m-2 mr-6 flex items-center justify-between gap-2 py-2 pl-2">
             <ChainLink to="/" className="font-mono" onClick={handleMenuToggle}>
               <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
@@ -97,10 +99,11 @@ export function Navbar() {
           </div>
 
           <div className="left-navbar border-muted -mx-6 mt-6 flex grow flex-col gap-4 border-t px-6 pt-2">
+            <ModeToggle />
             <Button
               variant="link"
               asChild
-              className="justify-baseline px-3 text-white"
+              className="text-foreground justify-baseline px-3"
             >
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>

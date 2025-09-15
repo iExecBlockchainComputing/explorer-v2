@@ -19,9 +19,9 @@ const buttonVariants = cva(
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         'gradient-outline':
-          'from-grey-400 hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-transparent before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-[#15151B] before:duration-300',
+          'from-grey-400 hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-transparent before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-secondary dark:before:bg-[#15151B] before:duration-300',
         'gradient-outline-active':
-          'from-primary text-primary hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-primary before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-[#322B1E] before:duration-300',
+          'from-primary text-primary hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-primary before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-secondary dark:before:bg-[#322B1E] before:duration-300',
       },
       size: {
         xs: 'h-6 rounded-full px-2 text-xs has-[>svg]:px-1.5 gap-1',
