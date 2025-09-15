@@ -29,8 +29,8 @@ export function useDatasetsSchemas(
 
         if (result?.protectedDatas) {
           result.protectedDatas.forEach((protectedData) => {
-            if (protectedData?.id) {
-              schemasMap.set(protectedData.id, protectedData.schema || []);
+            if (protectedData?.address) {
+              schemasMap.set(protectedData.address, protectedData.schema || []);
             }
           });
         }
