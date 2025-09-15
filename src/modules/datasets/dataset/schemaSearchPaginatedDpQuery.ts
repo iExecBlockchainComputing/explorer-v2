@@ -20,7 +20,7 @@ export const schemaSearchPaginatedQuery = graphql(`
         address: id
       }
       name
-      creationTimestamp
+      timestamp: creationTimestamp
       transactionHash
       schema {
         path

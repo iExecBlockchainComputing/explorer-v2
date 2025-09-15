@@ -1,7 +1,9 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { LOCAL_STORAGE_PREFIX } from '@/config';
 import { execute as executeDp } from '@/graphql/dataprotector/execute';
+import { SchemaSearchPaginatedQuery } from '@/graphql/dataprotector/graphql';
 import { execute } from '@/graphql/poco/execute';
+import { DatasetsQuery } from '@/graphql/poco/graphql';
 import { useQuery } from '@tanstack/react-query';
 import {
   createFileRoute,
@@ -38,24 +40,38 @@ export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
   component: DatasetsRoute,
 });
 
-function formatDataset(dataset: any) {
+function formatDataset({
+  dataset,
+  schema,
+  isSchemasLoading,
+}: {
+  dataset:
+    | DatasetsQuery['datasets'][number]
+    | SchemaSearchPaginatedQuery['protectedDatas'][number];
+  schema?: SchemaFilter[];
+  isSchemasLoading: boolean;
+}) {
+  console.log('log', dataset, schema, isSchemasLoading);
+
   return {
-    address: dataset.address ?? dataset.id ?? '',
+    address: dataset.address ?? '',
     name: dataset.name ?? '',
-    schema: dataset.schema ?? [],
-    isSchemasLoading: dataset.isSchemasLoading ?? false,
-    owner: { address: dataset.owner?.address ?? dataset.owner?.id ?? '' },
-    timestamp: dataset.timestamp ?? dataset.creationTimestamp ?? null,
-    transfers: dataset.transfers ?? [
-      {
-        transaction: {
-          txHash: dataset.tx_hash ?? dataset.id ?? '',
-        },
-      },
-    ],
-    destination: `/dataset/${dataset.address ?? dataset.id ?? ''}`,
-    multiaddr: dataset.multiaddr ?? '',
-    checksum: dataset.checksum ?? '',
+    schema: schema ?? [],
+    isSchemasLoading: isSchemasLoading,
+    owner: { address: dataset.owner?.address ?? '' },
+    timestamp: dataset.timestamp,
+    transfers:
+      dataset.transfers ??
+      ('transactionHash' in dataset && dataset.transactionHash
+        ? [
+            {
+              transaction: {
+                txHash: dataset.transactionHash,
+              },
+            },
+          ]
+        : []),
+    destination: `/dataset/${dataset.address}`,
   };
 }
 
@@ -93,10 +109,10 @@ function useDatasetsData(currentPage: number) {
     datasetAddresses,
     chainId!
   );
-
+  console.log(schemasMap);
   const formattedDatasets = datasets.map((dataset) =>
     formatDataset({
-      ...dataset,
+      dataset,
       schema: schemasMap.get(dataset.address) || [],
       isSchemasLoading,
     })
@@ -220,7 +236,7 @@ function DatasetsRoute() {
     ? (schemaResult.data?.protectedDatas ?? []).map((dataset) =>
         formatDataset({
           dataset,
-          schema: dataset,
+          schema: dataset.schema,
           isSchemasLoading: false,
         })
       )
