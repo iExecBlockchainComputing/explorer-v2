@@ -1,5 +1,5 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute as dataprotectorExecute } from '@/graphql/dataprotector/execute';
+import { execute as executeDp } from '@/graphql/dataprotector/execute';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import {
@@ -66,7 +66,7 @@ function useDatasetData(datasetAddress: string, chainId: number) {
     queryKey: schemaQueryKey,
     enabled: !!chainId && !!datasetAddress,
     queryFn: async () => {
-      const result = await dataprotectorExecute(datasetSchemaQuery, chainId!, {
+      const result = await executeDp(datasetSchemaQuery, chainId!, {
         datasetAddress,
       });
       return result;
