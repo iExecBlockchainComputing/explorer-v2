@@ -82,7 +82,6 @@ function useDatasetsData(currentPage: number) {
   );
 
   const datasets = data?.datasets ?? [];
-  // 0 = only current, 1 = next, 2 = next+1
   const additionalPages = getAdditionalPages(
     Boolean(data?.datasetsHasNext?.length),
     Boolean(data?.datasetsHasNextNext?.length)
@@ -94,14 +93,13 @@ function useDatasetsData(currentPage: number) {
     chainId!
   );
 
-  const formattedDatasets =
-    datasets.map((dataset) =>
-      formatDataset({
-        ...dataset,
-        schema: schemasMap.get(dataset.address) || [],
-        isSchemasLoading,
-      })
-    ) ?? [];
+  const formattedDatasets = datasets.map((dataset) =>
+    formatDataset({
+      ...dataset,
+      schema: schemasMap.get(dataset.address) || [],
+      isSchemasLoading,
+    })
+  );
 
   return {
     data: formattedDatasets,
@@ -112,35 +110,6 @@ function useDatasetsData(currentPage: number) {
     additionalPages,
   };
 }
-
-const getDisplayData = (
-  useSchemaSearch: boolean,
-  schemaResult: any,
-  datasetsData: any
-) => {
-  if (useSchemaSearch) {
-    return {
-      data: (schemaResult.data?.protectedDatas ?? []).map(formatDataset),
-      isLoading: schemaResult.isLoading,
-      isRefetching: schemaResult.isRefetching,
-      isError: schemaResult.isError,
-      hasPastError: schemaResult.isError || schemaResult.errorUpdateCount > 0,
-      additionalPages: getAdditionalPages(
-        Boolean(schemaResult.data?.protectedDatasHasNext?.length),
-        Boolean(schemaResult.data?.protectedDatasHasNextNext?.length)
-      ),
-    };
-  }
-
-  return {
-    data: datasetsData.data ?? [],
-    isLoading: datasetsData.isLoading,
-    isRefetching: datasetsData.isRefetching,
-    isError: datasetsData.isError,
-    hasPastError: datasetsData.hasPastError,
-    additionalPages: datasetsData.additionalPages,
-  };
-};
 
 function DatasetsRoute() {
   const [currentPage, setCurrentPage] = usePageParam('datasetsPage');
@@ -161,15 +130,7 @@ function DatasetsRoute() {
   }, []);
 
   const handleAddFilter = (filter: SchemaFilter) => {
-    console.log('add filter', filter);
-    console.log('current filters', filters);
-    
-    const newFilters: SchemaFilter[] = [
-      ...filters.filter(
-        (f) => !(f.path === filter.path && f.type === filter.type)
-      ),
-      filter,
-    ];
+    const newFilters = [...filters, filter];
     navigate({
       search: { ...search, schema: encodeSchemaFilters(newFilters) },
       replace: true,
@@ -218,11 +179,14 @@ function DatasetsRoute() {
     }
   };
 
+  const useSchemaSearch = filters.length > 0;
+
+  const datasetsData = useDatasetsData(currentPage - 1);
+
   const skip = (currentPage - 1) * TABLE_LENGTH;
   const nextSkip = skip + TABLE_LENGTH;
   const nextNextSkip = skip + 2 * TABLE_LENGTH;
   const requiredSchema = filters.map((f) => `${f.path}:${f.type}`);
-  const useSchemaSearch = filters.length > 0;
 
   const schemaResult = useQuery({
     queryKey: [
@@ -255,16 +219,26 @@ function DatasetsRoute() {
     },
   });
 
-  const datasetsData = useDatasetsData(currentPage - 1);
+  const data = useSchemaSearch
+    ? (schemaResult.data?.protectedDatas ?? []).map(formatDataset)
+    : datasetsData.data;
 
-  const {
-    data,
-    isLoading,
-    isRefetching,
-    isError,
-    hasPastError,
-    additionalPages,
-  } = getDisplayData(useSchemaSearch, schemaResult, datasetsData);
+  const isLoading = useSchemaSearch
+    ? schemaResult.isLoading
+    : datasetsData.isLoading;
+  const isRefetching = useSchemaSearch
+    ? schemaResult.isRefetching
+    : datasetsData.isRefetching;
+  const isError = useSchemaSearch ? schemaResult.isError : datasetsData.isError;
+  const hasPastError = useSchemaSearch
+    ? schemaResult.isError || schemaResult.errorUpdateCount > 0
+    : datasetsData.hasPastError;
+  const additionalPages = useSchemaSearch
+    ? getAdditionalPages(
+        Boolean(schemaResult.data?.protectedDatasHasNext?.length),
+        Boolean(schemaResult.data?.protectedDatasHasNextNext?.length)
+      )
+    : datasetsData.additionalPages;
 
   const columns = createColumns(handleSchemaSearch);
 
