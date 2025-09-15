@@ -1,4 +1,3 @@
-import { DatasetSchemaQuery } from '@/graphql/dataprotector/graphql';
 import { cn } from '@/lib/utils';
 import React from 'react';
 import {
@@ -12,20 +11,14 @@ import { borderTypeColor } from '../../borderTypeColor';
 import { SchemaFilter } from '../../schemaFilters';
 
 export interface TypeBadgeProps {
-  schemaPaths?: NonNullable<
-    NonNullable<DatasetSchemaQuery['protectedData']>['schema']
-  >;
+  schemaPaths?: SchemaFilter[];
   isLoading?: boolean;
   maxVisible?: number;
   direction?: 'vertical' | 'horizontal';
   className?: string;
   overflowHidden?: boolean;
   enableTooltip?: boolean;
-  onSchemaSearch?: (
-    schema: NonNullable<
-      NonNullable<DatasetSchemaQuery['protectedData']>['schema']
-    >
-  ) => void;
+  onSchemaSearch?: (schema: SchemaFilter) => void;
 }
 
 const getBorderColor = (type: string) => {
