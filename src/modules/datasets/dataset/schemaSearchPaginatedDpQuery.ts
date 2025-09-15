@@ -15,12 +15,13 @@ export const schemaSearchPaginatedQuery = graphql(`
       orderBy: creationTimestamp
       orderDirection: desc
     ) {
-      id
+      address: id
+      owner {
+        address: id
+      }
       name
       creationTimestamp
-      owner {
-        id
-      }
+      transactionHash
       schema {
         path
         type
