@@ -51,8 +51,6 @@ function formatDataset({
   schema?: SchemaFilter[];
   isSchemasLoading: boolean;
 }) {
-  console.log('log', dataset, schema, isSchemasLoading);
-
   return {
     address: dataset.address ?? '',
     name: dataset.name ?? '',
@@ -109,7 +107,6 @@ function useDatasetsData(currentPage: number) {
     datasetAddresses,
     chainId!
   );
-  console.log(schemasMap);
   const formattedDatasets = datasets.map((dataset) =>
     formatDataset({
       dataset,
