@@ -50,7 +50,13 @@ export function SchemaSearch({
         onClick={() => setIsOpen(!isOpen)}
       >
         <SlidersHorizontal size={16} />
-        <div className="flex-1 text-left">Schema Search</div>
+        <p className="flex-1 text-left font-bold">
+          Schema Search{' '}
+          <span className="text-muted-foreground font-normal">
+            Add field types to filter datasets by their schema structure.
+            Filters are applied automatically.
+          </span>
+        </p>
         <ChevronDown
           className={cn(
             'ml-auto transition-transform',
