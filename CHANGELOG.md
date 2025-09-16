@@ -1,5 +1,38 @@
 # Changelog
 
+## [1.20.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.19.0...iexec-explorer-v1.20.0) (2025-09-16)
+
+
+### 🚀 Features
+
+* add dataprotector subgraph integration and update poco queries ([#65](https://github.com/iExecBlockchainComputing/explorer-v2/issues/65)) ([4edb4bf](https://github.com/iExecBlockchainComputing/explorer-v2/commit/4edb4bfd9bf764558bee34185b372a0a926ccba3))
+
+## [1.19.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.18.0...iexec-explorer-v1.19.0) (2025-09-10)
+
+
+### 🚀 Features
+
+* **StatusCell:** display timeout indication for 'STARTED' status ([c2f8d4d](https://github.com/iExecBlockchainComputing/explorer-v2/commit/c2f8d4d9b2316b51b3a9d52988b87ba60476dd43))
+* update navigation to include 'from=my_activity' query parameter ([9d24279](https://github.com/iExecBlockchainComputing/explorer-v2/commit/9d2427936b5c652f8a49284b01b793fd0618c2c9))
+
+
+### 🐞 Bug Fixes
+
+* update error message for not found addresses ([3215e4d](https://github.com/iExecBlockchainComputing/explorer-v2/commit/3215e4da2c036679e7f9ae51108adf2e93dc8070))
+* update type for search parameter in navigation ([f8ed8ec](https://github.com/iExecBlockchainComputing/explorer-v2/commit/f8ed8ecd831eb9296c5df8a4b01b3ca908061532))
+
+## [1.18.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.17.0...iexec-explorer-v1.18.0) (2025-09-05)
+
+
+### 🚀 Features
+
+* update navigation links in Footer component ([#62](https://github.com/iExecBlockchainComputing/explorer-v2/issues/62)) ([281c752](https://github.com/iExecBlockchainComputing/explorer-v2/commit/281c752b48fef3b92c9471aeb5c659ceaacc244d))
+
+
+### 🐞 Bug Fixes
+
+* update navigation links in Footer component ([281c752](https://github.com/iExecBlockchainComputing/explorer-v2/commit/281c752b48fef3b92c9471aeb5c659ceaacc244d))
+
 ## [1.17.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.16.0...iexec-explorer-v1.17.0) (2025-08-26)
 
 

@@ -51,8 +51,7 @@ export function Footer({ className }: { className?: string }) {
 
   const navLinks = [
     { href: 'https://www.iex.ec/', label: 'iExec Website' },
-    { href: 'https://tools.docs.iex.ec/', label: 'Doc tools' },
-    { href: 'https://protocol.docs.iex.ec/', label: 'Doc protocol' },
+    { href: 'https://docs.iex.ec/', label: 'Documentation' },
     ...(chainId !== undefined
       ? [{ href: getBlockExplorerUrl(chainId), label: 'Block explorer' }]
       : []),
