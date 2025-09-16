@@ -21,7 +21,11 @@ export const SUPPORTED_CHAINS = [
     color: '#F4942566',
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
-    subgraphUrl: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+    subgraphUrl: {
+      poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+      dataprotector:
+        'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
+    },
     bridge: 'https://bridge-bellecour.iex.ec/',
     bridgeInformation:
       'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
@@ -35,8 +39,11 @@ export const SUPPORTED_CHAINS = [
     color: '#28A0F080',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://arbiscan.io/',
-    subgraphUrl:
-      'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
+    subgraphUrl: {
+      poco: 'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
+      dataprotector:
+        'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/Ep5zs5zVr4tDiVuQJepUu51e5eWYJpka624X4DMBxe3u',
+    },
     wagmiNetwork: arbitrum,
     tokenSymbol: 'RLC',
   },
@@ -47,8 +54,11 @@ export const SUPPORTED_CHAINS = [
     color: '#28A0F080',
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
-    subgraphUrl:
-      'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+    subgraphUrl: {
+      poco: 'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+      dataprotector:
+        'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
+    },
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
     isExperimental: true,

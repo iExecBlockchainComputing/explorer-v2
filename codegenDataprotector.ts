@@ -4,17 +4,17 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const config: CodegenConfig = {
-  schema: process.env.VITE_POCO_SUBGRAPH_URL,
-  documents: ['src/**/*.tsx', "src/**/*.ts", '!src/**/*DpQuery.ts'],
+  schema: process.env.VITE_DATAPROTECTOR_SUBGRAPH_URL,
+  documents: ['src/**/*DpQuery.ts'],
   ignoreNoDocuments: true,
   generates: {
-    './src/graphql/poco/': {
+    './src/graphql/dataprotector/': {
       preset: 'client',
       config: {
         documentMode: 'string'
       }
     },
-    './src/graphql/poco/schema.graphql': {
+    './src/graphql/dataprotector/schema.graphql': {
       plugins: ['schema-ast'],
       config: {
         includeDirectives: true

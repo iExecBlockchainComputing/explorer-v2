@@ -1,5 +1,5 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/execute';
+import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { useSearch, useNavigate } from '@tanstack/react-router';
