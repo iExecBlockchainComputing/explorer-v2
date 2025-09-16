@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.20.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.19.0...iexec-explorer-v1.20.0) (2025-09-16)
+
+
+### 🚀 Features
+
+* add dataprotector subgraph integration and update poco queries ([#65](https://github.com/iExecBlockchainComputing/explorer-v2/issues/65)) ([4edb4bf](https://github.com/iExecBlockchainComputing/explorer-v2/commit/4edb4bfd9bf764558bee34185b372a0a926ccba3))
+
 ## [1.19.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.18.0...iexec-explorer-v1.19.0) (2025-09-10)
 
 
