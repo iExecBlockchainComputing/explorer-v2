@@ -80,7 +80,7 @@ function AppsRoute() {
 
   return (
     <div className="mt-8 grid gap-6">
-      <div className="flex flex-col justify-between lg:flex-row">
+      <div className="mt-6 flex flex-col justify-between lg:flex-row">
         <SearcherBar className="py-6 lg:order-last lg:mr-0 lg:max-w-md lg:py-0 xl:max-w-xl" />
         <div className="space-y-2">
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
