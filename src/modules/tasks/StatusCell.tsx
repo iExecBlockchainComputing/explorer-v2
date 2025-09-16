@@ -100,7 +100,9 @@ const StatusCell = ({
 
   return (
     <span className="flex flex-wrap items-center gap-2">
-      <span className={classes}>{label}</span>
+      <span className={classes}>
+        {label} {label === 'STARTED' && timeout ? '(timeout)' : ''}
+      </span>
     </span>
   );
 };
