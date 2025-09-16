@@ -31,7 +31,12 @@ function SocialLinksItems({ className }: { className?: string }) {
   return (
     <div className={cn('flex', className)}>
       {socialLinks.map(({ href, icon }, idx) => (
-        <Button key={idx} asChild variant="link" className="text-grey-200 p-2">
+        <Button
+          key={idx}
+          asChild
+          variant="link"
+          className="text-intermediate-foreground p-2"
+        >
           <a
             href={href}
             target="_blank"
@@ -68,7 +73,7 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'bg-grey-800 border-muted text-grey-200 flex flex-col gap-6 rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
+        'bg-popover border-muted text-intermediate-foreground flex flex-col gap-6 rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
         className
       )}
     >
@@ -84,14 +89,14 @@ export function Footer({ className }: { className?: string }) {
               <Button
                 asChild
                 variant="link"
-                className="text-grey-200 p-2 font-mono"
+                className="text-intermediate-foreground p-2 font-mono"
               >
                 <a href={href} target="_blank" rel="noopener noreferrer">
                   {label}
                 </a>
               </Button>
               {idx < navLinks.length - 1 && (
-                <span className="bg-grey-200 hidden size-1.5 rounded-full md:block" />
+                <span className="bg-intermediate-foreground hidden size-1.5 rounded-full md:block" />
               )}
             </div>
           ))}

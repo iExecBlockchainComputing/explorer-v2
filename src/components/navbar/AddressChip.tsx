@@ -40,7 +40,7 @@ export function AddressChip({ address }: { address: string }) {
       <Tooltip open={showTooltip}>
         <TooltipTrigger asChild>
           <Button
-            className="bg-grey-800 hover:bg-muted text-primary"
+            className="bg-popover hover:bg-muted text-primary duration-300"
             variant="secondary"
             onClick={handleCopy}
             onMouseEnter={handleMouseEnter}
@@ -50,7 +50,7 @@ export function AddressChip({ address }: { address: string }) {
             <div
               className={clsx(
                 avatarStyles[avatarVisualBg],
-                'relative z-10 size-4 rounded-full bg-black bg-cover'
+                'bg-background relative z-10 size-4 rounded-full bg-cover'
               )}
             />
           </Button>

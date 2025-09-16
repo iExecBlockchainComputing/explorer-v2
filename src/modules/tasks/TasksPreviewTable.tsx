@@ -39,7 +39,7 @@ export function TasksPreviewTable({ className }: { className?: string }) {
     <div className={cn(className, 'flex flex-col gap-2')}>
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
-          <TaskIcon size={20} className="text-secondary" />
+          <TaskIcon size={20} className="text-foreground" />
           Latest tasks
           {tasks.data && tasks.isError && (
             <span className="text-muted-foreground text-sm font-light">

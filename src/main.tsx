@@ -9,6 +9,7 @@ import { RouterProvider } from '@tanstack/react-router';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { WagmiProvider } from 'wagmi';
+import { ThemeProvider } from './components/themeProvider.tsx';
 import './index.css';
 import { initRouter } from './initRouter.ts';
 import { initQueryClient } from './utils/initQueryClient.ts';
@@ -35,7 +36,9 @@ if (!rootElement.innerHTML) {
             config={isRollbarActivated ? rollbarConfig : undefined}
           >
             <RollbarErrorBoundary>
-              <RouterProvider router={router} />
+              <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+                <RouterProvider router={router} />
+              </ThemeProvider>
             </RollbarErrorBoundary>
           </RollbarProvider>
         </QueryClientProvider>
