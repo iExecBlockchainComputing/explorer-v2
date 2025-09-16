@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.20.0...iexec-explorer-v1.21.0) (2025-09-16)
+
+
+### 🚀 Features
+
+* add type and structure on datasets ([#67](https://github.com/iExecBlockchainComputing/explorer-v2/issues/67)) ([7eea17f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/7eea17fbd9c371767b303c5465cac479935153ad))
+
 ## [1.20.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.19.0...iexec-explorer-v1.20.0) (2025-09-16)
 
 
