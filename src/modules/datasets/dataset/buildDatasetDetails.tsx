@@ -1,3 +1,4 @@
+import { DatasetSchemaQuery } from '@/graphql/dataprotector/graphql';
 import { DatasetQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
@@ -7,18 +8,33 @@ import {
   formatDateCompact,
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
+import { InteractiveJsonViewer } from './schema/InteractiveJsonViewer';
+import TypeBadge from './schema/TypeBadge';
 
 export function buildDatasetDetails({
   dataset,
+  schema,
+  isSchemaLoading,
+  onSchemaSearch,
 }: {
   dataset: DatasetQuery['dataset'];
+  schema?: NonNullable<
+    NonNullable<DatasetSchemaQuery['protectedData']>['schema']
+  >;
+  isSchemaLoading: boolean;
+  onSchemaSearch?: (
+    schema: NonNullable<
+      NonNullable<DatasetSchemaQuery['protectedData']>['schema']
+    >
+  ) => void;
 }) {
   if (!dataset) {
     return {};
   }
+
   const firstTransfer =
     Array.isArray(dataset?.transfers) && dataset?.transfers[0];
-  const firstTimestamp = firstTransfer?.transaction?.timestamp;
+  const firstTimestamp = firstTransfer && firstTransfer.transaction?.timestamp;
 
   return {
     ...(dataset.address && {
@@ -38,6 +54,21 @@ export function buildDatasetDetails({
         <SmartLinkGroup type={'address'} addressOrId={dataset.owner.address} />
       ),
     }),
+    ...(schema && {
+      Type: (
+        <TypeBadge
+          isLoading={isSchemaLoading}
+          schemaPaths={schema}
+          maxVisible={Infinity}
+          direction="horizontal"
+          overflowHidden={false}
+          onSchemaSearch={onSchemaSearch}
+        />
+      ),
+    }),
+    'Data Structure': (
+      <InteractiveJsonViewer schemaPaths={schema} className="mt-2" />
+    ),
     ...(firstTimestamp && {
       Created: (
         <p>

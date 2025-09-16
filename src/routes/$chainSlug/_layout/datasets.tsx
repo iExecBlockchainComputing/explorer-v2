@@ -1,17 +1,36 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { LOCAL_STORAGE_PREFIX } from '@/config';
+import { execute as executeDp } from '@/graphql/dataprotector/execute';
+import { SchemaSearchPaginatedQuery } from '@/graphql/dataprotector/graphql';
 import { execute } from '@/graphql/poco/execute';
+import { DatasetsQuery } from '@/graphql/poco/graphql';
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  useSearch,
+  useNavigate,
+} from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useEffect } from 'react';
+import useLocalStorageState from 'use-local-storage-state';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { usePageParam } from '@/hooks/usePageParam';
+import { useSchemaSearch } from '@/hooks/useSchemaSearch';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { DatasetBreadcrumbsList } from '@/modules/datasets/DatasetBreadcrumbs';
+import { SchemaSearch } from '@/modules/datasets/SchemaSearch';
+import { schemaSearchPaginatedQuery } from '@/modules/datasets/dataset/schemaSearchPaginatedDpQuery';
 import { datasetsQuery } from '@/modules/datasets/datasetsQuery';
-import { columns } from '@/modules/datasets/datasetsTable/columns';
+import { createColumns } from '@/modules/datasets/datasetsTable/columns';
+import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas';
+import {
+  decodeSchemaFilters,
+  encodeSchemaFilters,
+  SchemaFilter,
+} from '@/modules/datasets/schemaFilters';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
@@ -20,6 +39,39 @@ import { getAdditionalPages } from '@/utils/format';
 export const Route = createFileRoute('/$chainSlug/_layout/datasets')({
   component: DatasetsRoute,
 });
+
+function formatDataset({
+  dataset,
+  schema,
+  isSchemasLoading,
+}: {
+  dataset:
+    | DatasetsQuery['datasets'][number]
+    | SchemaSearchPaginatedQuery['protectedDatas'][number];
+  schema?: SchemaFilter[];
+  isSchemasLoading: boolean;
+}) {
+  return {
+    address: dataset.address ?? '',
+    name: dataset.name ?? '',
+    schema: schema ?? [],
+    isSchemasLoading: isSchemasLoading,
+    owner: { address: dataset.owner?.address ?? '' },
+    timestamp: dataset.timestamp,
+    transfers:
+      dataset.transfers ??
+      ('transactionHash' in dataset && dataset.transactionHash
+        ? [
+            {
+              transaction: {
+                txHash: dataset.transactionHash,
+              },
+            },
+          ]
+        : []),
+    destination: `/dataset/${dataset.address}`,
+  };
+}
 
 function useDatasetsData(currentPage: number) {
   const { chainId } = useUserStore();
@@ -45,17 +97,23 @@ function useDatasetsData(currentPage: number) {
   );
 
   const datasets = data?.datasets ?? [];
-  // 0 = only current, 1 = next, 2 = next+1
   const additionalPages = getAdditionalPages(
     Boolean(data?.datasetsHasNext?.length),
     Boolean(data?.datasetsHasNextNext?.length)
   );
 
-  const formattedDatasets =
-    datasets.map((dataset) => ({
-      ...dataset,
-      destination: `/dataset/${dataset.address}`,
-    })) ?? [];
+  const datasetAddresses = datasets.map((dataset) => dataset.address);
+  const { schemasMap, isLoading: isSchemasLoading } = useDatasetsSchemas(
+    datasetAddresses,
+    chainId!
+  );
+  const formattedDatasets = datasets.map((dataset) =>
+    formatDataset({
+      dataset,
+      schema: schemasMap.get(dataset.address) || [],
+      isSchemasLoading,
+    })
+  );
 
   return {
     data: formattedDatasets,
@@ -69,14 +127,138 @@ function useDatasetsData(currentPage: number) {
 
 function DatasetsRoute() {
   const [currentPage, setCurrentPage] = usePageParam('datasetsPage');
-  const {
-    data,
-    isLoading,
-    isRefetching,
-    isError,
-    hasPastError,
-    additionalPages,
-  } = useDatasetsData(currentPage - 1);
+  const [isSchemaSearchOpen, setIsSchemaSearchOpen] =
+    useLocalStorageState<boolean>(
+      `${LOCAL_STORAGE_PREFIX}_is_datasets_schema_search_open`,
+      { defaultValue: true }
+    );
+  const search = useSearch({ strict: false });
+  const navigate = useNavigate();
+  const filters: SchemaFilter[] = decodeSchemaFilters(search?.schema);
+  const { chainId } = useUserStore();
+  const { updateCurrentPage } = useSchemaSearch();
+
+  useEffect(() => {
+    if (!isSchemaSearchOpen && filters.length > 0) {
+      setIsSchemaSearchOpen(true);
+    }
+  }, []);
+
+  const handleAddFilter = (filter: SchemaFilter) => {
+    const newFilters = [...filters, filter];
+    navigate({
+      search: { ...search, schema: encodeSchemaFilters(newFilters) },
+      replace: true,
+      resetScroll: false,
+    });
+    setCurrentPage(0);
+  };
+
+  const handleRemoveFilter = (index: number) => {
+    const newFilters = filters.filter((_, i) => i !== index);
+    const newSearch = { ...search };
+    if (newFilters.length === 0) {
+      delete newSearch.schema;
+    } else {
+      newSearch.schema = encodeSchemaFilters(newFilters);
+    }
+    navigate({
+      search: newSearch,
+      replace: true,
+      resetScroll: false,
+    });
+    setCurrentPage(0);
+  };
+
+  const handleClearAllFilters = () => {
+    const newSearch = { ...search };
+    delete newSearch.schema;
+    navigate({
+      search: newSearch,
+      replace: true,
+      resetScroll: false,
+    });
+    setCurrentPage(0);
+  };
+
+  const handleSchemaSearch = (schemaFields: SchemaFilter[]) => {
+    updateCurrentPage(schemaFields, setCurrentPage);
+
+    if (!isSchemaSearchOpen) {
+      setIsSchemaSearchOpen(true);
+    }
+  };
+
+  const hasSchemaFilters = filters.length > 0;
+
+  const datasetsData = useDatasetsData(currentPage - 1);
+
+  const skip = (currentPage - 1) * TABLE_LENGTH;
+  const nextSkip = skip + TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * TABLE_LENGTH;
+  const requiredSchema = filters.map((f) => `${f.path}:${f.type}`);
+
+  const schemaResult = useQuery({
+    queryKey: [
+      chainId,
+      'protectedDatas',
+      'schemaSearch',
+      currentPage,
+      requiredSchema.join(','),
+    ],
+    queryFn: async () => {
+      const res = await executeDp(schemaSearchPaginatedQuery, chainId, {
+        length: TABLE_LENGTH,
+        skip,
+        nextSkip,
+        nextNextSkip,
+        requiredSchema,
+      });
+      return {
+        protectedDatas: res.protectedDatas ?? [],
+        protectedDatasHasNext: res.protectedDatasHasNext ?? [],
+        protectedDatasHasNextNext: res.protectedDatasHasNextNext ?? [],
+      };
+    },
+    refetchInterval: TABLE_REFETCH_INTERVAL,
+    enabled: !!chainId && hasSchemaFilters,
+    placeholderData: {
+      protectedDatas: [],
+      protectedDatasHasNext: [],
+      protectedDatasHasNextNext: [],
+    },
+  });
+
+  const data = hasSchemaFilters
+    ? (schemaResult.data?.protectedDatas ?? []).map((dataset) =>
+        formatDataset({
+          dataset,
+          schema: dataset.schema,
+          isSchemasLoading: false,
+        })
+      )
+    : datasetsData.data;
+
+  const isLoading = hasSchemaFilters
+    ? schemaResult.isLoading
+    : datasetsData.isLoading;
+  const isRefetching = hasSchemaFilters
+    ? schemaResult.isRefetching
+    : datasetsData.isRefetching;
+  const isError = hasSchemaFilters
+    ? schemaResult.isError
+    : datasetsData.isError;
+  const hasPastError = hasSchemaFilters
+    ? schemaResult.isError || schemaResult.errorUpdateCount > 0
+    : datasetsData.hasPastError;
+  const additionalPages = hasSchemaFilters
+    ? getAdditionalPages(
+        Boolean(schemaResult.data?.protectedDatasHasNext?.length),
+        Boolean(schemaResult.data?.protectedDatasHasNextNext?.length)
+      )
+    : datasetsData.additionalPages;
+
+  const columns = createColumns(handleSchemaSearch);
 
   return (
     <div className="mt-8 grid gap-6">
@@ -100,6 +282,15 @@ function DatasetsRoute() {
           <DatasetBreadcrumbsList />
         </div>
       </div>
+
+      <SchemaSearch
+        filters={filters}
+        onAddFilter={handleAddFilter}
+        onRemoveFilter={handleRemoveFilter}
+        onClearAllFilters={handleClearAllFilters}
+        isOpen={isSchemaSearchOpen}
+        setIsOpen={setIsSchemaSearchOpen}
+      />
 
       {hasPastError && !data.length ? (
         <ErrorAlert message="An error occurred during datasets loading." />

@@ -64,3 +64,44 @@ export const SUPPORTED_CHAINS = [
     isExperimental: true,
   },
 ];
+
+export const datasetSchemaTypeGroups = [
+  {
+    label: 'Common types',
+    items: [
+      { value: 'string' },
+      { value: 'f64' },
+      { value: 'i128' },
+      { value: 'bool' },
+    ],
+  },
+  {
+    label: 'Popular File Types',
+    items: [
+      { value: 'application/pdf' },
+      { value: 'image/jpeg' },
+      { value: 'image/png' },
+      { value: 'image/gif' },
+      { value: 'video/mp4' },
+    ],
+  },
+  {
+    label: 'Other File Types',
+    items: [
+      { value: 'application/octet-stream' },
+      { value: 'application/xml' },
+      { value: 'application/zip' },
+      { value: 'image/bmp' },
+      { value: 'image/webp' },
+      { value: 'video/mpeg' },
+      { value: 'video/x-msvideo' },
+      { value: 'audio/midi' },
+      { value: 'audio/mpeg' },
+      { value: 'audio/x-wav' },
+    ],
+  },
+  {
+    label: 'Legacy Common Types (deprecated)',
+    items: [{ value: 'number' }, { value: 'boolean' }],
+  },
+];

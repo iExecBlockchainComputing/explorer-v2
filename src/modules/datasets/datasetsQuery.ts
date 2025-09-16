@@ -19,8 +19,6 @@ export const datasetsQuery = graphql(`
       }
       timestamp
       name
-      multiaddr
-      checksum
       transfers(orderBy: timestamp, orderDirection: desc) {
         transaction {
           txHash: id

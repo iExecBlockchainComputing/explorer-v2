@@ -87,7 +87,6 @@ export function AddressContributionTable({
     addressAddress,
     currentPage: currentPage - 1,
   });
-  console.log('AddressContributionTable', contribution);
 
   return (
     <div className="space-y-6">

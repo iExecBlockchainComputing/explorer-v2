@@ -39,6 +39,7 @@
     "@tanstack/react-router-devtools": "^1.130.13",
     "@tanstack/react-table": "^8.21.3",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@uiw/react-json-view": "^2.0.0-alpha.37",
     "big.js": "^7.0.1",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",
