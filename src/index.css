@@ -234,71 +234,44 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
 }
 
 .dark {
   --background: var(--color-grey-900);
   --foreground: var(--color-grey-50);
 
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
+  --card: oklch(0.208 0.042 265.755); 
+  --card-foreground: oklch(0.984 0.003 247.858); 
 
-  --popover: var(--color-grey-800);
-  --popover-foreground: var(--color-grey-50);
+  --popover: var(--color-grey-800); 
+  // used in footer ! addressChip ! and Select
+  --popover-foreground: var(--color-grey-50); 
 
-  --tooltip: var(--color-grey-800);
-  --tooltip-foreground: var(--color-grey-50);
-  --tooltip-border: var(--color-grey-700);
+  --tooltip: var(--color-grey-800); 
+  // used in Table ! and Tooltip
+  --tooltip-foreground: var(--color-grey-50); 
+  // used in Tooltip
 
-  --primary: var(--color-yellow-300);
+  --primary: var(--color-yellow-300); 
   --primary-foreground: var(--color-grey-900);
 
-  --secondary: var(--color-grey-600);
-  --secondary-foreground: var(--color-grey-50);
+  --secondary: var(--color-grey-600); 
+  --secondary-foreground: var(--color-grey-50); 
 
   --muted: var(--color-grey-700);
   --muted-foreground: var(--color-grey-300);
 
-  --intermediate: var(--color-grey-500);
-  --intermediate-foreground: var(--color-grey-200);
+  --intermediate: var(--color-grey-500); // used in scrollbar
+  --intermediate-foreground: var(--color-grey-200); // used in footer
 
   --accent: var(--color-grey-600);
   --accent-foreground: var(--color-white);
 
   --destructive: var(--color-red-500);
-  --border: var(--color-white);
+  /* --border: var(--color-white); */
+  --border: var(--color-grey-600); 
   --input: var(--color-grey-400);
   --ring: var(--color-primary);
-
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
 }
 
 @layer base {
