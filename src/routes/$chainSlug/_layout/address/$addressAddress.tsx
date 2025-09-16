@@ -172,7 +172,8 @@ function AddressRoute() {
             <BackButton />
             <AddressBreadcrumbs addressId={addressAddress} />
           </div>
-      <SearcherBar className="py-6" />
+        </div>
+      </div>
 
       <div className="space-y-2">
         {isError && error instanceof NotFoundError ? (
