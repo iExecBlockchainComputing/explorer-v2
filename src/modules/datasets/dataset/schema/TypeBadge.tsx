@@ -104,7 +104,7 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
 }) => {
   if (isLoading && schemaPaths && schemaPaths.length === 0) {
     return (
-      <span className="border-muted-foreground text-muted-foreground rounded-full border px-4 py-2 text-xs">
+      <span className="border-muted-foreground text-muted-foreground inline-flex rounded-full border px-4 py-2 text-xs">
         Loading...
       </span>
     );
