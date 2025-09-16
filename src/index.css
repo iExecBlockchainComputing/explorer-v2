@@ -279,4 +279,8 @@
   *::-webkit-scrollbar-track {
     @apply bg-grey-800 rounded-full;
   }
+
+  *::-webkit-scrollbar-corner {
+    @apply bg-transparent;
+  }
 }
