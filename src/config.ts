@@ -76,10 +76,6 @@ export const datasetSchemaTypeGroups = [
     ],
   },
   {
-    label: 'Legacy Common Types (deprecated)',
-    items: [{ value: 'number' }, { value: 'boolean' }],
-  },
-  {
     label: 'Popular File Types',
     items: [
       { value: 'application/pdf' },
@@ -103,5 +99,9 @@ export const datasetSchemaTypeGroups = [
       { value: 'audio/mpeg' },
       { value: 'audio/x-wav' },
     ],
+  },
+  {
+    label: 'Legacy Common Types (deprecated)',
+    items: [{ value: 'number' }, { value: 'boolean' }],
   },
 ];

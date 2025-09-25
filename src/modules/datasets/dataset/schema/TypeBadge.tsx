@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { Search } from 'lucide-react';
 import React from 'react';
 import {
   Tooltip,
@@ -78,14 +79,14 @@ const renderTooltipContent = (
     ))}
     {onSchemaSearch && (
       <button
-        className="text-xs hover:underline"
+        className="flex justify-center gap-1 pt-2 text-xs hover:underline"
         onClick={(event) => {
           event.stopPropagation();
           event.preventDefault();
           onSchemaSearch(schemaPaths);
         }}
       >
-        Search schemas
+        Search schemas <Search size="16" />
       </button>
     )}
   </div>
@@ -103,7 +104,7 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
 }) => {
   if (isLoading && schemaPaths && schemaPaths.length === 0) {
     return (
-      <span className="border-muted-foreground text-muted-foreground rounded-full border px-4 py-2 text-xs">
+      <span className="border-muted-foreground text-muted-foreground inline-flex rounded-full border px-4 py-2 text-xs">
         Loading...
       </span>
     );
@@ -152,14 +153,14 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
       {badges}
       {!enableTooltip && onSchemaSearch && (
         <button
-          className="text-xs hover:underline"
+          className="flex items-center gap-1 text-xs hover:underline"
           onClick={(event) => {
             event.stopPropagation();
             event.preventDefault();
             onSchemaSearch(schemaPaths);
           }}
         >
-          Search schemas
+          Search schemas <Search size="16" />
         </button>
       )}
     </div>
