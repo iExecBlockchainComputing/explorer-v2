@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.21.0...iexec-explorer-v1.22.0) (2025-09-25)
+
+
+### 🚀 Features
+
+* move searchbar for better responsiveness  ([#68](https://github.com/iExecBlockchainComputing/explorer-v2/issues/68)) ([d4976f5](https://github.com/iExecBlockchainComputing/explorer-v2/commit/d4976f5d92cabe804e13a6c0d5e22b6093f21e95))
+
 ## [1.21.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.20.0...iexec-explorer-v1.21.0) (2025-09-16)
 
 
