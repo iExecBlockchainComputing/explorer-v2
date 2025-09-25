@@ -114,24 +114,25 @@ function DatasetsRoute() {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-6" />
-
-      <div className="space-y-2">
-        <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          <DatasetIcon size={24} />
-          Dataset details
-          {dataset.data && dataset.isError && (
-            <span className="text-muted-foreground text-sm font-light">
-              (outdated)
-            </span>
-          )}
-          {(dataset.isLoading || dataset.isRefetching) && (
-            <LoaderCircle className="animate-spin" />
-          )}
-        </h1>
-        <div className="flex items-center gap-2">
-          <BackButton />
-          <DatasetBreadcrumbs datasetId={datasetAddress} />
+      <div className="mt-6 flex flex-col justify-between lg:flex-row">
+        <SearcherBar className="py-6 lg:order-last lg:mr-0 lg:max-w-md lg:py-0 xl:max-w-xl" />
+        <div className="space-y-2">
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold">
+            <DatasetIcon size={24} />
+            Dataset details
+            {dataset.data && dataset.isError && (
+              <span className="text-muted-foreground text-sm font-light">
+                (outdated)
+              </span>
+            )}
+            {(dataset.isLoading || dataset.isRefetching) && (
+              <LoaderCircle className="animate-spin" />
+            )}
+          </h1>
+          <div className="flex items-center gap-2">
+            <BackButton />
+            <DatasetBreadcrumbs datasetId={datasetAddress} />
+          </div>
         </div>
       </div>
 
