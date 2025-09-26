@@ -175,28 +175,6 @@ function AddressRoute() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        {isError && error instanceof NotFoundError ? (
-          <ErrorAlert message="Address not found." />
-        ) : null}
-        <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
-          <AddressIcon size={24} />
-          Address details
-          {!address && isError && (
-            <span className="text-muted-foreground text-sm font-light">
-              (outdated)
-            </span>
-          )}
-          {(isLoading || isRefetching) && (
-            <LoaderCircle className="animate-spin" />
-          )}
-        </h1>
-        <div className="flex items-center gap-2">
-          <BackButton />
-          <AddressBreadcrumbs addressId={addressAddress} />
-        </div>
-      </div>
-
       {hasPastError && !addressOverview ? (
         <ErrorAlert message="An error occurred during address details loading." />
       ) : (
