@@ -38,7 +38,7 @@ function TableBody({
     <tbody
       data-slot="table-body"
       className={cn(
-        '[&_tr]:border-muted *:bg-background [&_tr]:hover:*:bg-muted [&_tr]:*:duration-150 [&_tr:last-child]:border-0',
+        '[&_tr]:border-muted *:bg-background [&_tr]:hover:*:bg-muted [&_tr:last-child]:border-0',
         zebra && '[&_tr]:odd:*:bg-tooltip [&_tr]:odd:hover:*:bg-muted',
         className
       )}
@@ -64,10 +64,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   return (
     <tr
       data-slot="table-row"
-      className={cn(
-        'data-[state=selected]:bg-muted border-b transition-colors',
-        className
-      )}
+      className={cn('data-[state=selected]:bg-muted border-b', className)}
       {...props}
     />
   );

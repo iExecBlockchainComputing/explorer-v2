@@ -46,7 +46,7 @@ export function SchemaSearch({
   return (
     <div className="rounded-2xl border border-[#303038]">
       <button
-        className={cn('flex w-full items-center gap-2 px-10 py-6 duration-300')}
+        className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}
       >
         <SlidersHorizontal size={16} />
@@ -66,7 +66,7 @@ export function SchemaSearch({
       </button>
       <div
         className={cn(
-          'grid transition-all duration-300',
+          'grid transition-all duration-200',
           isOpen
             ? 'translate-y-0 grid-rows-[1fr]'
             : 'translate-y-2 grid-rows-[0fr]'
@@ -76,7 +76,7 @@ export function SchemaSearch({
           <hr className="border-secondary" />
           <div
             className={cn(
-              'grid transition-all duration-300',
+              'grid transition-all duration-200',
               filters.length > 0
                 ? 'mt-6 translate-y-0 grid-rows-[1fr]'
                 : 'translate-y-2 grid-rows-[0fr]'

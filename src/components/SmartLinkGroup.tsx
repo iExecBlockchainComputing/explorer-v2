@@ -113,7 +113,7 @@ export default function SmartLinkGroup({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ExternalLink className='text-foreground' />
+                  <ExternalLink className="text-foreground" />
                 </a>
               </Button>
             </TooltipTrigger>

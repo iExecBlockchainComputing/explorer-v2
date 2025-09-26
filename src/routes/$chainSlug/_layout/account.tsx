@@ -192,7 +192,7 @@ function RouteComponent() {
       <div className="flex flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div
           className={cn(
-            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-300',
+            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 0 && 'border-primary'
           )}
         >
@@ -224,7 +224,7 @@ function RouteComponent() {
         </div>
         <ArrowRight
           className={cn(
-            'text-primary size-8 flex-none rotate-90 duration-300 md:rotate-0',
+            'text-primary size-8 flex-none rotate-90 duration-200 md:rotate-0',
             currentTab === 1
               ? '-rotate-90 md:rotate-180'
               : currentTab === 2 && 'opacity-0'
@@ -232,7 +232,7 @@ function RouteComponent() {
         />
         <div
           className={cn(
-            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-300',
+            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 1 && 'border-primary'
           )}
         >
