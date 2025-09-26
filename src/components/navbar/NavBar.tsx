@@ -32,7 +32,7 @@ export function Navbar() {
             <span className="border-secondary border-l" />
           </div>
         )}
-        <div className="content hidden md:flex">
+        <div className="content hidden gap-4 md:flex">
           <ModeToggle />
           <ChainSelector />
         </div>
