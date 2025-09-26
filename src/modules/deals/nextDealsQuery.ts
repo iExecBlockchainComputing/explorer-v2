@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const nextDealsQuery = graphql(`
   query NextDeals($length: Int = 20, $skip: Int = 0) {

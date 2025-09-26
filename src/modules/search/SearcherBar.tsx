@@ -1,4 +1,4 @@
-import { execute } from '@/graphql/execute';
+import { execute } from '@/graphql/poco/execute';
 import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';

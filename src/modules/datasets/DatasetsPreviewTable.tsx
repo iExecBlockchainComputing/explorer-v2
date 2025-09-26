@@ -1,5 +1,5 @@
 import { PREVIEW_TABLE_LENGTH, PREVIEW_TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/execute';
+import { execute } from '@/graphql/poco/execute';
 import { cn } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
@@ -7,14 +7,17 @@ import { ChainLink } from '@/components/ChainLink';
 import { DataTable } from '@/components/DataTable';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { Button } from '@/components/ui/button';
+import { useSchemaSearch } from '@/hooks/useSchemaSearch';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { ErrorAlert } from '../ErrorAlert';
 import { datasetsQuery } from './datasetsQuery';
-import { columns } from './datasetsTable/columns';
+import { createColumns } from './datasetsTable/columns';
+import { useDatasetsSchemas } from './hooks/useDatasetsSchemas';
 
 export function DatasetsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
+  const { navigateToDatasets } = useSchemaSearch();
 
   const queryKey = [chainId, 'datasets_preview'];
   const datasets = useQuery({
@@ -29,10 +32,22 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
     placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
   });
 
+  const datasetsArray = datasets.data?.datasets ?? [];
+
+  const datasetAddresses = datasetsArray.map((dataset) => dataset.address);
+  const { schemasMap, isLoading: isSchemasLoading } = useDatasetsSchemas(
+    datasetAddresses,
+    chainId!
+  );
+
+  const columns = createColumns(navigateToDatasets);
+
   const formattedData =
     datasets.data?.datasets.map((dataset) => ({
       ...dataset,
       destination: `/dataset/${dataset.address}`,
+      schema: schemasMap.get(dataset.address) || [],
+      isSchemasLoading,
     })) ?? [];
 
   return (

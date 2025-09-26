@@ -1,4 +1,4 @@
-import { DealsQuery } from '@/graphql/graphql';
+import { DealsQuery } from '@/graphql/poco/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import useUserStore from '@/stores/useUser.store';

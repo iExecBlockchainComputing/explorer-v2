@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const datasetsQuery = graphql(`
   query Datasets(
@@ -19,8 +19,6 @@ export const datasetsQuery = graphql(`
       }
       timestamp
       name
-      multiaddr
-      checksum
       transfers(orderBy: timestamp, orderDirection: desc) {
         transaction {
           txHash: id

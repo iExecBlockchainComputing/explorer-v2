@@ -1,7 +1,7 @@
 {
   "name": "iexec-explorer",
   "private": true,
-  "version": "1.19.0",
+  "version": "1.22.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,9 +11,10 @@
     "format": "prettier --write src",
     "check-format": "prettier --check src",
     "preview": "vite preview",
-    "codegen": "npm run codegen:poco",
+    "codegen": "npm run codegen:poco && npm run codegen:dataprotector",
     "watch:codegen": "npm run watch:codegen:poco",
     "codegen:poco": "graphql-codegen --config codegenPoco.ts",
+    "codegen:dataprotector": "graphql-codegen --config codegenDataprotector.ts",
     "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "@tanstack/react-router-devtools": "^1.130.13",
     "@tanstack/react-table": "^8.21.3",
     "@trivago/prettier-plugin-sort-imports": "^5.2.2",
+    "@uiw/react-json-view": "^2.0.0-alpha.37",
     "big.js": "^7.0.1",
     "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",

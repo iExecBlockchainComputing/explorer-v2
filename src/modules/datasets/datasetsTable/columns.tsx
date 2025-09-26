@@ -1,12 +1,20 @@
-import { DatasetsQuery } from '@/graphql/graphql';
+import { DatasetsQuery } from '@/graphql/poco/graphql';
 import { ColumnDef } from '@tanstack/react-table';
 import CopyButton from '@/components/CopyButton';
 import { formatElapsedTime } from '@/utils/formatElapsedTime';
 import { truncateAddress } from '@/utils/truncateAddress';
+import TypeBadge from '../dataset/schema/TypeBadge';
 
-type Dataset = DatasetsQuery['datasets'][number];
+type Dataset = DatasetsQuery['datasets'][number] & {
+  schema?: Array<{ path?: string | null; type?: string | null }>;
+  isSchemasLoading?: boolean;
+};
 
-export const columns: ColumnDef<Dataset>[] = [
+export const createColumns = (
+  onSchemaSearch?: (
+    schema: Array<{ path?: string | null; type?: string | null }>
+  ) => void
+): ColumnDef<Dataset>[] => [
   {
     accessorKey: 'datasetAddress',
     header: 'Dataset',
@@ -37,6 +45,22 @@ export const columns: ColumnDef<Dataset>[] = [
         </div>
       ) : (
         <span className="text-muted-foreground">No name</span>
+      );
+    },
+  },
+  {
+    accessorKey: 'datasetSchema',
+    header: 'Type',
+    cell: ({ row }) => {
+      const datasetSchema = row.original.schema;
+      const isSchemasLoading = row.original.isSchemasLoading;
+      return (
+        <TypeBadge
+          isLoading={isSchemasLoading}
+          schemaPaths={datasetSchema}
+          enableTooltip={true}
+          onSchemaSearch={onSchemaSearch}
+        />
       );
     },
   },
@@ -79,3 +103,5 @@ export const columns: ColumnDef<Dataset>[] = [
     },
   },
 ];
+
+export const columns = createColumns();

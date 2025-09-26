@@ -1,5 +1,5 @@
 import { TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/execute';
+import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
@@ -85,24 +85,25 @@ function WorkerpoolsRoute() {
 
   return (
     <div className="mt-8 flex flex-col gap-6">
-      <SearcherBar className="py-6" />
-
-      <div className="space-y-2">
-        <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          <WorkerpoolIcon size={24} />
-          Workerpool details
-          {workerpool && isError && (
-            <span className="text-muted-foreground text-sm font-light">
-              (outdated)
-            </span>
-          )}
-          {(isLoading || isRefetching) && (
-            <LoaderCircle className="animate-spin" />
-          )}
-        </h1>
-        <div className="flex items-center gap-2">
-          <BackButton />
-          <WorkerpoolBreadcrumbs workerpoolId={workerpoolAddress} />
+      <div className="mt-6 flex flex-col justify-between lg:flex-row">
+        <SearcherBar className="py-6 lg:order-last lg:mr-0 lg:max-w-md lg:py-0 xl:max-w-xl" />
+        <div className="space-y-2">
+          <h1 className="flex items-center gap-2 text-2xl font-extrabold">
+            <WorkerpoolIcon size={24} />
+            Workerpool details
+            {workerpool && isError && (
+              <span className="text-muted-foreground text-sm font-light">
+                (outdated)
+              </span>
+            )}
+            {(isLoading || isRefetching) && (
+              <LoaderCircle className="animate-spin" />
+            )}
+          </h1>
+          <div className="flex items-center gap-2">
+            <BackButton />
+            <WorkerpoolBreadcrumbs workerpoolId={workerpoolAddress} />
+          </div>
         </div>
       </div>
 

@@ -44,7 +44,7 @@ function Index() {
         <DealsPreviewTable className="3xl:col-span-7 lg:col-span-12" />
         <TasksPreviewTable className="3xl:col-span-5 lg:col-span-6" />
         <AppsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
-        <DatasetsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
+        <DatasetsPreviewTable className="3xl:col-span-4 max-h-[452px] lg:col-span-6" />
         <WorkerpoolsPreviewTable className="3xl:col-span-4 lg:col-span-6" />
       </div>
     </div>

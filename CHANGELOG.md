@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.22.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.21.0...iexec-explorer-v1.22.0) (2025-09-25)
+
+
+### 🚀 Features
+
+* move searchbar for better responsiveness  ([#68](https://github.com/iExecBlockchainComputing/explorer-v2/issues/68)) ([d4976f5](https://github.com/iExecBlockchainComputing/explorer-v2/commit/d4976f5d92cabe804e13a6c0d5e22b6093f21e95))
+
+## [1.21.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.20.0...iexec-explorer-v1.21.0) (2025-09-16)
+
+
+### 🚀 Features
+
+* add type and structure on datasets ([#67](https://github.com/iExecBlockchainComputing/explorer-v2/issues/67)) ([7eea17f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/7eea17fbd9c371767b303c5465cac479935153ad))
+
+## [1.20.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.19.0...iexec-explorer-v1.20.0) (2025-09-16)
+
+
+### 🚀 Features
+
+* add dataprotector subgraph integration and update poco queries ([#65](https://github.com/iExecBlockchainComputing/explorer-v2/issues/65)) ([4edb4bf](https://github.com/iExecBlockchainComputing/explorer-v2/commit/4edb4bfd9bf764558bee34185b372a0a926ccba3))
+
 ## [1.19.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.18.0...iexec-explorer-v1.19.0) (2025-09-10)
 
 

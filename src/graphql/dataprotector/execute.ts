@@ -10,7 +10,7 @@ export async function execute<TResult, TVariables>(
     throw Error('Missing chainId')
   }
   const subgraphUrl = getSubgraphUrl(chainId);
-  const response = await fetch(subgraphUrl, {
+  const response = await fetch(subgraphUrl.dataprotector, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
