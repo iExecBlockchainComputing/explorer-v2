@@ -35,15 +35,15 @@ export const Stepper: React.FC<StepperProps> = ({
                 <span
                   className={cn(
                     'absolute top-1/2 right-0 h-px w-1/2 translate-x-1/2 -translate-y-1/2 rounded-full',
-                    isCompleted ? 'bg-white' : 'bg-grey-400'
+                    isCompleted ? 'bg-foreground' : 'bg-intermediate'
                   )}
                 />
               )}
               <div
                 className={cn(
                   'mx-auto flex size-8 items-center justify-center rounded-full',
-                  isActive ? 'bg-white text-black' : 'bg-grey-700',
-                  isCompleted && 'bg-primary text-black'
+                  isActive ? 'bg-foreground text-background' : 'bg-muted',
+                  isCompleted && 'bg-primary text-background'
                 )}
                 aria-label={`Step ${index + 1}`}
               >
@@ -57,7 +57,7 @@ export const Stepper: React.FC<StepperProps> = ({
             <span
               className={cn(
                 'mt-2 text-center',
-                isActive ? 'text-white' : 'text-grey-500'
+                isActive ? 'text-foreground' : 'text-intermediate'
               )}
             >
               {step}

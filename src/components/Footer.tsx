@@ -104,7 +104,7 @@ export function Footer({ className }: { className?: string }) {
         <SocialLinksItems className="xl:hidden" />
       </div>
 
-      <hr className="border-grey-500" />
+      <hr className="border-intermediate" />
 
       <div className="flex justify-between">
         <p className="w-full text-center text-sm xl:text-left">
