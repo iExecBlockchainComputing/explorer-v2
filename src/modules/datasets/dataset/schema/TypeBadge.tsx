@@ -79,7 +79,7 @@ const renderTooltipContent = (
     ))}
     {onSchemaSearch && (
       <button
-        className="flex justify-center gap-1 pt-2 text-xs hover:underline"
+        className="text-foreground flex justify-center gap-1 pt-2 text-xs hover:underline"
         onClick={(event) => {
           event.stopPropagation();
           event.preventDefault();
@@ -128,7 +128,7 @@ const TypeBadge: React.FC<TypeBadgeProps> = ({
     hiddenCount > 0 ? (
       <span
         key="more"
-        className="w-fit cursor-pointer text-xs text-gray-500 hover:bg-gray-100"
+        className="text-muted-foreground w-fit cursor-pointer text-xs"
       >
         +{pluralize(hiddenCount, 'other')}
       </span>

@@ -5,7 +5,7 @@ function Table({ className, ...props }: React.ComponentProps<'table'>) {
   return (
     <div
       data-slot="table-container"
-      className="border-grey-600 relative w-full overflow-x-auto rounded-3xl border"
+      className="border-secondary relative w-full overflow-x-auto rounded-3xl border"
     >
       <table
         data-slot="table"
@@ -38,8 +38,8 @@ function TableBody({
     <tbody
       data-slot="table-body"
       className={cn(
-        '[&_tr]:border-muted *:bg-grey-900 [&_tr]:hover:*:bg-grey-700 [&_tr]:*:duration-150 [&_tr:last-child]:border-0',
-        zebra && '[&_tr]:odd:*:bg-grey-800 [&_tr]:odd:hover:*:bg-grey-700',
+        '[&_tr]:border-muted *:bg-background [&_tr]:hover:*:bg-muted [&_tr:last-child]:border-0',
+        zebra && '[&_tr]:odd:*:bg-tooltip [&_tr]:odd:hover:*:bg-muted',
         className
       )}
       {...props}
@@ -64,10 +64,7 @@ function TableRow({ className, ...props }: React.ComponentProps<'tr'>) {
   return (
     <tr
       data-slot="table-row"
-      className={cn(
-        'data-[state=selected]:bg-muted border-b transition-colors',
-        className
-      )}
+      className={cn('data-[state=selected]:bg-muted border-b', className)}
       {...props}
     />
   );

@@ -39,7 +39,7 @@ export function WorkerpoolsPreviewTable({ className }: { className?: string }) {
     <div className={cn(className, 'flex flex-col gap-2')}>
       <div className="flex items-center justify-between">
         <h2 className="flex items-center gap-2 font-sans">
-          <WorkerpoolIcon size={20} className="text-secondary" />
+          <WorkerpoolIcon size={20} className="text-foreground" />
           Latest workerpools deployed
           {workerpools.data && workerpools.isError && (
             <span className="text-muted-foreground text-sm font-light">
