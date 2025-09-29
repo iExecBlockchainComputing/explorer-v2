@@ -181,13 +181,9 @@ function RouteComponent() {
         <BackButton />
         <AccountBreadcrumbs />
       </div>
-      <div className="flex flex-col items-center gap-2">
-        <h1 className="flex items-center gap-2 text-2xl font-extrabold">
-          IExec Wallet Manager
-        </h1>
-        <span>{truncateAddress(userAddress!, { startLen: 8, endLen: 8 })}</span>
-        <ChainSelector />
-      </div>
+      <h1 className="w-full text-center text-2xl font-extrabold">
+        IExec Wallet Manager
+      </h1>
 
       <div className="flex flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div
