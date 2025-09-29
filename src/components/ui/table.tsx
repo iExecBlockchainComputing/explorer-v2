@@ -38,8 +38,9 @@ function TableBody({
     <tbody
       data-slot="table-body"
       className={cn(
-        '[&_tr]:border-muted *:bg-background [&_tr]:hover:*:bg-muted [&_tr:last-child]:border-0',
-        zebra && '[&_tr]:odd:*:bg-tooltip [&_tr]:odd:hover:*:bg-muted',
+        '[&_tr]:border-muted *:bg-background [&_tr]:hover:*:bg-tooltip dark:[&_tr]:hover:*:bg-muted [&_tr:last-child]:border-0',
+        zebra &&
+          'dark:[&_tr]:odd:*:bg-tooltip [&_tr]:hover:*:bg-tooltip dark:[&_tr]:odd:hover:*:bg-muted [&_tr]:odd:*:bg-[#fafaff]',
         className
       )}
       {...props}

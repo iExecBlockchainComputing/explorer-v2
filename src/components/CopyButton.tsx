@@ -64,7 +64,7 @@ const CopyButton = ({
             </button>
           </span>
         </TooltipTrigger>
-        <TooltipContent side="top" className="max-w-sm">
+        <TooltipContent side="top" className="max-w-sm text-inherit">
           {tooltipMessage}
         </TooltipContent>
       </Tooltip>
