@@ -44,7 +44,7 @@ export function SchemaSearch({
   };
 
   return (
-    <div className="rounded-2xl border border-[#303038]">
+    <div className="rounded-2xl border">
       <button
         className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}

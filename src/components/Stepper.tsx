@@ -43,7 +43,7 @@ export const Stepper: React.FC<StepperProps> = ({
                 className={cn(
                   'mx-auto flex size-8 items-center justify-center rounded-full',
                   isActive ? 'bg-foreground text-background' : 'bg-muted',
-                  isCompleted && 'bg-primary text-background'
+                  isCompleted && 'bg-brand text-background'
                 )}
                 aria-label={`Step ${index + 1}`}
               >

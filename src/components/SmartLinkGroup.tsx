@@ -76,7 +76,7 @@ export default function SmartLinkGroup({
       {!isCurrentPage ? (
         <Button
           variant="link"
-          className="h-auto gap-1 p-0 text-sm text-orange-200"
+          className="h-auto gap-1 p-0 text-sm"
           asChild
         >
           <Link

@@ -149,6 +149,9 @@
   --color-tooltip: var(--tooltip);
   --color-tooltip-foreground: var(--tooltip-foreground);
 
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 
@@ -215,8 +218,11 @@
   --tooltip-foreground: var(--color-grey-800);
   --tooltip-border: var(--color-grey-700);
 
-  --primary: var(--color-yellow-300);
-  --primary-foreground: var(--primary-foreground);
+  --brand: var(--color-yellow-300);
+  --brand-foreground: var(--primary-foreground);
+
+  --primary: #183ee9;
+  --primary-foreground: #f4f7fc;
 
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -230,8 +236,8 @@
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
 
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
+  --destructive: var(--color-red-400);
+  --border: var(--color-grey-200);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
 }
@@ -240,36 +246,35 @@
   --background: var(--color-grey-900);
   --foreground: var(--color-grey-50);
 
-  --card: oklch(0.208 0.042 265.755); 
-  --card-foreground: oklch(0.984 0.003 247.858); 
+  --card: oklch(0.208 0.042 265.755);
+  --card-foreground: oklch(0.984 0.003 247.858);
 
-  --popover: var(--color-grey-800); 
-  // used in footer ! addressChip ! and Select
-  --popover-foreground: var(--color-grey-50); 
+  --popover: var(--color-grey-800);
+  --popover-foreground: var(--color-grey-50);
 
-  --tooltip: var(--color-grey-800); 
-  // used in Table ! and Tooltip
-  --tooltip-foreground: var(--color-grey-50); 
-  // used in Tooltip
+  --tooltip: var(--color-grey-800);
+  --tooltip-foreground: var(--color-grey-50);
 
-  --primary: var(--color-yellow-300); 
-  --primary-foreground: var(--color-grey-900);
+  --brand: var(--color-yellow-300);
+  --brand-foreground: var(--color-grey-900);
 
-  --secondary: var(--color-grey-600); 
-  --secondary-foreground: var(--color-grey-50); 
+  --primary: #c0cbff;
+  --primary-foreground: #f4f7fc;
+
+  --secondary: var(--color-grey-600);
+  --secondary-foreground: var(--color-grey-50);
 
   --muted: var(--color-grey-700);
-  --muted-foreground: var(--color-grey-300);
+  --muted-foreground: var(--color-grey-200);
 
-  --intermediate: var(--color-grey-500); // used in scrollbar
-  --intermediate-foreground: var(--color-grey-200); // used in footer
+  --intermediate: var(--color-grey-500);
+  --intermediate-foreground: var(--color-grey-200);
 
   --accent: var(--color-grey-600);
   --accent-foreground: var(--color-white);
 
   --destructive: var(--color-red-500);
-  /* --border: var(--color-white); */
-  --border: var(--color-grey-600); 
+  --border: var(--color-grey-600);
   --input: var(--color-grey-400);
   --ring: var(--color-primary);
 }
