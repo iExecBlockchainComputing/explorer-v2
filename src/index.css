@@ -219,7 +219,7 @@
   --tooltip-border: var(--color-grey-700);
 
   --brand: var(--color-yellow-300);
-  --brand-foreground: var(--primary-foreground);
+  --brand-foreground: var(--color-grey-900);
 
   --primary: #183ee9;
   --primary-foreground: #f4f7fc;
@@ -228,7 +228,7 @@
   --secondary-foreground: oklch(0.205 0 0);
 
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
+  --muted-foreground: var(--color-grey-500);
 
   --intermediate: var(--color-grey-200);
   --intermediate-foreground: var(--color-grey-500);
