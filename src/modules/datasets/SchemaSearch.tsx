@@ -49,14 +49,15 @@ export function SchemaSearch({
         className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <SlidersHorizontal size={16} />
-        <p className="flex-1 text-left font-bold">
-          Schema Search{' '}
-          <span className="text-muted-foreground font-normal">
+        <div>
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal size={16} />
+            <p className="text-left font-bold">Schema Search </p>
+          </div>
+          <p className="text-muted-foreground mt-2 font-normal">
             Add field types to filter datasets by their schema structure.
-            Filters are applied automatically.
-          </span>
-        </p>
+          </p>
+        </div>
         <ChevronDown
           className={cn(
             'ml-auto transition-transform',
@@ -162,7 +163,7 @@ export function SchemaSearch({
               onClick={handleAdd}
               disabled={!inputPathValue.trim() || !selectedType}
             >
-              Add filter
+              {filters.length > 0 ? 'Add filter' : 'Apply filter'}
               <Plus size={20} />
             </Button>
           </div>
