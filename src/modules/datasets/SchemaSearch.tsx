@@ -72,7 +72,7 @@ export function SchemaSearch({
             : 'translate-y-2 grid-rows-[0fr]'
         )}
       >
-        <div className={cn('text-grey-200 grid overflow-hidden px-6 md:px-10')}>
+        <div className={cn('grid overflow-hidden px-6 md:px-10')}>
           <hr className="border-secondary" />
           <div
             className={cn(
@@ -83,7 +83,9 @@ export function SchemaSearch({
             )}
           >
             <div className="flex flex-wrap items-center gap-2.5 overflow-hidden">
-              Filter by field types:{' '}
+              <span className="text-muted-foreground">
+                Filter by field types:
+              </span>{' '}
               {filters.map((schema, index) => {
                 const borderColor = borderTypeColor.find((color) =>
                   color.keywords.some((keyword) =>
