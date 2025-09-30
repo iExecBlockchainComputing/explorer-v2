@@ -74,11 +74,7 @@ export default function SmartLinkGroup({
   return (
     <div className="content flex items-center gap-1">
       {!isCurrentPage ? (
-        <Button
-          variant="link"
-          className="h-auto gap-1 p-0 text-sm"
-          asChild
-        >
+        <Button variant="link" className="h-auto gap-1 p-0 text-sm" asChild>
           <Link
             to={`/${getChainFromId(chainId)?.slug}/${basePath[type]}/${addressOrId}`}
           >
