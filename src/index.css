@@ -239,7 +239,7 @@
   --destructive: var(--color-red-400);
   --border: var(--color-grey-200);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --ring: var(--color-primary);
 }
 
 .dark {
