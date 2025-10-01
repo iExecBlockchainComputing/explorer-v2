@@ -7,7 +7,6 @@ type JsonBlockProps = {
   className?: string;
   collapsed?: number;
   enableClipboard?: boolean;
-  copyText?: string;
 };
 
 const JsonBlock = ({
@@ -15,7 +14,6 @@ const JsonBlock = ({
   className,
   collapsed = 1,
   enableClipboard = true,
-  copyText = 'Copy',
 }: JsonBlockProps) => {
   let jsonData: object;
   let rawToCopy: string;
