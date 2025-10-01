@@ -183,10 +183,10 @@ function RouteComponent() {
         IExec Wallet Manager
       </h1>
 
-      <div className="flex flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div
           className={cn(
-            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-200',
+            'border-intermediate w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 0 && 'border-primary'
           )}
         >
@@ -226,7 +226,7 @@ function RouteComponent() {
         />
         <div
           className={cn(
-            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-200',
+            'border-intermediate w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 1 && 'border-primary'
           )}
         >
@@ -257,7 +257,7 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
         <Tabs
           currentTab={currentTab}
           onTabChange={setCurrentTab}
