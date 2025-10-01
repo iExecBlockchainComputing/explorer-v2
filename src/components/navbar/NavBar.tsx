@@ -21,7 +21,7 @@ export function Navbar() {
     <nav className="flex items-center justify-between py-6">
       <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
-        <span className="hidden sm:block">iExec Explorer</span>
+        <span className="hidden lg:block">iExec Explorer</span>
       </ChainLink>
       <div className="mr-8 flex items-center gap-4 md:mr-0">
         {isConnected && (

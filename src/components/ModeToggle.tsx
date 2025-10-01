@@ -7,7 +7,7 @@ export function ModeToggle() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="rounded-full border p-1">
+    <div className="flex rounded-full border p-1">
       <Button
         variant={'link'}
         size={'none'}
