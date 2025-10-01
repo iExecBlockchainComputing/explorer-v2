@@ -80,7 +80,9 @@ export default function SmartLinkGroup({
           >
             <span className="hidden md:inline">{label ?? addressOrId}</span>
             <span className="inline md:hidden">
-              {(label ? truncateAddress(label) : '') ?? addressOrId}
+              {(label
+                ? truncateAddress(label)
+                : truncateAddress(addressOrId)) ?? addressOrId}
             </span>
             {ens ? `(${ens})` : ''}
           </Link>
@@ -89,7 +91,8 @@ export default function SmartLinkGroup({
         <div>
           <span className="hidden md:inline">{label ?? addressOrId}</span>
           <span className="inline md:hidden">
-            {(label ? truncateAddress(label) : '') ?? addressOrId}
+            {(label ? truncateAddress(label) : truncateAddress(addressOrId)) ??
+              addressOrId}
           </span>
           {ens ? `(${ens})` : ''}
         </div>
