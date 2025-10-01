@@ -10,7 +10,7 @@ import { AddressChip } from './AddressChip.tsx';
 import { ChainSelector } from './ChainSelector.tsx';
 
 export function Navbar() {
-  const { isConnected, address } = useUserStore();
+  const { isConnected, address: userAddress } = useUserStore();
   const { logout, login } = useLoginLogout();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const handleMenuToggle = () => {
@@ -27,6 +27,11 @@ export function Navbar() {
         {isConnected && (
           <div className="hidden md:flex">
             <Button variant="link" asChild className="text-foreground">
+              <ChainLink to={`/address/${userAddress}?from=my_activity`}>
+                My activity
+              </ChainLink>
+            </Button>
+            <Button variant="link" asChild className="text-foreground">
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
             <span className="border-secondary border-l" />
@@ -38,7 +43,7 @@ export function Navbar() {
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
-            <AddressChip address={address!} />
+            <AddressChip address={userAddress!} />
 
             <button
               type="button"
@@ -81,7 +86,7 @@ export function Navbar() {
             </ChainLink>
             {isConnected ? (
               <div className="flex max-w-[1260px] items-center gap-2">
-                <AddressChip address={address!} />
+                <AddressChip address={userAddress!} />
 
                 <button
                   type="button"
