@@ -99,11 +99,7 @@ export default function SmartLinkGroup({
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="link"
-                className="h-auto p-0! text-sm text-white"
-                asChild
-              >
+              <Button variant="link" className="h-auto p-0! text-sm" asChild>
                 <a
                   href={`${getBlockExplorerUrl(chainId)}/${blockExplorerPath[type]}`}
                   target="_blank"

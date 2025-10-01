@@ -63,7 +63,7 @@ export function DownloadResult({
     <>
       <Button
         variant="link"
-        className={cn('text-white underline', className)}
+        className={cn('text-foreground underline', className)}
         onClick={() => downloadTaskResult()}
       >
         Download task result
