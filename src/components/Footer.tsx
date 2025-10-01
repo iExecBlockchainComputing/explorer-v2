@@ -73,7 +73,7 @@ export function Footer({ className }: { className?: string }) {
   return (
     <footer
       className={cn(
-        'bg-popover border-muted text-intermediate-foreground flex flex-col gap-6 rounded-3xl border px-6 py-10 sm:px-10 lg:px-20',
+        'text-intermediate-foreground flex flex-col gap-6 py-10',
         className
       )}
     >

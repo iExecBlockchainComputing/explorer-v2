@@ -259,7 +259,7 @@
   --brand-foreground: var(--color-grey-900);
 
   --primary: #c0cbff;
-  --primary-foreground: #f4f7fc;
+  --primary-foreground: var(--color-muted);
 
   --secondary: var(--color-grey-600);
   --secondary-foreground: var(--color-grey-50);

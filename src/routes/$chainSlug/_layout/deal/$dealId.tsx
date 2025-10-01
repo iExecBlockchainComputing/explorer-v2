@@ -56,7 +56,6 @@ function useDealData(dealId: string, chainId: number) {
 }
 
 function DealsRoute() {
-  // Use useTabParam to sync tab index with URL (dealTab param, using tab label)
   const tabLabels = ['DETAILS', 'TASKS'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
   const { chainId, isConnected } = useUserStore();

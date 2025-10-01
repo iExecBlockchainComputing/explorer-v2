@@ -10,7 +10,7 @@ import { AddressChip } from './AddressChip.tsx';
 import { ChainSelector } from './ChainSelector.tsx';
 
 export function Navbar() {
-  const { isConnected, address } = useUserStore();
+  const { isConnected, address: userAddress } = useUserStore();
   const { logout, login } = useLoginLogout();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const handleMenuToggle = () => {
@@ -21,11 +21,16 @@ export function Navbar() {
     <nav className="flex items-center justify-between py-6">
       <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
-        <span className="hidden sm:block">iExec Explorer</span>
+        <span className="hidden lg:block">iExec Explorer</span>
       </ChainLink>
       <div className="mr-8 flex items-center gap-4 md:mr-0">
         {isConnected && (
           <div className="hidden md:flex">
+            <Button variant="link" asChild className="text-foreground">
+              <ChainLink to={`/address/${userAddress}?from=my_activity`}>
+                My activity
+              </ChainLink>
+            </Button>
             <Button variant="link" asChild className="text-foreground">
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
@@ -38,7 +43,7 @@ export function Navbar() {
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
-            <AddressChip address={address!} />
+            <AddressChip address={userAddress!} />
 
             <button
               type="button"
@@ -81,7 +86,7 @@ export function Navbar() {
             </ChainLink>
             {isConnected ? (
               <div className="flex max-w-[1260px] items-center gap-2">
-                <AddressChip address={address!} />
+                <AddressChip address={userAddress!} />
 
                 <button
                   type="button"
