@@ -40,7 +40,7 @@ export function AddressChip({ address }: { address: string }) {
       <Tooltip open={showTooltip}>
         <TooltipTrigger asChild>
           <Button
-            className="dark:bg-popover bg-brand-foreground hover:bg-muted text-primary dark:text-brand duration-300"
+            className="dark:bg-popover bg-primary-foreground hover:bg-muted text-primary dark:text-brand duration-300"
             variant="secondary"
             onClick={handleCopy}
             onMouseEnter={handleMouseEnter}
