@@ -50,7 +50,7 @@ export function Tabs({
   return (
     <div
       ref={containerRef}
-      className="bg-muted relative flex w-fit max-w-full items-center gap-1 overflow-x-auto rounded-full p-1"
+      className="bg-primary-foreground relative flex w-fit max-w-full items-center gap-1 overflow-x-auto rounded-full p-1"
     >
       <div
         className={cn(
