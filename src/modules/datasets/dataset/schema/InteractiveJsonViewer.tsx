@@ -64,12 +64,13 @@ export function InteractiveJsonViewer({
         collapsed={2}
         style={
           {
-            color: 'white',
-            '--w-rjv-quotes-string-color': '#ffc480', // Override string color to light gray
+            color: 'var(--color-foreground)',
+            '--w-rjv-key-string': 'var(--color-foreground)', // Override key color to light gray
+            '--w-rjv-line-color': 'var(--color-foreground)',
+            '--w-rjv-quotes-string-color': 'var(--color-primary)', // Override string color to light gray
+            '--w-rjv-type-string-color': 'var(--color-primary)',
             '--w-rjv-curlybraces-color': '#728cff', // Override curly braces color to light gray
             '--w-rjv-quotes-color': '#728cff', // Override quotes color to light gray
-            '--w-rjv-key-string': 'white', // Override key color to light gray
-            '--w-rjv-type-string-color': '#ffc480',
             '--w-rjv-indent-width': '24px', // Increase indentation for nested keys
           } as React.CSSProperties
         }

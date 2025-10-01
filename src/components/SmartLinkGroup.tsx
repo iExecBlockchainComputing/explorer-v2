@@ -74,11 +74,7 @@ export default function SmartLinkGroup({
   return (
     <div className="content flex items-center gap-1">
       {!isCurrentPage ? (
-        <Button
-          variant="link"
-          className="h-auto gap-1 p-0 text-sm text-orange-200"
-          asChild
-        >
+        <Button variant="link" className="h-auto gap-1 p-0 text-sm" asChild>
           <Link
             to={`/${getChainFromId(chainId)?.slug}/${basePath[type]}/${addressOrId}`}
           >
@@ -103,17 +99,13 @@ export default function SmartLinkGroup({
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button
-                variant="link"
-                className="h-auto p-0! text-sm text-white"
-                asChild
-              >
+              <Button variant="link" className="h-auto p-0! text-sm" asChild>
                 <a
                   href={`${getBlockExplorerUrl(chainId)}/${blockExplorerPath[type]}`}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ExternalLink />
+                  <ExternalLink className="text-foreground" />
                 </a>
               </Button>
             </TooltipTrigger>

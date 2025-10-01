@@ -18,7 +18,7 @@ export const SUPPORTED_CHAINS = [
     id: 134,
     name: 'Bellecour',
     slug: 'bellecour',
-    color: '#F4942566',
+    color: '#95A4FC',
     icon: iexecLogo,
     blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
     subgraphUrl: {

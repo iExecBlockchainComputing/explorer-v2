@@ -1,7 +1,8 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *)); */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
   --color-*: initial;
@@ -130,6 +131,7 @@
 }
 
 @theme inline {
+  --radius: 0.625rem;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -147,6 +149,9 @@
   --color-tooltip: var(--tooltip);
   --color-tooltip-foreground: var(--tooltip-foreground);
 
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
 
@@ -155,6 +160,9 @@
 
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+
+  --color-intermediate: var(--intermediate);
+  --color-intermediate-foreground: var(--intermediate-foreground);
 
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
@@ -197,7 +205,44 @@
 }
 
 :root {
-  --radius: 0.625rem;
+  --background: var(--color-white);
+  --foreground: var(--color-grey-900);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+
+  --popover: var(--color-grey-50);
+  --popover-foreground: var(--color-grey-800);
+
+  --tooltip: var(--color-grey-50);
+  --tooltip-foreground: var(--color-grey-800);
+  --tooltip-border: var(--color-grey-700);
+
+  --brand: var(--color-yellow-300);
+  --brand-foreground: var(--color-grey-900);
+
+  --primary: #183ee9;
+  --primary-foreground: #f4f7fc;
+
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: var(--color-grey-500);
+
+  --intermediate: var(--color-grey-200);
+  --intermediate-foreground: var(--color-grey-500);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+
+  --destructive: var(--color-red-400);
+  --border: var(--color-grey-200);
+  --input: oklch(0.922 0 0);
+  --ring: var(--color-primary);
+}
+
+.dark {
   --background: var(--color-grey-900);
   --foreground: var(--color-grey-50);
 
@@ -207,45 +252,31 @@
   --popover: var(--color-grey-800);
   --popover-foreground: var(--color-grey-50);
 
-  --tooltip: var(--color-grey-600);
+  --tooltip: var(--color-grey-800);
   --tooltip-foreground: var(--color-grey-50);
-  --tooltip-border: var(--color-grey-700);
 
-  --primary: var(--color-yellow-300);
-  --primary-foreground: var(--color-grey-900);
+  --brand: var(--color-yellow-300);
+  --brand-foreground: var(--color-grey-900);
+
+  --primary: #c0cbff;
+  --primary-foreground: #f4f7fc;
 
   --secondary: var(--color-grey-600);
   --secondary-foreground: var(--color-grey-50);
 
   --muted: var(--color-grey-700);
-  --muted-foreground: var(--color-grey-300);
+  --muted-foreground: var(--color-grey-200);
+
+  --intermediate: var(--color-grey-500);
+  --intermediate-foreground: var(--color-grey-200);
 
   --accent: var(--color-grey-600);
   --accent-foreground: var(--color-white);
 
   --destructive: var(--color-red-500);
-  --border: var(--color-white);
+  --border: var(--color-grey-600);
   --input: var(--color-grey-400);
   --ring: var(--color-primary);
-
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
-}
-
-.dark {
-  /* TODO support light and dark theme */
 }
 
 @layer base {
@@ -255,13 +286,16 @@
   body {
     @apply bg-background text-foreground;
   }
-  h1,
+  h1 {
+    @apply font-anybody font-semibold;
+  }
+
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-anybody font-semibold;
+    @apply font-sans font-semibold;
   }
   button,
   a {
@@ -274,13 +308,9 @@
   }
 
   *::-webkit-scrollbar-thumb {
-    @apply bg-grey-500 rounded-full;
+    @apply bg-intermediate rounded-full;
   }
   *::-webkit-scrollbar-track {
-    @apply bg-grey-800 rounded-full;
-  }
-
-  *::-webkit-scrollbar-corner {
-    @apply bg-transparent;
+    @apply bg-popover rounded-full;
   }
 }

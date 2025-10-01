@@ -44,9 +44,9 @@ export function SchemaSearch({
   };
 
   return (
-    <div className="rounded-2xl border border-[#303038]">
+    <div className="rounded-2xl border">
       <button
-        className={cn('flex w-full items-center gap-2 px-10 py-6 duration-300')}
+        className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}
       >
         <SlidersHorizontal size={16} />
@@ -66,24 +66,26 @@ export function SchemaSearch({
       </button>
       <div
         className={cn(
-          'grid transition-all duration-300',
+          'grid transition-all duration-200',
           isOpen
             ? 'translate-y-0 grid-rows-[1fr]'
             : 'translate-y-2 grid-rows-[0fr]'
         )}
       >
-        <div className={cn('text-grey-200 grid overflow-hidden px-6 md:px-10')}>
+        <div className={cn('grid overflow-hidden px-6 md:px-10')}>
           <hr className="border-secondary" />
           <div
             className={cn(
-              'grid transition-all duration-300',
+              'grid transition-all duration-200',
               filters.length > 0
                 ? 'mt-6 translate-y-0 grid-rows-[1fr]'
                 : 'translate-y-2 grid-rows-[0fr]'
             )}
           >
             <div className="flex flex-wrap items-center gap-2.5 overflow-hidden">
-              Filter by field types:{' '}
+              <span className="text-muted-foreground">
+                Filter by field types:
+              </span>{' '}
               {filters.map((schema, index) => {
                 const borderColor = borderTypeColor.find((color) =>
                   color.keywords.some((keyword) =>
@@ -101,14 +103,14 @@ export function SchemaSearch({
                     <span className={cn('inline-block')}>{schema.path}</span>
                     <span className={cn('inline-block')}>: {schema.type}</span>
                     <button onClick={() => onRemoveFilter(index)}>
-                      <X className="ml-1 text-white" size={12} />
+                      <X className="ml-1" size={12} />
                     </button>
                   </span>
                 );
               })}
               {filters.length > 0 && (
                 <button
-                  className="text-xs text-white"
+                  className="text-xs"
                   type="button"
                   onClick={onClearAllFilters}
                 >
@@ -126,13 +128,13 @@ export function SchemaSearch({
               value={inputPathValue}
               onChange={(e) => setInputPathValue(e.target.value)}
               className={cn(
-                'bg-muted border-secondary col-span-2 w-full rounded-2xl px-4 py-6 text-sm text-white'
+                'bg-muted border-secondary col-span-2 w-full rounded-2xl px-4 py-6 text-sm'
               )}
               placeholder="Field path (e.g email, telegram_chatId, nested)"
             />
 
             <Select value={selectedType} onValueChange={setSelectedType}>
-              <SelectTrigger className="bg-muted border-secondary w-full rounded-2xl px-4 py-6 text-sm text-white sm:max-w-1/3">
+              <SelectTrigger className="bg-muted border-secondary w-full rounded-2xl px-4 py-6 text-sm sm:max-w-1/3">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent className="bg-muted border-secondary overflow-visible p-6">
@@ -141,13 +143,13 @@ export function SchemaSearch({
                     key={group.label}
                     className="overflow-visible not-first:mt-2"
                   >
-                    <SelectLabel className="text-grey-300 text-sm">
+                    <SelectLabel className="text-muted-foreground text-sm">
                       {group.label}
                     </SelectLabel>
                     {group.items.map((type) => (
                       <SelectItem
                         key={type.value}
-                        className="text-base font-bold data-[state=checked]:text-yellow-400"
+                        className="data-[state=checked]:text-primary text-base font-bold"
                         value={type.value}
                       >
                         {type.value}
