@@ -5,10 +5,13 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import TaskIcon from '@/components/icons/TaskIcon';
 import { BackButton } from '@/components/ui/BackButton';
+import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { Tabs } from '@/modules/Tabs';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
+import { TaskRawData } from '@/modules/tasks/task/TaskRawData';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
@@ -64,6 +67,8 @@ function TasksRoute() {
     isValid,
     error,
   } = useTaskData((taskId as string).toLowerCase(), chainId!);
+  const tabLabels = ['DETAILS', 'RAW DATA'];
+  const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
 
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
@@ -99,11 +104,20 @@ function TasksRoute() {
         </div>
       </div>
 
-      {hasPastError && !taskDetails ? (
-        <ErrorAlert message="An error occurred during task details loading." />
-      ) : (
-        <DetailsTable details={taskDetails || {}} />
-      )}
+      <Tabs
+        currentTab={currentTab}
+        tabLabels={tabLabels}
+        onTabChange={setCurrentTab}
+      />
+      <div>
+        {currentTab === 0 &&
+          (hasPastError && !taskDetails ? (
+            <ErrorAlert message="An error occurred during task details loading." />
+          ) : (
+            <DetailsTable details={taskDetails || {}} />
+          ))}
+        {currentTab === 1 && <TaskRawData taskId={taskId} />}
+      </div>
     </div>
   );
 }
