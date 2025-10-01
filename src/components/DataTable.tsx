@@ -1,3 +1,4 @@
+import { useNavigate, useParams } from '@tanstack/react-router';
 import {
   ColumnDef,
   flexRender,
@@ -12,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { ChainLink } from './ChainLink';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -27,11 +27,45 @@ export function DataTable<TData, TValue>({
   tableLength = 10,
   isLoading,
 }: DataTableProps<TData, TValue>) {
+  const { chainSlug } = useParams({ from: '/$chainSlug' });
+  const navigate = useNavigate();
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  const handleRowClick = (
+    destination: string,
+    event: React.MouseEvent | React.KeyboardEvent
+  ) => {
+    // Don't navigate if clicking on buttons, links, or other interactive elements
+    const target = event.target as HTMLElement;
+    if (
+      target.tagName === 'BUTTON' ||
+      target.tagName === 'A' ||
+      target.closest('button, a')
+    ) {
+      return;
+    }
+
+    const path =
+      destination === '/'
+        ? `/${chainSlug}`
+        : `/${chainSlug}${destination.startsWith('/') ? destination : `/${destination}`}`;
+    navigate({ to: path });
+  };
+
+  const handleRowKeyDown = (
+    destination: string,
+    event: React.KeyboardEvent
+  ) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleRowClick(destination, event);
+    }
+  };
 
   return (
     <Table>
@@ -54,22 +88,27 @@ export function DataTable<TData, TValue>({
         ))}
       </TableHeader>
       <TableBody>
-        {table.getRowModel().rows.map((row) => (
-          <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-            {row.getVisibleCells().map((cell) => (
-              <TableCell key={cell.id}>
-                <ChainLink
-                  to={
-                    (cell.row.original as { destination: string }).destination
-                  }
-                  className="w-full"
-                >
+        {table.getRowModel().rows.map((row) => {
+          const destination = (row.original as { destination: string })
+            .destination;
+
+          return (
+            <TableRow
+              key={row.id}
+              data-state={row.getIsSelected() && 'selected'}
+              className="cursor-pointer"
+              tabIndex={0}
+              onClick={(e) => handleRowClick(destination, e)}
+              onKeyDown={(e) => handleRowKeyDown(destination, e)}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </ChainLink>
-              </TableCell>
-            ))}
-          </TableRow>
-        ))}
+                </TableCell>
+              ))}
+            </TableRow>
+          );
+        })}
         {data.length === 0 && !isLoading && (
           <TableRow>
             <TableCell colSpan={columns.length} className="text-center">

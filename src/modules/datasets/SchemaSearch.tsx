@@ -44,19 +44,20 @@ export function SchemaSearch({
   };
 
   return (
-    <div className="rounded-2xl border border-[#303038]">
+    <div className="rounded-2xl border">
       <button
-        className={cn('flex w-full items-center gap-2 px-10 py-6 duration-300')}
+        className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}
       >
-        <SlidersHorizontal size={16} />
-        <p className="flex-1 text-left font-bold">
-          Schema Search{' '}
-          <span className="text-muted-foreground font-normal">
+        <div>
+          <div className="flex items-center gap-2">
+            <SlidersHorizontal size={16} />
+            <p className="text-left font-bold">Schema Search </p>
+          </div>
+          <p className="text-muted-foreground mt-2 font-normal">
             Add field types to filter datasets by their schema structure.
-            Filters are applied automatically.
-          </span>
-        </p>
+          </p>
+        </div>
         <ChevronDown
           className={cn(
             'ml-auto transition-transform',
@@ -66,24 +67,26 @@ export function SchemaSearch({
       </button>
       <div
         className={cn(
-          'grid transition-all duration-300',
+          'grid transition-all duration-200',
           isOpen
             ? 'translate-y-0 grid-rows-[1fr]'
             : 'translate-y-2 grid-rows-[0fr]'
         )}
       >
-        <div className={cn('text-grey-200 grid overflow-hidden px-6 md:px-10')}>
+        <div className={cn('grid overflow-hidden px-6 md:px-10')}>
           <hr className="border-secondary" />
           <div
             className={cn(
-              'grid transition-all duration-300',
+              'grid transition-all duration-200',
               filters.length > 0
                 ? 'mt-6 translate-y-0 grid-rows-[1fr]'
                 : 'translate-y-2 grid-rows-[0fr]'
             )}
           >
             <div className="flex flex-wrap items-center gap-2.5 overflow-hidden">
-              Filter by field types:{' '}
+              <span className="text-muted-foreground">
+                Filter by field types:
+              </span>{' '}
               {filters.map((schema, index) => {
                 const borderColor = borderTypeColor.find((color) =>
                   color.keywords.some((keyword) =>
@@ -162,7 +165,7 @@ export function SchemaSearch({
               onClick={handleAdd}
               disabled={!inputPathValue.trim() || !selectedType}
             >
-              Add filter
+              {filters.length > 0 ? 'Add filter' : 'Apply filter'}
               <Plus size={20} />
             </Button>
           </div>

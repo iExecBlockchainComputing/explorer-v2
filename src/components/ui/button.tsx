@@ -8,20 +8,20 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+        default: 'bg-brand text-brand-foreground hover:bg-brand/90',
         destructive:
           'bg-destructive text-white hover:bg-destructive/90 focus-visible:ring-destructive/30 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
         outline:
-          'border bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+          'border bg-background hover:bg-accent hover:text-accent-foreground',
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/80',
         ghost:
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',
         link: 'text-primary underline-offset-4 hover:underline',
         'gradient-outline':
-          'from-grey-400 hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-transparent before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-[#15151B] before:duration-300',
+          'from-grey-400 hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-transparent before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-secondary dark:before:bg-[#15151B] before:duration-200',
         'gradient-outline-active':
-          'from-primary text-primary hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-primary before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-[#322B1E] before:duration-300',
+          'from-brand text-brand hover:before:bg-muted relative z-0 overflow-hidden bg-gradient-to-b to-brand before:absolute before:inset-px before:-z-10 before:rounded-[29px] before:bg-secondary dark:before:bg-[#322B1E] before:duration-200',
       },
       size: {
         xs: 'h-6 rounded-full px-2 text-xs has-[>svg]:px-1.5 gap-1',
@@ -29,6 +29,7 @@ const buttonVariants = cva(
         default: 'h-9 px-4 py-2 has-[>svg]:px-3 rounded-full',
         lg: 'h-11 rounded-full px-6 has-[>svg]:px-4 text-md',
         icon: 'size-9 rounded-md',
+        none: 'p-0 rounded-full',
       },
     },
     defaultVariants: {

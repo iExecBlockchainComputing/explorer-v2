@@ -74,17 +74,15 @@ export default function SmartLinkGroup({
   return (
     <div className="content flex items-center gap-1">
       {!isCurrentPage ? (
-        <Button
-          variant="link"
-          className="h-auto gap-1 p-0 text-sm text-orange-200"
-          asChild
-        >
+        <Button variant="link" className="h-auto gap-1 p-0 text-sm" asChild>
           <Link
             to={`/${getChainFromId(chainId)?.slug}/${basePath[type]}/${addressOrId}`}
           >
             <span className="hidden md:inline">{label ?? addressOrId}</span>
             <span className="inline md:hidden">
-              {(label ? truncateAddress(label) : '') ?? addressOrId}
+              {(label
+                ? truncateAddress(label)
+                : truncateAddress(addressOrId)) ?? addressOrId}
             </span>
             {ens ? `(${ens})` : ''}
           </Link>
@@ -93,7 +91,8 @@ export default function SmartLinkGroup({
         <div>
           <span className="hidden md:inline">{label ?? addressOrId}</span>
           <span className="inline md:hidden">
-            {(label ? truncateAddress(label) : '') ?? addressOrId}
+            {(label ? truncateAddress(label) : truncateAddress(addressOrId)) ??
+              addressOrId}
           </span>
           {ens ? `(${ens})` : ''}
         </div>
@@ -113,7 +112,7 @@ export default function SmartLinkGroup({
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <ExternalLink />
+                  <ExternalLink className="text-foreground" />
                 </a>
               </Button>
             </TooltipTrigger>
