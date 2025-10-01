@@ -197,7 +197,7 @@ function RouteComponent() {
           )}
         >
           <p className="font-anybody flex items-center gap-4 font-extrabold">
-            <span className="bg-primary-foreground text-primary rounded-lg p-2">
+            <span className="bg-primary-foreground dark:bg-muted text-primary rounded-lg p-2">
               <WalletIcon size={20} />
             </span>
             Your Wallet
@@ -237,7 +237,7 @@ function RouteComponent() {
           )}
         >
           <p className="font-anybody flex items-center gap-4 font-extrabold">
-            <span className="bg-primary-foreground text-primary rounded-lg p-2">
+            <span className="bg-primary-foreground dark:bg-muted text-primary rounded-lg p-2">
               <IexecAccountIcon size={20} />
             </span>
             Your iExec Account
