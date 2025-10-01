@@ -9,7 +9,6 @@ import { ChainLink } from '@/components/ChainLink';
 import { Stepper } from '@/components/Stepper';
 import IexecAccountIcon from '@/components/icons/IexecAccountIcon';
 import WalletIcon from '@/components/icons/WalletIcon';
-import { ChainSelector } from '@/components/navbar/ChainSelector';
 import { BackButton } from '@/components/ui/BackButton';
 import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
@@ -22,7 +21,6 @@ import { getTabs } from '@/modules/account/getTabs';
 import useUserStore from '@/stores/useUser.store';
 import { getChainFromId } from '@/utils/chain.utils';
 import { rlcToNrlc } from '@/utils/rlcToNrlc';
-import { truncateAddress } from '@/utils/truncateAddress';
 
 export const Route = createFileRoute('/$chainSlug/_layout/account')({
   component: RouteComponent,
