@@ -27,7 +27,6 @@ const JsonBlock = ({
       rawToCopy = children;
     }
   } catch {
-    // If parsing fails, display as plain text
     return (
       <div className={`flex min-w-0 items-start gap-1 ${className}`}>
         <code className="min-w-0 overflow-x-auto text-sm whitespace-pre">
