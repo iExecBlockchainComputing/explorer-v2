@@ -149,7 +149,7 @@ export function SchemaSearch({
                     {group.items.map((type) => (
                       <SelectItem
                         key={type.value}
-                        className="text-base font-bold data-[state=checked]:text-primary"
+                        className="data-[state=checked]:text-primary text-base font-bold"
                         value={type.value}
                       >
                         {type.value}

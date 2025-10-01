@@ -13,11 +13,11 @@ export function ModeToggle() {
         size={'none'}
         className={cn(
           'text-foreground hover:bg-muted border p-1',
-          theme === 'dark' ? 'border' : 'border-transparent'
+          theme === 'system' ? 'border' : 'border-transparent'
         )}
-        onClick={() => setTheme('dark')}
+        onClick={() => setTheme('system')}
       >
-        <Moon />
+        <Monitor />
       </Button>
       <Button
         variant={'link'}
@@ -35,11 +35,11 @@ export function ModeToggle() {
         size={'none'}
         className={cn(
           'text-foreground hover:bg-muted border p-1',
-          theme === 'system' ? 'border' : 'border-transparent'
+          theme === 'dark' ? 'border' : 'border-transparent'
         )}
-        onClick={() => setTheme('system')}
+        onClick={() => setTheme('dark')}
       >
-        <Monitor />
+        <Moon />
       </Button>
     </div>
   );
