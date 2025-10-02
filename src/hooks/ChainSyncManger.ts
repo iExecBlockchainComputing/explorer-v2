@@ -91,8 +91,33 @@ export function ChainSyncManager() {
     const slug = getChainFromId(chainId)?.slug;
 
     if (slug !== chainSlug && !isNavigating.current) {
-      const [, ...rest] = pathname.split('/').filter(Boolean);
-      const newPath = `/${slug}/${rest.join('/')}`;
+      const pathSegments = pathname.split('/').filter(Boolean);
+
+      // Map singular detail routes to their plural list routes
+      const detailToListRouteMap: Record<string, string> = {
+        task: 'tasks',
+        deal: 'deals',
+        dataset: 'datasets',
+        app: 'apps',
+        workerpool: 'workerpools',
+        address: '',
+        tx: '',
+        search: '',
+      };
+
+      const detailRoute = pathSegments[1];
+      const isOnDetailPage =
+        pathSegments.length >= 3 && detailRoute in detailToListRouteMap;
+
+      let newPath: string;
+      if (isOnDetailPage) {
+        const listRoute = detailToListRouteMap[detailRoute];
+        newPath = listRoute ? `/${slug}/${listRoute}` : `/${slug}`;
+      } else {
+        const [, ...rest] = pathSegments;
+        newPath = `/${slug}/${rest.join('/')}`;
+      }
+
       isNavigating.current = true;
       const navigationResult = navigate({ to: newPath, replace: true });
       if (navigationResult instanceof Promise) {
