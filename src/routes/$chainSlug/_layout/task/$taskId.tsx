@@ -116,7 +116,12 @@ function TasksRoute() {
           ) : (
             <DetailsTable details={taskDetails || {}} />
           ))}
-        {currentTab === 1 && <TaskRawData taskId={taskId} />}
+        {currentTab === 1 && (
+          <TaskRawData
+            taskWorkerpoolId={task?.deal.workerpool.address}
+            taskId={taskId}
+          />
+        )}
       </div>
     </div>
   );

@@ -1,30 +1,40 @@
 import { TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
+import { getIExec } from '@/externals/iexecSdkClient';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import JsonBlock from '@/modules/JsonBlock';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
-function useTaskRawData({ taskId }: { taskId: string }) {
+function useTaskRawData({
+  taskWorkerpoolId,
+  taskId,
+}: {
+  taskWorkerpoolId?: string;
+  taskId: string;
+}) {
   const { chainId } = useUserStore();
 
-  const queryKey = [chainId, 'task', 'raw', taskId];
+  const queryKey = [chainId, 'task', 'raw', taskWorkerpoolId, taskId];
+
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: async () => {
-        const response = await fetch(
-          `https://core-prod.arbitrum-mainnet.iex.ec/tasks/${taskId}`
+        const iexec = await getIExec();
+        const apiUrl = await iexec.workerpool.getWorkerpoolApiUrl(
+          taskWorkerpoolId!
         );
+
+        const response = await fetch(`${apiUrl}/tasks/${taskId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch task raw data');
         }
-        console.log(response);
-
         return response.json();
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
+      enabled: !!taskWorkerpoolId && !!taskId,
     }
   );
 
@@ -37,18 +47,32 @@ function useTaskRawData({ taskId }: { taskId: string }) {
   };
 }
 
-export function TaskRawData({ taskId }: { taskId: string }) {
-  const { data: tasks, hasPastError } = useTaskRawData({ taskId });
+export function TaskRawData({
+  taskWorkerpoolId,
+  taskId,
+}: {
+  taskWorkerpoolId?: string;
+  taskId: string;
+}) {
+  const {
+    data: tasks,
+    hasPastError,
+    isLoading,
+  } = useTaskRawData({ taskWorkerpoolId, taskId });
 
-  // TODO: handle loading state
-
-  return hasPastError && !tasks.length ? (
-    <ErrorAlert message="An error occurred during task raw data loading." />
+  return hasPastError && (!tasks || !tasks.length) ? (
+    <ErrorAlert
+      message={
+        "Unable to load raw task data: the workerpool associated with this task doesn't expose a public API"
+      }
+    />
   ) : (
-    <div className="dark:bg-tooltip rounded-3xl border bg-[#fafaff] p-6">
-      <JsonBlock copyText="Copy all" collapsed={5}>
-        {tasks}
-      </JsonBlock>
+    <div className="dark:bg-tooltip min-h-40 rounded-3xl border bg-[#fafaff] p-6">
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <JsonBlock collapsed={5}>{tasks}</JsonBlock>
+      )}
     </div>
   );
 }
