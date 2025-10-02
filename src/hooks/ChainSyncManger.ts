@@ -93,7 +93,6 @@ export function ChainSyncManager() {
     if (slug !== chainSlug && !isNavigating.current) {
       const pathSegments = pathname.split('/').filter(Boolean);
 
-      // Map singular detail routes to their plural list routes
       const detailToListRouteMap: Record<string, string> = {
         task: 'tasks',
         deal: 'deals',
