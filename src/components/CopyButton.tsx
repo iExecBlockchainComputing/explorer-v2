@@ -12,11 +12,13 @@ const CopyButton = ({
   displayText,
   buttonText,
   tooltipWithText = false,
+  className,
 }: {
   textToCopy: string;
   displayText?: string;
   buttonText?: string;
   tooltipWithText?: boolean;
+  className?: string;
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipMessage, setTooltipMessage] = useState('Copy');
@@ -45,7 +47,7 @@ const CopyButton = ({
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip open={showTooltip}>
-        <TooltipTrigger asChild>
+        <TooltipTrigger asChild className={className}>
           <span className="box-content flex max-w-full items-center gap-1">
             {displayText && (
               <span className="overflow-hidden overflow-ellipsis">
