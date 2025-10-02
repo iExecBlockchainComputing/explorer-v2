@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.22.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.22.0...iexec-explorer-v1.22.1) (2025-09-26)
+
+
+### 🐞 Bug Fixes
+
+* remove redundant address details loading UI elements ([#73](https://github.com/iExecBlockchainComputing/explorer-v2/issues/73)) ([9697d7c](https://github.com/iExecBlockchainComputing/explorer-v2/commit/9697d7ca68100e71805ec28226b27205ff8d8a18))
+
 ## [1.22.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.21.0...iexec-explorer-v1.22.0) (2025-09-25)
 
 
