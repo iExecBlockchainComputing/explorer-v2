@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.24.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.23.0...iexec-explorer-v1.24.0) (2025-10-06)
+
+
+### 🚀 Features
+
+* add tastRaw onglet in task page ([#73](https://github.com/iExecBlockchainComputing/explorer-v2/issues/73)) ([#76](https://github.com/iExecBlockchainComputing/explorer-v2/issues/76)) ([396c620](https://github.com/iExecBlockchainComputing/explorer-v2/commit/396c62086bb6338a71c9140adeda5c73aaea7bfc))
+
+
+### ✨ Polish
+
+* code optimization and better UX ([#75](https://github.com/iExecBlockchainComputing/explorer-v2/issues/75)) ([fce50a1](https://github.com/iExecBlockchainComputing/explorer-v2/commit/fce50a1e77342e5b6c7b013e657e8ce9b1c24e60))
+
 ## [1.23.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.22.1...iexec-explorer-v1.23.0) (2025-10-06)
 
 
