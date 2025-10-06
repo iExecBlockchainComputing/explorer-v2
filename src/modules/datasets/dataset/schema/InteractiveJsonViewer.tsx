@@ -1,5 +1,6 @@
 import { DatasetSchemaQuery } from '@/graphql/dataprotector/graphql';
 import JsonView from '@uiw/react-json-view';
+import { defaultJsonViewStyle } from '@/utils/jsonViewStyles';
 
 interface JsonViewerProps {
   schemaPaths?: Array<{ path?: string | null; type?: string | null }>;
@@ -62,18 +63,7 @@ export function InteractiveJsonViewer({
         displayObjectSize={false}
         enableClipboard={false}
         collapsed={2}
-        style={
-          {
-            color: 'var(--color-foreground)',
-            '--w-rjv-key-string': 'var(--color-foreground)', // Override key color to light gray
-            '--w-rjv-line-color': 'var(--color-foreground)',
-            '--w-rjv-quotes-string-color': 'var(--color-primary)', // Override string color to light gray
-            '--w-rjv-type-string-color': 'var(--color-primary)',
-            '--w-rjv-curlybraces-color': '#728cff', // Override curly braces color to light gray
-            '--w-rjv-quotes-color': '#728cff', // Override quotes color to light gray
-            '--w-rjv-indent-width': '24px', // Increase indentation for nested keys
-          } as React.CSSProperties
-        }
+        style={defaultJsonViewStyle}
       />
     </div>
   );
