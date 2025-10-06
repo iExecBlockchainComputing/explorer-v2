@@ -183,15 +183,15 @@ function RouteComponent() {
         IExec Wallet Manager
       </h1>
 
-      <div className="flex flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
+      <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div
           className={cn(
-            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-200',
+            'border-intermediate w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 0 && 'border-primary'
           )}
         >
           <p className="font-anybody flex items-center gap-4 font-extrabold">
-            <span className="bg-primary-foreground text-primary rounded-lg p-2">
+            <span className="bg-primary-foreground dark:bg-muted text-primary rounded-lg p-2">
               <WalletIcon size={20} />
             </span>
             Your Wallet
@@ -226,12 +226,12 @@ function RouteComponent() {
         />
         <div
           className={cn(
-            'border-intermediate w-full max-w-80 space-y-6 rounded-3xl border px-10 py-6 duration-200',
+            'border-intermediate w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 1 && 'border-primary'
           )}
         >
           <p className="font-anybody flex items-center gap-4 font-extrabold">
-            <span className="bg-primary-foreground text-primary rounded-lg p-2">
+            <span className="bg-primary-foreground dark:bg-muted text-primary rounded-lg p-2">
               <IexecAccountIcon size={20} />
             </span>
             Your iExec Account
@@ -257,7 +257,7 @@ function RouteComponent() {
           </div>
         </div>
       </div>
-      <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col gap-6">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-6">
         <Tabs
           currentTab={currentTab}
           onTabChange={setCurrentTab}
@@ -284,7 +284,7 @@ function RouteComponent() {
         <div className="md:border-intermediate space-y-6 md:rounded-3xl md:border md:p-10">
           <div className="space-y-4 md:space-y-1.5">
             <h2 className="md:font-anybody font-sans font-bold">
-              <span className="mr-4 inline-flex size-8 items-center justify-center rounded-full bg-white font-sans font-normal text-black md:hidden">
+              <span className="bg-foreground text-background mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal md:hidden">
                 {currentStep + 1}
               </span>
               {tabs[currentTab]?.longTitle}
@@ -317,7 +317,7 @@ function RouteComponent() {
               .map(({ step, index }, arrayIndex, arr) => (
                 <div key={index}>
                   <div>
-                    <span className="bg-muted mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal text-white">
+                    <span className="bg-muted text-foreground mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal">
                       {index + 1}
                     </span>
                     <span className="text-intermediate font-bold">

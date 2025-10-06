@@ -259,7 +259,7 @@
   --brand-foreground: var(--color-grey-900);
 
   --primary: #c0cbff;
-  --primary-foreground: #f4f7fc;
+  --primary-foreground: var(--color-muted);
 
   --secondary: var(--color-grey-600);
   --secondary-foreground: var(--color-grey-50);
@@ -286,13 +286,16 @@
   body {
     @apply bg-background text-foreground;
   }
-  h1,
+  h1 {
+    @apply font-anybody font-semibold;
+  }
+
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-anybody font-semibold;
+    @apply font-sans font-semibold;
   }
   button,
   a {

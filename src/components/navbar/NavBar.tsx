@@ -10,7 +10,7 @@ import { AddressChip } from './AddressChip.tsx';
 import { ChainSelector } from './ChainSelector.tsx';
 
 export function Navbar() {
-  const { isConnected, address } = useUserStore();
+  const { isConnected, address: userAddress } = useUserStore();
   const { logout, login } = useLoginLogout();
   const [isMenuOpen, setMenuOpen] = useState(false);
   const handleMenuToggle = () => {
@@ -21,11 +21,16 @@ export function Navbar() {
     <nav className="flex items-center justify-between py-6">
       <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
         <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
-        <span className="hidden sm:block">iExec Explorer</span>
+        <span className="hidden lg:block">iExec Explorer</span>
       </ChainLink>
       <div className="mr-8 flex items-center gap-4 md:mr-0">
         {isConnected && (
           <div className="hidden md:flex">
+            <Button variant="link" asChild className="text-foreground">
+              <ChainLink to={`/address/${userAddress}?from=my_activity`}>
+                My activity
+              </ChainLink>
+            </Button>
             <Button variant="link" asChild className="text-foreground">
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
@@ -38,7 +43,7 @@ export function Navbar() {
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
-            <AddressChip address={address!} />
+            <AddressChip address={userAddress!} />
 
             <button
               type="button"
@@ -69,19 +74,19 @@ export function Navbar() {
             checked={isMenuOpen}
             readOnly
           />
-          <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
-          <span className="pointer-events-none block h-0.5 w-4.5 origin-top-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
-          <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-top-right transform rounded-full duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
         </label>
 
-        <div className="border-secondary bg-primary-foreground pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-200 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
+        <div className="border-secondary bg-background pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-200 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
           <div className="-m-2 mr-6 flex items-center justify-between gap-2 py-2 pl-2">
             <ChainLink to="/" className="font-mono" onClick={handleMenuToggle}>
               <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
             </ChainLink>
             {isConnected ? (
               <div className="flex max-w-[1260px] items-center gap-2">
-                <AddressChip address={address!} />
+                <AddressChip address={userAddress!} />
 
                 <button
                   type="button"

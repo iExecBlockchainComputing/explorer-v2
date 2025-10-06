@@ -4,7 +4,6 @@ import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { Search } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { ChainLink } from '@/components/ChainLink';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
@@ -20,7 +19,7 @@ export function SearcherBar({
   className?: string;
   initialSearch?: string;
 }) {
-  const { isConnected, address: userAddress } = useUserStore();
+  const { isConnected } = useUserStore();
   const [inputValue, setInputValue] = useState('');
   const [shake, setShake] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
@@ -156,7 +155,7 @@ export function SearcherBar({
           onKeyDown={handleKeyDown}
           disabled={isPending}
           className={cn(
-            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 text-white sm:py-6.5',
+            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32',
             (isError || localError) &&
               'focus-visible:border-danger-border focus:outline-danger-border focus-visible:ring-danger-border',
@@ -173,17 +172,6 @@ export function SearcherBar({
           size="18"
           className="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 sm:left-6"
         />
-        {isConnected && (
-          <Button
-            variant="outline"
-            className="bg-muted hover:bg-secondary absolute top-1/2 right-4 hidden -translate-y-1/2 sm:flex"
-            asChild
-          >
-            <ChainLink to={`/address/${userAddress}?from=my_activity`}>
-              My activity
-            </ChainLink>
-          </Button>
-        )}
       </div>
 
       <div className={cn('mt-4 flex justify-center gap-4', isError && 'mt-10')}>
@@ -192,14 +180,6 @@ export function SearcherBar({
             {isPending ? 'Searching...' : 'Search'}
           </Button>
         </div>
-
-        {isConnected && (
-          <Button variant="outline" className="sm:hidden" asChild>
-            <ChainLink to={`/address/${userAddress}?from=my_activity`}>
-              My activity
-            </ChainLink>
-          </Button>
-        )}
       </div>
     </div>
   );

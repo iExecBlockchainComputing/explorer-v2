@@ -36,14 +36,12 @@ export const columns: ColumnDef<Deal>[] = [
     cell: ({ row }) => {
       const appAddress = row.original.app.address;
       return (
-        <div className="w-36">
-          <CopyButton
-            displayText={truncateAddress(appAddress, {
-              startLen: 8,
-            })}
-            textToCopy={appAddress}
-          />
-        </div>
+        <CopyButton
+          displayText={truncateAddress(appAddress, {
+            startLen: 8,
+          })}
+          textToCopy={appAddress}
+        />
       );
     },
   },

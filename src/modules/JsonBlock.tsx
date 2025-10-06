@@ -27,7 +27,6 @@ const JsonBlock = ({
       rawToCopy = children;
     }
   } catch {
-    // If parsing fails, display as plain text
     return (
       <div className={`flex min-w-0 items-start gap-1 ${className}`}>
         <code className="min-w-0 overflow-x-auto text-sm whitespace-pre">
@@ -39,7 +38,7 @@ const JsonBlock = ({
   }
 
   return (
-    <div className={`relative flex min-w-0 items-start gap-1 ${className}`}>
+    <div className={`flex min-w-0 items-start gap-1 ${className}`}>
       <div className="min-w-0 flex-1 overflow-x-auto">
         <JsonView
           value={jsonData}
@@ -47,17 +46,10 @@ const JsonBlock = ({
           displayObjectSize={false}
           enableClipboard={false}
           collapsed={collapsed}
-          shortenTextAfterLength={128}
           style={defaultJsonViewStyle}
         />
       </div>
-      {enableClipboard && (
-        <CopyButton
-          className="absolute top-0 right-0"
-          buttonText="Copy Json"
-          textToCopy={rawToCopy}
-        />
-      )}
+      {enableClipboard && <CopyButton textToCopy={rawToCopy} />}
     </div>
   );
 };
