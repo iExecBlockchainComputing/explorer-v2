@@ -128,7 +128,10 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
             statusEnum={task.status}
             timeoutTimestamp={task.finalDeadline * 1000}
           />
-          <ClaimButton taskOrDeal={task} className="text-white underline" />
+          <ClaimButton
+            taskOrDeal={task}
+            className="text-foreground underline"
+          />
           <DownloadResult taskid={task.taskid} taskResults={task.results} />
         </div>
       ),
