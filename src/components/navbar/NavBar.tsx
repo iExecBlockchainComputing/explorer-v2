@@ -74,12 +74,12 @@ export function Navbar() {
             checked={isMenuOpen}
             readOnly
           />
-          <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
-          <span className="pointer-events-none block h-0.5 w-4.5 origin-top-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
-          <span className="pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full bg-white duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-top-right transform rounded-full duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
         </label>
 
-        <div className="border-secondary bg-primary-foreground pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-200 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
+        <div className="border-secondary bg-background pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-200 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
           <div className="-m-2 mr-6 flex items-center justify-between gap-2 py-2 pl-2">
             <ChainLink to="/" className="font-mono" onClick={handleMenuToggle}>
               <img src={iExecLogo} width="25" height="25" alt="iExec logo" />

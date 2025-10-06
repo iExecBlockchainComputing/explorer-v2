@@ -165,7 +165,7 @@ export function buildDealDetails({
                 {isClaimable && (
                   <ClaimButton
                     taskOrDeal={deal}
-                    className="text-white underline"
+                    className="text-foreground underline"
                   />
                 )}
               </>

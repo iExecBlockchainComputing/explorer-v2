@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.23.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.22.1...iexec-explorer-v1.23.0) (2025-10-06)
+
+
+### 🚀 Features
+
+* implement light mode and light/dark/system mode switch ([#69](https://github.com/iExecBlockchainComputing/explorer-v2/issues/69)) ([669cedc](https://github.com/iExecBlockchainComputing/explorer-v2/commit/669cedcb0bc04b49f4adbbec035cc933a3646ded))
+
+## [1.22.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.22.0...iexec-explorer-v1.22.1) (2025-09-26)
+
+
+### 🐞 Bug Fixes
+
+* remove redundant address details loading UI elements ([#73](https://github.com/iExecBlockchainComputing/explorer-v2/issues/73)) ([9697d7c](https://github.com/iExecBlockchainComputing/explorer-v2/commit/9697d7ca68100e71805ec28226b27205ff8d8a18))
+
 ## [1.22.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.21.0...iexec-explorer-v1.22.0) (2025-09-25)
 
 

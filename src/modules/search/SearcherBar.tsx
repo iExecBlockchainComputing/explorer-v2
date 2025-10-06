@@ -155,7 +155,7 @@ export function SearcherBar({
           onKeyDown={handleKeyDown}
           disabled={isPending}
           className={cn(
-            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 text-white sm:py-6.5',
+            'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32',
             (isError || localError) &&
               'focus-visible:border-danger-border focus:outline-danger-border focus-visible:ring-danger-border',
