@@ -10,11 +10,15 @@ import {
 const CopyButton = ({
   textToCopy,
   displayText,
+  buttonText,
   tooltipWithText = false,
+  className,
 }: {
   textToCopy: string;
   displayText?: string;
+  buttonText?: string;
   tooltipWithText?: boolean;
+  className?: string;
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [tooltipMessage, setTooltipMessage] = useState('Copy');
@@ -43,7 +47,7 @@ const CopyButton = ({
   return (
     <TooltipProvider delayDuration={0}>
       <Tooltip open={showTooltip}>
-        <TooltipTrigger asChild>
+        <TooltipTrigger asChild className={className}>
           <span className="box-content flex max-w-full items-center gap-1">
             {displayText && (
               <span className="overflow-hidden overflow-ellipsis">
@@ -60,6 +64,7 @@ const CopyButton = ({
               onMouseLeave={handleMouseLeave}
               className="hover:before:bg-muted active:before:bg-secondary relative z-0 -mx-1 -my-1 items-center gap-1 px-1 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-200 active:before:scale-x-[0.98] active:before:scale-y-[0.94]"
             >
+              {buttonText && <span className="mr-1 text-sm">{buttonText}</span>}
               <Copy className="size-4 flex-none" />
             </button>
           </span>
