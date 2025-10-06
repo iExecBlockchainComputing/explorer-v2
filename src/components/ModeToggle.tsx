@@ -12,7 +12,7 @@ export function ModeToggle() {
   const options: Array<{
     value: Theme;
     label: string;
-    Icon: React.ComponentType<any>;
+    Icon: React.ComponentType;
   }> = useMemo(
     () => [
       { value: 'system', label: 'System', Icon: Monitor },
