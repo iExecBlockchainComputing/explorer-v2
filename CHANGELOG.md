@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.25.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.24.0...iexec-explorer-v1.25.0) (2025-10-08)
+
+
+### 🚀 Features
+
+* add wallet connection prompt in TaskRawData component ([#80](https://github.com/iExecBlockchainComputing/explorer-v2/issues/80)) ([ca4d97f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/ca4d97ffaef58056ff0cd745e1282e87579c0418))
+
 ## [1.24.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.23.0...iexec-explorer-v1.24.0) (2025-10-06)
 
 
