@@ -46,10 +46,13 @@ const JsonBlock = ({
           displayObjectSize={false}
           enableClipboard={false}
           collapsed={collapsed}
+          shortenTextAfterLength={100}
           style={defaultJsonViewStyle}
         />
       </div>
-      {enableClipboard && <CopyButton textToCopy={rawToCopy} />}
+      {enableClipboard && (
+        <CopyButton buttonText="Copy Json" textToCopy={rawToCopy} />
+      )}
     </div>
   );
 };
