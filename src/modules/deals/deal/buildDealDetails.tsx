@@ -96,7 +96,28 @@ export function buildDealDetails({
       },
     }),
     ...(deal.trust && {
-      Trust: <p>{deal.trust}</p>,
+      Trust: {
+        tooltip: (
+          <>
+            Indicates the task replication level:
+            <ul className="list-inside list-disc">
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  0
+                </code>
+                : single execution
+              </li>
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  1
+                </code>
+                : replicated for consensus
+              </li>
+            </ul>
+          </>
+        ),
+        value: <p>{deal.trust}</p>,
+      },
     }),
     ...(deal.app && {
       App: (
