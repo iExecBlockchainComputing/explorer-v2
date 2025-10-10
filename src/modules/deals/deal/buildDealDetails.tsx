@@ -62,7 +62,7 @@ export function buildDealDetails({
           ),
           value: (
             <p>
-              {deal.category.catid}{' '}
+              {deal.category.name}{' '}
               {deal.category.description.length < 0
                 ? deal.category.description
                 : ''}{' '}
