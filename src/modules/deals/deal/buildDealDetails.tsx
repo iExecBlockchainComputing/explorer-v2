@@ -107,30 +107,6 @@ export function buildDealDetails({
         value: <Bytes>{deal.tag}</Bytes>,
       },
     }),
-    ...(deal.trust && {
-      Trust: {
-        tooltip: (
-          <>
-            Indicates the task replication level:
-            <ul className="list-inside list-disc">
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0
-                </code>
-                : single execution
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  1
-                </code>
-                : replicated for consensus
-              </li>
-            </ul>
-          </>
-        ),
-        value: <p>{deal.trust}</p>,
-      },
-    }),
     ...(deal.app && {
       App: (
         <div className="flex flex-wrap items-center gap-1">
@@ -196,6 +172,30 @@ export function buildDealDetails({
           label={deal.callback.address}
         />
       ),
+    }),
+    ...(deal.trust && {
+      Trust: {
+        tooltip: (
+          <>
+            Indicates the task replication level:
+            <ul className="list-inside list-disc">
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  0
+                </code>
+                : single execution
+              </li>
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  1
+                </code>
+                : replicated for consensus
+              </li>
+            </ul>
+          </>
+        ),
+        value: <p>{deal.trust}</p>,
+      },
     }),
     ...(deal.params && {
       Params: <JsonBlock>{deal.params}</JsonBlock>,
