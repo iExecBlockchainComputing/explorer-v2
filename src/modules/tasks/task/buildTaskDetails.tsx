@@ -58,7 +58,7 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
           ),
           value: (
             <p>
-              {task.deal.category.catid}{' '}
+              {task.deal.category.name}{' '}
               {task.deal.category.description.length < 0
                 ? task.deal.category.description
                 : ''}{' '}
