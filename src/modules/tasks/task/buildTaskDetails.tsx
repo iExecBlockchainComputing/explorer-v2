@@ -57,7 +57,40 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
         ),
       }),
     ...(task.deal.tag && {
-      Tag: <Bytes>{task.deal.tag}</Bytes>,
+      Tag: {
+        tooltip: (
+          <>
+            Indicates the execution environment type defined by iExec :
+            <ul className="list-inside list-disc">
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  0x0
+                </code>
+                : Standard
+              </li>
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  0x3
+                </code>
+                : SGX Scone
+              </li>
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  0x5
+                </code>
+                : SGX Gramine
+              </li>
+              <li>
+                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
+                  0x9
+                </code>
+                : TDX
+              </li>
+            </ul>
+          </>
+        ),
+        value: <Bytes>{task.deal.tag}</Bytes>,
+      },
     }),
     ...(task.deal.app && {
       App: (
