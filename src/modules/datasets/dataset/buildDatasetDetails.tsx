@@ -72,8 +72,8 @@ export function buildDatasetDetails({
     ...(firstTimestamp && {
       Created: (
         <p>
-          {formatElapsedTime(firstTimestamp)}{' '}
-          {formatDateCompact(firstTimestamp)}
+          {formatElapsedTime(firstTimestamp)} (
+          {formatDateCompact(firstTimestamp)})
         </p>
       ),
     }),
