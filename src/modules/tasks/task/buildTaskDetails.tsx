@@ -51,8 +51,11 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
       task.deal.category.workClockTimeRef !== undefined && {
         Category: (
           <p>
-            {task.deal.category.catid} (
-            {task.deal.category.workClockTimeRef * 10} sec)
+            {task.deal.category.catid}{' '}
+            {task.deal.category.description.length < 0
+              ? task.deal.category.description
+              : ''}{' '}
+            ({task.deal.category.workClockTimeRef * 10} sec)
           </p>
         ),
       }),

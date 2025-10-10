@@ -55,7 +55,11 @@ export function buildDealDetails({
       deal.category.workClockTimeRef !== undefined && {
         Category: (
           <p>
-            {deal.category.catid} ({deal.category.workClockTimeRef * 10} sec)
+            {deal.category.catid}{' '}
+            {deal.category.description.length < 0
+              ? deal.category.description
+              : ''}{' '}
+            ({deal.category.workClockTimeRef * 10} sec)
           </p>
         ),
       }),
