@@ -42,8 +42,8 @@ export function buildWorkerpoolDetails({
     ...(firstTimestamp && {
       Created: (
         <p>
-          {formatElapsedTime(firstTimestamp)}{' '}
-          {formatDateCompact(firstTimestamp)}
+          {formatElapsedTime(firstTimestamp)} (
+          {formatDateCompact(firstTimestamp)})
         </p>
       ),
     }),

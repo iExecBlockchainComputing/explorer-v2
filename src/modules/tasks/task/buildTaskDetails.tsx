@@ -195,8 +195,8 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
     ...(task.finalDeadline && {
       Deadline: (
         <p>
-          {formatElapsedTime(task.finalDeadline)}{' '}
-          {formatDateCompact(task.finalDeadline)}
+          {formatElapsedTime(task.finalDeadline)} (
+          {formatDateCompact(task.finalDeadline)})
         </p>
       ),
     }),
