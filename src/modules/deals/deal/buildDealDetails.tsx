@@ -53,15 +53,23 @@ export function buildDealDetails({
     }),
     ...(deal.category.catid !== undefined &&
       deal.category.workClockTimeRef !== undefined && {
-        Category: (
-          <p>
-            {deal.category.catid}{' '}
-            {deal.category.description.length < 0
-              ? deal.category.description
-              : ''}{' '}
-            ({deal.category.workClockTimeRef * 10} sec)
-          </p>
-        ),
+        Category: {
+          tooltip: (
+            <>
+              Indicates execution parameters: includes a name, an optional
+              description, and a reference time.
+            </>
+          ),
+          value: (
+            <p>
+              {deal.category.catid}{' '}
+              {deal.category.description.length < 0
+                ? deal.category.description
+                : ''}{' '}
+              ({deal.category.workClockTimeRef * 10} sec)
+            </p>
+          ),
+        },
       }),
     ...(deal.tag && {
       Tag: {

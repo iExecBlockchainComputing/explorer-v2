@@ -49,15 +49,23 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
     }),
     ...(task.deal.category !== undefined &&
       task.deal.category.workClockTimeRef !== undefined && {
-        Category: (
-          <p>
-            {task.deal.category.catid}{' '}
-            {task.deal.category.description.length < 0
-              ? task.deal.category.description
-              : ''}{' '}
-            ({task.deal.category.workClockTimeRef * 10} sec)
-          </p>
-        ),
+        Category: {
+          tooltip: (
+            <>
+              Indicates execution parameters: includes a name, an optional
+              description, and a reference time.
+            </>
+          ),
+          value: (
+            <p>
+              {task.deal.category.catid}{' '}
+              {task.deal.category.description.length < 0
+                ? task.deal.category.description
+                : ''}{' '}
+              ({task.deal.category.workClockTimeRef * 10} sec)
+            </p>
+          ),
+        },
       }),
     ...(task.deal.tag && {
       Tag: {
