@@ -38,7 +38,7 @@ export function ModeToggle() {
             title={label}
             className={cn(
               'text-foreground hover:bg-muted p-1',
-              selected && 'bg-transparent'
+              selected && 'border'
             )}
             onClick={() => {
               if (theme !== value) setTheme(value as Theme);
