@@ -61,7 +61,6 @@ export const SUPPORTED_CHAINS = [
     },
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
-    isExperimental: true,
   },
 ];
 

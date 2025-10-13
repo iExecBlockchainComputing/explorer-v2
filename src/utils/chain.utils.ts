@@ -1,21 +1,7 @@
-import { SUPPORTED_CHAINS, LOCAL_STORAGE_PREFIX } from '@/config';
-
-function isExperimentalEnabled(): boolean {
-  if (typeof window === 'undefined') return false;
-  try {
-    return (
-      localStorage.getItem(`${LOCAL_STORAGE_PREFIX}_experimental`) === 'true'
-    );
-  } catch {
-    return false;
-  }
-}
+import { SUPPORTED_CHAINS } from '@/config';
 
 export function getSupportedChains() {
-  const experimental = isExperimentalEnabled();
-  return SUPPORTED_CHAINS.filter(
-    (chain) => !chain.isExperimental || experimental
-  );
+  return SUPPORTED_CHAINS;
 }
 
 export function getSubgraphUrl(chainId: number) {
