@@ -20,8 +20,8 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { FaucetBreadcrumbs } from '@/modules/faucet/FaucetBreadcrumbs';
 import useUserStore from '@/stores/useUser.store';
 import { getBlockExplorerUrl } from '@/utils/chain.utils';
-import wagmiNetworks from '@/utils/wagmiNetworks';
 import { nrlcToRlc } from '@/utils/nrlcToRlc';
+import wagmiNetworks from '@/utils/wagmiNetworks';
 
 export const Route = createFileRoute('/$chainSlug/_layout/faucet')({
   component: FaucetRoute,
