@@ -19,6 +19,7 @@ import { useChainSwitch } from '@/hooks/useChainSwitch';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { FaucetBreadcrumbs } from '@/modules/faucet/FaucetBreadcrumbs';
 import useUserStore from '@/stores/useUser.store';
+import { getBlockExplorerUrl } from '@/utils/chain.utils';
 import wagmiNetworks from '@/utils/wagmiNetworks';
 
 export const Route = createFileRoute('/$chainSlug/_layout/faucet')({
@@ -90,12 +91,9 @@ function FaucetRoute() {
     },
     onMutate: () => setSuccessMessage(''),
     onSuccess: (data) => {
-      const amount = data.amount
-        ? `${(parseFloat(data.amount) / 1e18).toFixed(4)} RLC`
-        : 'funds';
-      const explorerUrl = 'https://sepolia.arbiscan.io';
+      const explorerUrl = getBlockExplorerUrl(wagmiNetworks.arbitrumSepolia.id);
       setSuccessMessage(
-        `✅ Success! ${amount} sent to your wallet. View transaction: ${explorerUrl}/tx/${data.transactionHash}`
+        `${data.amount} RLC sent to your wallet. View transaction: ${explorerUrl}/tx/${data.transactionHash}`
       );
     },
     onError: () => setSuccessMessage(''),
@@ -198,16 +196,18 @@ function FaucetRoute() {
               <Button
                 onClick={() => requestFunds()}
                 disabled={isPending || !requestFundsAddress || !isSignedIn}
-                className="ml-auto w-fit"
+                className="md:ml-auto md:w-fit"
               >
                 {isPending ? 'Requesting funds...' : 'Request funds'}
               </Button>
             </div>
 
-            {isError && <ErrorAlert message={error?.message} />}
+            {isError && (
+              <ErrorAlert className="w-full" message={error?.message} />
+            )}
 
             {successMessage && (
-              <div className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-600">
+              <div className="border-success-border bg-success-foreground/10 text-success-foreground rounded-md border p-3 text-sm">
                 <div className="flex flex-col gap-2">
                   <div>{successMessage.split('View transaction:')[0]}</div>
                   {successMessage.includes('View transaction:') && (
@@ -215,7 +215,7 @@ function FaucetRoute() {
                       href={successMessage.split('View transaction: ')[1]}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-green-700 underline hover:text-green-800"
+                      className="text-success-foreground underline"
                     >
                       View transaction on Arbiscan ↗
                     </a>
