@@ -147,9 +147,21 @@ function FaucetRoute() {
         <SignedIn>
           <div className="space-y-4">
             <div className="flex flex-col justify-center gap-4 md:flex-row md:items-center">
-              <Button className="dark:bg-popover bg-primary-foreground hover:bg-muted text-primary dark:text-brand px-1 duration-300">
-                <UserButton showName />
-              </Button>
+              <div className="flex-none">
+                <UserButton
+                  showName
+                  appearance={{
+                    elements: {
+                      userButtonTrigger: {
+                        background: 'var(--primary-foreground)',
+                        color: 'var(--primary)',
+                        borderRadius: '9999px',
+                        padding: '8px',
+                      },
+                    },
+                  }}
+                />
+              </div>
               <div className="relative w-full">
                 <Input
                   className="max-w-80 min-w-full pr-11"
