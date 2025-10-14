@@ -8,6 +8,7 @@ import {
 } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
+import { useWatchAsset } from 'node_modules/wagmi/dist/types/hooks/useWatchAsset';
 import { useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import WalletIcon from '@/components/icons/WalletIcon';
@@ -32,6 +33,7 @@ function FaucetRoute() {
   const [requestFundsAddress, setRequestFundsAddress] = useState(
     userAddress || ''
   );
+  const { watchAsset } = useWatchAsset();
 
   const badChainId = chainId !== wagmiNetworks.arbitrumSepolia.id;
 
@@ -75,6 +77,14 @@ function FaucetRoute() {
 
         throw new Error(errorMessage);
       }
+      watchAsset({
+        type: 'ERC20',
+        options: {
+          address: '0x9923eD3cbd90CD78b910c475f9A731A6e0b8C963',
+          symbol: 'RLC',
+          decimals: 9,
+        },
+      });
 
       return response.json();
     },
