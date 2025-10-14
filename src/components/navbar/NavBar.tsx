@@ -27,6 +27,9 @@ export function Navbar() {
         {isConnected && (
           <div className="hidden md:flex">
             <Button variant="link" asChild className="text-foreground">
+              <ChainLink to="/faucet">Faucet</ChainLink>
+            </Button>
+            <Button variant="link" asChild className="text-foreground">
               <ChainLink to={`/address/${userAddress}?from=my_activity`}>
                 My activity
               </ChainLink>
