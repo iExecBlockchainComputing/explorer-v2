@@ -21,6 +21,7 @@ import { FaucetBreadcrumbs } from '@/modules/faucet/FaucetBreadcrumbs';
 import useUserStore from '@/stores/useUser.store';
 import { getBlockExplorerUrl } from '@/utils/chain.utils';
 import wagmiNetworks from '@/utils/wagmiNetworks';
+import { nrlcToRlc } from '@/utils/nrlcToRlc';
 
 export const Route = createFileRoute('/$chainSlug/_layout/faucet')({
   component: FaucetRoute,
@@ -93,7 +94,7 @@ function FaucetRoute() {
     onSuccess: (data) => {
       const explorerUrl = getBlockExplorerUrl(wagmiNetworks.arbitrumSepolia.id);
       setSuccessMessage(
-        `${data.amount} RLC sent to your wallet. View transaction: ${explorerUrl}/tx/${data.transactionHash}`
+        `${nrlcToRlc(data.amount)} RLC sent to your wallet. View transaction: ${explorerUrl}/tx/${data.transactionHash}`
       );
     },
     onError: () => setSuccessMessage(''),
