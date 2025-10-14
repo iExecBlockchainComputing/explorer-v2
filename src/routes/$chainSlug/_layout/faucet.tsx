@@ -8,8 +8,8 @@ import {
 } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { useWatchAsset } from 'node_modules/wagmi/dist/types/hooks/useWatchAsset';
 import { useState } from 'react';
+import { useWatchAsset } from 'wagmi';
 import { ChainLink } from '@/components/ChainLink';
 import WalletIcon from '@/components/icons/WalletIcon';
 import { BackButton } from '@/components/ui/BackButton';
