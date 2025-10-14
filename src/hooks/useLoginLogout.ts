@@ -5,11 +5,11 @@ import { useDisconnect } from 'wagmi';
 export function useLoginLogout() {
   const { open } = useAppKit();
   const { disconnectAsync } = useDisconnect();
-  const { signOut, isSignedIn } = useAuth()
+  const { signOut, isSignedIn } = useAuth();
 
   const logout = async () => {
     if (isSignedIn) {
-      signOut()
+      signOut();
     }
     try {
       await disconnectAsync();
