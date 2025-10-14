@@ -15,6 +15,36 @@ export const API_COINGECKO_URL = 'https://api.coingecko.com/api/v3/simple/';
 
 export const SUPPORTED_CHAINS = [
   {
+    id: 42161,
+    name: 'Arbitrum',
+    slug: 'arbitrum-mainnet',
+    color: '#28A0F080',
+    icon: arbitrumSepoliaIcon,
+    blockExplorerUrl: 'https://arbiscan.io/',
+    subgraphUrl: {
+      poco: 'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
+      dataprotector:
+      'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/Ep5zs5zVr4tDiVuQJepUu51e5eWYJpka624X4DMBxe3u',
+    },
+    wagmiNetwork: arbitrum,
+    tokenSymbol: 'RLC',
+  },
+  {
+    id: 421614,
+    name: 'Arbitrum Sepolia',
+    slug: 'arbitrum-sepolia-testnet',
+    color: '#28A0F080',
+    icon: arbitrumSepoliaIcon,
+    blockExplorerUrl: 'https://sepolia.arbiscan.io/',
+    subgraphUrl: {
+      poco: 'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
+      dataprotector:
+      'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
+    },
+    wagmiNetwork: arbitrumSepolia,
+    tokenSymbol: 'RLC',
+  },
+  {
     id: 134,
     name: 'Bellecour',
     slug: 'bellecour',
@@ -31,36 +61,6 @@ export const SUPPORTED_CHAINS = [
       'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
     wagmiNetwork: bellecour,
     tokenSymbol: 'xRLC',
-  },
-  {
-    id: 42161,
-    name: 'Arbitrum',
-    slug: 'arbitrum-mainnet',
-    color: '#28A0F080',
-    icon: arbitrumSepoliaIcon,
-    blockExplorerUrl: 'https://arbiscan.io/',
-    subgraphUrl: {
-      poco: 'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
-      dataprotector:
-        'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/Ep5zs5zVr4tDiVuQJepUu51e5eWYJpka624X4DMBxe3u',
-    },
-    wagmiNetwork: arbitrum,
-    tokenSymbol: 'RLC',
-  },
-  {
-    id: 421614,
-    name: 'Arbitrum Sepolia',
-    slug: 'arbitrum-sepolia-testnet',
-    color: '#28A0F080',
-    icon: arbitrumSepoliaIcon,
-    blockExplorerUrl: 'https://sepolia.arbiscan.io/',
-    subgraphUrl: {
-      poco: 'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
-      dataprotector:
-        'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
-    },
-    wagmiNetwork: arbitrumSepolia,
-    tokenSymbol: 'RLC',
   },
 ];
 
