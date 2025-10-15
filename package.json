@@ -18,6 +18,7 @@
     "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch"
   },
   "dependencies": {
+    "@clerk/clerk-react": "^5.51.0",
     "@fontsource-variable/anybody": "^5.2.6",
     "@fontsource-variable/mulish": "^5.2.6",
     "@fontsource/space-mono": "^5.2.8",
@@ -48,8 +49,8 @@
     "iexec": "^8.18.0",
     "lucide-react": "^0.536.0",
     "prettier-plugin-tailwindcss": "^0.6.14",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
     "react-hook-form": "^7.62.0",
     "rollbar": "^2.26.4",
     "tailwind-merge": "^3.3.1",

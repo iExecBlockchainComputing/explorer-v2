@@ -24,8 +24,11 @@ export function Navbar() {
         <span className="hidden lg:block">iExec Explorer</span>
       </ChainLink>
       <div className="mr-8 flex items-center gap-4 md:mr-0">
+        <Button variant="link" asChild className="text-foreground -mr-4">
+          <ChainLink to="/faucet">Faucet</ChainLink>
+        </Button>
         {isConnected && (
-          <div className="hidden md:flex">
+          <div className="-mr-4 hidden md:flex">
             <Button variant="link" asChild className="text-foreground">
               <ChainLink to={`/address/${userAddress}?from=my_activity`}>
                 My activity
@@ -34,9 +37,9 @@ export function Navbar() {
             <Button variant="link" asChild className="text-foreground">
               <ChainLink to="/account">iExec Account</ChainLink>
             </Button>
-            <span className="border-secondary border-l" />
           </div>
         )}
+        <span className="border-secondary h-9 border-l" />
         <div className="content hidden gap-4 md:flex">
           <ModeToggle />
           <ChainSelector />
