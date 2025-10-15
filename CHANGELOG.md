@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.26.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.25.0...iexec-explorer-v1.26.0) (2025-10-15)
+
+
+### 🚀 Features
+
+* add category description to deal and task details ([a2a681e](https://github.com/iExecBlockchainComputing/explorer-v2/commit/a2a681e36818fe79acda3c49d4649737f2d03726))
+* add faucet with Clerk authentication ([#84](https://github.com/iExecBlockchainComputing/explorer-v2/issues/84)) ([dfc1581](https://github.com/iExecBlockchainComputing/explorer-v2/commit/dfc1581c35b91f04d6de6edf908db1b110931bd8))
+* add tooltip for category details in deal and task components ([8c2aab0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/8c2aab0fb759129efd3e2c0f19344815aa55f009))
+* add tooltip for trust level in deal details ([47bab96](https://github.com/iExecBlockchainComputing/explorer-v2/commit/47bab9615930b68e98e73787973646ee0016d498))
+* add tooltip support in DetailsTable and add more information tooltip for tag line ([01f6b91](https://github.com/iExecBlockchainComputing/explorer-v2/commit/01f6b9197dfad635fd262b818fb56746fc0133d8))
+* remove experimental chain filtering ([#83](https://github.com/iExecBlockchainComputing/explorer-v2/issues/83)) ([2bf7683](https://github.com/iExecBlockchainComputing/explorer-v2/commit/2bf7683290d31ef93b1e563fa31177e0687dbc65))
+* reorder trust line in deal details ([330d9c0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/330d9c0e71e26f4c362e968d4473e1f3bef34bcb))
+* update category reference to use name instead of catid in deal and task details ([01053bd](https://github.com/iExecBlockchainComputing/explorer-v2/commit/01053bd7d513af4113781941281234382cbe1fd2))
+
+
+### 🐞 Bug Fixes
+
+* move parentheses usage outside of formatDateCompact function, fixing double parentheses ([0db2766](https://github.com/iExecBlockchainComputing/explorer-v2/commit/0db2766b7d5b5aa0f3c4c1911192a68b34e52087))
+* update ModeToggle button styling to use border for selected state ([682eede](https://github.com/iExecBlockchainComputing/explorer-v2/commit/682eede45c8222c9e6fba51e46dea2e88471fe56))
+
 ## [1.25.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.24.0...iexec-explorer-v1.25.0) (2025-10-08)
 
 
