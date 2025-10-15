@@ -5,8 +5,10 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import AppIcon from '@/components/icons/AppIcon';
 import { BackButton } from '@/components/ui/BackButton';
+import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { Tabs } from '@/modules/Tabs';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
 import { AppDealsTable } from '@/modules/apps/app/AppDealsTable';
 import { appQuery } from '@/modules/apps/app/appQuery';
@@ -55,6 +57,8 @@ function useAppData(appAddress: string, chainId: number) {
 }
 
 function AppsRoute() {
+  const tabLabels = ['DETAILS', 'DEALS', 'ORDERS'];
+  const [currentTab, setCurrentTab] = useTabParam('appTab', tabLabels, 0);
   const { chainId } = useUserStore();
   const { appAddress } = Route.useParams();
   const {
@@ -101,14 +105,19 @@ function AppsRoute() {
         </div>
       </div>
 
-      <div className="space-y-10">
-        {hasPastError && !appDetails ? (
+      <Tabs
+        currentTab={currentTab}
+        tabLabels={tabLabels}
+        onTabChange={setCurrentTab}
+      />
+      {currentTab === 0 &&
+        (hasPastError && !appDetails ? (
           <ErrorAlert message="An error occurred during app details loading." />
         ) : (
           <DetailsTable details={appDetails || {}} zebra={false} />
-        )}
-        <AppDealsTable appAddress={appAddress} />
-      </div>
+        ))}
+      {currentTab === 1 && <AppDealsTable appAddress={appAddress} />}
+      {/* {currentTab === 2 && <AppOrdersTable appAddress={appAddress} />} */}
     </div>
   );
 }
