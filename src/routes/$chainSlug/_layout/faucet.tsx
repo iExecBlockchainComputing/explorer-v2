@@ -146,7 +146,7 @@ function FaucetRoute() {
       <div className="md:border-intermediate space-y-6 md:rounded-3xl md:border md:p-10">
         <div className="space-y-4 md:space-y-1.5">
           <h2 className="md:font-anybody font-sans font-bold">Request funds</h2>
-          <p>Add fund to your wallet for testing on Arbitrum Sepolia</p>
+          <p>Add RLC funds to your wallet for testing on Arbitrum Sepolia</p>
         </div>
         <SignedOut>
           <Button asChild className="mx-auto">
