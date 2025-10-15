@@ -218,7 +218,7 @@ function FaucetRoute() {
                       rel="noopener noreferrer"
                       className="text-success-foreground underline"
                     >
-                      View transaction on Arbiscan ↗
+                      View transaction on Arbiscan Sepolia ↗
                     </a>
                   )}
                 </div>
