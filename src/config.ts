@@ -16,24 +16,6 @@ export const FAUCET_API_URL = import.meta.env.VITE_FAUCET_API_URL;
 
 export const SUPPORTED_CHAINS = [
   {
-    id: 134,
-    name: 'Bellecour',
-    slug: 'bellecour',
-    color: '#95A4FC',
-    icon: iexecLogo,
-    blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
-    subgraphUrl: {
-      poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
-      dataprotector:
-        'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
-    },
-    bridge: 'https://bridge-bellecour.iex.ec/',
-    bridgeInformation:
-      'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
-    wagmiNetwork: bellecour,
-    tokenSymbol: 'xRLC',
-  },
-  {
     id: 42161,
     name: 'Arbitrum',
     slug: 'arbitrum-mainnet',
@@ -62,7 +44,24 @@ export const SUPPORTED_CHAINS = [
     },
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
-    isExperimental: true,
+  },
+  {
+    id: 134,
+    name: 'Bellecour',
+    slug: 'bellecour',
+    color: '#95A4FC',
+    icon: iexecLogo,
+    blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
+    subgraphUrl: {
+      poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
+      dataprotector:
+        'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
+    },
+    bridge: 'https://bridge-bellecour.iex.ec/',
+    bridgeInformation:
+      'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
+    wagmiNetwork: bellecour,
+    tokenSymbol: 'xRLC',
   },
 ];
 
