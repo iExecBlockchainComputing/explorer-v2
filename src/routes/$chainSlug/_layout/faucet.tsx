@@ -50,7 +50,7 @@ function FaucetRoute() {
         throw new Error('User not connected or no address specified');
       }
 
-      const token = await getToken({ leewayInSeconds: 10 });
+      const token = await getToken({ skipCache: true });
       if (!token) {
         throw new Error('Unable to get authentication token');
       }
