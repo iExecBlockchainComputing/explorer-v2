@@ -6,9 +6,11 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { BackButton } from '@/components/ui/BackButton';
+import { useTabParam } from '@/hooks/usePageParam';
 import { useSchemaSearch } from '@/hooks/useSchemaSearch';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { Tabs } from '@/modules/Tabs';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
@@ -86,7 +88,10 @@ function useDatasetData(datasetAddress: string, chainId: number) {
 }
 
 function DatasetsRoute() {
+  const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
+  const [currentTab, setCurrentTab] = useTabParam('appTab', tabLabels, 0);
   const { chainId } = useUserStore();
+
   const { datasetAddress } = Route.useParams();
   const { navigateToDatasets } = useSchemaSearch();
 
@@ -136,14 +141,20 @@ function DatasetsRoute() {
         </div>
       </div>
 
-      <div className="space-y-10">
-        {dataset.hasPastError && !datasetDetails ? (
+      <Tabs
+        currentTab={currentTab}
+        tabLabels={tabLabels}
+        onTabChange={setCurrentTab}
+      />
+      {currentTab === 0 &&
+        (dataset.hasPastError && !datasetDetails ? (
           <ErrorAlert message="An error occurred during dataset details loading." />
         ) : (
           <DetailsTable details={datasetDetails || {}} zebra={false} />
-        )}
+        ))}
+      {currentTab === 1 && (
         <DatasetDealsTable datasetAddress={datasetAddress} />
-      </div>
+      )}
     </div>
   );
 }
