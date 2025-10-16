@@ -13,6 +13,7 @@ import { Tabs } from '@/modules/Tabs';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { WorkerpoolDealsTable } from '@/modules/workerpools/workerpool/WorkerpoolDealsTable';
 import { buildWorkerpoolDetails } from '@/modules/workerpools/workerpool/buildWorkerpoolDetails';
+import { WorkerpoolAccessTable } from '@/modules/workerpools/workerpool/workerpoolAccessTable';
 import { WorkerpoolBreadcrumbs } from '@/modules/workerpools/workerpool/workerpoolBreadcrumbs';
 import { workerpoolQuery } from '@/modules/workerpools/workerpool/workerpoolQuery';
 import useUserStore from '@/stores/useUser.store';
@@ -133,6 +134,13 @@ function WorkerpoolsRoute() {
         ))}
       {currentTab === 1 && (
         <WorkerpoolDealsTable
+          workerpoolAddress={workerpoolAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
+      {currentTab === 2 && (
+        <WorkerpoolAccessTable
           workerpoolAddress={workerpoolAddress}
           setLoading={setIsLoadingChild}
           setOutdated={setIsOutdatedChild}

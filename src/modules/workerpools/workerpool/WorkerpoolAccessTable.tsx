@@ -1,17 +1,15 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { columns } from '@/modules/access/workerpoolColumns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { getAdditionalPages } from '@/utils/format';
-import { workerpoolDealsQuery } from './workerpoolDealsQuery';
 
-function useWorkerpoolDealsData({
+function useWorkerpoolAccessData({
   workerpoolAddress,
   currentPage,
 }: {
@@ -19,48 +17,39 @@ function useWorkerpoolDealsData({
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
-  const skip = currentPage * DETAIL_TABLE_LENGTH;
-  const nextSkip = skip + DETAIL_TABLE_LENGTH;
-  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
   const queryKey = [
     chainId,
     'workerpool',
-    'deals',
+    'access',
     workerpoolAddress,
     currentPage,
   ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
-      queryFn: () =>
-        execute(workerpoolDealsQuery, chainId, {
-          length: DETAIL_TABLE_LENGTH,
-          skip,
-          nextSkip,
-          nextNextSkip,
-          workerpoolAddress,
-        }),
+      queryFn: async () => {
+        const iexec = await getIExec();
+
+        const { count, orders } =
+          await iexec.orderbook.fetchWorkerpoolOrderbook();
+
+        return { count, orders };
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const deals = data?.workerpool?.deals ?? [];
-  // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = getAdditionalPages(
-    Boolean(data?.workerpool?.dealsHasNext?.length),
-    Boolean(data?.workerpool?.dealsHasNextNext?.length)
-  );
-
-  const formattedDeals =
-    deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
-    })) ?? [];
+  const access = data?.orders || [];
+  const count = data?.count || 0;
+  const hasNextPage = count > DETAIL_TABLE_LENGTH;
+  const additionalPages = hasNextPage
+    ? Math.ceil(count / DETAIL_TABLE_LENGTH) - 1
+    : 0;
 
   return {
-    data: formattedDeals,
+    data: access,
     isLoading,
     isRefetching,
     isError,
@@ -69,7 +58,7 @@ function useWorkerpoolDealsData({
   };
 }
 
-export function WorkerpoolDealsTable({
+export function WorkerpoolAccessTable({
   workerpoolAddress,
   setLoading,
   setOutdated,
@@ -78,34 +67,30 @@ export function WorkerpoolDealsTable({
   setLoading: (loading: boolean) => void;
   setOutdated: (outdated: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('workerpoolDealsPage');
+  const [currentPage, setCurrentPage] = usePageParam('workerpoolAccessPage');
   const {
-    data: deals,
+    data: access,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useWorkerpoolDealsData({
+  } = useWorkerpoolAccessData({
     workerpoolAddress,
     currentPage: currentPage - 1,
   });
 
   setLoading(isLoading || isRefetching);
-  setOutdated(deals.length > 0 && isError);
-
-  const filteredColumns = columns.filter(
-    (col) => col.accessorKey !== 'dataset.address'
-  );
+  setOutdated(access.length > 0 && isError);
 
   return (
     <div className="space-y-6">
-      {hasPastError && !deals.length ? (
-        <ErrorAlert message="A error occurred during workerpool deals loading." />
+      {hasPastError && !access.length ? (
+        <ErrorAlert message="A error occurred during workerpool access loading." />
       ) : (
         <DataTable
-          columns={filteredColumns}
-          data={deals}
+          columns={columns}
+          data={access}
           tableLength={DETAIL_TABLE_LENGTH}
         />
       )}
