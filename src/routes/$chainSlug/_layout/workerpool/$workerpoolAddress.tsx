@@ -5,8 +5,10 @@ import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
 import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { BackButton } from '@/components/ui/BackButton';
+import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { Tabs } from '@/modules/Tabs';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { WorkerpoolDealsTable } from '@/modules/workerpools/workerpool/WorkerpoolDealsTable';
 import { buildWorkerpoolDetails } from '@/modules/workerpools/workerpool/buildWorkerpoolDetails';
@@ -57,6 +59,12 @@ function useWorkerpoolData(workerpoolAddress: string, chainId: number) {
 }
 
 function WorkerpoolsRoute() {
+  const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
+  const [currentTab, setCurrentTab] = useTabParam(
+    'workerpoolTab',
+    tabLabels,
+    0
+  );
   const { chainId } = useUserStore();
   const { workerpoolAddress } = Route.useParams();
   const {
@@ -107,14 +115,20 @@ function WorkerpoolsRoute() {
         </div>
       </div>
 
-      <div className="space-y-10">
-        {hasPastError && !workerpoolDetails ? (
+      <Tabs
+        currentTab={currentTab}
+        tabLabels={tabLabels}
+        onTabChange={setCurrentTab}
+      />
+      {currentTab === 0 &&
+        (hasPastError && !workerpoolDetails ? (
           <ErrorAlert message="An error occurred during deal details loading." />
         ) : (
           <DetailsTable details={workerpoolDetails || {}} zebra={false} />
-        )}
+        ))}
+      {currentTab === 1 && (
         <WorkerpoolDealsTable workerpoolAddress={workerpoolAddress} />
-      </div>
+      )}
     </div>
   );
 }
