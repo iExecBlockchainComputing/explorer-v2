@@ -1,5 +1,6 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { getIExec } from '@/externals/iexecSdkClient';
@@ -70,8 +71,14 @@ export function AppAccessTable({
     hasPastError,
   } = useAppAccessData({ appAddress, currentPage: currentPage - 1 });
 
-  setLoading(isLoading || isRefetching);
-  setOutdated(access.length > 0 && isError);
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(access.length > 0 && isError),
+    [access.length, isError, setOutdated]
+  );
 
   return (
     <div className="space-y-6">

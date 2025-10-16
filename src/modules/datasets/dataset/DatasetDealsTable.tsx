@@ -1,6 +1,7 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { usePageParam } from '@/hooks/usePageParam';
@@ -82,8 +83,14 @@ export function DatasetDealsTable({
     hasPastError,
   } = useDatasetDealsData({ datasetAddress, currentPage: currentPage - 1 });
 
-  setLoading(isLoading || isRefetching);
-  setOutdated(deals.length > 0 && isError);
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(deals.length > 0 && isError),
+    [deals.length, isError, setOutdated]
+  );
 
   const filteredColumns = columns.filter((col) => col.accessorKey !== 'dealid');
 
