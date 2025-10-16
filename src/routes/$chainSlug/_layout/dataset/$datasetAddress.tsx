@@ -12,6 +12,7 @@ import { useSchemaSearch } from '@/hooks/useSchemaSearch';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
+import { DatasetAccessTable } from '@/modules/datasets/dataset/DatasetAccessTable';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
@@ -160,6 +161,13 @@ function DatasetsRoute() {
         ))}
       {currentTab === 1 && (
         <DatasetDealsTable
+          datasetAddress={datasetAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
+      {currentTab === 2 && (
+        <DatasetAccessTable
           datasetAddress={datasetAddress}
           setLoading={setIsLoadingChild}
           setOutdated={setIsOutdatedChild}
