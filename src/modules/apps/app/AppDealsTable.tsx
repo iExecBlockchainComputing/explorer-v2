@@ -1,7 +1,6 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
-import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { usePageParam } from '@/hooks/usePageParam';
@@ -58,7 +57,15 @@ function useAppDealsData({
   };
 }
 
-export function AppDealsTable({ appAddress }: { appAddress: string }) {
+export function AppDealsTable({
+  appAddress,
+  setLoading,
+  setOutdated,
+}: {
+  appAddress: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
+}) {
   const [currentPage, setCurrentPage] = usePageParam('appDealsPage');
   const {
     data: deals,
@@ -68,6 +75,9 @@ export function AppDealsTable({ appAddress }: { appAddress: string }) {
     additionalPages,
     hasPastError,
   } = useAppDealsData({ appAddress, currentPage: currentPage - 1 });
+
+  setLoading(isLoading || isRefetching);
+  setOutdated(deals.length > 0 && isError);
 
   const filteredColumns = columns.filter((col) => col.accessorKey !== 'app');
 

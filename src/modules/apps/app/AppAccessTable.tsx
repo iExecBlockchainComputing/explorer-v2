@@ -1,7 +1,5 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-// import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
-import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { getIExec } from '@/externals/iexecSdkClient';
@@ -10,8 +8,6 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/access/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-
-// import { appAccessQuery } from './appAccessQuery';
 
 function useAppAccessData({
   appAddress,
@@ -55,7 +51,15 @@ function useAppAccessData({
   };
 }
 
-export function AppAccessTable({ appAddress }: { appAddress: string }) {
+export function AppAccessTable({
+  appAddress,
+  setLoading,
+  setOutdated,
+}: {
+  appAddress: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
+}) {
   const [currentPage, setCurrentPage] = usePageParam('appAccessPage');
   const {
     data: access,
@@ -65,6 +69,9 @@ export function AppAccessTable({ appAddress }: { appAddress: string }) {
     additionalPages,
     hasPastError,
   } = useAppAccessData({ appAddress, currentPage: currentPage - 1 });
+
+  setLoading(isLoading || isRefetching);
+  setOutdated(access.length > 0 && isError);
 
   return (
     <div className="space-y-6">

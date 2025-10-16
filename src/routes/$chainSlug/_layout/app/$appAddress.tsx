@@ -3,6 +3,7 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import AppIcon from '@/components/icons/AppIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -72,6 +73,9 @@ function AppsRoute() {
     error,
   } = useAppData((appAddress as string).toLowerCase(), chainId!);
 
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
   const appDetails = app ? buildAppDetails({ app }) : undefined;
 
   if (!isValid) {
@@ -82,6 +86,9 @@ function AppsRoute() {
     return <ErrorAlert className="my-16" message="App not found." />;
   }
 
+  const showOutdated = app && (isError || isOutdatedChild);
+  const showLoading = isLoading || isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -90,14 +97,12 @@ function AppsRoute() {
           <h1 className="flex items-center gap-2 text-2xl font-extrabold">
             <AppIcon size={24} />
             App details
-            {app && isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(isLoading || isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -117,8 +122,20 @@ function AppsRoute() {
         ) : (
           <DetailsTable details={appDetails || {}} zebra={false} />
         ))}
-      {currentTab === 1 && <AppDealsTable appAddress={appAddress} />}
-      {currentTab === 2 && <AppAccessTable appAddress={appAddress} />}
+      {currentTab === 1 && (
+        <AppDealsTable
+          appAddress={appAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
+      {currentTab === 2 && (
+        <AppAccessTable
+          appAddress={appAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
     </div>
   );
 }
