@@ -4,6 +4,7 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -100,6 +101,9 @@ function DatasetsRoute() {
     chainId!
   );
 
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
   const datasetDetails = dataset.data
     ? buildDatasetDetails({
         dataset: dataset.data,
@@ -117,6 +121,10 @@ function DatasetsRoute() {
     return <ErrorAlert className="my-16" message="Dataset not found." />;
   }
 
+  const showOutdated = dataset.data && (dataset.isError || isOutdatedChild);
+  const showLoading =
+    dataset.isLoading || dataset.isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -125,14 +133,12 @@ function DatasetsRoute() {
           <h1 className="flex items-center gap-2 text-2xl font-extrabold">
             <DatasetIcon size={24} />
             Dataset details
-            {dataset.data && dataset.isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(dataset.isLoading || dataset.isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -153,7 +159,11 @@ function DatasetsRoute() {
           <DetailsTable details={datasetDetails || {}} zebra={false} />
         ))}
       {currentTab === 1 && (
-        <DatasetDealsTable datasetAddress={datasetAddress} />
+        <DatasetDealsTable
+          datasetAddress={datasetAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
       )}
     </div>
   );

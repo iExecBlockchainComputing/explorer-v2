@@ -1,7 +1,6 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
-import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { usePageParam } from '@/hooks/usePageParam';
@@ -66,8 +65,12 @@ function useDatasetDealsData({
 
 export function DatasetDealsTable({
   datasetAddress,
+  setLoading,
+  setOutdated,
 }: {
   datasetAddress: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
 }) {
   const [currentPage, setCurrentPage] = usePageParam('datasetDealsPage');
   const {
@@ -79,21 +82,13 @@ export function DatasetDealsTable({
     hasPastError,
   } = useDatasetDealsData({ datasetAddress, currentPage: currentPage - 1 });
 
+  setLoading(isLoading || isRefetching);
+  setOutdated(deals.length > 0 && isError);
+
   const filteredColumns = columns.filter((col) => col.accessorKey !== 'dealid');
 
   return (
     <div className="space-y-6">
-      <h2 className="flex items-center gap-2 font-extrabold">
-        Latests deals
-        {!deals && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h2>
       {hasPastError && !deals.length ? (
         <ErrorAlert message="A error occurred during dataset deals loading." />
       ) : (
