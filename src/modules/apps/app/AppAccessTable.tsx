@@ -1,17 +1,19 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/poco/execute';
+// import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { columns } from '@/modules/access/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { appDealsQuery } from './appDealsQuery';
 
-function useAppDealsData({
+// import { appAccessQuery } from './appAccessQuery';
+
+function useAppAccessData({
   appAddress,
   currentPage,
 }: {
@@ -19,37 +21,32 @@ function useAppDealsData({
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
-  const skip = currentPage * DETAIL_TABLE_LENGTH;
-  const nextSkip = skip + DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'app', 'deals', appAddress, currentPage];
+  const queryKey = [chainId, 'app', 'access', appAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
-      queryFn: () =>
-        execute(appDealsQuery, chainId, {
-          length: DETAIL_TABLE_LENGTH,
-          skip,
-          nextSkip,
-          appAddress,
-        }),
+      queryFn: async () => {
+        const iexec = await getIExec();
+
+        const { count, orders } =
+          await iexec.orderbook.fetchAppOrderbook(appAddress);
+        return { count, orders };
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const deals = data?.app?.deals ?? [];
-  const hasNextPage = (data?.app?.dealsHasNext?.length ?? 0) > 0;
-  const additionalPages = hasNextPage ? 1 : 0;
-
-  const formattedDeal =
-    deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
-    })) ?? [];
+  const access = data?.orders || [];
+  const count = data?.count || 0;
+  const hasNextPage = count > DETAIL_TABLE_LENGTH;
+  const additionalPages = hasNextPage
+    ? Math.ceil(count / DETAIL_TABLE_LENGTH) - 1
+    : 0;
 
   return {
-    data: formattedDeal,
+    data: access,
     isLoading,
     isRefetching,
     isError,
@@ -58,27 +55,25 @@ function useAppDealsData({
   };
 }
 
-export function AppDealsTable({ appAddress }: { appAddress: string }) {
-  const [currentPage, setCurrentPage] = usePageParam('appDealsPage');
+export function AppAccessTable({ appAddress }: { appAddress: string }) {
+  const [currentPage, setCurrentPage] = usePageParam('appAccessPage');
   const {
-    data: deals,
+    data: access,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAppDealsData({ appAddress, currentPage: currentPage - 1 });
-
-  const filteredColumns = columns.filter((col) => col.accessorKey !== 'app');
+  } = useAppAccessData({ appAddress, currentPage: currentPage - 1 });
 
   return (
     <div className="space-y-6">
-      {hasPastError && !deals.length ? (
-        <ErrorAlert message="A error occurred during app deals loading." />
+      {hasPastError && !access.length ? (
+        <ErrorAlert message="A error occurred during app access loading." />
       ) : (
         <DataTable
-          columns={filteredColumns}
-          data={deals}
+          columns={columns}
+          data={access}
           tableLength={DETAIL_TABLE_LENGTH}
         />
       )}

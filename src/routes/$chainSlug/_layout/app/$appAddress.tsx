@@ -9,6 +9,7 @@ import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
+import { AppAccessTable } from '@/modules/apps/app/AppAccessTable';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
 import { AppDealsTable } from '@/modules/apps/app/AppDealsTable';
 import { appQuery } from '@/modules/apps/app/appQuery';
@@ -57,7 +58,7 @@ function useAppData(appAddress: string, chainId: number) {
 }
 
 function AppsRoute() {
-  const tabLabels = ['DETAILS', 'DEALS', 'ORDERS'];
+  const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
   const [currentTab, setCurrentTab] = useTabParam('appTab', tabLabels, 0);
   const { chainId } = useUserStore();
   const { appAddress } = Route.useParams();
@@ -117,7 +118,7 @@ function AppsRoute() {
           <DetailsTable details={appDetails || {}} zebra={false} />
         ))}
       {currentTab === 1 && <AppDealsTable appAddress={appAddress} />}
-      {/* {currentTab === 2 && <AppOrdersTable appAddress={appAddress} />} */}
+      {currentTab === 2 && <AppAccessTable appAddress={appAddress} />}
     </div>
   );
 }
