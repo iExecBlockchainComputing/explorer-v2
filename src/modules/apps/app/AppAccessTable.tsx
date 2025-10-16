@@ -5,7 +5,7 @@ import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/access/columns';
+import { columns } from '@/modules/access/appColumns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 

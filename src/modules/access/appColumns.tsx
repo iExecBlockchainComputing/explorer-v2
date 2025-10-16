@@ -5,21 +5,6 @@ import { truncateAddress } from '@/utils/truncateAddress';
 
 export const columns: ColumnDef<PublishedApporder>[] = [
   {
-    accessorKey: 'order.app',
-    header: 'App',
-    cell: ({ row }) => (
-      <CopyButton
-        displayText={truncateAddress(row.original.order.app, { startLen: 8 })}
-        textToCopy={row.original.order.app}
-      />
-    ),
-  },
-  {
-    accessorKey: 'order.appprice',
-    header: 'App Price',
-    cell: ({ row }) => <span>{row.original.order.appprice} RLC</span>,
-  },
-  {
     accessorKey: 'order.datasetrestrict',
     header: 'Dataset Restriction',
     cell: ({ row }) => (
