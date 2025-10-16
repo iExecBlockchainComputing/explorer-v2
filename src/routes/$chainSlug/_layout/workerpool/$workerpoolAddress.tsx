@@ -3,6 +3,7 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -77,6 +78,9 @@ function WorkerpoolsRoute() {
     error,
   } = useWorkerpoolData((workerpoolAddress as string).toLowerCase(), chainId!);
 
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
   const workerpoolDetails = workerpool
     ? buildWorkerpoolDetails({ workerpool })
     : undefined;
@@ -91,6 +95,9 @@ function WorkerpoolsRoute() {
     return <ErrorAlert className="my-16" message="Workerpool not found." />;
   }
 
+  const showOutdated = workerpool && (isError || isOutdatedChild);
+  const showLoading = isLoading || isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -99,14 +106,12 @@ function WorkerpoolsRoute() {
           <h1 className="flex items-center gap-2 text-2xl font-extrabold">
             <WorkerpoolIcon size={24} />
             Workerpool details
-            {workerpool && isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(isLoading || isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -127,7 +132,11 @@ function WorkerpoolsRoute() {
           <DetailsTable details={workerpoolDetails || {}} zebra={false} />
         ))}
       {currentTab === 1 && (
-        <WorkerpoolDealsTable workerpoolAddress={workerpoolAddress} />
+        <WorkerpoolDealsTable
+          workerpoolAddress={workerpoolAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
       )}
     </div>
   );

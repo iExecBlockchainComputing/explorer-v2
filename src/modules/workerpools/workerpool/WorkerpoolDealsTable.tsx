@@ -72,8 +72,12 @@ function useWorkerpoolDealsData({
 
 export function WorkerpoolDealsTable({
   workerpoolAddress,
+  setLoading,
+  setOutdated,
 }: {
   workerpoolAddress: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
 }) {
   const [currentPage, setCurrentPage] = usePageParam('workerpoolDealsPage');
   const {
@@ -88,23 +92,15 @@ export function WorkerpoolDealsTable({
     currentPage: currentPage - 1,
   });
 
+  setLoading(isLoading || isRefetching);
+  setOutdated(deals.length > 0 && isError);
+
   const filteredColumns = columns.filter(
     (col) => col.accessorKey !== 'dataset.address'
   );
 
   return (
     <div className="space-y-6">
-      <h2 className="flex items-center gap-2 font-extrabold">
-        Latests deals
-        {!deals && isError && (
-          <span className="text-muted-foreground text-sm font-light">
-            (outdated)
-          </span>
-        )}
-        {(isLoading || isRefetching) && (
-          <LoaderCircle className="animate-spin" />
-        )}
-      </h2>
       {hasPastError && !deals.length ? (
         <ErrorAlert message="A error occurred during workerpool deals loading." />
       ) : (
