@@ -57,7 +57,7 @@ export function AppsPreviewTable({ className }: { className?: string }) {
         </Button>
       </div>
       {(apps.isError || apps.errorUpdateCount > 0) && !apps.data ? (
-        <ErrorAlert message="A error occurred during apps loading." />
+        <ErrorAlert message="An error occurred during apps loading." />
       ) : (
         <DataTable
           columns={columns}

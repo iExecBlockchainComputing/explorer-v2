@@ -104,7 +104,7 @@ export function AddressDatasetsAccessTable({
         )}
       </h2>
       {hasPastError && !access.length ? (
-        <ErrorAlert message="A error occurred during address datasets access loading." />
+        <ErrorAlert message="An error occurred during address datasets access loading." />
       ) : (
         <DataTable
           columns={columns}

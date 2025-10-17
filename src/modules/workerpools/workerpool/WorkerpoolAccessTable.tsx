@@ -103,7 +103,7 @@ export function WorkerpoolAccessTable({
   return (
     <div className="space-y-6">
       {hasPastError && !access.length ? (
-        <ErrorAlert message="A error occurred during workerpool access loading." />
+        <ErrorAlert message="An error occurred during workerpool access loading." />
       ) : (
         <DataTable
           columns={columns}

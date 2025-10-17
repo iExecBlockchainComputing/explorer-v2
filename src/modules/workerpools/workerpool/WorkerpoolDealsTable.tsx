@@ -108,7 +108,7 @@ export function WorkerpoolDealsTable({
   return (
     <div className="space-y-6">
       {hasPastError && !deals.length ? (
-        <ErrorAlert message="A error occurred during workerpool deals loading." />
+        <ErrorAlert message="An error occurred during workerpool deals loading." />
       ) : (
         <DataTable
           columns={filteredColumns}

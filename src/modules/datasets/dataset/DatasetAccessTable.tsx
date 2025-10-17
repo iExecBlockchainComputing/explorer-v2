@@ -92,7 +92,7 @@ export function DatasetAccessTable({
   return (
     <div className="space-y-6">
       {hasPastError && !access.length ? (
-        <ErrorAlert message="A error occurred during dataset access loading." />
+        <ErrorAlert message="An error occurred during dataset access loading." />
       ) : (
         <DataTable
           columns={columns}

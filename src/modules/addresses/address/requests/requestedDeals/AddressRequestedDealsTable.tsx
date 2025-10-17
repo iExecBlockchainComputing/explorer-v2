@@ -104,7 +104,7 @@ export function AddressRequestedDealsTable({
         )}
       </h2>
       {hasPastError && !requestedDeals.length ? (
-        <ErrorAlert message="A error occurred during address requestedDeals loading." />
+        <ErrorAlert message="An error occurred during address requestedDeals loading." />
       ) : (
         <DataTable
           columns={columns}

@@ -97,7 +97,7 @@ export function DatasetDealsTable({
   return (
     <div className="space-y-6">
       {hasPastError && !deals.length ? (
-        <ErrorAlert message="A error occurred during dataset deals loading." />
+        <ErrorAlert message="An error occurred during dataset deals loading." />
       ) : (
         <DataTable
           columns={filteredColumns}

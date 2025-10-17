@@ -73,7 +73,7 @@ export function DatasetsPreviewTable({ className }: { className?: string }) {
         </Button>
       </div>
       {(datasets.isError || datasets.errorUpdateCount > 0) && !datasets.data ? (
-        <ErrorAlert message="A error occurred during datasets loading." />
+        <ErrorAlert message="An error occurred during datasets loading." />
       ) : (
         <DataTable
           columns={columns}

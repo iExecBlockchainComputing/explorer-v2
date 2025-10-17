@@ -91,7 +91,7 @@ export function AppDealsTable({
   return (
     <div className="space-y-6">
       {hasPastError && !deals.length ? (
-        <ErrorAlert message="A error occurred during app deals loading." />
+        <ErrorAlert message="An error occurred during app deals loading." />
       ) : (
         <DataTable
           columns={filteredColumns}

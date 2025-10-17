@@ -105,7 +105,7 @@ export function AddressBeneficiaryDealsTable({
         )}
       </h2>
       {hasPastError && !beneficiaryDeals.length ? (
-        <ErrorAlert message="A error occurred during address beneficiaryDeals loading." />
+        <ErrorAlert message="An error occurred during address beneficiaryDeals loading." />
       ) : (
         <DataTable
           columns={columns}
