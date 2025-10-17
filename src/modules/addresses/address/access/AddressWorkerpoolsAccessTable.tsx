@@ -38,12 +38,6 @@ function useAddressWorkerpoolsAccessData({
       queryKey,
       queryFn: async () => {
         const iexec = await getIExec();
-        console.log(
-          'fetching workerpool access for address:',
-          addressAddress,
-          'batch:',
-          apiBatch
-        );
 
         const { count, orders } =
           await iexec.orderbook.fetchWorkerpoolOrderbook({
@@ -52,12 +46,6 @@ function useAddressWorkerpoolsAccessData({
             page: apiBatch,
             pageSize,
           });
-        console.log('got workerpool access data:', {
-          count,
-          orders,
-          apiBatch,
-          startIndexInBatch,
-        });
 
         return { count, orders };
       },

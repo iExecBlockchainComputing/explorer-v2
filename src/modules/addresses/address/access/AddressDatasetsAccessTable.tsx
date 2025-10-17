@@ -38,24 +38,12 @@ function useAddressDatasetsAccessData({
       queryKey,
       queryFn: async () => {
         const iexec = await getIExec();
-        console.log(
-          'fetching dataset access for address:',
-          addressAddress,
-          'batch:',
-          apiBatch
-        );
 
         const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
           dataset: 'any',
           requester: addressAddress,
           page: apiBatch,
           pageSize,
-        });
-        console.log('got dataset access data:', {
-          count,
-          orders,
-          apiBatch,
-          startIndexInBatch,
         });
 
         return { count, orders };

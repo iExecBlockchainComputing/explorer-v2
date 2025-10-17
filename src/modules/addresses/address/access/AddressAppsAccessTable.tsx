@@ -32,24 +32,12 @@ function useAddressAppsAccessData({
       queryKey,
       queryFn: async () => {
         const iexec = await getIExec();
-        console.log(
-          'fetching app access for address:',
-          addressAddress,
-          'batch:',
-          apiBatch
-        );
 
         const { count, orders } = await iexec.orderbook.fetchAppOrderbook({
           app: 'any',
           requester: addressAddress,
           page: apiBatch,
           pageSize,
-        });
-        console.log('got app access data:', {
-          count,
-          orders,
-          apiBatch,
-          startIndexInBatch,
         });
 
         return { count, orders };
