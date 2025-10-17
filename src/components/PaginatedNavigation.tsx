@@ -22,13 +22,29 @@ export const PaginatedNavigation = ({
   const generatePages = () => {
     const pages: (number | 'ellipsis')[] = [];
 
-    if (totalPages <= 7) {
-      // Show all pages if 7 or fewer
+    // Mobile-first approach: show fewer pages on small screens
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const maxVisiblePages = isMobile ? 3 : 7;
+
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if within limit
       for (let i = 1; i <= totalPages; i++) {
         pages.push(i);
       }
+    } else if (isMobile) {
+      // Mobile: simplified pagination - only show current and neighbors
+      if (currentPage === 1) {
+        // At start: 1 2 ... last
+        pages.push(1, 2, 'ellipsis', totalPages);
+      } else if (currentPage === totalPages) {
+        // At end: 1 ... (last-1) last
+        pages.push(1, 'ellipsis', totalPages - 1, totalPages);
+      } else {
+        // Middle: 1 ... current ... last
+        pages.push(1, 'ellipsis', currentPage, 'ellipsis', totalPages);
+      }
     } else {
-      // Always show first page
+      // Desktop: full pagination logic
       pages.push(1);
 
       if (currentPage <= 3) {
