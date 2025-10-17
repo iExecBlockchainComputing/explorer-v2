@@ -1,9 +1,21 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { PublishedApporder } from 'iexec/IExecOrderbookModule';
 import CopyButton from '@/components/CopyButton';
+import useUserStore from '@/stores/useUser.store';
+import { getTokenSymbol } from '@/utils/chain.utils';
 import { truncateAddress } from '@/utils/truncateAddress';
 
 export const columns: ColumnDef<PublishedApporder>[] = [
+  {
+    accessorKey: 'order.appprice',
+    header: 'Price',
+    cell: ({ row }) => (
+      <span>
+        {row.original.order.appprice}{' '}
+        {getTokenSymbol(useUserStore.getState().chainId)}
+      </span>
+    ),
+  },
   {
     accessorKey: 'order.datasetrestrict',
     header: 'Dataset Restriction',

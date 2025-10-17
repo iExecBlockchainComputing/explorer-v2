@@ -1,9 +1,21 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { PublishedWorkerpoolorder } from 'iexec/IExecOrderbookModule';
 import CopyButton from '@/components/CopyButton';
+import useUserStore from '@/stores/useUser.store';
+import { getTokenSymbol } from '@/utils/chain.utils';
 import { truncateAddress } from '@/utils/truncateAddress';
 
 export const columns: ColumnDef<PublishedWorkerpoolorder>[] = [
+  {
+    accessorKey: 'order.workerpoolprice',
+    header: 'Price',
+    cell: ({ row }) => (
+      <span>
+        {row.original.order.workerpoolprice}{' '}
+        {getTokenSymbol(useUserStore.getState().chainId)}
+      </span>
+    ),
+  },
   {
     accessorKey: 'order.apprestrict',
     header: 'App Restriction',
