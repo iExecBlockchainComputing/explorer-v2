@@ -9,10 +9,10 @@ export const columns: ColumnDef<PublishedApporder>[] = [
     header: 'App',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.app, {
+        displayText={truncateAddress(row.original.order.app.toLowerCase(), {
           startLen: 8,
         })}
-        textToCopy={row.original.order.app}
+        textToCopy={row.original.order.app.toLowerCase()}
       />
     ),
   },
@@ -26,10 +26,13 @@ export const columns: ColumnDef<PublishedApporder>[] = [
     header: 'Requester Restriction',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.requesterrestrict, {
-          startLen: 8,
-        })}
-        textToCopy={row.original.order.requesterrestrict}
+        displayText={truncateAddress(
+          row.original.order.requesterrestrict.toLowerCase(),
+          {
+            startLen: 8,
+          }
+        )}
+        textToCopy={row.original.order.requesterrestrict.toLowerCase()}
       />
     ),
   },
@@ -38,10 +41,13 @@ export const columns: ColumnDef<PublishedApporder>[] = [
     header: 'Dataset Restriction',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.datasetrestrict, {
-          startLen: 8,
-        })}
-        textToCopy={row.original.order.datasetrestrict}
+        displayText={truncateAddress(
+          row.original.order.datasetrestrict.toLowerCase(),
+          {
+            startLen: 8,
+          }
+        )}
+        textToCopy={row.original.order.datasetrestrict.toLowerCase()}
       />
     ),
   },
@@ -50,10 +56,13 @@ export const columns: ColumnDef<PublishedApporder>[] = [
     header: 'Workerpool Restriction',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.workerpoolrestrict, {
-          startLen: 8,
-        })}
-        textToCopy={row.original.order.workerpoolrestrict}
+        displayText={truncateAddress(
+          row.original.order.workerpoolrestrict.toLowerCase(),
+          {
+            startLen: 8,
+          }
+        )}
+        textToCopy={row.original.order.workerpoolrestrict.toLowerCase()}
       />
     ),
   },

@@ -9,10 +9,13 @@ export const columns: ColumnDef<PublishedWorkerpoolorder>[] = [
     header: 'App Restriction',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.apprestrict, {
-          startLen: 8,
-        })}
-        textToCopy={row.original.order.apprestrict}
+        displayText={truncateAddress(
+          row.original.order.apprestrict.toLowerCase(),
+          {
+            startLen: 8,
+          }
+        )}
+        textToCopy={row.original.order.apprestrict.toLowerCase()}
       />
     ),
   },
@@ -21,10 +24,13 @@ export const columns: ColumnDef<PublishedWorkerpoolorder>[] = [
     header: 'Requester Restriction',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.requesterrestrict, {
-          startLen: 8,
-        })}
-        textToCopy={row.original.order.requesterrestrict}
+        displayText={truncateAddress(
+          row.original.order.requesterrestrict.toLowerCase(),
+          {
+            startLen: 8,
+          }
+        )}
+        textToCopy={row.original.order.requesterrestrict.toLowerCase()}
       />
     ),
   },
@@ -33,10 +39,13 @@ export const columns: ColumnDef<PublishedWorkerpoolorder>[] = [
     header: 'Dataset Restriction',
     cell: ({ row }) => (
       <CopyButton
-        displayText={truncateAddress(row.original.order.datasetrestrict, {
-          startLen: 8,
-        })}
-        textToCopy={row.original.order.datasetrestrict}
+        displayText={truncateAddress(
+          row.original.order.datasetrestrict.toLowerCase(),
+          {
+            startLen: 8,
+          }
+        )}
+        textToCopy={row.original.order.datasetrestrict.toLowerCase()}
       />
     ),
   },
