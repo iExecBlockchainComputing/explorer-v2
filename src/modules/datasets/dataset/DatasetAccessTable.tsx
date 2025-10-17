@@ -19,6 +19,12 @@ function useDatasetAccessData({
 }) {
   const { chainId } = useUserStore();
 
+  const pageSize = DETAIL_TABLE_LENGTH * 2;
+
+  // API returns min 10 items, but we display only 8 per page
+  const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
+  const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
+
   const queryKey = [chainId, 'dataset', 'access', datasetAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
@@ -26,8 +32,11 @@ function useDatasetAccessData({
       queryFn: async () => {
         const iexec = await getIExec();
 
-        const { count, orders } =
-          await iexec.orderbook.fetchDatasetOrderbook(datasetAddress);
+        const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
+          dataset: datasetAddress,
+          page: apiBatch,
+          pageSize,
+        });
         return { count, orders };
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -35,19 +44,19 @@ function useDatasetAccessData({
     }
   );
 
-  const access = data?.orders || [];
+  const allOrders = data?.orders || [];
+  const access = allOrders.slice(
+    startIndexInBatch,
+    startIndexInBatch + DETAIL_TABLE_LENGTH
+  );
   const count = data?.count || 0;
-  const hasNextPage = count > DETAIL_TABLE_LENGTH;
-  const additionalPages = hasNextPage
-    ? Math.ceil(count / DETAIL_TABLE_LENGTH) - 1
-    : 0;
 
   return {
     data: access,
+    totalCount: count,
     isLoading,
     isRefetching,
     isError,
-    additionalPages,
     hasPastError: isError || errorUpdateCount > 0,
   };
 }
@@ -64,10 +73,10 @@ export function DatasetAccessTable({
   const [currentPage, setCurrentPage] = usePageParam('datasetAccessPage');
   const {
     data: access,
+    totalCount,
     isError,
     isLoading,
     isRefetching,
-    additionalPages,
     hasPastError,
   } = useDatasetAccessData({ datasetAddress, currentPage: currentPage - 1 });
 
@@ -93,7 +102,7 @@ export function DatasetAccessTable({
       )}
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
+        totalPages={Math.ceil(totalCount / DETAIL_TABLE_LENGTH)}
         onPageChange={setCurrentPage}
       />
     </div>

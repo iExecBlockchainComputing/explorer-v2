@@ -19,6 +19,12 @@ function useWorkerpoolAccessData({
 }) {
   const { chainId } = useUserStore();
 
+  const pageSize = DETAIL_TABLE_LENGTH * 2;
+
+  // API returns min 10 items, but we display only 5 per page
+  const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
+  const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
+
   const queryKey = [
     chainId,
     'workerpool',
@@ -33,7 +39,11 @@ function useWorkerpoolAccessData({
         const iexec = await getIExec();
 
         const { count, orders } =
-          await iexec.orderbook.fetchWorkerpoolOrderbook();
+          await iexec.orderbook.fetchWorkerpoolOrderbook({
+            workerpool: workerpoolAddress,
+            page: apiBatch,
+            pageSize,
+          });
 
         return { count, orders };
       },
@@ -42,19 +52,19 @@ function useWorkerpoolAccessData({
     }
   );
 
-  const access = data?.orders || [];
+  const allOrders = data?.orders || [];
+  const access = allOrders.slice(
+    startIndexInBatch,
+    startIndexInBatch + DETAIL_TABLE_LENGTH
+  );
   const count = data?.count || 0;
-  const hasNextPage = count > DETAIL_TABLE_LENGTH;
-  const additionalPages = hasNextPage
-    ? Math.ceil(count / DETAIL_TABLE_LENGTH) - 1
-    : 0;
 
   return {
     data: access,
+    totalCount: count,
     isLoading,
     isRefetching,
     isError,
-    additionalPages,
     hasPastError: isError || errorUpdateCount > 0,
   };
 }
@@ -71,10 +81,10 @@ export function WorkerpoolAccessTable({
   const [currentPage, setCurrentPage] = usePageParam('workerpoolAccessPage');
   const {
     data: access,
+    totalCount,
     isError,
     isLoading,
     isRefetching,
-    additionalPages,
     hasPastError,
   } = useWorkerpoolAccessData({
     workerpoolAddress,
@@ -103,7 +113,7 @@ export function WorkerpoolAccessTable({
       )}
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
+        totalPages={Math.ceil(totalCount / DETAIL_TABLE_LENGTH)}
         onPageChange={setCurrentPage}
       />
     </div>
