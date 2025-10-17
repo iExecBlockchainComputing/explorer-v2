@@ -50,6 +50,8 @@ export function Navbar() {
 
             <button
               type="button"
+              id="logout-button"
+              aria-label="Logout"
               className="hover:drop-shadow-link-hover p-1"
               onClick={() => logout()}
             >
@@ -93,6 +95,8 @@ export function Navbar() {
 
                 <button
                   type="button"
+                  id="logout-button"
+                  aria-label="Logout"
                   className="hover:drop-shadow-link-hover p-1"
                   onClick={() => logout()}
                 >
