@@ -78,8 +78,12 @@ export function Footer({ className }: { className?: string }) {
       )}
     >
       <div className="flex flex-col items-center justify-between gap-10 xl:flex-row">
-        <ChainLink to="/" className="flex items-center gap-2 font-mono">
-          <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
+        <ChainLink
+          to="/"
+          aria-label="Home"
+          className="flex items-center gap-2 font-mono"
+        >
+          <img src={iExecLogo} width="25" height="25" alt="" />
           <span>iExec Explorer</span>
         </ChainLink>
 
