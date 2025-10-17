@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && 'selected'}
-              className="cursor-pointer"
+              className={destination ? 'cursor-pointer' : ''}
               tabIndex={0}
               onClick={(e) => handleRowClick(destination, e)}
               onKeyDown={(e) => handleRowKeyDown(destination, e)}

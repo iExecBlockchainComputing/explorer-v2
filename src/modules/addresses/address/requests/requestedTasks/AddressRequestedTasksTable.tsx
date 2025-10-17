@@ -104,7 +104,7 @@ export function AddressRequestedTasksTable({
         )}
       </h2>
       {hasPastError && !requestedTasks.length ? (
-        <ErrorAlert message="A error occurred during address requestedTasks loading." />
+        <ErrorAlert message="An error occurred during address requestedTasks loading." />
       ) : (
         <DataTable
           columns={columns}

@@ -103,7 +103,7 @@ export function AddressDatasetsTable({
         )}
       </h2>
       {hasPastError && !datasets.length ? (
-        <ErrorAlert message="A error occurred during address datasets loading." />
+        <ErrorAlert message="An error occurred during address datasets loading." />
       ) : (
         <DataTable
           columns={filteredColumns}

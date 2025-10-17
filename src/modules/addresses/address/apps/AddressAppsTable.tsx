@@ -97,7 +97,7 @@ export function AddressAppsTable({
         )}
       </h2>
       {hasPastError && !apps.length ? (
-        <ErrorAlert message="A error occurred during address apps loading." />
+        <ErrorAlert message="An error occurred during address apps loading." />
       ) : (
         <DataTable
           columns={filteredColumns}

@@ -37,7 +37,8 @@ export function Tabs({
     const containerRect = containerRef.current.getBoundingClientRect();
     const buttonRect = activeButton.getBoundingClientRect();
 
-    const left = buttonRect.left - containerRect.left;
+    const left =
+      buttonRect.left - containerRect.left + containerRef.current.scrollLeft;
     const width = buttonRect.width;
 
     setIndicatorStyle({ left, width });

@@ -27,6 +27,10 @@ export function getBlockExplorerUrl(chainId: number) {
   return chain?.blockExplorerUrl ?? 'https://blockscout.com/';
 }
 
+export const getTokenSymbol = (chainId: number | undefined) => {
+  return getChainFromId(chainId)?.tokenSymbol || 'RLC';
+};
+
 /**
  * initial chain evaluated once against the current location when the app loads
  */
