@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -19,8 +20,18 @@ export const PaginatedNavigation = ({
   totalPages,
   onPageChange,
 }: PaginationControlsProps) => {
+  // Keep stable totalPages to prevent pagination from disappearing during loading
+  const lastValidTotalPagesRef = useRef<number>(1);
+
+  // Only update the ref if we have a valid totalPages (> 0)
+  if (totalPages > 0) {
+    lastValidTotalPagesRef.current = totalPages;
+  }
+
+  const stableTotalPages = lastValidTotalPagesRef.current;
+
   // Don't render pagination if no pages or invalid state
-  if (!totalPages || totalPages <= 0 || currentPage <= 0) {
+  if (!stableTotalPages || stableTotalPages <= 0 || currentPage <= 0) {
     return null;
   }
 
@@ -31,22 +42,22 @@ export const PaginatedNavigation = ({
     const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
     const maxVisiblePages = isMobile ? 3 : 7;
 
-    if (totalPages <= maxVisiblePages) {
+    if (stableTotalPages <= maxVisiblePages) {
       // Show all pages if within limit
-      for (let i = 1; i <= totalPages; i++) {
+      for (let i = 1; i <= stableTotalPages; i++) {
         pages.push(i);
       }
     } else if (isMobile) {
       // Mobile: simplified pagination - only show current and neighbors
       if (currentPage === 1) {
         // At start: 1 2 ... last
-        pages.push(1, 2, 'ellipsis', totalPages);
-      } else if (currentPage === totalPages) {
+        pages.push(1, 2, 'ellipsis', stableTotalPages);
+      } else if (currentPage === stableTotalPages) {
         // At end: 1 ... (last-1) last
-        pages.push(1, 'ellipsis', totalPages - 1, totalPages);
+        pages.push(1, 'ellipsis', stableTotalPages - 1, stableTotalPages);
       } else {
         // Middle: 1 ... current ... last
-        pages.push(1, 'ellipsis', currentPage, 'ellipsis', totalPages);
+        pages.push(1, 'ellipsis', currentPage, 'ellipsis', stableTotalPages);
       }
     } else {
       // Desktop: full pagination logic
@@ -58,11 +69,11 @@ export const PaginatedNavigation = ({
           pages.push(i);
         }
         pages.push('ellipsis');
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
+        pages.push(stableTotalPages);
+      } else if (currentPage >= stableTotalPages - 2) {
         // Near end: 1 ... (last-3) (last-2) (last-1) last
         pages.push('ellipsis');
-        for (let i = totalPages - 3; i <= totalPages; i++) {
+        for (let i = stableTotalPages - 3; i <= stableTotalPages; i++) {
           pages.push(i);
         }
       } else {
@@ -72,7 +83,7 @@ export const PaginatedNavigation = ({
           pages.push(i);
         }
         pages.push('ellipsis');
-        pages.push(totalPages);
+        pages.push(stableTotalPages);
       }
     }
 
@@ -86,7 +97,7 @@ export const PaginatedNavigation = ({
   };
 
   const handleNext = () => {
-    if (currentPage < totalPages) onPageChange(currentPage + 1);
+    if (currentPage < stableTotalPages) onPageChange(currentPage + 1);
   };
 
   return (
@@ -122,7 +133,9 @@ export const PaginatedNavigation = ({
           <PaginationNext
             onClick={handleNext}
             className={
-              currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
+              currentPage === stableTotalPages
+                ? 'pointer-events-none opacity-50'
+                : ''
             }
           />
         </PaginationItem>
