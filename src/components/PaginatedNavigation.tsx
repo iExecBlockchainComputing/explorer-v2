@@ -19,6 +19,11 @@ export const PaginatedNavigation = ({
   totalPages,
   onPageChange,
 }: PaginationControlsProps) => {
+  // Don't render pagination if no pages or invalid state
+  if (!totalPages || totalPages <= 0 || currentPage <= 0) {
+    return null;
+  }
+
   const generatePages = () => {
     const pages: (number | 'ellipsis')[] = [];
 
