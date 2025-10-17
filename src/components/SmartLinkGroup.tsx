@@ -107,6 +107,7 @@ export default function SmartLinkGroup({
                   href={`${getBlockExplorerUrl(chainId)}/${blockExplorerPath[type]}`}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="Open in Block Explorer"
                 >
                   <ExternalLink className="text-foreground" />
                 </a>

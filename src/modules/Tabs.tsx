@@ -72,6 +72,7 @@ export function Tabs({
             key={label}
             data-tab-index={index}
             variant="link"
+            role="radio"
             size={'none'}
             onClick={() => {
               if (!isDisabled) onTabChange(index);

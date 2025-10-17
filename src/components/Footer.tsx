@@ -15,22 +15,40 @@ import { Button } from './ui/button';
 
 function SocialLinksItems({ className }: { className?: string }) {
   const socialLinks = [
-    { href: 'https://twitter.com/iEx_ec', icon: <SiX size={16} /> },
-    { href: 'https://discord.gg/pbt9m98wnU', icon: <SiDiscord size={16} /> },
-    { href: 'https://t.me/iexec_rlc_official', icon: <SiTelegram size={16} /> },
+    {
+      href: 'https://twitter.com/iEx_ec',
+      icon: <SiX size={16} />,
+      arialLabel: 'Twitter',
+    },
+    {
+      href: 'https://discord.gg/pbt9m98wnU',
+      icon: <SiDiscord size={16} />,
+      ariaLabel: 'Discord',
+    },
+    {
+      href: 'https://t.me/iexec_rlc_official',
+      icon: <SiTelegram size={16} />,
+      ariaLabel: 'Telegram',
+    },
     {
       href: 'https://www.youtube.com/channel/UCwWxZWvKVHn3CXnmDooLWtA',
       icon: <SiYoutube size={16} />,
+      ariaLabel: 'YouTube',
     },
     {
       href: 'https://www.linkedin.com/company/iex.ec/',
       icon: <Linkedin size={16} />,
+      ariaLabel: 'LinkedIn',
     },
-    { href: 'https://medium.com/iex-ec', icon: <SiMedium size={16} /> },
+    {
+      href: 'https://medium.com/iex-ec',
+      icon: <SiMedium size={16} />,
+      ariaLabel: 'Medium',
+    },
   ];
   return (
     <div className={cn('flex', className)}>
-      {socialLinks.map(({ href, icon }, idx) => (
+      {socialLinks.map(({ href, icon, ariaLabel }, idx) => (
         <Button
           key={idx}
           asChild
@@ -41,7 +59,7 @@ function SocialLinksItems({ className }: { className?: string }) {
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Social link"
+            aria-label={ariaLabel}
           >
             {icon}
           </a>
