@@ -59,10 +59,15 @@ function useAddressWorkerpoolsAccessData({
     startIndexInBatch,
     startIndexInBatch + PREVIEW_TABLE_LENGTH
   );
+  const formattedAccess =
+    access.map((access) => ({
+      ...access,
+      destination: `/workerpool/${access.order.workerpool.toLowerCase()}`,
+    })) ?? [];
   const count = data?.count || 0;
 
   return {
-    data: access,
+    data: formattedAccess,
     totalCount: count,
     isLoading,
     isRefetching,
