@@ -91,7 +91,7 @@ function useDatasetData(datasetAddress: string, chainId: number) {
 
 function DatasetsRoute() {
   const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
-  const [currentTab, setCurrentTab] = useTabParam('appTab', tabLabels, 0);
+  const [currentTab, setCurrentTab] = useTabParam('datasetTab', tabLabels, 0);
   const { chainId } = useUserStore();
 
   const { datasetAddress } = Route.useParams();
