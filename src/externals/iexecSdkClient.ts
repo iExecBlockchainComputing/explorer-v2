@@ -14,22 +14,30 @@ export function cleanIExecSDKs() {
   readonlyIExec = null;
 }
 
-export async function initIExecSDKs({ connector }: { connector?: Connector }) {
+export async function initIExecSDKs({
+  connector,
+  chainId,
+}: {
+  connector?: Connector;
+  chainId?: number;
+}) {
+  let provider = chainId as unknown as Eip1193Provider;
   if (!connector || !connector.getProvider) {
     cleanIExecSDKs();
-    return;
+  } else {
+    provider = (await connector.getProvider()) as Eip1193Provider;
   }
-
-  const provider = (await connector.getProvider()) as Eip1193Provider;
   if (!provider) {
     cleanIExecSDKs();
     return;
   }
+
   // Initialize
   const config = new IExecConfig(
     { ethProvider: provider },
     { allowExperimentalNetworks: true }
   );
+  console.log('config', provider);
   iExec = new IExec(config);
 
   IEXEC_CLIENT_RESOLVES.forEach((resolve) => resolve(iExec!));
