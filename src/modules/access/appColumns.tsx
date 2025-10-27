@@ -3,6 +3,7 @@ import { PublishedApporder } from 'iexec/IExecOrderbookModule';
 import CopyButton from '@/components/CopyButton';
 import useUserStore from '@/stores/useUser.store';
 import { getTokenSymbol } from '@/utils/chain.utils';
+import { nrlcToRlc } from '@/utils/nrlcToRlc';
 import { truncateAddress } from '@/utils/truncateAddress';
 
 export const columns: ColumnDef<PublishedApporder>[] = [
@@ -11,7 +12,7 @@ export const columns: ColumnDef<PublishedApporder>[] = [
     header: 'Price',
     cell: ({ row }) => (
       <span>
-        {row.original.order.appprice}{' '}
+        {nrlcToRlc(row.original.order.appprice)}{' '}
         {getTokenSymbol(useUserStore.getState().chainId)}
       </span>
     ),

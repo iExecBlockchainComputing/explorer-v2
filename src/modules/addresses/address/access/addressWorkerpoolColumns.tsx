@@ -3,6 +3,7 @@ import { PublishedWorkerpoolorder } from 'iexec/IExecOrderbookModule';
 import CopyButton from '@/components/CopyButton';
 import useUserStore from '@/stores/useUser.store';
 import { getTokenSymbol } from '@/utils/chain.utils';
+import { nrlcToRlc } from '@/utils/nrlcToRlc';
 import { truncateAddress } from '@/utils/truncateAddress';
 
 export const columns: ColumnDef<PublishedWorkerpoolorder>[] = [
@@ -26,7 +27,7 @@ export const columns: ColumnDef<PublishedWorkerpoolorder>[] = [
     header: 'Price',
     cell: ({ row }) => (
       <span>
-        {row.original.order.workerpoolprice}{' '}
+        {nrlcToRlc(row.original.order.workerpoolprice)}{' '}
         {getTokenSymbol(useUserStore.getState().chainId)}
       </span>
     ),
