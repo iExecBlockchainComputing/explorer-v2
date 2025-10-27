@@ -23,8 +23,9 @@ export const PaginatedNavigation = ({
   // Keep stable totalPages to prevent pagination from disappearing during loading
   const lastValidTotalPagesRef = useRef<number>(1);
 
-  // Only update the ref if we have a valid totalPages (> 0)
-  if (totalPages > 0) {
+  // Only update the ref if we have a valid totalPages that's greater than or equal to the current one
+  // This prevents the pagination from shrinking during loading states
+  if (totalPages > 0 && totalPages >= lastValidTotalPagesRef.current) {
     lastValidTotalPagesRef.current = totalPages;
   }
 
