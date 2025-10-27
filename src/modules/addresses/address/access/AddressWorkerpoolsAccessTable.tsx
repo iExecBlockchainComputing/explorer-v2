@@ -41,6 +41,8 @@ function useAddressWorkerpoolsAccessData({
 
         const { count, orders } =
           await iexec.orderbook.fetchWorkerpoolOrderbook({
+            dataset: 'any',
+            app: 'any',
             workerpool: 'any',
             requester: addressAddress,
             page: apiBatch,

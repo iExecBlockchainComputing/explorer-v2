@@ -34,6 +34,8 @@ function useDatasetAccessData({
 
         const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
           dataset: datasetAddress,
+          app: 'any',
+          workerpool: 'any',
           page: apiBatch,
           pageSize,
         });

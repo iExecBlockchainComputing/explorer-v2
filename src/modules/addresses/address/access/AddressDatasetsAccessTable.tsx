@@ -41,7 +41,10 @@ function useAddressDatasetsAccessData({
 
         const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
           dataset: 'any',
+          app: 'any',
+          workerpool: 'any',
           requester: addressAddress,
+          // datasetOwner: 'any',
           page: apiBatch,
           pageSize,
         });

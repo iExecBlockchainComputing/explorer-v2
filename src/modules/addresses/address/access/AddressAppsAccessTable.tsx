@@ -34,7 +34,9 @@ function useAddressAppsAccessData({
         const iexec = await getIExec();
 
         const { count, orders } = await iexec.orderbook.fetchAppOrderbook({
+          dataset: 'any',
           app: 'any',
+          workerpool: 'any',
           requester: addressAddress,
           page: apiBatch,
           pageSize,
