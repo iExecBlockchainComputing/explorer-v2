@@ -43,6 +43,7 @@ function useWorkerpoolAccessData({
             dataset: 'any',
             app: 'any',
             workerpool: workerpoolAddress,
+            requester: 'any',
             page: apiBatch,
             pageSize,
           });

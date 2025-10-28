@@ -36,6 +36,7 @@ function useAppAccessData({
           dataset: 'any',
           app: appAddress,
           workerpool: 'any',
+          requester: 'any',
           page: apiBatch,
           pageSize,
         });
