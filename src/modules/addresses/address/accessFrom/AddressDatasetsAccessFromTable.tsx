@@ -44,7 +44,6 @@ function useAddressDatasetsAccessFromData({
           app: 'any',
           workerpool: 'any',
           requester: addressAddress,
-          // datasetOwner: 'any',
           page: apiBatch,
           pageSize,
         });
