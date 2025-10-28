@@ -10,7 +10,7 @@ import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { columns } from './addressDatasetColumns';
 
-function useAddressDatasetsAccessData({
+function useAddressDatasetsAccessFromData({
   addressAddress,
   currentPage,
 }: {
@@ -78,13 +78,13 @@ function useAddressDatasetsAccessData({
   };
 }
 
-export function AddressDatasetsAccessTable({
+export function AddressDatasetsAccessFromTable({
   addressAddress,
 }: {
   addressAddress: string;
 }) {
   const [currentPage, setCurrentPage] = usePageParam(
-    'addressDatasetsAccessPage'
+    'addressDatasetsAccessFromPage'
   );
   const {
     data: access,
@@ -93,7 +93,7 @@ export function AddressDatasetsAccessTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useAddressDatasetsAccessData({
+  } = useAddressDatasetsAccessFromData({
     addressAddress,
     currentPage: currentPage - 1,
   });

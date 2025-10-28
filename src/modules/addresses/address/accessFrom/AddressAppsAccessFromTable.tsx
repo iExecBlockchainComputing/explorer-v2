@@ -10,7 +10,7 @@ import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { columns } from './addressAppColumns';
 
-function useAddressAppsAccessData({
+function useAddressAppsAccessFromData({
   addressAddress,
   currentPage,
 }: {
@@ -71,7 +71,7 @@ function useAddressAppsAccessData({
   };
 }
 
-export function AddressAppsAccessTable({
+export function AddressAppsAccessFromTable({
   addressAddress,
 }: {
   addressAddress: string;
@@ -84,7 +84,7 @@ export function AddressAppsAccessTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useAddressAppsAccessData({
+  } = useAddressAppsAccessFromData({
     addressAddress,
     currentPage: currentPage - 1,
   });

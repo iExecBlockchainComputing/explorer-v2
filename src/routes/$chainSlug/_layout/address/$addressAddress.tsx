@@ -12,9 +12,9 @@ import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrumbs';
-import { AddressAppsAccessTable } from '@/modules/addresses/address/access/AddressAppsAccessTable';
-import { AddressDatasetsAccessTable } from '@/modules/addresses/address/access/AddressDatasetsAccessTable';
-import { AddressWorkerpoolsAccessTable } from '@/modules/addresses/address/access/AddressWorkerpoolsAccessTable';
+import { AddressAppsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressAppsAccessFromTable';
+import { AddressDatasetsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressDatasetsAccessFromTable';
+import { AddressWorkerpoolsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressWorkerpoolsAccessFromTable';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
@@ -77,7 +77,8 @@ function AddressRoute() {
     'APPS',
     'DATASETS',
     'WORKERPOOLS',
-    'ACCESS',
+    'ACCESS FROM',
+    'ACCESS TO',
   ];
   const [currentTab, setCurrentTab] = useTabParam('addressTab', tabLabels, 0);
   const { chainId, address: userAddress } = useUserStore();
@@ -240,9 +241,11 @@ function AddressRoute() {
         )}
         {currentTab === 6 && (
           <>
-            <AddressAppsAccessTable addressAddress={addressAddress} />
-            <AddressDatasetsAccessTable addressAddress={addressAddress} />
-            <AddressWorkerpoolsAccessTable addressAddress={addressAddress} />
+            <AddressAppsAccessFromTable addressAddress={addressAddress} />
+            <AddressDatasetsAccessFromTable addressAddress={addressAddress} />
+            <AddressWorkerpoolsAccessFromTable
+              addressAddress={addressAddress}
+            />
           </>
         )}
       </div>

@@ -10,7 +10,7 @@ import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { columns } from './addressWorkerpoolColumns';
 
-function useAddressWorkerpoolsAccessData({
+function useAddressWorkerpoolsAccessFromData({
   addressAddress,
   currentPage,
 }: {
@@ -78,13 +78,13 @@ function useAddressWorkerpoolsAccessData({
   };
 }
 
-export function AddressWorkerpoolsAccessTable({
+export function AddressWorkerpoolsAccessFromTable({
   addressAddress,
 }: {
   addressAddress: string;
 }) {
   const [currentPage, setCurrentPage] = usePageParam(
-    'addressWorkerpoolsAccessPage'
+    'addressWorkerpoolsAccessFromPage'
   );
   const {
     data: access,
@@ -93,7 +93,7 @@ export function AddressWorkerpoolsAccessTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useAddressWorkerpoolsAccessData({
+  } = useAddressWorkerpoolsAccessFromData({
     addressAddress,
     currentPage: currentPage - 1,
   });
