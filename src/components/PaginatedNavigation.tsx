@@ -8,6 +8,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
+import useUserStore from '@/stores/useUser.store';
 
 type PaginationControlsProps = {
   currentPage: number;
@@ -20,16 +21,32 @@ export const PaginatedNavigation = ({
   totalPages,
   onPageChange,
 }: PaginationControlsProps) => {
-  // Keep stable totalPages to prevent pagination from disappearing during loading
-  const lastValidTotalPagesRef = useRef<number>(1);
+  const { chainId } = useUserStore();
 
-  // Only update the ref if we have a valid totalPages that's greater than or equal to the current one
-  // This prevents the pagination from shrinking during loading states
-  if (totalPages > 0 && totalPages >= lastValidTotalPagesRef.current) {
-    lastValidTotalPagesRef.current = totalPages;
+  const lastValidTotalPagesRef = useRef(1);
+  const lastChainIdRef = useRef<number | null>(null);
+  const chainChangeFrameRef = useRef(0);
+
+  const chainHasChanged = chainId !== lastChainIdRef.current;
+
+  if (chainHasChanged) {
+    lastChainIdRef.current = chainId ?? null;
+    chainChangeFrameRef.current = 0;
+  } else {
+    chainChangeFrameRef.current++;
   }
 
-  const stableTotalPages = lastValidTotalPagesRef.current;
+  let stableTotalPages = lastValidTotalPagesRef.current;
+
+  const isRecentChainChange = chainChangeFrameRef.current <= 5;
+
+  if (chainHasChanged || isRecentChainChange) {
+    stableTotalPages = Math.max(totalPages, 1);
+  } else if (totalPages > 0 && totalPages >= lastValidTotalPagesRef.current) {
+    stableTotalPages = totalPages;
+  }
+
+  lastValidTotalPagesRef.current = stableTotalPages;
 
   // Don't render pagination if no pages or invalid state
   if (!stableTotalPages || stableTotalPages <= 0 || currentPage <= 0) {
