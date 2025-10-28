@@ -25,7 +25,13 @@ function useAddressAppsAccessFromData({
   const apiBatch = Math.floor((currentPage * PREVIEW_TABLE_LENGTH) / pageSize);
   const startIndexInBatch = (currentPage * PREVIEW_TABLE_LENGTH) % pageSize;
 
-  const queryKey = [chainId, 'address', 'appsAccess', addressAddress, apiBatch];
+  const queryKey = [
+    chainId,
+    'address',
+    'appsAccessFrom',
+    addressAddress,
+    apiBatch,
+  ];
 
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {

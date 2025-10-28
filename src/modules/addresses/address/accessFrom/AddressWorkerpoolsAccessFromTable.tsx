@@ -28,7 +28,7 @@ function useAddressWorkerpoolsAccessFromData({
   const queryKey = [
     chainId,
     'address',
-    'workerpoolsAccess',
+    'workerpoolsAccessFrom',
     addressAddress,
     apiBatch,
   ];

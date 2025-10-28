@@ -28,7 +28,7 @@ function useAddressDatasetsAccessFromData({
   const queryKey = [
     chainId,
     'address',
-    'datasetsAccess',
+    'datasetsAccessFrom',
     addressAddress,
     apiBatch,
   ];
