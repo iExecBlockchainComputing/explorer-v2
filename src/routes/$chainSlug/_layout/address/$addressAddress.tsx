@@ -240,8 +240,8 @@ function AddressRoute() {
         )}
         {currentTab === 6 && (
           <>
-            <AddressAppsAccessTable addressAddress={addressAddress} />
             <AddressDatasetsAccessTable addressAddress={addressAddress} />
+            <AddressAppsAccessTable addressAddress={addressAddress} />
             <AddressWorkerpoolsAccessTable addressAddress={addressAddress} />
           </>
         )}
