@@ -15,6 +15,9 @@ import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrum
 import { AddressAppsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressAppsAccessFromTable';
 import { AddressDatasetsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressDatasetsAccessFromTable';
 import { AddressWorkerpoolsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressWorkerpoolsAccessFromTable';
+import { AddressAppsAccessToTable } from '@/modules/addresses/address/accessTo/AddressAppsAccessToTable';
+import { AddressDatasetsAccessToTable } from '@/modules/addresses/address/accessTo/AddressDatasetsAccessToTable';
+import { AddressWorkerpoolsAccessToTable } from '@/modules/addresses/address/accessTo/AddressWorkerpoolsAccessToTable';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
@@ -246,6 +249,13 @@ function AddressRoute() {
             <AddressWorkerpoolsAccessFromTable
               addressAddress={addressAddress}
             />
+          </>
+        )}
+        {currentTab === 7 && (
+          <>
+            <AddressAppsAccessToTable addressAddress={addressAddress} />
+            <AddressDatasetsAccessToTable addressAddress={addressAddress} />
+            <AddressWorkerpoolsAccessToTable addressAddress={addressAddress} />
           </>
         )}
       </div>
