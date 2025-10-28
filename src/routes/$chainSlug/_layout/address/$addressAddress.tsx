@@ -12,17 +12,17 @@ import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrumbs';
-import { AddressAppsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressAppsAccessFromTable';
-import { AddressDatasetsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressDatasetsAccessFromTable';
-import { AddressWorkerpoolsAccessFromTable } from '@/modules/addresses/address/accessFrom/AddressWorkerpoolsAccessFromTable';
-import { AddressAppsAccessToTable } from '@/modules/addresses/address/accessTo/AddressAppsAccessToTable';
-import { AddressDatasetsAccessToTable } from '@/modules/addresses/address/accessTo/AddressDatasetsAccessToTable';
-import { AddressWorkerpoolsAccessToTable } from '@/modules/addresses/address/accessTo/AddressWorkerpoolsAccessToTable';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
 import { buildAddressOverview } from '@/modules/addresses/address/buildAddressOverview';
 import { AddressDatasetsTable } from '@/modules/addresses/address/datasets/AddressDatasetsTable';
+import { AddressAppsGrantedAccessTable } from '@/modules/addresses/address/grantedAccess/AddressAppsGrantedAccessTable';
+import { AddressDatasetsGrantedAccessTable } from '@/modules/addresses/address/grantedAccess/AddressDatasetsGrantedAccessTable';
+import { AddressWorkerpoolsGrantedAccessTable } from '@/modules/addresses/address/grantedAccess/AddressWorkerpoolsGrantedAccessTable';
+import { AddressAppsReceivedAccessTable } from '@/modules/addresses/address/receivedAccess/AddressAppsReceivedAccessTable';
+import { AddressDatasetsReceivedAccessTable } from '@/modules/addresses/address/receivedAccess/AddressDatasetsReceivedAccessTable';
+import { AddressWorkerpoolsReceivedAccessTable } from '@/modules/addresses/address/receivedAccess/AddressWorkerpoolsReceivedAccessTable';
 import { AddressBeneficiaryDealsTable } from '@/modules/addresses/address/requests/beneficiaryDeals/AddressBeneficiaryDealsTable';
 import { AddressRequestedDealsTable } from '@/modules/addresses/address/requests/requestedDeals/AddressRequestedDealsTable';
 import { AddressRequestedTasksTable } from '@/modules/addresses/address/requests/requestedTasks/AddressRequestedTasksTable';
@@ -80,8 +80,8 @@ function AddressRoute() {
     'APPS',
     'DATASETS',
     'WORKERPOOLS',
-    'ACCESS FROM',
-    'ACCESS TO',
+    'RECEIVED ACCESS',
+    'GRANTED ACCESS',
   ];
   const [currentTab, setCurrentTab] = useTabParam('addressTab', tabLabels, 0);
   const { chainId, address: userAddress } = useUserStore();
@@ -244,18 +244,24 @@ function AddressRoute() {
         )}
         {currentTab === 6 && (
           <>
-            <AddressDatasetsAccessFromTable addressAddress={addressAddress} />
-            <AddressAppsAccessFromTable addressAddress={addressAddress} />
-            <AddressWorkerpoolsAccessFromTable
+            <AddressDatasetsReceivedAccessTable
+              addressAddress={addressAddress}
+            />
+            <AddressAppsReceivedAccessTable addressAddress={addressAddress} />
+            <AddressWorkerpoolsReceivedAccessTable
               addressAddress={addressAddress}
             />
           </>
         )}
         {currentTab === 7 && (
           <>
-            <AddressDatasetsAccessToTable addressAddress={addressAddress} />
-            <AddressAppsAccessToTable addressAddress={addressAddress} />
-            <AddressWorkerpoolsAccessToTable addressAddress={addressAddress} />
+            <AddressDatasetsGrantedAccessTable
+              addressAddress={addressAddress}
+            />
+            <AddressAppsGrantedAccessTable addressAddress={addressAddress} />
+            <AddressWorkerpoolsGrantedAccessTable
+              addressAddress={addressAddress}
+            />
           </>
         )}
       </div>

@@ -8,9 +8,9 @@ import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { columns } from './addressWorkerpoolColumns';
+import { columns } from './addressDatasetColumns';
 
-function useAddressWorkerpoolsAccessToData({
+function useAddressDatasetsGrantedAccessData({
   addressAddress,
   currentPage,
 }: {
@@ -28,7 +28,7 @@ function useAddressWorkerpoolsAccessToData({
   const queryKey = [
     chainId,
     'address',
-    'workerpoolsAccessTo',
+    'datasetsGrantedAccess',
     addressAddress,
     apiBatch,
   ];
@@ -39,16 +39,15 @@ function useAddressWorkerpoolsAccessToData({
       queryFn: async () => {
         const iexec = await getIExec();
 
-        const { count, orders } =
-          await iexec.orderbook.fetchWorkerpoolOrderbook({
-            dataset: 'any',
-            app: 'any',
-            workerpool: 'any',
-            requester: 'any',
-            workerpoolOwner: addressAddress,
-            page: apiBatch,
-            pageSize,
-          });
+        const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
+          dataset: 'any',
+          app: 'any',
+          workerpool: 'any',
+          requester: 'any',
+          datasetOwner: addressAddress,
+          page: apiBatch,
+          pageSize,
+        });
 
         return { count, orders };
       },
@@ -65,7 +64,7 @@ function useAddressWorkerpoolsAccessToData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/workerpool/${access.order.workerpool.toLowerCase()}`,
+      destination: `/dataset/${access.order.dataset.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 
@@ -79,13 +78,13 @@ function useAddressWorkerpoolsAccessToData({
   };
 }
 
-export function AddressWorkerpoolsAccessToTable({
+export function AddressDatasetsGrantedAccessTable({
   addressAddress,
 }: {
   addressAddress: string;
 }) {
   const [currentPage, setCurrentPage] = usePageParam(
-    'addressWorkerpoolsAccessToPage'
+    'addressDatasetsGrantedAccessPage'
   );
   const {
     data: access,
@@ -94,7 +93,7 @@ export function AddressWorkerpoolsAccessToTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useAddressWorkerpoolsAccessToData({
+  } = useAddressDatasetsGrantedAccessData({
     addressAddress,
     currentPage: currentPage - 1,
   });
@@ -102,7 +101,7 @@ export function AddressWorkerpoolsAccessToTable({
   return (
     <div className="space-y-6">
       <h2 className="flex items-center gap-2 font-extrabold">
-        Latest workerpools access
+        Latest datasets access
         {!access && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
@@ -113,7 +112,7 @@ export function AddressWorkerpoolsAccessToTable({
         )}
       </h2>
       {hasPastError && !access.length ? (
-        <ErrorAlert message="An error occurred during address workerpools access loading." />
+        <ErrorAlert message="An error occurred during address datasets access loading." />
       ) : (
         <DataTable
           columns={columns}

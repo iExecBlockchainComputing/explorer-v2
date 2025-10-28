@@ -8,9 +8,9 @@ import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { columns } from './addressDatasetColumns';
+import { columns } from './addressAppColumns';
 
-function useAddressDatasetsAccessToData({
+function useAddressAppsGrantedAccessData({
   addressAddress,
   currentPage,
 }: {
@@ -28,7 +28,7 @@ function useAddressDatasetsAccessToData({
   const queryKey = [
     chainId,
     'address',
-    'datasetsAccessTo',
+    'appsGrantedAccess',
     addressAddress,
     apiBatch,
   ];
@@ -39,12 +39,12 @@ function useAddressDatasetsAccessToData({
       queryFn: async () => {
         const iexec = await getIExec();
 
-        const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
+        const { count, orders } = await iexec.orderbook.fetchAppOrderbook({
           dataset: 'any',
           app: 'any',
           workerpool: 'any',
           requester: 'any',
-          datasetOwner: addressAddress,
+          appOwner: addressAddress,
           page: apiBatch,
           pageSize,
         });
@@ -64,7 +64,7 @@ function useAddressDatasetsAccessToData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/dataset/${access.order.dataset.toLowerCase()}`,
+      destination: `/app/${access.order.app.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 
@@ -78,14 +78,12 @@ function useAddressDatasetsAccessToData({
   };
 }
 
-export function AddressDatasetsAccessToTable({
+export function AddressAppsGrantedAccessTable({
   addressAddress,
 }: {
   addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam(
-    'addressDatasetsAccessToPage'
-  );
+  const [currentPage, setCurrentPage] = usePageParam('addressAppsAccessPage');
   const {
     data: access,
     totalCount,
@@ -93,7 +91,7 @@ export function AddressDatasetsAccessToTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useAddressDatasetsAccessToData({
+  } = useAddressAppsGrantedAccessData({
     addressAddress,
     currentPage: currentPage - 1,
   });
@@ -101,7 +99,7 @@ export function AddressDatasetsAccessToTable({
   return (
     <div className="space-y-6">
       <h2 className="flex items-center gap-2 font-extrabold">
-        Latest datasets access
+        Latest apps access
         {!access && isError && (
           <span className="text-muted-foreground text-sm font-light">
             (outdated)
@@ -112,7 +110,7 @@ export function AddressDatasetsAccessToTable({
         )}
       </h2>
       {hasPastError && !access.length ? (
-        <ErrorAlert message="An error occurred during address datasets access loading." />
+        <ErrorAlert message="An error occurred during address apps access loading." />
       ) : (
         <DataTable
           columns={columns}
