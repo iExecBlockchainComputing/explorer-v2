@@ -37,7 +37,6 @@ export async function initIExecSDKs({
     { ethProvider: provider },
     { allowExperimentalNetworks: true }
   );
-  console.log('config', provider);
   iExec = new IExec(config);
 
   IEXEC_CLIENT_RESOLVES.forEach((resolve) => resolve(iExec!));
