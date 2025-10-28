@@ -27,7 +27,6 @@ import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools
 import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
-import { NotFoundError } from '@/utils/NotFoundError';
 import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
@@ -49,9 +48,6 @@ function useAddressData(address: string, chainId: number) {
           length: TABLE_LENGTH,
           address,
         });
-        if (!result?.account) {
-          throw new NotFoundError();
-        }
         return result;
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -149,7 +145,7 @@ function AddressRoute() {
     return <ErrorAlert className="my-16" message="Invalid address." />;
   }
 
-  if (isError && error instanceof NotFoundError) {
+  if (isError && error) {
     return (
       <ErrorAlert className="my-16" message="No data found for this address." />
     );
