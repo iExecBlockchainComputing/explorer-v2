@@ -102,7 +102,7 @@ export function AddressContributionTable({
         )}
       </h2>
       {hasPastError && !contribution.length ? (
-        <ErrorAlert message="A error occurred during address contribution loading." />
+        <ErrorAlert message="An error occurred during address contribution loading." />
       ) : (
         <DataTable
           columns={columns}

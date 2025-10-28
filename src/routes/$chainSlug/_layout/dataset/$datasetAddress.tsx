@@ -4,11 +4,15 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import DatasetIcon from '@/components/icons/DatasetIcon';
 import { BackButton } from '@/components/ui/BackButton';
+import { useTabParam } from '@/hooks/usePageParam';
 import { useSchemaSearch } from '@/hooks/useSchemaSearch';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { Tabs } from '@/modules/Tabs';
+import { DatasetAccessTable } from '@/modules/datasets/dataset/DatasetAccessTable';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
@@ -86,7 +90,10 @@ function useDatasetData(datasetAddress: string, chainId: number) {
 }
 
 function DatasetsRoute() {
+  const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
+  const [currentTab, setCurrentTab] = useTabParam('datasetTab', tabLabels, 0);
   const { chainId } = useUserStore();
+
   const { datasetAddress } = Route.useParams();
   const { navigateToDatasets } = useSchemaSearch();
 
@@ -94,6 +101,9 @@ function DatasetsRoute() {
     (datasetAddress as string).toLowerCase(),
     chainId!
   );
+
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
 
   const datasetDetails = dataset.data
     ? buildDatasetDetails({
@@ -112,6 +122,10 @@ function DatasetsRoute() {
     return <ErrorAlert className="my-16" message="Dataset not found." />;
   }
 
+  const showOutdated = dataset.data && (dataset.isError || isOutdatedChild);
+  const showLoading =
+    dataset.isLoading || dataset.isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -120,14 +134,12 @@ function DatasetsRoute() {
           <h1 className="flex items-center gap-2 text-2xl font-extrabold">
             <DatasetIcon size={24} />
             Dataset details
-            {dataset.data && dataset.isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(dataset.isLoading || dataset.isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -136,14 +148,31 @@ function DatasetsRoute() {
         </div>
       </div>
 
-      <div className="space-y-10">
-        {dataset.hasPastError && !datasetDetails ? (
+      <Tabs
+        currentTab={currentTab}
+        tabLabels={tabLabels}
+        onTabChange={setCurrentTab}
+      />
+      {currentTab === 0 &&
+        (dataset.hasPastError && !datasetDetails ? (
           <ErrorAlert message="An error occurred during dataset details loading." />
         ) : (
           <DetailsTable details={datasetDetails || {}} zebra={false} />
-        )}
-        <DatasetDealsTable datasetAddress={datasetAddress} />
-      </div>
+        ))}
+      {currentTab === 1 && (
+        <DatasetDealsTable
+          datasetAddress={datasetAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
+      {currentTab === 2 && (
+        <DatasetAccessTable
+          datasetAddress={datasetAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
     </div>
   );
 }

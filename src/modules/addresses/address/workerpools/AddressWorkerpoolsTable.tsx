@@ -106,7 +106,7 @@ export function AddressWorkerpoolsTable({
         )}
       </h2>
       {hasPastError && !workerpools.length ? (
-        <ErrorAlert message="A error occurred during address workerpools loading." />
+        <ErrorAlert message="An error occurred during address workerpools loading." />
       ) : (
         <DataTable
           columns={filteredColumns}

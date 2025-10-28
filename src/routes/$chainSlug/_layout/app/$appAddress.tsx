@@ -3,10 +3,14 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import AppIcon from '@/components/icons/AppIcon';
 import { BackButton } from '@/components/ui/BackButton';
+import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
+import { Tabs } from '@/modules/Tabs';
+import { AppAccessTable } from '@/modules/apps/app/AppAccessTable';
 import { AppBreadcrumbs } from '@/modules/apps/app/AppBreadcrumbs';
 import { AppDealsTable } from '@/modules/apps/app/AppDealsTable';
 import { appQuery } from '@/modules/apps/app/appQuery';
@@ -55,6 +59,8 @@ function useAppData(appAddress: string, chainId: number) {
 }
 
 function AppsRoute() {
+  const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
+  const [currentTab, setCurrentTab] = useTabParam('appTab', tabLabels, 0);
   const { chainId } = useUserStore();
   const { appAddress } = Route.useParams();
   const {
@@ -67,6 +73,9 @@ function AppsRoute() {
     error,
   } = useAppData((appAddress as string).toLowerCase(), chainId!);
 
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
   const appDetails = app ? buildAppDetails({ app }) : undefined;
 
   if (!isValid) {
@@ -77,6 +86,9 @@ function AppsRoute() {
     return <ErrorAlert className="my-16" message="App not found." />;
   }
 
+  const showOutdated = app && (isError || isOutdatedChild);
+  const showLoading = isLoading || isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -85,14 +97,12 @@ function AppsRoute() {
           <h1 className="flex items-center gap-2 text-2xl font-extrabold">
             <AppIcon size={24} />
             App details
-            {app && isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(isLoading || isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -101,14 +111,31 @@ function AppsRoute() {
         </div>
       </div>
 
-      <div className="space-y-10">
-        {hasPastError && !appDetails ? (
+      <Tabs
+        currentTab={currentTab}
+        tabLabels={tabLabels}
+        onTabChange={setCurrentTab}
+      />
+      {currentTab === 0 &&
+        (hasPastError && !appDetails ? (
           <ErrorAlert message="An error occurred during app details loading." />
         ) : (
           <DetailsTable details={appDetails || {}} zebra={false} />
-        )}
-        <AppDealsTable appAddress={appAddress} />
-      </div>
+        ))}
+      {currentTab === 1 && (
+        <AppDealsTable
+          appAddress={appAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
+      {currentTab === 2 && (
+        <AppAccessTable
+          appAddress={appAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
     </div>
   );
 }

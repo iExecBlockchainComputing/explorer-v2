@@ -1,17 +1,16 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { columns } from '@/modules/access/appColumns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { appDealsQuery } from './appDealsQuery';
 
-function useAppDealsData({
+function useAppAccessData({
   appAddress,
   currentPage,
 }: {
@@ -19,46 +18,52 @@ function useAppDealsData({
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
-  const skip = currentPage * DETAIL_TABLE_LENGTH;
-  const nextSkip = skip + DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'app', 'deals', appAddress, currentPage];
+  const pageSize = DETAIL_TABLE_LENGTH * 2;
+
+  // API returns min 10 items, but we display only 5 per page
+  const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
+  const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
+
+  const queryKey = [chainId, 'app', 'access', appAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
-      queryFn: () =>
-        execute(appDealsQuery, chainId, {
-          length: DETAIL_TABLE_LENGTH,
-          skip,
-          nextSkip,
-          appAddress,
-        }),
+      queryFn: async () => {
+        const iexec = await getIExec();
+
+        const { count, orders } = await iexec.orderbook.fetchAppOrderbook({
+          dataset: 'any',
+          app: appAddress,
+          workerpool: 'any',
+          requester: 'any',
+          page: apiBatch,
+          pageSize,
+        });
+        return { count, orders };
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
-
-  const deals = data?.app?.deals ?? [];
-  const hasNextPage = (data?.app?.dealsHasNext?.length ?? 0) > 0;
-  const additionalPages = hasNextPage ? 1 : 0;
-
-  const formattedDeal =
-    deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
-    })) ?? [];
+  const allOrders = data?.orders || [];
+  const access = allOrders.slice(
+    startIndexInBatch,
+    startIndexInBatch + DETAIL_TABLE_LENGTH
+  );
+  const count = data?.count || 0;
 
   return {
-    data: formattedDeal,
+    data: access,
+    totalCount: count,
     isLoading,
     isRefetching,
     isError,
-    additionalPages,
     hasPastError: isError || errorUpdateCount > 0,
   };
 }
 
-export function AppDealsTable({
+export function AppAccessTable({
   appAddress,
   setLoading,
   setOutdated,
@@ -67,41 +72,39 @@ export function AppDealsTable({
   setLoading: (loading: boolean) => void;
   setOutdated: (outdated: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('appDealsPage');
+  const [currentPage, setCurrentPage] = usePageParam('appAccessPage');
   const {
-    data: deals,
+    data: access,
+    totalCount,
     isError,
     isLoading,
     isRefetching,
-    additionalPages,
     hasPastError,
-  } = useAppDealsData({ appAddress, currentPage: currentPage - 1 });
+  } = useAppAccessData({ appAddress, currentPage: currentPage - 1 });
 
   useEffect(
     () => setLoading(isLoading || isRefetching),
     [isLoading, isRefetching, setLoading]
   );
   useEffect(
-    () => setOutdated(deals.length > 0 && isError),
-    [deals.length, isError, setOutdated]
+    () => setOutdated(access.length > 0 && isError),
+    [access.length, isError, setOutdated]
   );
-
-  const filteredColumns = columns.filter((col) => col.accessorKey !== 'app');
 
   return (
     <div className="space-y-6">
-      {hasPastError && !deals.length ? (
-        <ErrorAlert message="An error occurred during app deals loading." />
+      {hasPastError && !access.length ? (
+        <ErrorAlert message="An error occurred during app access loading." />
       ) : (
         <DataTable
-          columns={filteredColumns}
-          data={deals}
+          columns={columns}
+          data={access}
           tableLength={DETAIL_TABLE_LENGTH}
         />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
+        totalPages={Math.ceil(totalCount / DETAIL_TABLE_LENGTH)}
         onPageChange={setCurrentPage}
       />
     </div>

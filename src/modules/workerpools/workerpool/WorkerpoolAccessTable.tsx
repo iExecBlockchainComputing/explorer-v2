@@ -1,18 +1,16 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/deals/dealsTable/columns';
+import { columns } from '@/modules/access/workerpoolColumns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { getAdditionalPages } from '@/utils/format';
-import { workerpoolDealsQuery } from './workerpoolDealsQuery';
 
-function useWorkerpoolDealsData({
+function useWorkerpoolAccessData({
   workerpoolAddress,
   currentPage,
 }: {
@@ -20,57 +18,61 @@ function useWorkerpoolDealsData({
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
-  const skip = currentPage * DETAIL_TABLE_LENGTH;
-  const nextSkip = skip + DETAIL_TABLE_LENGTH;
-  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
+
+  const pageSize = DETAIL_TABLE_LENGTH * 2;
+
+  // API returns min 10 items, but we display only 5 per page
+  const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
+  const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
 
   const queryKey = [
     chainId,
     'workerpool',
-    'deals',
+    'access',
     workerpoolAddress,
     currentPage,
   ];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
-      queryFn: () =>
-        execute(workerpoolDealsQuery, chainId, {
-          length: DETAIL_TABLE_LENGTH,
-          skip,
-          nextSkip,
-          nextNextSkip,
-          workerpoolAddress,
-        }),
+      queryFn: async () => {
+        const iexec = await getIExec();
+
+        const { count, orders } =
+          await iexec.orderbook.fetchWorkerpoolOrderbook({
+            dataset: 'any',
+            app: 'any',
+            workerpool: workerpoolAddress,
+            requester: 'any',
+            page: apiBatch,
+            pageSize,
+          });
+
+        return { count, orders };
+      },
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const deals = data?.workerpool?.deals ?? [];
-  // 0 = only current, 1 = next, 2 = next+1
-  const additionalPages = getAdditionalPages(
-    Boolean(data?.workerpool?.dealsHasNext?.length),
-    Boolean(data?.workerpool?.dealsHasNextNext?.length)
+  const allOrders = data?.orders || [];
+  const access = allOrders.slice(
+    startIndexInBatch,
+    startIndexInBatch + DETAIL_TABLE_LENGTH
   );
-
-  const formattedDeals =
-    deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
-    })) ?? [];
+  const count = data?.count || 0;
 
   return {
-    data: formattedDeals,
+    data: access,
+    totalCount: count,
     isLoading,
     isRefetching,
     isError,
-    additionalPages,
     hasPastError: isError || errorUpdateCount > 0,
   };
 }
 
-export function WorkerpoolDealsTable({
+export function WorkerpoolAccessTable({
   workerpoolAddress,
   setLoading,
   setOutdated,
@@ -79,15 +81,15 @@ export function WorkerpoolDealsTable({
   setLoading: (loading: boolean) => void;
   setOutdated: (outdated: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('workerpoolDealsPage');
+  const [currentPage, setCurrentPage] = usePageParam('workerpoolAccessPage');
   const {
-    data: deals,
+    data: access,
+    totalCount,
     isError,
     isLoading,
     isRefetching,
-    additionalPages,
     hasPastError,
-  } = useWorkerpoolDealsData({
+  } = useWorkerpoolAccessData({
     workerpoolAddress,
     currentPage: currentPage - 1,
   });
@@ -97,28 +99,24 @@ export function WorkerpoolDealsTable({
     [isLoading, isRefetching, setLoading]
   );
   useEffect(
-    () => setOutdated(deals.length > 0 && isError),
-    [deals.length, isError, setOutdated]
-  );
-
-  const filteredColumns = columns.filter(
-    (col) => col.accessorKey !== 'dataset.address'
+    () => setOutdated(access.length > 0 && isError),
+    [access.length, isError, setOutdated]
   );
 
   return (
     <div className="space-y-6">
-      {hasPastError && !deals.length ? (
-        <ErrorAlert message="An error occurred during workerpool deals loading." />
+      {hasPastError && !access.length ? (
+        <ErrorAlert message="An error occurred during workerpool access loading." />
       ) : (
         <DataTable
-          columns={filteredColumns}
-          data={deals}
+          columns={columns}
+          data={access}
           tableLength={DETAIL_TABLE_LENGTH}
         />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={currentPage + additionalPages}
+        totalPages={Math.ceil(totalCount / DETAIL_TABLE_LENGTH)}
         onPageChange={setCurrentPage}
       />
     </div>

@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import {
   Pagination,
   PaginationContent,
@@ -7,6 +8,7 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
+import useUserStore from '@/stores/useUser.store';
 
 type PaginationControlsProps = {
   currentPage: number;
@@ -19,24 +21,87 @@ export const PaginatedNavigation = ({
   totalPages,
   onPageChange,
 }: PaginationControlsProps) => {
+  const { chainId } = useUserStore();
+
+  const lastValidTotalPagesRef = useRef(1);
+  const lastChainIdRef = useRef<number | null>(null);
+  const chainChangeFrameRef = useRef(0);
+
+  const chainHasChanged = chainId !== lastChainIdRef.current;
+
+  if (chainHasChanged) {
+    lastChainIdRef.current = chainId ?? null;
+    chainChangeFrameRef.current = 0;
+  } else {
+    chainChangeFrameRef.current++;
+  }
+
+  let stableTotalPages = lastValidTotalPagesRef.current;
+
+  const isRecentChainChange = chainChangeFrameRef.current <= 5;
+
+  if (chainHasChanged || isRecentChainChange) {
+    stableTotalPages = Math.max(totalPages, 1);
+  } else if (totalPages > 0 && totalPages >= lastValidTotalPagesRef.current) {
+    stableTotalPages = totalPages;
+  }
+
+  lastValidTotalPagesRef.current = stableTotalPages;
+
+  // Don't render pagination if no pages or invalid state
+  if (!stableTotalPages || stableTotalPages <= 0 || currentPage <= 0) {
+    return null;
+  }
+
   const generatePages = () => {
     const pages: (number | 'ellipsis')[] = [];
 
-    if (totalPages <= 5) {
-      for (let i = 1; i <= totalPages; i++) {
+    // Mobile-first approach: show fewer pages on small screens
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640;
+    const maxVisiblePages = isMobile ? 3 : 7;
+
+    if (stableTotalPages <= maxVisiblePages) {
+      // Show all pages if within limit
+      for (let i = 1; i <= stableTotalPages; i++) {
         pages.push(i);
       }
-    } else if (currentPage <= 3) {
-      for (let i = 1; i <= Math.min(currentPage + 2, totalPages); i++) {
-        pages.push(i);
+    } else if (isMobile) {
+      // Mobile: simplified pagination - only show current and neighbors
+      if (currentPage === 1) {
+        // At start: 1 2 ... last
+        pages.push(1, 2, 'ellipsis', stableTotalPages);
+      } else if (currentPage === stableTotalPages) {
+        // At end: 1 ... (last-1) last
+        pages.push(1, 'ellipsis', stableTotalPages - 1, stableTotalPages);
+      } else {
+        // Middle: 1 ... current ... last
+        pages.push(1, 'ellipsis', currentPage, 'ellipsis', stableTotalPages);
       }
     } else {
+      // Desktop: full pagination logic
       pages.push(1);
-      pages.push('ellipsis');
 
-      const maxPage = Math.min(currentPage + 2, totalPages);
-      for (let i = currentPage; i <= maxPage; i++) {
-        pages.push(i);
+      if (currentPage <= 3) {
+        // Near beginning: 1 2 3 4 ... last
+        for (let i = 2; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(stableTotalPages);
+      } else if (currentPage >= stableTotalPages - 2) {
+        // Near end: 1 ... (last-3) (last-2) (last-1) last
+        pages.push('ellipsis');
+        for (let i = stableTotalPages - 3; i <= stableTotalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        // In middle: 1 ... (current-1) current (current+1) ... last
+        pages.push('ellipsis');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('ellipsis');
+        pages.push(stableTotalPages);
       }
     }
 
@@ -50,7 +115,7 @@ export const PaginatedNavigation = ({
   };
 
   const handleNext = () => {
-    if (currentPage < totalPages) onPageChange(currentPage + 1);
+    if (currentPage < stableTotalPages) onPageChange(currentPage + 1);
   };
 
   return (
@@ -86,7 +151,9 @@ export const PaginatedNavigation = ({
           <PaginationNext
             onClick={handleNext}
             className={
-              currentPage === totalPages ? 'pointer-events-none opacity-50' : ''
+              currentPage === stableTotalPages
+                ? 'pointer-events-none opacity-50'
+                : ''
             }
           />
         </PaginationItem>

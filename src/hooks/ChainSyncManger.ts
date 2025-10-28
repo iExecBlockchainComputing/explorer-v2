@@ -42,11 +42,8 @@ export function ChainSyncManager() {
     if (accountChain?.id && chainId !== accountChain?.id) {
       setChainId(accountChain?.id);
     }
-    if (accountStatus === 'connected') {
-      initIExecSDKs({ connector: accountConnector });
-      return;
-    }
     cleanIExecSDKs();
+    initIExecSDKs({ connector: accountConnector, chainId });
   }, [
     accountAddress,
     accountIsConnected,

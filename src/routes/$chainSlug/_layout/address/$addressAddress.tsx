@@ -12,6 +12,9 @@ import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrumbs';
+import { AddressAppsAccessTable } from '@/modules/addresses/address/access/AddressAppsAccessTable';
+import { AddressDatasetsAccessTable } from '@/modules/addresses/address/access/AddressDatasetsAccessTable';
+import { AddressWorkerpoolsAccessTable } from '@/modules/addresses/address/access/AddressWorkerpoolsAccessTable';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
@@ -74,6 +77,7 @@ function AddressRoute() {
     'APPS',
     'DATASETS',
     'WORKERPOOLS',
+    'ACCESS',
   ];
   const [currentTab, setCurrentTab] = useTabParam('addressTab', tabLabels, 0);
   const { chainId, address: userAddress } = useUserStore();
@@ -232,6 +236,13 @@ function AddressRoute() {
               Deployed workerpools : {address?.allWorkerpools.length}
             </p>
             <AddressWorkerpoolsTable addressAddress={addressAddress} />
+          </>
+        )}
+        {currentTab === 6 && (
+          <>
+            <AddressDatasetsAccessTable addressAddress={addressAddress} />
+            <AddressAppsAccessTable addressAddress={addressAddress} />
+            <AddressWorkerpoolsAccessTable addressAddress={addressAddress} />
           </>
         )}
       </div>
