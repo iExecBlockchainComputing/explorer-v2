@@ -244,8 +244,8 @@ function AddressRoute() {
         )}
         {currentTab === 6 && (
           <>
-            <AddressAppsAccessFromTable addressAddress={addressAddress} />
             <AddressDatasetsAccessFromTable addressAddress={addressAddress} />
+            <AddressAppsAccessFromTable addressAddress={addressAddress} />
             <AddressWorkerpoolsAccessFromTable
               addressAddress={addressAddress}
             />
@@ -253,8 +253,8 @@ function AddressRoute() {
         )}
         {currentTab === 7 && (
           <>
-            <AddressAppsAccessToTable addressAddress={addressAddress} />
             <AddressDatasetsAccessToTable addressAddress={addressAddress} />
+            <AddressAppsAccessToTable addressAddress={addressAddress} />
             <AddressWorkerpoolsAccessToTable addressAddress={addressAddress} />
           </>
         )}
