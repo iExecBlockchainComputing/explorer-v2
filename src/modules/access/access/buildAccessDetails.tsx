@@ -3,6 +3,7 @@ import {
   formatDateCompact,
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
+import { nrlcToRlc } from '@/utils/nrlcToRlc';
 
 export function buildAccessDetails({
   access,
@@ -24,7 +25,6 @@ export function buildAccessDetails({
         />
       ),
     }),
-    // ...(access.status && { Status: <span>{access.status}</span> }),
     ...(order.dataset && {
       Dataset: (
         <SmartLinkGroup
@@ -35,7 +35,7 @@ export function buildAccessDetails({
       ),
     }),
     ...(order.datasetprice !== undefined && {
-      'Dataset Price': <span>{order.datasetprice}</span>,
+      'Dataset Price': <span>{nrlcToRlc(order.datasetprice)}</span>,
     }),
     ...(order.app && {
       App: (
@@ -47,7 +47,7 @@ export function buildAccessDetails({
       ),
     }),
     ...(order.appprice !== undefined && {
-      'App Price': <span>{order.appprice}</span>,
+      'App Price': <span>{nrlcToRlc(order.appprice)}</span>,
     }),
     ...(order.workerpool && {
       Workerpool: (
@@ -59,7 +59,7 @@ export function buildAccessDetails({
       ),
     }),
     ...(order.workerpoolprice !== undefined && {
-      'Workerpool Price': <span>{order.workerpoolprice}</span>,
+      'Workerpool Price': <span>{nrlcToRlc(order.workerpoolprice)}</span>,
     }),
     ...(order.volume !== undefined && {
       Volume: <span>{order.volume}</span>,
