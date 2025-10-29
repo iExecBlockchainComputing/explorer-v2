@@ -64,7 +64,7 @@ function useAddressAppsGrantedAccessData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/app/${access.order.app.toLowerCase()}`,
+      destination: `/access/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 

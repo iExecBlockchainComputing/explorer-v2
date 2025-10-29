@@ -65,7 +65,7 @@ function useAddressWorkerpoolsGrantedAccessData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/workerpool/${access.order.workerpool.toLowerCase()}`,
+      destination: `/access/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 

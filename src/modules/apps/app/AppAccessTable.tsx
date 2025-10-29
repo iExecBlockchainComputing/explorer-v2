@@ -51,10 +51,15 @@ function useAppAccessData({
     startIndexInBatch,
     startIndexInBatch + DETAIL_TABLE_LENGTH
   );
+  const formattedAccess =
+    access.map((access) => ({
+      ...access,
+      destination: `/access/${access.orderHash?.toLowerCase?.()}`,
+    })) ?? [];
   const count = data?.count || 0;
 
   return {
-    data: access,
+    data: formattedAccess,
     totalCount: count,
     isLoading,
     isRefetching,

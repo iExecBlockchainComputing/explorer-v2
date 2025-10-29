@@ -63,7 +63,7 @@ function useAddressDatasetsReceivedAccessData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/dataset/${access.order.dataset.toLowerCase()}`,
+      destination: `/access/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 
