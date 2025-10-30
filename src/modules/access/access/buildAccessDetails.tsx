@@ -1,3 +1,8 @@
+import {
+  PublishedApporder,
+  PublishedDatasetorder,
+  PublishedWorkerpoolorder,
+} from 'iexec/IExecOrderbookModule';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import {
   formatDateCompact,
@@ -8,7 +13,7 @@ import { nrlcToRlc } from '@/utils/nrlcToRlc';
 export function buildAccessDetails({
   access,
 }: {
-  access: Record<string, any>;
+  access: PublishedApporder | PublishedDatasetorder | PublishedWorkerpoolorder;
 }) {
   if (!access) return {};
 
@@ -25,42 +30,48 @@ export function buildAccessDetails({
         />
       ),
     }),
-    ...(order.dataset && {
-      Dataset: (
-        <SmartLinkGroup
-          type="dataset"
-          addressOrId={order.dataset.toLowerCase()}
-          label={order.dataset.toLowerCase()}
-        />
-      ),
-    }),
-    ...(order.datasetprice !== undefined && {
-      'Dataset Price': <span>{nrlcToRlc(order.datasetprice)}</span>,
-    }),
-    ...(order.app && {
-      App: (
-        <SmartLinkGroup
-          type="app"
-          addressOrId={order.app.toLowerCase()}
-          label={order.app.toLowerCase()}
-        />
-      ),
-    }),
-    ...(order.appprice !== undefined && {
-      'App Price': <span>{nrlcToRlc(order.appprice)}</span>,
-    }),
-    ...(order.workerpool && {
-      Workerpool: (
-        <SmartLinkGroup
-          type="workerpool"
-          addressOrId={order.workerpool.toLowerCase()}
-          label={order.workerpool.toLowerCase()}
-        />
-      ),
-    }),
-    ...(order.workerpoolprice !== undefined && {
-      'Workerpool Price': <span>{nrlcToRlc(order.workerpoolprice)}</span>,
-    }),
+    ...('dataset' in order &&
+      order.dataset && {
+        Dataset: (
+          <SmartLinkGroup
+            type="dataset"
+            addressOrId={order.dataset.toLowerCase()}
+            label={order.dataset.toLowerCase()}
+          />
+        ),
+      }),
+    ...('datasetprice' in order &&
+      order.datasetprice && {
+        'Dataset Price': <span>{nrlcToRlc(order.datasetprice)}</span>,
+      }),
+    ...('app' in order &&
+      order.app && {
+        App: (
+          <SmartLinkGroup
+            type="app"
+            addressOrId={order.app.toLowerCase()}
+            label={order.app.toLowerCase()}
+          />
+        ),
+      }),
+    ...('appprice' in order &&
+      order.appprice && {
+        'App Price': <span>{nrlcToRlc(order.appprice)}</span>,
+      }),
+    ...('workerpool' in order &&
+      order.workerpool && {
+        Workerpool: (
+          <SmartLinkGroup
+            type="workerpool"
+            addressOrId={order.workerpool.toLowerCase()}
+            label={order.workerpool.toLowerCase()}
+          />
+        ),
+      }),
+    ...('workerpoolprice' in order &&
+      order.workerpoolprice !== undefined && {
+        'Workerpool Price': <span>{nrlcToRlc(order.workerpoolprice)}</span>,
+      }),
     ...(order.volume !== undefined && {
       Volume: <span>{order.volume}</span>,
     }),
@@ -69,15 +80,16 @@ export function buildAccessDetails({
     }),
     ...(order.salt && { Salt: <span>{order.salt}</span> }),
     ...(order.tag && { Tag: <span>{order.tag}</span> }),
-    ...(order.apprestrict && {
-      'App Restrict': (
-        <SmartLinkGroup
-          type="app"
-          addressOrId={order.apprestrict.toLowerCase()}
-          label={order.apprestrict.toLowerCase()}
-        />
-      ),
-    }),
+    ...('apprestrict' in order &&
+      order.apprestrict && {
+        'App Restrict': (
+          <SmartLinkGroup
+            type="app"
+            addressOrId={order.apprestrict.toLowerCase()}
+            label={order.apprestrict.toLowerCase()}
+          />
+        ),
+      }),
     ...(order.requesterrestrict && {
       'Requester Restrict': (
         <SmartLinkGroup
@@ -87,15 +99,16 @@ export function buildAccessDetails({
         />
       ),
     }),
-    ...(order.workerpoolrestrict && {
-      'Workerpool Restrict': (
-        <SmartLinkGroup
-          type="workerpool"
-          addressOrId={order.workerpoolrestrict.toLowerCase()}
-          label={order.workerpoolrestrict.toLowerCase()}
-        />
-      ),
-    }),
+    ...('workerpoolrestrict' in order &&
+      order.workerpoolrestrict && {
+        'Workerpool Restrict': (
+          <SmartLinkGroup
+            type="workerpool"
+            addressOrId={order.workerpoolrestrict.toLowerCase()}
+            label={order.workerpoolrestrict.toLowerCase()}
+          />
+        ),
+      }),
     ...(access.signer && {
       Signer: (
         <SmartLinkGroup
@@ -120,8 +133,5 @@ export function buildAccessDetails({
       ),
     }),
     ...(order.sign && { Signature: <span>{order.sign}</span> }),
-    ...(access.ok !== undefined && {
-      Ok: <span>{access.ok ? 'Yes' : 'No'}</span>,
-    }),
   };
 }
