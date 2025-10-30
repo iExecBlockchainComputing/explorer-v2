@@ -23,7 +23,7 @@ export function buildAccessDetails({
     ...(access.orderHash && {
       'Order Hash': (
         <SmartLinkGroup
-          type="transaction"
+          type="order"
           isCurrentPage={true}
           addressOrId={access.orderHash.toLowerCase()}
           label={access.orderHash.toLowerCase()}
