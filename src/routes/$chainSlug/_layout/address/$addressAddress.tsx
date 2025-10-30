@@ -12,6 +12,9 @@ import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrumbs';
+import { AddressAppsAccessTable } from '@/modules/addresses/address/access/AddressAppsAccessTable';
+import { AddressDatasetsAccessTable } from '@/modules/addresses/address/access/AddressDatasetsAccessTable';
+import { AddressWorkerpoolsAccessTable } from '@/modules/addresses/address/access/AddressWorkerpoolsAccessTable';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
@@ -30,7 +33,6 @@ import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools
 import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
-import { NotFoundError } from '@/utils/NotFoundError';
 import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
@@ -52,9 +54,24 @@ function useAddressData(address: string, chainId: number) {
           length: TABLE_LENGTH,
           address,
         });
+
         if (!result?.account) {
-          throw new NotFoundError();
+          return {
+            account: {
+              address: address,
+              allApps: [],
+              allContributions: [],
+              allDatasets: [],
+              allDealBeneficiary: [],
+              allDealRequester: [],
+              allWorkerpools: [],
+              locked: '0',
+              score: '0',
+              staked: '0',
+            },
+          };
         }
+
         return result;
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -127,24 +144,26 @@ function AddressRoute() {
   const disabledTabs: number[] = [];
   const disabledReasons: Record<number, string> = {};
 
-  // TODO like for other tab we have to check REQUESTS
+  // Only disable tabs if we have no data AND we're not loading
+  // This allows showing tabs with zero values when address exists but has no data
+  const hasAddressData = address !== null;
 
-  if (!address?.allContributions?.length) {
+  if (!isLoading && hasAddressData && !address?.allContributions?.length) {
     disabledTabs.push(2);
     disabledReasons[2] = 'No contributions for this address.';
   }
 
-  if (!address?.allApps?.length) {
+  if (!isLoading && hasAddressData && !address?.allApps?.length) {
     disabledTabs.push(3);
     disabledReasons[3] = 'No apps for this address.';
   }
 
-  if (!address?.allDatasets?.length) {
+  if (!isLoading && hasAddressData && !address?.allDatasets?.length) {
     disabledTabs.push(4);
     disabledReasons[4] = 'No datasets for this address.';
   }
 
-  if (!address?.allWorkerpools?.length) {
+  if (!isLoading && hasAddressData && !address?.allWorkerpools?.length) {
     disabledTabs.push(5);
     disabledReasons[5] = 'No workerpools for this address.';
   }
@@ -153,7 +172,7 @@ function AddressRoute() {
     return <ErrorAlert className="my-16" message="Invalid address." />;
   }
 
-  if (isError && error instanceof NotFoundError) {
+  if (isError && error && address === null) {
     return (
       <ErrorAlert className="my-16" message="No data found for this address." />
     );
