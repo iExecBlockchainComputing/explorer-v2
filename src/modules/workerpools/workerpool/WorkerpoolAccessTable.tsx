@@ -21,7 +21,7 @@ function useWorkerpoolAccessData({
 
   const pageSize = DETAIL_TABLE_LENGTH * 2;
 
-  // API returns min 10 items, but we display only 5 per page
+  // API returns min 10 items, but we display only 8 per page
   const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
   const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
 
