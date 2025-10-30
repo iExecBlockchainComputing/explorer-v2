@@ -97,6 +97,12 @@ export function AddressDatasetsGrantedAccessTable({
     addressAddress,
     currentPage: currentPage - 1,
   });
+  const { address: userAddress } = useUserStore();
+
+  const filteredColumns =
+    userAddress !== addressAddress
+      ? columns.filter((c) => c.accessorKey !== 'revokeAccess')
+      : columns;
 
   return (
     <div className="space-y-6">
@@ -115,7 +121,7 @@ export function AddressDatasetsGrantedAccessTable({
         <ErrorAlert message="An error occurred during address datasets access loading." />
       ) : (
         <DataTable
-          columns={columns}
+          columns={filteredColumns}
           data={access}
           tableLength={PREVIEW_TABLE_LENGTH}
         />

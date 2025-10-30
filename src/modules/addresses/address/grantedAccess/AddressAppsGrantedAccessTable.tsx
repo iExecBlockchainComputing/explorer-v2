@@ -96,6 +96,12 @@ export function AddressAppsGrantedAccessTable({
     currentPage: currentPage - 1,
   });
 
+  const { address: userAddress } = useUserStore();
+  const filteredColumns =
+    userAddress === addressAddress
+      ? columns
+      : columns.filter((c) => c.accessorKey !== 'revokeAccess');
+
   return (
     <div className="space-y-6">
       <h2 className="flex items-center gap-2 font-extrabold">
@@ -113,7 +119,7 @@ export function AddressAppsGrantedAccessTable({
         <ErrorAlert message="An error occurred during address apps access loading." />
       ) : (
         <DataTable
-          columns={columns}
+          columns={filteredColumns}
           data={access}
           tableLength={PREVIEW_TABLE_LENGTH}
         />

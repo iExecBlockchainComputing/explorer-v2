@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { PublishedApporder } from 'iexec/IExecOrderbookModule';
 import CopyButton from '@/components/CopyButton';
+import RevokeAccess from '@/modules/access/access/RevokeAccess';
 import useUserStore from '@/stores/useUser.store';
 import { getTokenSymbol } from '@/utils/chain.utils';
 import { nrlcToRlc } from '@/utils/nrlcToRlc';
@@ -83,5 +84,15 @@ export const columns: ColumnDef<PublishedApporder>[] = [
     accessorKey: 'remaining',
     header: 'Remaining',
     cell: ({ row }) => <span>{row.original.remaining}</span>,
+  },
+  {
+    id: 'revokeAccess',
+    accessorKey: 'revokeAccess',
+    header: 'Revoke Access',
+    cell: ({ row }) => (
+      <span className="py-3!">
+        <RevokeAccess access={row.original} />
+      </span>
+    ),
   },
 ];
