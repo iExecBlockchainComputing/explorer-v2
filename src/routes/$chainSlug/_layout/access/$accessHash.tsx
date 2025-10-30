@@ -1,4 +1,3 @@
-import { TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
@@ -52,7 +51,6 @@ function useAccessData(accessHash: string, chainId: number) {
 
         return { access, accessType };
       },
-      refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     });
 
@@ -81,8 +79,6 @@ function AccessRoute() {
     isValid,
     error,
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
-
-  console.log(access);
 
   const accessDetails = access ? buildAccessDetails({ access }) : undefined;
 
