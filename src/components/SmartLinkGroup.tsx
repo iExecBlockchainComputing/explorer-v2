@@ -22,7 +22,8 @@ type LinkType =
   | 'workerpool'
   | 'app'
   | 'address'
-  | 'transaction';
+  | 'transaction'
+  | 'order';
 
 interface SmartLinkGroupProps {
   type: LinkType;
@@ -46,6 +47,7 @@ export default function SmartLinkGroup({
     app: 'app',
     address: 'address',
     transaction: 'tx',
+    order: 'order',
   };
 
   const { data: ens } = useQuery({
@@ -98,7 +100,7 @@ export default function SmartLinkGroup({
         </div>
       )}
 
-      {type !== 'task' && (
+      {type !== 'task' && type !== 'order' && (
         <TooltipProvider delayDuration={0}>
           <Tooltip>
             <TooltipTrigger asChild>

@@ -78,7 +78,7 @@ export function Tabs({
               if (!isDisabled) onTabChange(index);
             }}
             className={cn(
-              'text-foreground relative z-10 border border-transparent px-8 py-2 transition-colors duration-300 hover:no-underline',
+              'text-foreground relative z-10 border border-transparent px-4 py-2 transition-colors duration-300 hover:no-underline',
               isDisabled && 'cursor-not-allowed opacity-50',
               currentTab === index && 'text-primary'
             )}
