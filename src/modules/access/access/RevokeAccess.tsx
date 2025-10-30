@@ -17,10 +17,6 @@ export default function RevokeAccess({
   const { chainId } = useUserStore();
   const queryClient = useQueryClient();
 
-  if (!access) return;
-
-  console.log('access to revoke', access);
-
   const order = access.order;
 
   const revokeAccessMutation = useMutation({
@@ -54,6 +50,8 @@ export default function RevokeAccess({
       });
     },
   });
+
+  if (!access) return;
 
   return (
     <Button
