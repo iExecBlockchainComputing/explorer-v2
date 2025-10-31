@@ -51,7 +51,7 @@ export function DealTasksTable({ dealId }: { dealId: string }) {
       header: 'Index',
       cell: ({ row }) => {
         const index = row.getValue('index');
-        return <>{index}</>;
+        return <span>{index}</span>;
       },
     },
     ...columns,
