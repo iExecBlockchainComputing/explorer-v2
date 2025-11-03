@@ -3,6 +3,7 @@ import { SchemaSearchPaginatedQuery } from '@/graphql/dataprotector/graphql';
 import { DatasetsQuery } from '@/graphql/poco/graphql';
 import { execute } from '@/graphql/pocoBulk/execute';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
@@ -85,8 +86,31 @@ function useTaskDatasetsData({ taskId }: { taskId: string }) {
   };
 }
 
-export function TaskDatasetsTable({ taskId }: { taskId: string }) {
-  const { data: datasets, hasPastError } = useTaskDatasetsData({ taskId });
+export function TaskDatasetsTable({
+  taskId,
+  setLoading,
+  setOutdated,
+}: {
+  taskId: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
+}) {
+  const {
+    data: datasets,
+    hasPastError,
+    isLoading,
+    isRefetching,
+    isError,
+  } = useTaskDatasetsData({ taskId });
+
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(datasets.length > 0 && isError),
+    [datasets.length, isError, setOutdated]
+  );
 
   return hasPastError && !datasets.length ? (
     <ErrorAlert message="An error occurred during task datasets loading." />

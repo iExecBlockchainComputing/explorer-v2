@@ -1,5 +1,6 @@
 import { TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
@@ -52,15 +53,30 @@ function useTaskRawData({
 export function TaskRawData({
   taskWorkerpoolId,
   taskId,
+  setLoading,
+  setOutdated,
 }: {
   taskWorkerpoolId?: string;
   taskId: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
 }) {
   const {
     data: tasks,
     hasPastError,
     isLoading,
+    isRefetching,
+    isError,
   } = useTaskRawData({ taskWorkerpoolId, taskId });
+
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(Boolean(tasks) && !isLoading && isError),
+    [tasks, isLoading, isError, setOutdated]
+  );
   const { address: userAddress } = useUserStore();
   const { login } = useLoginLogout();
 

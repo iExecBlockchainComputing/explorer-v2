@@ -3,6 +3,7 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import TaskIcon from '@/components/icons/TaskIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -71,6 +72,9 @@ function TasksRoute() {
   const tabLabels = ['DETAILS', 'RAW DATA', 'DATASETS'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
 
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
   if (!isValid) {
@@ -81,6 +85,9 @@ function TasksRoute() {
     return <ErrorAlert message="Task not found." />;
   }
 
+  const showOutdated = task && (isError || isOutdatedChild);
+  const showLoading = isLoading || isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -89,14 +96,12 @@ function TasksRoute() {
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <TaskIcon size={24} />
             Task details
-            {!task && isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(isLoading || isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -121,9 +126,17 @@ function TasksRoute() {
           <TaskRawData
             taskWorkerpoolId={task?.deal.workerpool.address}
             taskId={taskId}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
           />
         )}
-        {currentTab === 2 && <TaskDatasetsTable taskId={taskId} />}
+        {currentTab === 2 && (
+          <TaskDatasetsTable
+            taskId={taskId}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
+          />
+        )}
       </div>
     </div>
   );
