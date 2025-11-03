@@ -11,6 +11,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
+import { TaskDatasetsTable } from '@/modules/tasks/task/TaskDatasetsTable';
 import { TaskRawData } from '@/modules/tasks/task/TaskRawData';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
@@ -67,7 +68,7 @@ function TasksRoute() {
     isValid,
     error,
   } = useTaskData((taskId as string).toLowerCase(), chainId!);
-  const tabLabels = ['DETAILS', 'RAW DATA'];
+  const tabLabels = ['DETAILS', 'RAW DATA', 'DATASETS'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
 
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
@@ -122,6 +123,7 @@ function TasksRoute() {
             taskId={taskId}
           />
         )}
+        {currentTab === 2 && <TaskDatasetsTable taskId={taskId} />}
       </div>
     </div>
   );
