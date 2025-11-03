@@ -13,8 +13,10 @@ dist-ssr
 *.local
 src/graphql/poco/*
 src/graphql/dataprotector/*
+src/graphql/pocoBulk/*
 !src/graphql/poco/execute.ts
 !src/graphql/dataprotector/execute.ts
+!src/graphql/pocoBulk/execute.ts
 
 # misc
 .DS_Store

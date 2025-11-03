@@ -26,6 +26,7 @@ export const SUPPORTED_CHAINS = [
       poco: 'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/B1comLe9SANBLrjdnoNTJSubbeC7cY7EoNu6zD82HeKy',
       dataprotector:
         'https://thegraph.arbitrum.iex.ec/api/subgraphs/id/Ep5zs5zVr4tDiVuQJepUu51e5eWYJpka624X4DMBxe3u',
+      pocoBulk: 'TODO',
     },
     wagmiNetwork: arbitrum,
     tokenSymbol: 'RLC',
@@ -40,7 +41,8 @@ export const SUPPORTED_CHAINS = [
     subgraphUrl: {
       poco: 'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
       dataprotector:
-        'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
+      'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
+      pocoBulk: 'https://api.studio.thegraph.com/query/11362/poco-bulk/version/latest/',
     },
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
@@ -56,6 +58,7 @@ export const SUPPORTED_CHAINS = [
       poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
       dataprotector:
         'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
+      pocoBulk: 'TODO',
     },
     bridge: 'https://bridge-bellecour.iex.ec/',
     bridgeInformation:
