@@ -1,6 +1,7 @@
 import { DealQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
+import { Button } from '@/components/ui/button';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
 import DealEvent from '@/modules/events/DealEvent';
@@ -14,9 +15,11 @@ import { truncateAddress } from '@/utils/truncateAddress';
 export function buildDealDetails({
   deal,
   isConnected,
+  onSeeTasks,
 }: {
   deal: DealQuery['deal'];
   isConnected: boolean;
+  onSeeTasks: () => void;
 }) {
   if (!deal) {
     return {};
@@ -132,6 +135,21 @@ export function buildDealDetails({
         </div>
       ),
       'Dataset price': <p>{deal.datasetPrice}</p>,
+    }),
+    ...(deal.dataset === null && {
+      Dataset: (
+        <p>
+          Bulk usage{' '}
+          <Button
+            variant="link"
+            size="none"
+            className="ml-1"
+            onClick={onSeeTasks}
+          >
+            (see tasks for details)
+          </Button>
+        </p>
+      ),
     }),
     ...(deal.workerpool && {
       Workerpool: (
