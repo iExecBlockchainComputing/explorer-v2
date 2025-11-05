@@ -41,8 +41,9 @@ export const SUPPORTED_CHAINS = [
     subgraphUrl: {
       poco: 'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/2GCj8gzLCihsiEDq8cYvC5nUgK6VfwZ6hm3Wj8A3kcxz',
       dataprotector:
-      'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
-      pocoBulk: 'https://api.studio.thegraph.com/query/11362/poco-bulk/version/latest/',
+        'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
+      pocoBulk:
+        'https://api.studio.thegraph.com/query/11362/poco-bulk/version/latest/',
     },
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',

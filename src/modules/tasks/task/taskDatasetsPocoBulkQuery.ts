@@ -1,7 +1,7 @@
 import { graphql } from '@/graphql/pocoBulk/gql';
 
 export const taskDatasetsQuery = graphql(`
-  query Task($taskId: ID!) {
+  query TaskDatasets($taskId: ID!) {
     task(id: $taskId) {
       bulkSlice {
         datasets(first: 10, orderBy: timestamp, orderDirection: desc, skip: 0) {
