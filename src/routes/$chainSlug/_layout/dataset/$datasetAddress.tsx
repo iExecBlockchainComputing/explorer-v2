@@ -15,6 +15,7 @@ import { Tabs } from '@/modules/Tabs';
 import { DatasetAccessTable } from '@/modules/datasets/dataset/DatasetAccessTable';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
+import { DatasetTasksTable } from '@/modules/datasets/dataset/DatasetTasksTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
 import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
 import { datasetSchemaQuery } from '@/modules/datasets/dataset/schema/datasetSchemaDpQuery';
@@ -90,7 +91,7 @@ function useDatasetData(datasetAddress: string, chainId: number) {
 }
 
 function DatasetsRoute() {
-  const tabLabels = ['DETAILS', 'DEALS', 'ACCESS'];
+  const tabLabels = ['DETAILS', 'DEALS', 'TASKS', 'ACCESS'];
   const [currentTab, setCurrentTab] = useTabParam('datasetTab', tabLabels, 0);
   const { chainId } = useUserStore();
 
@@ -167,6 +168,13 @@ function DatasetsRoute() {
         />
       )}
       {currentTab === 2 && (
+        <DatasetTasksTable
+          datasetId={datasetAddress}
+          setLoading={setIsLoadingChild}
+          setOutdated={setIsOutdatedChild}
+        />
+      )}
+      {currentTab === 3 && (
         <DatasetAccessTable
           datasetAddress={datasetAddress}
           setLoading={setIsLoadingChild}
