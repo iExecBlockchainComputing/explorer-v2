@@ -51,7 +51,7 @@ function useAccessData(accessHash: string, chainId: number) {
 }
 
 function DatasetAccessRoute() {
-  const { chainId } = useUserStore();
+  const { chainId, address: userAddress } = useUserStore();
   const { accessHash } = Route.useParams();
   const {
     access,
@@ -65,7 +65,7 @@ function DatasetAccessRoute() {
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
 
   const accessDetails = access
-    ? buildAccessDetails({ access, dataset })
+    ? buildAccessDetails({ access, dataset, userAddress })
     : undefined;
 
   if (!isValid) {

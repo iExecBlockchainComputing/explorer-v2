@@ -12,17 +12,20 @@ import {
   formatElapsedTime,
 } from '@/utils/formatElapsedTime';
 import { nrlcToRlc } from '@/utils/nrlcToRlc';
+import RevokeAccess from './RevokeAccess';
 
 export function buildAccessDetails({
   access,
   dataset,
   app,
   workerpool,
+  userAddress,
 }: {
   access: PublishedApporder | PublishedDatasetorder | PublishedWorkerpoolorder;
   dataset?: Dataset;
   app?: App;
   workerpool?: Workerpool;
+  userAddress?: string;
 }) {
   if (!access) return {};
 
@@ -123,11 +126,17 @@ export function buildAccessDetails({
       }),
     ...(access.signer && {
       Signer: (
-        <SmartLinkGroup
-          type="address"
-          addressOrId={access.signer.toLowerCase()}
-          label={access.signer.toLowerCase()}
-        />
+        <div className="space-x-2">
+          <SmartLinkGroup
+            type="address"
+            addressOrId={access.signer.toLowerCase()}
+            label={access.signer.toLowerCase()}
+          />
+          {userAddress &&
+            access.signer?.toLowerCase() === userAddress.toLowerCase() && (
+              <RevokeAccess access={access} />
+            )}
+        </div>
       ),
     }),
     ...(access.publicationTimestamp && {

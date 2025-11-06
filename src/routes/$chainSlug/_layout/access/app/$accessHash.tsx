@@ -49,7 +49,7 @@ function useAccessData(accessHash: string, chainId: number) {
 }
 
 function AppAccessRoute() {
-  const { chainId } = useUserStore();
+  const { chainId, address: userAddress } = useUserStore();
   const { accessHash } = Route.useParams();
   const {
     access,
@@ -63,7 +63,7 @@ function AppAccessRoute() {
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
 
   const accessDetails = access
-    ? buildAccessDetails({ access, app })
+    ? buildAccessDetails({ access, app, userAddress })
     : undefined;
 
   if (!isValid) {

@@ -51,7 +51,7 @@ function useAccessData(accessHash: string, chainId: number) {
 }
 
 function WorkerpoolAccessRoute() {
-  const { chainId } = useUserStore();
+  const { chainId, address: userAddress } = useUserStore();
   const { accessHash } = Route.useParams();
   const {
     access,
@@ -65,7 +65,7 @@ function WorkerpoolAccessRoute() {
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
 
   const accessDetails = access
-    ? buildAccessDetails({ access, workerpool })
+    ? buildAccessDetails({ access, workerpool, userAddress })
     : undefined;
 
   if (!isValid) {

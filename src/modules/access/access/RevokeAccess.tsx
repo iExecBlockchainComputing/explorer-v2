@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from '@tanstack/react-router';
 import {
   PublishedApporder,
   PublishedDatasetorder,
@@ -8,14 +9,18 @@ import { LoaderCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
+import { getChainFromId } from '@/utils/chain.utils';
 
 export default function RevokeAccess({
   access,
+  onRevoked,
 }: {
   access: PublishedApporder | PublishedDatasetorder | PublishedWorkerpoolorder;
+  onRevoked?: () => void;
 }) {
-  const { chainId } = useUserStore();
+  const { chainId, address: userAddress } = useUserStore();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const order = access.order;
 
@@ -48,6 +53,18 @@ export default function RevokeAccess({
       queryClient.invalidateQueries({
         queryKey: [chainId, 'address', `${accessType}sGrantedAccess`],
       });
+      // Navigate to the user's granted access tab if we have user address
+      if (userAddress) {
+        const chainSlug = chainId ? getChainFromId(chainId)?.slug : undefined;
+        if (chainSlug) {
+          navigate({
+            to: `/${chainSlug}/address/${userAddress}`,
+            search: { addressTab: 'GRANTED ACCESS' },
+            replace: true,
+          });
+        }
+      }
+      if (onRevoked) onRevoked();
     },
   });
 
@@ -57,9 +74,8 @@ export default function RevokeAccess({
     <Button
       variant="outline"
       size="sm"
-      onClick={() => {
-        revokeAccessMutation.mutate();
-      }}
+      onClick={() => revokeAccessMutation.mutate()}
+      disabled={revokeAccessMutation.isPending}
     >
       {revokeAccessMutation.isPending && (
         <LoaderCircle className="animate-spin" />
