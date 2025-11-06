@@ -1,6 +1,7 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/tasks/tasksTable/columns';
@@ -40,10 +41,31 @@ function useDealTasksData({ dealId }: { dealId: string }) {
   };
 }
 
-export function DealTasksTable({ dealId }: { dealId: string }) {
-  const { data: tasks, hasPastError } = useDealTasksData({ dealId });
+export function DealTasksTable({
+  dealId,
+  setLoading,
+  setOutdated,
+}: {
+  dealId: string;
+  setLoading: (isLoading: boolean) => void;
+  setOutdated: (isOutdated: boolean) => void;
+}) {
+  const {
+    data: tasks,
+    isError,
+    isLoading,
+    isRefetching,
+    hasPastError,
+  } = useDealTasksData({ dealId });
 
-  // TODO: handle loading state
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(tasks.length > 0 && isError),
+    [tasks.length, isError, setOutdated]
+  );
 
   const extendedColumns = [
     {

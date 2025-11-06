@@ -9,6 +9,7 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { dealAssociatedDealsQuery } from './dealAssociatedDealsQuery';
+import { useEffect } from 'react';
 
 function useDealAssociatedDealsData({
   dealId,
@@ -56,16 +57,36 @@ function useDealAssociatedDealsData({
   };
 }
 
-export function DealAssociatedDealsTable({ dealId }: { dealId: string }) {
+export function DealAssociatedDealsTable({
+  dealId,
+  setLoading,
+  setOutdated,
+}: {
+  dealId: string;
+  setLoading: (isLoading: boolean) => void;
+  setOutdated: (isOutdated: boolean) => void;
+}) {
   const [currentPage, setCurrentPage] = usePageParam('dealAssociatedDealsPage');
   const {
     data: associatedDeals,
+    isError,
+    isLoading,
+    isRefetching,
     additionalPages,
     hasPastError,
   } = useDealAssociatedDealsData({
     dealId,
     currentPage,
   });
+
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(associatedDeals.length > 0 && isError),
+    [associatedDeals.length, isError, setOutdated]
+  );
 
   return (
     <div className="space-y-6">

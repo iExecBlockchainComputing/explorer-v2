@@ -3,6 +3,7 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import DealIcon from '@/components/icons/DealIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -71,6 +72,9 @@ function DealsRoute() {
     error,
   } = useDealData((dealId as string).toLowerCase(), chainId!);
 
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
   const dealDetails = deal
     ? buildDealDetails({
         deal,
@@ -87,6 +91,9 @@ function DealsRoute() {
     return <ErrorAlert className="my-16" message="Deal not found." />;
   }
 
+  const showOutdated = deal && (isError || isOutdatedChild);
+  const showLoading = isLoading || isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -95,14 +102,12 @@ function DealsRoute() {
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <DealIcon size={24} />
             Deal details
-            {!deal && isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(isLoading || isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -123,8 +128,20 @@ function DealsRoute() {
           ) : (
             <DetailsTable details={dealDetails || {}} />
           ))}
-        {currentTab === 1 && <DealTasksTable dealId={dealId} />}
-        {currentTab === 2 && <DealAssociatedDealsTable dealId={dealId} />}
+        {currentTab === 1 && (
+          <DealTasksTable
+            dealId={dealId}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
+          />
+        )}
+        {currentTab === 2 && (
+          <DealAssociatedDealsTable
+            dealId={dealId}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
+          />
+        )}
       </div>
     </div>
   );
