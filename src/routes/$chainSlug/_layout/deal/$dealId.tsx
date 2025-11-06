@@ -71,7 +71,11 @@ function DealsRoute() {
   } = useDealData((dealId as string).toLowerCase(), chainId!);
 
   const dealDetails = deal
-    ? buildDealDetails({ deal, isConnected })
+    ? buildDealDetails({
+        deal,
+        isConnected,
+        onSeeTasks: () => setCurrentTab(1),
+      })
     : undefined;
 
   if (!isValid) {
