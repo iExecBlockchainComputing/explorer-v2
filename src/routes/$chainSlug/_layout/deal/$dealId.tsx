@@ -9,6 +9,7 @@ import { useTabParam } from '@/hooks/usePageParam';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
+import { DealAssociatedDealsTable } from '@/modules/deals/deal/DealAssociatedDealsTable';
 import { DealBreadcrumbs } from '@/modules/deals/deal/DealBreadcrumbs';
 import { DealTasksTable } from '@/modules/deals/deal/DealTasksTable';
 import { buildDealDetails } from '@/modules/deals/deal/buildDealDetails';
@@ -56,7 +57,7 @@ function useDealData(dealId: string, chainId: number) {
 }
 
 function DealsRoute() {
-  const tabLabels = ['DETAILS', 'TASKS'];
+  const tabLabels = ['DETAILS', 'TASKS', 'ASSOCIATED DEALS'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
   const { chainId, isConnected } = useUserStore();
   const { dealId } = Route.useParams();
@@ -123,6 +124,7 @@ function DealsRoute() {
             <DetailsTable details={dealDetails || {}} />
           ))}
         {currentTab === 1 && <DealTasksTable dealId={dealId} />}
+        {currentTab === 2 && <DealAssociatedDealsTable dealId={dealId} />}
       </div>
     </div>
   );
