@@ -30,6 +30,7 @@ interface SmartLinkGroupProps {
   addressOrId: string;
   label?: string;
   isCurrentPage?: boolean;
+  showAddressOrIdAndLabel?: boolean;
 }
 
 export default function SmartLinkGroup({
@@ -37,6 +38,7 @@ export default function SmartLinkGroup({
   addressOrId,
   label,
   isCurrentPage = false,
+  showAddressOrIdAndLabel = false,
 }: SmartLinkGroupProps) {
   const { chainId, isConnected } = useUserStore();
   const basePath = {
@@ -80,12 +82,15 @@ export default function SmartLinkGroup({
           <Link
             to={`/${getChainFromId(chainId)?.slug}/${basePath[type]}/${addressOrId}`}
           >
-            <span className="hidden md:inline">{label ?? addressOrId}</span>
+            <span className="hidden md:inline">
+              {label && !showAddressOrIdAndLabel ? label : addressOrId}
+            </span>
             <span className="inline md:hidden">
               {(label
                 ? truncateAddress(label)
                 : truncateAddress(addressOrId)) ?? addressOrId}
             </span>
+            {showAddressOrIdAndLabel ? `(${label})` : ''}
             {ens ? `(${ens})` : ''}
           </Link>
         </Button>

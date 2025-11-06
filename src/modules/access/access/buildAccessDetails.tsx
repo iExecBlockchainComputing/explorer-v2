@@ -1,8 +1,11 @@
+import { App } from 'iexec/IExecAppModule';
+import { Dataset } from 'iexec/IExecDatasetModule';
 import {
   PublishedApporder,
   PublishedDatasetorder,
   PublishedWorkerpoolorder,
 } from 'iexec/IExecOrderbookModule';
+import { Workerpool } from 'iexec/IExecWorkerpoolModule';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import {
   formatDateCompact,
@@ -12,8 +15,14 @@ import { nrlcToRlc } from '@/utils/nrlcToRlc';
 
 export function buildAccessDetails({
   access,
+  dataset,
+  app,
+  workerpool,
 }: {
   access: PublishedApporder | PublishedDatasetorder | PublishedWorkerpoolorder;
+  dataset?: Dataset;
+  app?: App;
+  workerpool?: Workerpool;
 }) {
   if (!access) return {};
 
@@ -36,7 +45,8 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="dataset"
             addressOrId={order.dataset.toLowerCase()}
-            label={order.dataset.toLowerCase()}
+            label={dataset?.datasetName}
+            showAddressOrIdAndLabel={true}
           />
         ),
       }),
@@ -50,7 +60,8 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="app"
             addressOrId={order.app.toLowerCase()}
-            label={order.app.toLowerCase()}
+            label={app?.appName}
+            showAddressOrIdAndLabel={true}
           />
         ),
       }),
@@ -64,7 +75,8 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="workerpool"
             addressOrId={order.workerpool.toLowerCase()}
-            label={order.workerpool.toLowerCase()}
+            label={workerpool?.workerpoolDescription}
+            showAddressOrIdAndLabel={true}
           />
         ),
       }),

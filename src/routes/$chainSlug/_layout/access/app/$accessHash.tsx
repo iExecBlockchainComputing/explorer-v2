@@ -30,14 +30,15 @@ function useAccessData(accessHash: string, chainId: number) {
       queryFn: async () => {
         const iexec = await getIExec();
         const access = await iexec.orderbook.fetchApporder(accessHash);
-        return { access };
+        const { app } = await iexec.app.showApp(access.order.app);
+        return { access, app };
       },
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     });
 
   return {
-    data: data?.access,
-    accessType: 'App' as const,
+    access: data?.access,
+    app: data?.app,
     isLoading,
     isRefetching,
     isError,
@@ -51,8 +52,8 @@ function AppAccessRoute() {
   const { chainId } = useUserStore();
   const { accessHash } = Route.useParams();
   const {
-    data: access,
-    accessType,
+    access,
+    app,
     isLoading,
     isRefetching,
     isError,
@@ -61,7 +62,9 @@ function AppAccessRoute() {
     error,
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
 
-  const accessDetails = access ? buildAccessDetails({ access }) : undefined;
+  const accessDetails = access
+    ? buildAccessDetails({ access, app })
+    : undefined;
 
   if (!isValid) {
     return <ErrorAlert className="my-16" message="Invalid access address." />;
@@ -78,7 +81,7 @@ function AppAccessRoute() {
         <div className="space-y-2">
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <AccessIcon size={24} />
-            {accessType} access details
+            App access details
             {!access && isError && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)

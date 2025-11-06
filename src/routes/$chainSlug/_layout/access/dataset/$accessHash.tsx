@@ -30,14 +30,17 @@ function useAccessData(accessHash: string, chainId: number) {
       queryFn: async () => {
         const iexec = await getIExec();
         const access = await iexec.orderbook.fetchDatasetorder(accessHash);
-        return { access };
+        const { dataset } = await iexec.dataset.showDataset(
+          access.order.dataset
+        );
+        return { access, dataset };
       },
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     });
 
   return {
-    data: data?.access,
-    accessType: 'Dataset' as const,
+    access: data?.access,
+    dataset: data?.dataset,
     isLoading,
     isRefetching,
     isError,
@@ -51,8 +54,8 @@ function DatasetAccessRoute() {
   const { chainId } = useUserStore();
   const { accessHash } = Route.useParams();
   const {
-    data: access,
-    accessType,
+    access,
+    dataset,
     isLoading,
     isRefetching,
     isError,
@@ -61,7 +64,9 @@ function DatasetAccessRoute() {
     error,
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
 
-  const accessDetails = access ? buildAccessDetails({ access }) : undefined;
+  const accessDetails = access
+    ? buildAccessDetails({ access, dataset })
+    : undefined;
 
   if (!isValid) {
     return <ErrorAlert className="my-16" message="Invalid access address." />;
@@ -78,7 +83,7 @@ function DatasetAccessRoute() {
         <div className="space-y-2">
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <AccessIcon size={24} />
-            {accessType} access details
+            Dataset access details
             {!access && isError && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
