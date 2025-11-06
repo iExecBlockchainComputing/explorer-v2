@@ -1,6 +1,7 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { usePageParam } from '@/hooks/usePageParam';
@@ -9,7 +10,6 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { dealAssociatedDealsQuery } from './dealAssociatedDealsQuery';
-import { useEffect } from 'react';
 
 function useDealAssociatedDealsData({
   dealId,
