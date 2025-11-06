@@ -63,7 +63,7 @@ function useAddressAppsReceivedAccessData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/access/${access.orderHash.toLowerCase()}`,
+      destination: `/access/app/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 

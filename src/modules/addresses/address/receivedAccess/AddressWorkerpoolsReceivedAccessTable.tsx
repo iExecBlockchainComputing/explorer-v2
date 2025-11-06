@@ -64,7 +64,7 @@ function useAddressWorkerpoolsReceivedAccessData({
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/access/${access.orderHash.toLowerCase()}`,
+      destination: `/access/workerpool/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 
