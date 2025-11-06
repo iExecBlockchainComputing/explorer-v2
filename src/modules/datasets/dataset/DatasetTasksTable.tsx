@@ -104,7 +104,6 @@ export function DatasetTasksTable({
         totalPages={currentPage + additionalPages}
         onPageChange={setCurrentPage}
       />
-      ;
     </div>
   );
 }
