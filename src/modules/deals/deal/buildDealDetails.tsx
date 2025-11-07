@@ -181,13 +181,13 @@ export function buildDealDetails({
             <ul className="list-inside list-disc">
               <li>
                 <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0
+                  1
                 </code>
                 : single execution
               </li>
               <li>
                 <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  1
+                  {'>='}2
                 </code>
                 : replicated for consensus
               </li>
