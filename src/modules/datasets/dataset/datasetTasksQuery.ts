@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/pocoBulk/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const datasetTasksQuery = graphql(`
   query DatasetTasks(

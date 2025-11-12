@@ -1,7 +1,7 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { SchemaSearchPaginatedQuery } from '@/graphql/dataprotector/graphql';
+import { execute } from '@/graphql/poco/execute';
 import { DatasetsQuery } from '@/graphql/poco/graphql';
-import { execute } from '@/graphql/pocoBulk/execute';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
@@ -11,7 +11,7 @@ import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas'
 import { SchemaFilter } from '@/modules/datasets/schemaFilters';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { taskDatasetsQuery } from './taskDatasetsPocoBulkQuery';
+import { taskDatasetsQuery } from './taskDatasetsQuery';
 
 function formatDataset({
   dataset,

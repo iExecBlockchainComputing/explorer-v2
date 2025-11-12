@@ -1,4 +1,4 @@
-import { graphql } from '@/graphql/pocoBulk/gql';
+import { graphql } from '@/graphql/poco/gql';
 
 export const taskDatasetsQuery = graphql(`
   query TaskDatasets($taskId: ID!) {

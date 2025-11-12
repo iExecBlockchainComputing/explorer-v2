@@ -1,5 +1,5 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
-import { execute } from '@/graphql/pocoBulk/execute';
+import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
@@ -10,7 +10,7 @@ import { columns } from '@/modules/tasks/tasksTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { getAdditionalPages } from '@/utils/format';
-import { datasetTasksQuery } from './datasetTasksPocoBulkQuery';
+import { datasetTasksQuery } from './datasetTasksQuery';
 
 function useDatasetTasksData({
   datasetId,
