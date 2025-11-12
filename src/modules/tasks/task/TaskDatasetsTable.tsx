@@ -5,12 +5,15 @@ import { DatasetsQuery } from '@/graphql/poco/graphql';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
+import { PaginatedNavigation } from '@/components/PaginatedNavigation';
+import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/datasets/datasetsTable/columns';
 import { useDatasetsSchemas } from '@/modules/datasets/hooks/useDatasetsSchemas';
 import { SchemaFilter } from '@/modules/datasets/schemaFilters';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { taskDatasetsQuery } from './taskDatasetsQuery';
 
 function formatDataset({
@@ -32,22 +35,32 @@ function formatDataset({
     owner: { address: dataset.owner?.address ?? '' },
     timestamp: dataset.timestamp,
     transfers:
-      dataset.transfers ??
-      ('transactionHash' in dataset && dataset.transactionHash
-        ? [
-            {
-              transaction: {
-                txHash: dataset.transactionHash,
+      'transfers' in dataset && dataset.transfers
+        ? dataset.transfers
+        : 'transactionHash' in dataset && dataset.transactionHash
+          ? [
+              {
+                transaction: {
+                  txHash: dataset.transactionHash,
+                },
               },
-            },
-          ]
-        : []),
+            ]
+          : [],
     destination: `/dataset/${dataset.address}`,
   };
 }
 
-function useTaskDatasetsData({ taskId }: { taskId: string }) {
+function useTaskDatasetsData({
+  taskId,
+  currentPage,
+}: {
+  taskId: string;
+  currentPage: number;
+}) {
   const { chainId } = useUserStore();
+  const skip = currentPage * DETAIL_TABLE_LENGTH;
+  const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
   const queryKey = [chainId, 'task', 'datasets', taskId];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
@@ -56,6 +69,9 @@ function useTaskDatasetsData({ taskId }: { taskId: string }) {
       queryFn: () =>
         execute(taskDatasetsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
+          skip,
+          nextSkip,
+          nextNextSkip,
           taskId,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -76,12 +92,17 @@ function useTaskDatasetsData({ taskId }: { taskId: string }) {
       isSchemasLoading,
     })
   );
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.task?.bulkSlice?.datasetsHasNext?.length),
+    Boolean(data?.task?.bulkSlice?.datasetsHasNextNext?.length)
+  );
 
   return {
     data: formattedDatasets,
     isLoading,
     isRefetching,
     isError,
+    additionalPages,
     hasPastError: isError || errorUpdateCount > 0,
   };
 }
@@ -95,13 +116,15 @@ export function TaskDatasetsTable({
   setLoading: (loading: boolean) => void;
   setOutdated: (outdated: boolean) => void;
 }) {
+  const [currentPage, setCurrentPage] = usePageParam('taskDatasetsPage');
   const {
     data: datasets,
     hasPastError,
     isLoading,
     isRefetching,
     isError,
-  } = useTaskDatasetsData({ taskId });
+    additionalPages,
+  } = useTaskDatasetsData({ taskId, currentPage: currentPage - 1 });
 
   useEffect(
     () => setLoading(isLoading || isRefetching),
@@ -112,9 +135,18 @@ export function TaskDatasetsTable({
     [datasets.length, isError, setOutdated]
   );
 
-  return hasPastError && !datasets.length ? (
-    <ErrorAlert message="An error occurred during task datasets loading." />
-  ) : (
-    <DataTable columns={columns} data={datasets} />
+  return (
+    <div className="space-y-6">
+      {hasPastError && !datasets.length ? (
+        <ErrorAlert message="An error occurred during task datasets loading." />
+      ) : (
+        <DataTable columns={columns} data={datasets} />
+      )}
+      <PaginatedNavigation
+        currentPage={currentPage}
+        totalPages={currentPage + additionalPages}
+        onPageChange={setCurrentPage}
+      />
+    </div>
   );
 }

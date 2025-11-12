@@ -1,10 +1,21 @@
 import { graphql } from '@/graphql/poco/gql';
 
 export const taskDatasetsQuery = graphql(`
-  query TaskDatasets($taskId: ID!) {
+  query TaskDatasets(
+    $taskId: ID!
+    $length: Int!
+    $skip: Int!
+    $nextSkip: Int!
+    $nextNextSkip: Int!
+  ) {
     task(id: $taskId) {
       bulkSlice {
-        datasets(first: 10, orderBy: timestamp, orderDirection: desc, skip: 0) {
+        datasets(
+          first: $length
+          orderBy: timestamp
+          orderDirection: desc
+          skip: $skip
+        ) {
           address: id
           owner {
             address: id
@@ -18,6 +29,22 @@ export const taskDatasetsQuery = graphql(`
               blockNumber
             }
           }
+        }
+        datasetsHasNext: datasets(
+          first: 1
+          orderBy: timestamp
+          orderDirection: desc
+          skip: $nextSkip
+        ) {
+          address: id
+        }
+        datasetsHasNextNext: datasets(
+          first: 1
+          orderBy: timestamp
+          orderDirection: desc
+          skip: $nextNextSkip
+        ) {
+          address: id
         }
       }
     }
