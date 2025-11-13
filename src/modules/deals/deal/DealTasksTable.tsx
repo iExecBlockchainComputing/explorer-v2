@@ -1,6 +1,8 @@
 import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { execute } from '@/graphql/poco/execute';
+import { TasksQuery } from '@/graphql/poco/graphql';
 import { useQuery } from '@tanstack/react-query';
+import { ColumnDef } from '@tanstack/react-table';
 import { useEffect } from 'react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
@@ -11,6 +13,12 @@ import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { getAdditionalPages } from '@/utils/format';
 import { dealTasksQuery } from './dealTasksQuery';
+
+type BaseTask = TasksQuery['tasks'][number];
+interface DealTask extends BaseTask {
+  index: number;
+  destination: string;
+}
 
 function useDealTasksData({
   dealId,
@@ -41,17 +49,16 @@ function useDealTasksData({
     }
   );
 
-  const tasks = data?.deal?.tasks || [];
+  const tasksFromQuery = (data?.deal?.tasks || []) as BaseTask[];
   const additionalPages = getAdditionalPages(
     Boolean(data?.deal?.tasksHasNext?.length),
     Boolean(data?.deal?.tasksHasNextNext?.length)
   );
 
-  const formattedTask =
-    tasks.map((task) => ({
-      ...task,
-      destination: `/task/${task.taskid}`,
-    })) ?? [];
+  const formattedTask: DealTask[] = tasksFromQuery.map((task) => ({
+    ...task,
+    destination: `/task/${task.taskid}`,
+  }));
 
   return {
     data: formattedTask,
@@ -91,16 +98,13 @@ export function DealTasksTable({
     [tasks.length, isError, setOutdated]
   );
 
-  const extendedColumns = [
+  const extendedColumns: ColumnDef<DealTask>[] = [
     {
       accessorKey: 'index',
       header: 'Index',
-      cell: ({ row }: { row: any }) => {
-        const index = row.getValue('index');
-        return <span>{index}</span>;
-      },
+      cell: ({ row }) => <span>{row.original.index}</span>,
     },
-    ...columns,
+    ...(columns as unknown as ColumnDef<DealTask>[]),
   ];
 
   return (
@@ -108,7 +112,7 @@ export function DealTasksTable({
       {hasPastError && !tasks.length ? (
         <ErrorAlert message="An error occurred during deal tasks loading." />
       ) : (
-        <DataTable columns={extendedColumns} data={tasks as any} />
+        <DataTable columns={extendedColumns} data={tasks} />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
