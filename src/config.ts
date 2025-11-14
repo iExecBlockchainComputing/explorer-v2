@@ -38,7 +38,7 @@ export const SUPPORTED_CHAINS = [
     icon: arbitrumSepoliaIcon,
     blockExplorerUrl: 'https://sepolia.arbiscan.io/',
     subgraphUrl: {
-      poco: 'https://api.studio.thegraph.com/query/11362/poco-bulk/version/latest/', // Using pocoBulk subgraph for poco on Arbitrum Sepolia TODO update it
+      poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
       dataprotector:
         'https://thegraph.arbitrum-sepolia-testnet.iex.ec/api/subgraphs/id/5YjRPLtjS6GH6bB4yY55Qg4HzwtRGQ8TaHtGf9UBWWd',
     },
