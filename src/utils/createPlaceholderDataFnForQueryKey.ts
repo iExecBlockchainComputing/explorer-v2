@@ -33,3 +33,17 @@ export const createPlaceholderDataFnForQueryKey =
       return previousData;
     }
   };
+
+/**
+ * Always reuse previous data (even if key changes) until fresh data arrives.
+ * Useful for aggressively smoothing rapid key churn (rare). Opt-in separately.
+ */
+export const createPlaceholderDataFn =
+  <TQueryFnData, TQueryData, TError>(): PlaceholderDataFunction<
+    TQueryFnData,
+    TError,
+    TQueryData,
+    QueryKey
+  > =>
+  (previousData) =>
+    previousData;
