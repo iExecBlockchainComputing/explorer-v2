@@ -23,9 +23,8 @@ export function useFilterParam(
   const setValue = (newValue: string) => {
     if (!allowedValues.includes(newValue)) return; // ignore invalid values
     if (newValue !== value) {
-      const nav: any = navigate;
-      nav({
-        search: (prev: any) => ({
+      navigate({
+        search: (prev) => ({
           ...prev,
           [paramName]: newValue,
         }),
