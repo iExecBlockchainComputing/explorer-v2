@@ -1,6 +1,5 @@
 import { graphql } from '@/graphql/poco/gql';
 
-// @ts-expect-error Updated query; regenerate codegen
 export const workerpoolsQuery = graphql(`
   query Workerpools(
     $length: Int = 20
