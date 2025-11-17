@@ -3,7 +3,7 @@ import { execute } from '@/graphql/poco/execute';
 import { Workerpool_OrderBy, OrderDirection } from '@/graphql/poco/graphql';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
-import { LoaderCircle } from 'lucide-react';
+import { LoaderCircle, SlidersHorizontal } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import WorkerpoolIcon from '@/components/icons/WorkerpoolIcon';
@@ -129,6 +129,7 @@ function WorkerpoolsRoute() {
             defaultValue="pertinent"
           >
             <SelectTrigger className="m-auto box-content h-9! rounded-2xl">
+              <SlidersHorizontal />
               Order by
             </SelectTrigger>
             <SelectContent>
