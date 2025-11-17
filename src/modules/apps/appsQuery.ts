@@ -1,6 +1,5 @@
 import { graphql } from '@/graphql/poco/gql';
 
-// @ts-expect-error Updated query signature; regenerate codegen after change.
 export const appsQuery = graphql(`
   query Apps(
     $length: Int = 20
