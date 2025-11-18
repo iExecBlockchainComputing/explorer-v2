@@ -24,7 +24,7 @@ function useDatasetTasksData({
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
   const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'dataset', 'tasks', datasetId];
+  const queryKey = [chainId, 'dataset', 'tasks', datasetId, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,

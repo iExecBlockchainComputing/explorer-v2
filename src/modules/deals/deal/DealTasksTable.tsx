@@ -32,7 +32,7 @@ function useDealTasksData({
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
   const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'deal', 'tasks', dealId];
+  const queryKey = [chainId, 'deal', 'tasks', dealId, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
