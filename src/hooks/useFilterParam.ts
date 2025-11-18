@@ -17,8 +17,15 @@ export function useFilterParam(
   const search = useSearch({ strict: false });
   const navigate = useNavigate();
 
-  const rawValue = (search?.[paramName] as string | undefined) ?? defaultValue;
-  const value = allowedValues.includes(rawValue) ? rawValue : defaultValue;
+  const rawCandidate =
+    search && Object.prototype.hasOwnProperty.call(search, paramName)
+      ? (search as Record<string, unknown>)[paramName]
+      : undefined;
+
+  const value =
+    typeof rawCandidate === 'string' && allowedValues.includes(rawCandidate)
+      ? rawCandidate
+      : defaultValue;
 
   const setValue = (newValue: string) => {
     if (!allowedValues.includes(newValue)) return; // ignore invalid values
