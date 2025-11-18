@@ -10,6 +10,7 @@ import AppIcon from '@/components/icons/AppIcon';
 import { Button } from '@/components/ui/button';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFn } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getRecentFromTimestamp } from '@/utils/format';
 import { ErrorAlert } from '../ErrorAlert';
 import { appsQuery } from './appsQuery';
 import { columns } from './appsTable/columns';
@@ -18,7 +19,7 @@ export function AppsPreviewTable({ className }: { className?: string }) {
   const { chainId } = useUserStore();
 
   // Pertinent ordering: usageCount desc + recent usage constraint (last 14 days)
-  const recentFrom = Math.floor(Date.now() / 1000) - 14 * 24 * 60 * 60;
+  const recentFrom = getRecentFromTimestamp();
   const orderBy: App_OrderBy = App_OrderBy.UsageCount;
   const orderDirection: OrderDirection = OrderDirection.Desc;
   const queryKey = [
