@@ -23,7 +23,7 @@ import { workerpoolsQuery } from '@/modules/workerpools/workerpoolsQuery';
 import { columns } from '@/modules/workerpools/workerpoolsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFn } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { getAdditionalPages } from '@/utils/format';
+import { getAdditionalPages, getRecentFromTimestamp } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/workerpools')({
   component: WorkerpoolsRoute,
@@ -36,10 +36,7 @@ function useWorkerpoolsData(currentPage: number, orderFilter: string) {
   const nextNextSkip = skip + 2 * TABLE_LENGTH;
   const orderBy = orderFilter === 'pertinent' ? 'usageCount' : 'timestamp';
   const orderDirection = orderFilter === 'oldest' ? 'asc' : 'desc';
-  const recentFrom =
-    orderFilter === 'pertinent'
-      ? Math.floor(Date.now() / 1000) - 14 * 24 * 60 * 60
-      : 0;
+  const recentFrom = orderFilter === 'pertinent' ? getRecentFromTimestamp() : 0;
 
   const queryKey = [
     chainId,

@@ -23,7 +23,7 @@ import { columns } from '@/modules/apps/appsTable/columns';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFn } from '@/utils/createPlaceholderDataFnForQueryKey';
-import { getAdditionalPages } from '@/utils/format';
+import { getAdditionalPages, getRecentFromTimestamp } from '@/utils/format';
 
 export const Route = createFileRoute('/$chainSlug/_layout/apps')({
   component: AppsRoute,
@@ -37,10 +37,7 @@ function useAppsData(currentPage: number, orderFilter: string) {
 
   const orderBy = orderFilter === 'pertinent' ? 'usageCount' : 'timestamp';
   const orderDirection = orderFilter === 'oldest' ? 'asc' : 'desc';
-  const recentFrom =
-    orderFilter === 'pertinent'
-      ? Math.floor(Date.now() / 1000) - 14 * 24 * 60 * 60
-      : 0;
+  const recentFrom = orderFilter === 'pertinent' ? getRecentFromTimestamp() : 0;
 
   const queryKey = [
     chainId,
