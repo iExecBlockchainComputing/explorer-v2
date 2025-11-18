@@ -5,6 +5,7 @@ export const appDealsQuery = graphql(`
     $length: Int = 20
     $skip: Int = 0
     $nextSkip: Int = 20
+    $nextNextSkip: Int = 40
     $appAddress: ID!
   ) {
     app(id: $appAddress) {
@@ -56,6 +57,14 @@ export const appDealsQuery = graphql(`
         orderDirection: desc
         first: 1
         skip: $nextSkip
+      ) {
+        id
+      }
+      dealsHasNextNext: usages(
+        orderBy: timestamp
+        orderDirection: desc
+        first: 1
+        skip: $nextNextSkip
       ) {
         id
       }

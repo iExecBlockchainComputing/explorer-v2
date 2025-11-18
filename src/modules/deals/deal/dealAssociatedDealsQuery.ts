@@ -5,6 +5,7 @@ export const dealAssociatedDealsQuery = graphql(`
     $length: Int!
     $skip: Int!
     $nextSkip: Int!
+    $nextNextSkip: Int!
     $dealId: ID!
   ) {
     deal(id: $dealId) {
@@ -55,6 +56,13 @@ export const dealAssociatedDealsQuery = graphql(`
           first: 1
           where: { id_not: $dealId }
           skip: $nextSkip
+        ) {
+          id
+        }
+        dealsHasNextNext: deals(
+          first: 1
+          where: { id_not: $dealId }
+          skip: $nextNextSkip
         ) {
           id
         }

@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { dealAssociatedDealsQuery } from './dealAssociatedDealsQuery';
 
 function useDealAssociatedDealsData({
@@ -21,6 +22,7 @@ function useDealAssociatedDealsData({
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
   const queryKey = [chainId, 'deal', 'associatedDeals', dealId, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
@@ -31,6 +33,7 @@ function useDealAssociatedDealsData({
           length: DETAIL_TABLE_LENGTH,
           skip,
           nextSkip,
+          nextNextSkip,
           dealId,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -38,8 +41,10 @@ function useDealAssociatedDealsData({
     }
   );
   const associatedDeals = data?.deal?.requestorder?.deals ?? [];
-  const hasNextPage = (associatedDeals.dealsHasNext?.length ?? 0) > 0;
-  const additionalPages = hasNextPage ? 1 : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.deal?.requestorder?.dealsHasNext?.length),
+    Boolean(data?.deal?.requestorder?.dealsHasNextNext?.length)
+  );
 
   const formattedAssociatedDeal =
     associatedDeals.map((associatedDeal) => ({
