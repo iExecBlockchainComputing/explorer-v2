@@ -74,7 +74,7 @@ export function TaskRawData({
     [isLoading, isRefetching, setLoading]
   );
   useEffect(
-    () => setOutdated(Boolean(tasks) && !isLoading && isError),
+    () => setOutdated(tasks && !isLoading && isError),
     [tasks, isLoading, isError, setOutdated]
   );
   const { address: userAddress } = useUserStore();

@@ -46,11 +46,10 @@ function useDealAssociatedDealsData({
     Boolean(data?.deal?.requestorder?.dealsHasNextNext?.length)
   );
 
-  const formattedAssociatedDeal =
-    associatedDeals.map((associatedDeal) => ({
-      ...associatedDeal,
-      destination: `/deal/${associatedDeal.dealid}`,
-    })) ?? [];
+  const formattedAssociatedDeal = associatedDeals.map((associatedDeal) => ({
+    ...associatedDeal,
+    destination: `/deal/${associatedDeal.dealid}`,
+  }));
 
   return {
     data: formattedAssociatedDeal,
@@ -81,7 +80,7 @@ export function DealAssociatedDealsTable({
     hasPastError,
   } = useDealAssociatedDealsData({
     dealId,
-    currentPage,
+    currentPage: currentPage - 1,
   });
 
   useEffect(
@@ -96,7 +95,7 @@ export function DealAssociatedDealsTable({
   return (
     <div className="space-y-6">
       {hasPastError && !associatedDeals.length ? (
-        <ErrorAlert message="An error occurred during deal associatedDeals loading." />
+        <ErrorAlert message="An error occurred during associated deals loading." />
       ) : (
         <DataTable columns={columns} data={associatedDeals} />
       )}
