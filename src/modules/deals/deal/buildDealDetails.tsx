@@ -139,7 +139,7 @@ export function buildDealDetails({
     ...(deal.dataset === null && {
       Dataset: (
         <p>
-          Bulk usage{' '}
+          Datasets bulk{' '}
           <Button
             variant="link"
             size="none"
