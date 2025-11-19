@@ -3,6 +3,7 @@ import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
+import Tags from '@/modules/Tags';
 import TaskEvent from '@/modules/events/TaskEvent';
 import useUserStore from '@/stores/useUser.store';
 import { taskResultToObject } from '@/utils/format';
@@ -100,7 +101,7 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
             </ul>
           </>
         ),
-        value: <Bytes>{task.deal.tag}</Bytes>,
+        value: <Tags>{task.deal.tag}</Tags>,
       },
     }),
     ...(task.deal.app && {

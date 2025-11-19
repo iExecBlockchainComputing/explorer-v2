@@ -1,8 +1,8 @@
 import { DealQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
-import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
+import Tags from '@/modules/Tags';
 import DealEvent from '@/modules/events/DealEvent';
 import { ClaimButton } from '@/modules/tasks/ClaimButton';
 import {
@@ -104,7 +104,7 @@ export function buildDealDetails({
             </ul>
           </>
         ),
-        value: <Bytes>{deal.tag}</Bytes>,
+        value: <Tags>{deal.tag}</Tags>,
       },
     }),
     ...(deal.app && {
