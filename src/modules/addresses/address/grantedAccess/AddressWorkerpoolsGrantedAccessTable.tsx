@@ -1,37 +1,38 @@
-import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/access/workerpoolColumns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { columns } from './addressWorkerpoolColumns';
 
-function useWorkerpoolAccessData({
-  workerpoolAddress,
+function useAddressWorkerpoolsGrantedAccessData({
+  addressAddress,
   currentPage,
 }: {
-  workerpoolAddress: string;
+  addressAddress: string;
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
 
-  const pageSize = DETAIL_TABLE_LENGTH * 2;
+  const pageSize = PREVIEW_TABLE_LENGTH * 2;
 
-  // API returns min 10 items, but we display only 8 per page
-  const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
-  const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
+  // API returns min 10 items, but we display only 5 per page
+  const apiBatch = Math.floor((currentPage * PREVIEW_TABLE_LENGTH) / pageSize);
+  const startIndexInBatch = (currentPage * PREVIEW_TABLE_LENGTH) % pageSize;
 
   const queryKey = [
     chainId,
-    'workerpool',
-    'access',
-    workerpoolAddress,
-    currentPage,
+    'address',
+    'workerpoolsGrantedAccess',
+    addressAddress,
+    apiBatch,
   ];
+
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
@@ -42,8 +43,9 @@ function useWorkerpoolAccessData({
           await iexec.orderbook.fetchWorkerpoolOrderbook({
             dataset: 'any',
             app: 'any',
-            workerpool: workerpoolAddress,
+            workerpool: 'any',
             requester: 'any',
+            workerpoolOwner: addressAddress,
             page: apiBatch,
             pageSize,
           });
@@ -58,12 +60,12 @@ function useWorkerpoolAccessData({
   const allOrders = data?.orders || [];
   const access = allOrders.slice(
     startIndexInBatch,
-    startIndexInBatch + DETAIL_TABLE_LENGTH
+    startIndexInBatch + PREVIEW_TABLE_LENGTH
   );
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/access/workerpool/${access.orderHash?.toLowerCase?.()}`,
+      destination: `/access/workerpool/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 
@@ -77,16 +79,14 @@ function useWorkerpoolAccessData({
   };
 }
 
-export function WorkerpoolAccessTable({
-  workerpoolAddress,
-  setLoading,
-  setOutdated,
+export function AddressWorkerpoolsGrantedAccessTable({
+  addressAddress,
 }: {
-  workerpoolAddress: string;
-  setLoading: (loading: boolean) => void;
-  setOutdated: (outdated: boolean) => void;
+  addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('workerpoolAccessPage');
+  const [currentPage, setCurrentPage] = usePageParam(
+    'addressWorkerpoolsGrantedAccessPage'
+  );
   const {
     data: access,
     totalCount,
@@ -94,34 +94,42 @@ export function WorkerpoolAccessTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useWorkerpoolAccessData({
-    workerpoolAddress,
+  } = useAddressWorkerpoolsGrantedAccessData({
+    addressAddress,
     currentPage: currentPage - 1,
   });
 
-  useEffect(
-    () => setLoading(isLoading || isRefetching),
-    [isLoading, isRefetching, setLoading]
-  );
-  useEffect(
-    () => setOutdated(access.length > 0 && isError),
-    [access.length, isError, setOutdated]
-  );
+  const { address: userAddress } = useUserStore();
+  const filteredColumns =
+    userAddress === addressAddress
+      ? columns
+      : columns.filter((c) => c.accessorKey !== 'revokeAccess');
 
   return (
     <div className="space-y-6">
+      <h2 className="flex items-center gap-2 font-extrabold">
+        Latest workerpools access
+        {!access && isError && (
+          <span className="text-muted-foreground text-sm font-light">
+            (outdated)
+          </span>
+        )}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
+      </h2>
       {hasPastError && !access.length ? (
-        <ErrorAlert message="An error occurred during workerpool access loading." />
+        <ErrorAlert message="An error occurred during address workerpools access loading." />
       ) : (
         <DataTable
-          columns={columns}
+          columns={filteredColumns}
           data={access}
-          tableLength={DETAIL_TABLE_LENGTH}
+          tableLength={PREVIEW_TABLE_LENGTH}
         />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={Math.ceil(totalCount / DETAIL_TABLE_LENGTH)}
+        totalPages={Math.ceil(totalCount / PREVIEW_TABLE_LENGTH)}
         onPageChange={setCurrentPage}
       />
     </div>
