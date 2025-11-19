@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.27.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.26.0...iexec-explorer-v1.27.0) (2025-11-19)
+
+
+### 🚀 Features
+
+* add (datasets, apps, workerpools) access table and enhance pagination ([#88](https://github.com/iExecBlockchainComputing/explorer-v2/issues/88)) ([e6e7e01](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e6e7e01aa494009b9fad2d8756d9014eaa1aba92))
+* upgrade access feature ([#91](https://github.com/iExecBlockchainComputing/explorer-v2/issues/91)) ([5e08ad5](https://github.com/iExecBlockchainComputing/explorer-v2/commit/5e08ad5d11d2c53422c5036e3bdffbd84274dc7c))
+
+
+### 🐞 Bug Fixes
+
+* better address page error handling ([#90](https://github.com/iExecBlockchainComputing/explorer-v2/issues/90)) ([e48fb62](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e48fb6220a93a8ace297d2c412765c11dfa53ae7))
+* update execution count display in deal details ([#93](https://github.com/iExecBlockchainComputing/explorer-v2/issues/93)) ([94f3195](https://github.com/iExecBlockchainComputing/explorer-v2/commit/94f31952bda8c5bc895dfabe591fad34def794d1))
+
 ## [1.26.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.25.0...iexec-explorer-v1.26.0) (2025-10-15)
 
 
