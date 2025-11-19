@@ -3,6 +3,7 @@ import {
   PublishedDatasetorder,
   PublishedWorkerpoolorder,
 } from 'iexec/IExecOrderbookModule';
+import { zeroAddress } from 'viem';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import {
   formatDateCompact,
@@ -135,45 +136,57 @@ export function buildAccessDetails({
       }),
     ...('apprestrict' in order &&
       order.apprestrict && {
-        'App Restrict': (
-          <SmartLinkGroup
-            type="app"
-            addressOrId={order.apprestrict.toLowerCase()}
-            label={appRestrictName}
-            showAddressOrIdAndLabel={true}
-          />
-        ),
+        'App Restrict':
+          order.apprestrict === zeroAddress ? (
+            <span>Not restricted</span>
+          ) : (
+            <SmartLinkGroup
+              type="app"
+              addressOrId={order.apprestrict.toLowerCase()}
+              label={appRestrictName}
+              showAddressOrIdAndLabel={true}
+            />
+          ),
       }),
     ...(order.requesterrestrict && {
-      'Requester Restrict': (
-        <SmartLinkGroup
-          type="address"
-          addressOrId={order.requesterrestrict.toLowerCase()}
-          label={order.requesterrestrict.toLowerCase()}
-        />
-      ),
+      'Requester Restrict':
+        order.requesterrestrict === zeroAddress ? (
+          <span>Not restricted</span>
+        ) : (
+          <SmartLinkGroup
+            type="address"
+            addressOrId={order.requesterrestrict.toLowerCase()}
+            label={order.requesterrestrict.toLowerCase()}
+          />
+        ),
     }),
     ...('datasetrestrict' in order &&
       order.datasetrestrict && {
-        'Dataset Restrict': (
-          <SmartLinkGroup
-            type="address"
-            addressOrId={order.datasetrestrict.toLowerCase()}
-            label={datasetRestrictName}
-            showAddressOrIdAndLabel={true}
-          />
-        ),
+        'Dataset Restrict':
+          order.datasetrestrict === zeroAddress ? (
+            <span>Not restricted</span>
+          ) : (
+            <SmartLinkGroup
+              type="address"
+              addressOrId={order.datasetrestrict.toLowerCase()}
+              label={datasetRestrictName}
+              showAddressOrIdAndLabel={true}
+            />
+          ),
       }),
     ...('workerpoolrestrict' in order &&
       order.workerpoolrestrict && {
-        'Workerpool Restrict': (
-          <SmartLinkGroup
-            type="workerpool"
-            addressOrId={order.workerpoolrestrict.toLowerCase()}
-            label={workerpoolRestrictDescription}
-            showAddressOrIdAndLabel={true}
-          />
-        ),
+        'Workerpool Restrict':
+          order.workerpoolrestrict === zeroAddress ? (
+            <span>Not restricted</span>
+          ) : (
+            <SmartLinkGroup
+              type="workerpool"
+              addressOrId={order.workerpoolrestrict.toLowerCase()}
+              label={workerpoolRestrictDescription}
+              showAddressOrIdAndLabel={true}
+            />
+          ),
       }),
     ...(access.signer && {
       Signer: (
