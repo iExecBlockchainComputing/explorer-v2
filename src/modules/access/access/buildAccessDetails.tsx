@@ -99,8 +99,40 @@ export function buildAccessDetails({
         </span>
       ),
     }),
-    ...(order.salt && { Salt: <span>{order.salt}</span> }),
     ...(order.tag && { Tag: <span>{order.tag}</span> }),
+    ...(category && {
+      Category: {
+        tooltip: (
+          <>
+            Indicates execution parameters: includes a name, an optional
+            description, and a reference time.
+          </>
+        ),
+        value: (
+          <p>
+            {category?.name}{' '}
+            {category?.description.length > 0 ? category?.description : ''} (
+            {Number(category?.workClockTimeRef) * 10} sec)
+          </p>
+        ),
+      },
+    }),
+    ...('trust' in order &&
+      order.trust && {
+        Signer: (
+          <div className="space-x-2">
+            <SmartLinkGroup
+              type="address"
+              addressOrId={access.signer.toLowerCase()}
+              label={access.signer.toLowerCase()}
+            />
+            {userAddress &&
+              access.signer?.toLowerCase() === userAddress.toLowerCase() && (
+                <RevokeAccess access={access} />
+              )}
+          </div>
+        ),
+      }),
     ...('apprestrict' in order &&
       order.apprestrict && {
         'App Restrict': (
@@ -143,39 +175,6 @@ export function buildAccessDetails({
           />
         ),
       }),
-    ...('trust' in order &&
-      order.trust && {
-        Signer: (
-          <div className="space-x-2">
-            <SmartLinkGroup
-              type="address"
-              addressOrId={access.signer.toLowerCase()}
-              label={access.signer.toLowerCase()}
-            />
-            {userAddress &&
-              access.signer?.toLowerCase() === userAddress.toLowerCase() && (
-                <RevokeAccess access={access} />
-              )}
-          </div>
-        ),
-      }),
-    ...(category && {
-      Category: {
-        tooltip: (
-          <>
-            Indicates execution parameters: includes a name, an optional
-            description, and a reference time.
-          </>
-        ),
-        value: (
-          <p>
-            {category?.name}{' '}
-            {category?.description.length > 0 ? category?.description : ''} (
-            {Number(category?.workClockTimeRef) * 10} sec)
-          </p>
-        ),
-      },
-    }),
     ...(access.signer && {
       Signer: (
         <div className="space-x-2">
@@ -191,6 +190,8 @@ export function buildAccessDetails({
         </div>
       ),
     }),
+    ...(order.salt && { Salt: <span>{order.salt}</span> }),
+    ...(order.sign && { Signature: <span>{order.sign}</span> }),
     ...(access.publicationTimestamp && {
       Publication: (
         <p>
@@ -205,6 +206,5 @@ export function buildAccessDetails({
         </p>
       ),
     }),
-    ...(order.sign && { Signature: <span>{order.sign}</span> }),
   };
 }
