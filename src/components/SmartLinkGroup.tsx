@@ -90,7 +90,7 @@ export default function SmartLinkGroup({
                 ? truncateAddress(label)
                 : truncateAddress(addressOrId)) ?? addressOrId}
             </span>
-            {showAddressOrIdAndLabel ? `(${label})` : ''}
+            {showAddressOrIdAndLabel && label ? `(${label})` : ''}
             {ens ? `(${ens})` : ''}
           </Link>
         </Button>

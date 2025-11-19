@@ -1,11 +1,8 @@
-import { App } from 'iexec/IExecAppModule';
-import { Dataset } from 'iexec/IExecDatasetModule';
 import {
   PublishedApporder,
   PublishedDatasetorder,
   PublishedWorkerpoolorder,
 } from 'iexec/IExecOrderbookModule';
-import { Workerpool } from 'iexec/IExecWorkerpoolModule';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import {
   formatDateCompact,
@@ -16,15 +13,23 @@ import RevokeAccess from './RevokeAccess';
 
 export function buildAccessDetails({
   access,
-  dataset,
-  app,
-  workerpool,
+  datasetName,
+  appName,
+  workerpoolDescription,
+  datasetRestrictName,
+  appRestrictName,
+  workerpoolRestrictDescription,
+  category,
   userAddress,
 }: {
   access: PublishedApporder | PublishedDatasetorder | PublishedWorkerpoolorder;
-  dataset?: Dataset;
-  app?: App;
-  workerpool?: Workerpool;
+  datasetName?: string;
+  appName?: string;
+  workerpoolDescription?: string;
+  datasetRestrictName?: string;
+  appRestrictName?: string;
+  workerpoolRestrictDescription?: string;
+  category?: { name: string; description: string; workClockTimeRef: number };
   userAddress?: string;
 }) {
   if (!access) return {};
@@ -48,7 +53,7 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="dataset"
             addressOrId={order.dataset.toLowerCase()}
-            label={dataset?.datasetName}
+            label={datasetName}
             showAddressOrIdAndLabel={true}
           />
         ),
@@ -63,7 +68,7 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="app"
             addressOrId={order.app.toLowerCase()}
-            label={app?.appName}
+            label={appName}
             showAddressOrIdAndLabel={true}
           />
         ),
@@ -78,7 +83,7 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="workerpool"
             addressOrId={order.workerpool.toLowerCase()}
-            label={workerpool?.workerpoolDescription}
+            label={workerpoolDescription}
             showAddressOrIdAndLabel={true}
           />
         ),
@@ -102,7 +107,8 @@ export function buildAccessDetails({
           <SmartLinkGroup
             type="app"
             addressOrId={order.apprestrict.toLowerCase()}
-            label={order.apprestrict.toLowerCase()}
+            label={appRestrictName}
+            showAddressOrIdAndLabel={true}
           />
         ),
       }),
@@ -115,16 +121,61 @@ export function buildAccessDetails({
         />
       ),
     }),
+    ...('datasetrestrict' in order &&
+      order.datasetrestrict && {
+        'Dataset Restrict': (
+          <SmartLinkGroup
+            type="address"
+            addressOrId={order.datasetrestrict.toLowerCase()}
+            label={datasetRestrictName}
+            showAddressOrIdAndLabel={true}
+          />
+        ),
+      }),
     ...('workerpoolrestrict' in order &&
       order.workerpoolrestrict && {
         'Workerpool Restrict': (
           <SmartLinkGroup
             type="workerpool"
             addressOrId={order.workerpoolrestrict.toLowerCase()}
-            label={order.workerpoolrestrict.toLowerCase()}
+            label={workerpoolRestrictDescription}
+            showAddressOrIdAndLabel={true}
           />
         ),
       }),
+    ...('trust' in order &&
+      order.trust && {
+        Signer: (
+          <div className="space-x-2">
+            <SmartLinkGroup
+              type="address"
+              addressOrId={access.signer.toLowerCase()}
+              label={access.signer.toLowerCase()}
+            />
+            {userAddress &&
+              access.signer?.toLowerCase() === userAddress.toLowerCase() && (
+                <RevokeAccess access={access} />
+              )}
+          </div>
+        ),
+      }),
+    ...(category && {
+      Category: {
+        tooltip: (
+          <>
+            Indicates execution parameters: includes a name, an optional
+            description, and a reference time.
+          </>
+        ),
+        value: (
+          <p>
+            {category?.name}{' '}
+            {category?.description.length > 0 ? category?.description : ''} (
+            {Number(category?.workClockTimeRef) * 10} sec)
+          </p>
+        ),
+      },
+    }),
     ...(access.signer && {
       Signer: (
         <div className="space-x-2">

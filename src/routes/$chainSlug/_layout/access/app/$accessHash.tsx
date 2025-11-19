@@ -1,3 +1,4 @@
+import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
@@ -7,6 +8,7 @@ import { getIExec } from '@/externals/iexecSdkClient';
 import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { AccessBreadcrumbs } from '@/modules/access/access/AccessBreadcrumbs';
+import { accessAssetsDetailsQuery } from '@/modules/access/access/accessAssetsDetailsQuery';
 import { buildAccessDetails } from '@/modules/access/access/buildAccessDetails';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
@@ -30,8 +32,22 @@ function useAccessData(accessHash: string, chainId: number) {
       queryFn: async () => {
         const iexec = await getIExec();
         const access = await iexec.orderbook.fetchApporder(accessHash);
-        const { app } = await iexec.app.showApp(access.order.app);
-        return { access, app };
+        const datasetRestrict = access.order.datasetrestrict;
+        const workerpoolRestrict = access.order.workerpoolrestrict;
+
+        const result = await execute(accessAssetsDetailsQuery, chainId, {
+          datasetAddress: datasetRestrict.toLowerCase() || '',
+          appAddress: access.order.app.toLowerCase() || '',
+          workerpoolAddress: workerpoolRestrict.toLowerCase() || '',
+          categoryId: '',
+        });
+
+        return {
+          access,
+          app: result.app,
+          dataset: result.dataset,
+          workerpool: result.workerpool,
+        };
       },
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     });
@@ -39,6 +55,8 @@ function useAccessData(accessHash: string, chainId: number) {
   return {
     access: data?.access,
     app: data?.app,
+    datasetRestrictName: data?.dataset?.name,
+    workerpoolRestrictDescription: data?.workerpool?.description,
     isLoading,
     isRefetching,
     isError,
@@ -54,6 +72,8 @@ function AppAccessRoute() {
   const {
     access,
     app,
+    datasetRestrictName,
+    workerpoolRestrictDescription,
     isLoading,
     isRefetching,
     isError,
@@ -63,7 +83,13 @@ function AppAccessRoute() {
   } = useAccessData((accessHash as string).toLowerCase(), chainId!);
 
   const accessDetails = access
-    ? buildAccessDetails({ access, app, userAddress })
+    ? buildAccessDetails({
+        access,
+        appName: app?.name,
+        datasetRestrictName,
+        workerpoolRestrictDescription,
+        userAddress,
+      })
     : undefined;
 
   if (!isValid) {
