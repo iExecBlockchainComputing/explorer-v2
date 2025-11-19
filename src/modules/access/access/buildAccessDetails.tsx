@@ -87,11 +87,12 @@ export function buildAccessDetails({
       order.workerpoolprice !== undefined && {
         'Workerpool Price': <span>{nrlcToRlc(order.workerpoolprice)}</span>,
       }),
-    ...(order.volume !== undefined && {
-      Volume: <span>{order.volume}</span>,
-    }),
     ...(access.remaining !== undefined && {
-      Remaining: <span>{access.remaining}</span>,
+      Remaining: (
+        <span>
+          {access.remaining} / {order.volume}
+        </span>
+      ),
     }),
     ...(order.salt && { Salt: <span>{order.salt}</span> }),
     ...(order.tag && { Tag: <span>{order.tag}</span> }),
