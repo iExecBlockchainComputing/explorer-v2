@@ -6,13 +6,13 @@ import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/tasks/tasksTable/columns';
+import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { getAdditionalPages } from '@/utils/format';
-import { datasetTasksQuery } from './datasetTasksQuery';
+import { datasetBulkDealsQuery } from './datasetBulkDealsQuery';
 
-function useDatasetTasksData({
+function useDatasetBulkDealsData({
   datasetId,
   currentPage,
 }: {
@@ -24,12 +24,12 @@ function useDatasetTasksData({
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
   const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'dataset', 'tasks', datasetId, currentPage];
+  const queryKey = [chainId, 'dataset', 'bulkDeals', datasetId, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(datasetTasksQuery, chainId, {
+        execute(datasetBulkDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
           nextSkip,
@@ -41,21 +41,23 @@ function useDatasetTasksData({
     }
   );
 
-  const tasks = data?.dataset?.bulkUsages.map((usage) => usage.task);
+  const bulkDeals = data?.bulkSliceice?.map((slice) => slice.task?.deal) ?? [];
   // 0 = only current, 1 = next, 2 = next+1
   const additionalPages = getAdditionalPages(
-    Boolean(data?.dataset?.bulkUsagesHasNext?.length),
-    Boolean(data?.dataset?.bulkUsagesHasNextNext?.length)
+    Boolean(data?.bulkSliceiceHasNext?.length),
+    Boolean(data?.bulkSliceiceHasNextNext?.length)
   );
 
-  const formattedTask =
-    tasks?.map((task) => ({
-      ...task,
-      destination: `/task/${task.taskid}`,
-    })) ?? [];
+  const formattedBulkDeal =
+    bulkDeals
+      ?.filter((bulkDeal) => bulkDeal !== undefined)
+      .map((bulkDeal) => ({
+        ...bulkDeal,
+        destination: `/bulkDeal/${bulkDeal!.dealid}`,
+      })) ?? [];
 
   return {
-    data: formattedTask,
+    data: formattedBulkDeal,
     isLoading,
     isRefetching,
     isError,
@@ -64,7 +66,7 @@ function useDatasetTasksData({
   };
 }
 
-export function DatasetTasksTable({
+export function DatasetBulkDealsTable({
   datasetId,
   setLoading,
   setOutdated,
@@ -73,31 +75,31 @@ export function DatasetTasksTable({
   setLoading: (loading: boolean) => void;
   setOutdated: (outdated: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('datasetTasksPage');
+  const [currentPage, setCurrentPage] = usePageParam('datasetBulkDealsPage');
   const {
-    data: tasks,
+    data: bulkDeals,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useDatasetTasksData({ datasetId, currentPage: currentPage - 1 });
+  } = useDatasetBulkDealsData({ datasetId, currentPage: currentPage - 1 });
 
   useEffect(
     () => setLoading(isLoading || isRefetching),
     [isLoading, isRefetching, setLoading]
   );
   useEffect(
-    () => setOutdated(tasks.length > 0 && isError),
-    [tasks.length, isError, setOutdated]
+    () => setOutdated(bulkDeals.length > 0 && isError),
+    [bulkDeals.length, isError, setOutdated]
   );
 
   return (
     <div className="space-y-6">
-      {hasPastError && !tasks.length ? (
-        <ErrorAlert message="An error occurred during dataset tasks loading." />
+      {hasPastError && !bulkDeals.length ? (
+        <ErrorAlert message="An error occurred during dataset bulkDeals loading." />
       ) : (
-        <DataTable columns={columns} data={tasks} />
+        <DataTable columns={columns} data={bulkDeals} />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
