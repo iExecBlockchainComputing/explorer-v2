@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.27.0...iexec-explorer-v1.28.0) (2025-11-20)
+
+
+### 🚀 Features
+
+* display human readable tags ([#95](https://github.com/iExecBlockchainComputing/explorer-v2/issues/95)) ([f0667b0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/f0667b06a5675622888d53fa2c6489198d39a04e))
+
 ## [1.27.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.26.0...iexec-explorer-v1.27.0) (2025-11-19)
 
 
