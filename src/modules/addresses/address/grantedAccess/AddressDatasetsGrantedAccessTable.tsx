@@ -1,31 +1,38 @@
-import { DETAIL_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
+import { PREVIEW_TABLE_LENGTH, TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { LoaderCircle } from 'lucide-react';
 import { DataTable } from '@/components/DataTable';
 import { PaginatedNavigation } from '@/components/PaginatedNavigation';
 import { getIExec } from '@/externals/iexecSdkClient';
 import { usePageParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { columns } from '@/modules/access/datasetColumns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { columns } from './addressDatasetColumns';
 
-function useDatasetAccessData({
-  datasetAddress,
+function useAddressDatasetsGrantedAccessData({
+  addressAddress,
   currentPage,
 }: {
-  datasetAddress: string;
+  addressAddress: string;
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
 
-  const pageSize = DETAIL_TABLE_LENGTH * 2;
+  const pageSize = PREVIEW_TABLE_LENGTH * 2;
 
-  // API returns min 10 items, but we display only 8 per page
-  const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
-  const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
+  // API returns min 10 items, but we display only 5 per page
+  const apiBatch = Math.floor((currentPage * PREVIEW_TABLE_LENGTH) / pageSize);
+  const startIndexInBatch = (currentPage * PREVIEW_TABLE_LENGTH) % pageSize;
 
-  const queryKey = [chainId, 'dataset', 'access', datasetAddress, currentPage];
+  const queryKey = [
+    chainId,
+    'address',
+    'datasetsGrantedAccess',
+    addressAddress,
+    apiBatch,
+  ];
+
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
@@ -33,13 +40,15 @@ function useDatasetAccessData({
         const iexec = await getIExec();
 
         const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
-          dataset: datasetAddress,
+          dataset: 'any',
           app: 'any',
           workerpool: 'any',
           requester: 'any',
+          datasetOwner: addressAddress,
           page: apiBatch,
           pageSize,
         });
+
         return { count, orders };
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -50,12 +59,12 @@ function useDatasetAccessData({
   const allOrders = data?.orders || [];
   const access = allOrders.slice(
     startIndexInBatch,
-    startIndexInBatch + DETAIL_TABLE_LENGTH
+    startIndexInBatch + PREVIEW_TABLE_LENGTH
   );
   const formattedAccess =
     access.map((access) => ({
       ...access,
-      destination: `/access/dataset/${access.orderHash?.toLowerCase?.()}`,
+      destination: `/access/dataset/${access.orderHash.toLowerCase()}`,
     })) ?? [];
   const count = data?.count || 0;
 
@@ -69,16 +78,14 @@ function useDatasetAccessData({
   };
 }
 
-export function DatasetAccessTable({
-  datasetAddress,
-  setLoading,
-  setOutdated,
+export function AddressDatasetsGrantedAccessTable({
+  addressAddress,
 }: {
-  datasetAddress: string;
-  setLoading: (loading: boolean) => void;
-  setOutdated: (outdated: boolean) => void;
+  addressAddress: string;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('datasetAccessPage');
+  const [currentPage, setCurrentPage] = usePageParam(
+    'addressDatasetsGrantedAccessPage'
+  );
   const {
     data: access,
     totalCount,
@@ -86,31 +93,42 @@ export function DatasetAccessTable({
     isLoading,
     isRefetching,
     hasPastError,
-  } = useDatasetAccessData({ datasetAddress, currentPage: currentPage - 1 });
+  } = useAddressDatasetsGrantedAccessData({
+    addressAddress,
+    currentPage: currentPage - 1,
+  });
+  const { address: userAddress } = useUserStore();
 
-  useEffect(
-    () => setLoading(isLoading || isRefetching),
-    [isLoading, isRefetching, setLoading]
-  );
-  useEffect(
-    () => setOutdated(access.length > 0 && isError),
-    [access.length, isError, setOutdated]
-  );
+  const filteredColumns =
+    userAddress !== addressAddress
+      ? columns.filter((c) => c.accessorKey !== 'revokeAccess')
+      : columns;
 
   return (
     <div className="space-y-6">
+      <h2 className="flex items-center gap-2 font-extrabold">
+        Latest datasets access
+        {!access && isError && (
+          <span className="text-muted-foreground text-sm font-light">
+            (outdated)
+          </span>
+        )}
+        {(isLoading || isRefetching) && (
+          <LoaderCircle className="animate-spin" />
+        )}
+      </h2>
       {hasPastError && !access.length ? (
-        <ErrorAlert message="An error occurred during dataset access loading." />
+        <ErrorAlert message="An error occurred during address datasets access loading." />
       ) : (
         <DataTable
-          columns={columns}
+          columns={filteredColumns}
           data={access}
-          tableLength={DETAIL_TABLE_LENGTH}
+          tableLength={PREVIEW_TABLE_LENGTH}
         />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
-        totalPages={Math.ceil(totalCount / DETAIL_TABLE_LENGTH)}
+        totalPages={Math.ceil(totalCount / PREVIEW_TABLE_LENGTH)}
         onPageChange={setCurrentPage}
       />
     </div>

@@ -2,8 +2,8 @@ import { DealQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import { Button } from '@/components/ui/button';
-import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
+import Tags from '@/modules/Tags';
 import DealEvent from '@/modules/events/DealEvent';
 import { ClaimButton } from '@/modules/tasks/ClaimButton';
 import {
@@ -76,38 +76,8 @@ export function buildDealDetails({
       }),
     ...(deal.tag && {
       Tag: {
-        tooltip: (
-          <>
-            Indicates the execution environment type defined by iExec :
-            <ul className="list-inside list-disc">
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x0
-                </code>
-                : Standard
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x3
-                </code>
-                : SGX Scone
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x5
-                </code>
-                : SGX Gramine
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x9
-                </code>
-                : TDX
-              </li>
-            </ul>
-          </>
-        ),
-        value: <Bytes>{deal.tag}</Bytes>,
+        tooltip: <>Indicates the execution environment type defined by iExec</>,
+        value: <Tags>{deal.tag}</Tags>,
       },
     }),
     ...(deal.app && {
