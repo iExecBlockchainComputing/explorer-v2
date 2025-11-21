@@ -73,20 +73,6 @@ function TasksRoute() {
   const tabLabels = ['DETAILS', 'DATASETS', 'RAW DATA'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
 
-  const [isLoadingChild, setIsLoadingChild] = useState(false);
-  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
-
-  const taskDetails = task ? buildTaskDetails({ task }) : undefined;
-
-  if (!isValid) {
-    return <ErrorAlert className="my-16" message="Invalid task address." />;
-  }
-
-  if (isError && error instanceof NotFoundError) {
-    return <ErrorAlert message="Task not found." />;
-  }
-
-  // Presence check for datasets to disable tab if none
   const datasetsPresenceQueryKey = [
     chainId,
     'task',
@@ -108,6 +94,19 @@ function TasksRoute() {
   });
   const hasDatasets =
     (datasetsPresence?.task?.bulkSlice?.datasets?.length || 0) > 0;
+
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
+
+  const taskDetails = task ? buildTaskDetails({ task }) : undefined;
+
+  if (!isValid) {
+    return <ErrorAlert className="my-16" message="Invalid task address." />;
+  }
+
+  if (isError && error instanceof NotFoundError) {
+    return <ErrorAlert message="Task not found." />;
+  }
 
   const showOutdated = task && (isError || isOutdatedChild);
   const showLoading = isLoading || isRefetching || isLoadingChild;

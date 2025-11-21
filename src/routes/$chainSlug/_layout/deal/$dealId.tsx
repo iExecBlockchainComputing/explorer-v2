@@ -73,6 +73,28 @@ function DealsRoute() {
     error,
   } = useDealData((dealId as string).toLowerCase(), chainId!);
 
+  const associatedDealsPresenceQueryKey = [
+    chainId,
+    'deal',
+    'associatedDealsPresence',
+    dealId,
+  ];
+  const { data: associatedDealsPresence } = useQuery({
+    queryKey: associatedDealsPresenceQueryKey,
+    enabled: !!dealId && !!chainId && !!deal && currentTab !== 2,
+    queryFn: () =>
+      execute(dealAssociatedDealsQuery, chainId!, {
+        length: 1,
+        skip: 0,
+        nextSkip: 1,
+        nextNextSkip: 2,
+        dealId: dealId,
+      }),
+    placeholderData: (prev) => prev,
+  });
+  const hasAssociatedDeals =
+    (associatedDealsPresence?.deal?.requestorder?.deals?.length || 0) > 0;
+
   const [isLoadingChild, setIsLoadingChild] = useState(false);
   const [isOutdatedChild, setIsOutdatedChild] = useState(false);
 
@@ -91,28 +113,6 @@ function DealsRoute() {
   if (isError && error instanceof NotFoundError) {
     return <ErrorAlert className="my-16" message="Deal not found." />;
   }
-
-  const associatedDealsPresenceQueryKey = [
-    chainId,
-    'deal',
-    'associatedDealsPresence',
-    dealId,
-  ];
-  const { data: associatedDealsPresence } = useQuery({
-    queryKey: associatedDealsPresenceQueryKey,
-    enabled: dealId && !!chainId && !!deal && currentTab !== 2,
-    queryFn: () =>
-      execute(dealAssociatedDealsQuery, chainId!, {
-        length: 1,
-        skip: 0,
-        nextSkip: 1,
-        nextNextSkip: 2,
-        dealId: dealId,
-      }),
-    placeholderData: (prev) => prev,
-  });
-  const hasAssociatedDeals =
-    (associatedDealsPresence?.deal?.requestorder?.deals?.length || 0) > 0;
 
   const showOutdated = deal && (isError || isOutdatedChild);
   const showLoading = isLoading || isRefetching || isLoadingChild;
