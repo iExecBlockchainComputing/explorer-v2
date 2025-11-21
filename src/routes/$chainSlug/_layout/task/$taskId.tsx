@@ -70,7 +70,7 @@ function TasksRoute() {
     isValid,
     error,
   } = useTaskData((taskId as string).toLowerCase(), chainId!);
-  const tabLabels = ['DETAILS', 'RAW DATA', 'DATASETS'];
+  const tabLabels = ['DETAILS', 'DATASETS', 'RAW DATA'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
 
   const [isLoadingChild, setIsLoadingChild] = useState(false);
@@ -95,7 +95,7 @@ function TasksRoute() {
   ];
   const { data: datasetsPresence } = useQuery({
     queryKey: datasetsPresenceQueryKey,
-    enabled: !!chainId && !!task && currentTab !== 2,
+    enabled: !!chainId && !!task && currentTab !== 1,
     queryFn: () =>
       execute(taskDatasetsQuery, chainId!, {
         taskId: (taskId as string).toLowerCase(),
@@ -138,9 +138,9 @@ function TasksRoute() {
         currentTab={currentTab}
         tabLabels={tabLabels}
         onTabChange={setCurrentTab}
-        disabledTabs={task && !hasDatasets ? [2] : []}
+        disabledTabs={task && !hasDatasets ? [1] : []}
         disabledReasons={
-          task && !hasDatasets ? { 2: 'No datasets for this task' } : {}
+          task && !hasDatasets ? { 1: 'No datasets for this task' } : {}
         }
       />
       <div>
@@ -151,15 +151,15 @@ function TasksRoute() {
             <DetailsTable details={taskDetails || {}} />
           ))}
         {currentTab === 1 && (
-          <TaskRawData
-            taskWorkerpoolId={task?.deal.workerpool.address}
+          <TaskDatasetsTable
             taskId={taskId}
             setLoading={setIsLoadingChild}
             setOutdated={setIsOutdatedChild}
           />
         )}
         {currentTab === 2 && (
-          <TaskDatasetsTable
+          <TaskRawData
+            taskWorkerpoolId={task?.deal.workerpool.address}
             taskId={taskId}
             setLoading={setIsLoadingChild}
             setOutdated={setIsOutdatedChild}
