@@ -6,12 +6,16 @@ export const appsQuery = graphql(`
     $skip: Int = 0
     $nextSkip: Int = 20
     $nextNextSkip: Int = 40
+    $orderBy: App_orderBy = timestamp
+    $orderDirection: OrderDirection = desc
+    $recentFrom: BigInt = 0
   ) {
     apps(
       first: $length
       skip: $skip
-      orderBy: timestamp
-      orderDirection: desc
+      where: { lastUsageTimestamp_gte: $recentFrom }
+      orderBy: $orderBy
+      orderDirection: $orderDirection
     ) {
       address: id
       owner {
@@ -23,6 +27,7 @@ export const appsQuery = graphql(`
       multiaddr
       checksum
       mrenclave
+      lastUsageTimestamp
       transfers(orderBy: timestamp, orderDirection: desc) {
         transaction {
           txHash: id
@@ -34,16 +39,18 @@ export const appsQuery = graphql(`
     appsHasNext: apps(
       first: 1
       skip: $nextSkip
-      orderBy: timestamp
-      orderDirection: desc
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      where: { lastUsageTimestamp_gte: $recentFrom }
     ) {
       address: id
     }
     appsHasNextNext: apps(
       first: 1
       skip: $nextNextSkip
-      orderBy: timestamp
-      orderDirection: desc
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+      where: { lastUsageTimestamp_gte: $recentFrom }
     ) {
       address: id
     }

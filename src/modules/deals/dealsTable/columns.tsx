@@ -61,6 +61,9 @@ export const columns: ColumnDef<Deal>[] = [
     cell: ({ row }) => {
       const datasetAddress = row.original.dataset?.address;
       if (!datasetAddress) {
+        if (row.original.bulk) {
+          return <span>Datasets bulk</span>;
+        }
         return <span className="text-muted-foreground">No dataset</span>;
       }
       return (

@@ -10,13 +10,13 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { getAdditionalPages } from '@/utils/format';
-import { appDealsQuery } from './appDealsQuery';
+import { dealAssociatedDealsQuery } from './dealAssociatedDealsQuery';
 
-function useAppDealsData({
-  appAddress,
+function useDealAssociatedDealsData({
+  dealId,
   currentPage,
 }: {
-  appAddress: string;
+  dealId: string;
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
@@ -24,37 +24,35 @@ function useAppDealsData({
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
   const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'app', 'deals', appAddress, currentPage];
+  const queryKey = [chainId, 'deal', 'associatedDeals', dealId, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(appDealsQuery, chainId, {
+        execute(dealAssociatedDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
           nextSkip,
           nextNextSkip,
-          appAddress,
+          dealId,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
-
-  const deals = data?.app?.deals ?? [];
+  const associatedDeals = data?.deal?.requestorder?.deals ?? [];
   const additionalPages = getAdditionalPages(
-    Boolean(data?.app?.dealsHasNext?.length),
-    Boolean(data?.app?.dealsHasNextNext?.length)
+    Boolean(data?.deal?.requestorder?.dealsHasNext?.length),
+    Boolean(data?.deal?.requestorder?.dealsHasNextNext?.length)
   );
 
-  const formattedDeal =
-    deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
-    })) ?? [];
+  const formattedAssociatedDeal = associatedDeals.map((associatedDeal) => ({
+    ...associatedDeal,
+    destination: `/deal/${associatedDeal.dealid}`,
+  }));
 
   return {
-    data: formattedDeal,
+    data: formattedAssociatedDeal,
     isLoading,
     isRefetching,
     isError,
@@ -63,46 +61,43 @@ function useAppDealsData({
   };
 }
 
-export function AppDealsTable({
-  appAddress,
+export function DealAssociatedDealsTable({
+  dealId,
   setLoading,
   setOutdated,
 }: {
-  appAddress: string;
-  setLoading: (loading: boolean) => void;
-  setOutdated: (outdated: boolean) => void;
+  dealId: string;
+  setLoading: (isLoading: boolean) => void;
+  setOutdated: (isOutdated: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('appDealsPage');
+  const [currentPage, setCurrentPage] = usePageParam('dealAssociatedDealsPage');
   const {
-    data: deals,
+    data: associatedDeals,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAppDealsData({ appAddress, currentPage: currentPage - 1 });
+  } = useDealAssociatedDealsData({
+    dealId,
+    currentPage: currentPage - 1,
+  });
 
   useEffect(
     () => setLoading(isLoading || isRefetching),
     [isLoading, isRefetching, setLoading]
   );
   useEffect(
-    () => setOutdated(deals.length > 0 && isError),
-    [deals.length, isError, setOutdated]
+    () => setOutdated(associatedDeals.length > 0 && isError),
+    [associatedDeals.length, isError, setOutdated]
   );
-
-  const filteredColumns = columns.filter((col) => col.accessorKey !== 'app');
 
   return (
     <div className="space-y-6">
-      {hasPastError && !deals.length ? (
-        <ErrorAlert message="An error occurred during app deals loading." />
+      {hasPastError && !associatedDeals.length ? (
+        <ErrorAlert message="An error occurred during associated deals loading." />
       ) : (
-        <DataTable
-          columns={filteredColumns}
-          data={deals}
-          tableLength={DETAIL_TABLE_LENGTH}
-        />
+        <DataTable columns={columns} data={associatedDeals} />
       )}
       <PaginatedNavigation
         currentPage={currentPage}

@@ -36,6 +36,9 @@ export const dealQuery = graphql(`
         workClockTimeRef
         description
       }
+      bulk {
+        id
+      }
       botSize
       botFirst
       completedTasksCount

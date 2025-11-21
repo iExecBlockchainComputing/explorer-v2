@@ -14,6 +14,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { DatasetAccessTable } from '@/modules/datasets/dataset/DatasetAccessTable';
 import { DatasetBreadcrumbs } from '@/modules/datasets/dataset/DatasetBreadcrumbs';
+import { DatasetBulkDealsTable } from '@/modules/datasets/dataset/DatasetBulkDealsTable';
 import { DatasetDealsTable } from '@/modules/datasets/dataset/DatasetDealsTable';
 import { buildDatasetDetails } from '@/modules/datasets/dataset/buildDatasetDetails';
 import { datasetQuery } from '@/modules/datasets/dataset/datasetQuery';
@@ -160,11 +161,24 @@ function DatasetsRoute() {
           <DetailsTable details={datasetDetails || {}} zebra={false} />
         ))}
       {currentTab === 1 && (
-        <DatasetDealsTable
-          datasetAddress={datasetAddress}
-          setLoading={setIsLoadingChild}
-          setOutdated={setIsOutdatedChild}
-        />
+        <>
+          <h2 className="flex items-center gap-2 font-extrabold">
+            Latest deals
+          </h2>
+          <DatasetDealsTable
+            datasetAddress={datasetAddress}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
+          />
+          <h2 className="flex items-center gap-2 font-extrabold">
+            Latest bulk deals
+          </h2>
+          <DatasetBulkDealsTable
+            datasetId={datasetAddress}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
+          />
+        </>
       )}
       {currentTab === 2 && (
         <DatasetAccessTable
