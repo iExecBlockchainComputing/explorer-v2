@@ -14,6 +14,7 @@ import { DealAssociatedDealsTable } from '@/modules/deals/deal/DealAssociatedDea
 import { DealBreadcrumbs } from '@/modules/deals/deal/DealBreadcrumbs';
 import { DealTasksTable } from '@/modules/deals/deal/DealTasksTable';
 import { buildDealDetails } from '@/modules/deals/deal/buildDealDetails';
+import { dealAssociatedDealsQuery } from '@/modules/deals/deal/dealAssociatedDealsQuery';
 import { dealQuery } from '@/modules/deals/deal/dealQuery';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
@@ -91,6 +92,28 @@ function DealsRoute() {
     return <ErrorAlert className="my-16" message="Deal not found." />;
   }
 
+  const associatedDealsPresenceQueryKey = [
+    chainId,
+    'deal',
+    'associatedDealsPresence',
+    dealId,
+  ];
+  const { data: associatedDealsPresence } = useQuery({
+    queryKey: associatedDealsPresenceQueryKey,
+    enabled: dealId && !!chainId && !!deal && currentTab !== 2,
+    queryFn: () =>
+      execute(dealAssociatedDealsQuery, chainId!, {
+        length: 1,
+        skip: 0,
+        nextSkip: 1,
+        nextNextSkip: 2,
+        dealId: dealId,
+      }),
+    placeholderData: (prev) => prev,
+  });
+  const hasAssociatedDeals =
+    (associatedDealsPresence?.deal?.requestorder?.deals?.length || 0) > 0;
+
   const showOutdated = deal && (isError || isOutdatedChild);
   const showLoading = isLoading || isRefetching || isLoadingChild;
 
@@ -120,6 +143,10 @@ function DealsRoute() {
         currentTab={currentTab}
         tabLabels={tabLabels}
         onTabChange={setCurrentTab}
+        disabledTabs={deal && !hasAssociatedDeals ? [2] : []}
+        disabledReasons={
+          deal && !hasAssociatedDeals ? { 2: 'No associated deals' } : {}
+        }
       />
       <div>
         {currentTab === 0 &&

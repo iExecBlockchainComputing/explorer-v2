@@ -15,6 +15,7 @@ import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
 import { TaskDatasetsTable } from '@/modules/tasks/task/TaskDatasetsTable';
 import { TaskRawData } from '@/modules/tasks/task/TaskRawData';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
+import { taskDatasetsQuery } from '@/modules/tasks/task/taskDatasetsQuery';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
@@ -85,6 +86,29 @@ function TasksRoute() {
     return <ErrorAlert message="Task not found." />;
   }
 
+  // Presence check for datasets to disable tab if none
+  const datasetsPresenceQueryKey = [
+    chainId,
+    'task',
+    'datasetsPresence',
+    taskId,
+  ];
+  const { data: datasetsPresence } = useQuery({
+    queryKey: datasetsPresenceQueryKey,
+    enabled: !!chainId && !!task && currentTab !== 2,
+    queryFn: () =>
+      execute(taskDatasetsQuery, chainId!, {
+        taskId: (taskId as string).toLowerCase(),
+        length: 1,
+        skip: 0,
+        nextSkip: 1,
+        nextNextSkip: 2,
+      }),
+    placeholderData: (prev) => prev,
+  });
+  const hasDatasets =
+    (datasetsPresence?.task?.bulkSlice?.datasets?.length || 0) > 0;
+
   const showOutdated = task && (isError || isOutdatedChild);
   const showLoading = isLoading || isRefetching || isLoadingChild;
 
@@ -114,6 +138,10 @@ function TasksRoute() {
         currentTab={currentTab}
         tabLabels={tabLabels}
         onTabChange={setCurrentTab}
+        disabledTabs={task && !hasDatasets ? [2] : []}
+        disabledReasons={
+          task && !hasDatasets ? { 2: 'No datasets for this task' } : {}
+        }
       />
       <div>
         {currentTab === 0 &&
