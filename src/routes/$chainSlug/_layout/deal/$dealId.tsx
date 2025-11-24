@@ -145,7 +145,9 @@ function DealsRoute() {
         onTabChange={setCurrentTab}
         disabledTabs={deal && !hasAssociatedDeals ? [2] : []}
         disabledReasons={
-          deal && !hasAssociatedDeals ? { 2: 'No associated deals' } : {}
+          deal && !hasAssociatedDeals
+            ? { 2: 'No other deal associated with the request' }
+            : {}
         }
       />
       <div>
