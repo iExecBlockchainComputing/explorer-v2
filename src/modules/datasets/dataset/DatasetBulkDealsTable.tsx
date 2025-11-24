@@ -94,12 +94,18 @@ export function DatasetBulkDealsTable({
     [bulkDeals.length, isError, setOutdated]
   );
 
+  const filteredColumns = columns.filter((col) => col.accessorKey !== 'dealid');
+
   return (
     <div className="space-y-6">
       {hasPastError && !bulkDeals.length ? (
         <ErrorAlert message="An error occurred during dataset bulkDeals loading." />
       ) : (
-        <DataTable columns={columns} data={bulkDeals} />
+        <DataTable
+          columns={filteredColumns}
+          data={bulkDeals}
+          tableLength={DETAIL_TABLE_LENGTH}
+        />
       )}
       <PaginatedNavigation
         currentPage={currentPage}
