@@ -61,6 +61,7 @@ export const datasetBulkDealsQuery = graphql(`
     bulkSliceiceHasNext: bulkSliceice(
       first: 1
       skip: $nextSkip
+      where: { datasets_: { id: $datasetId } }
       orderBy: task__timestamp
       orderDirection: desc
     ) {
@@ -73,6 +74,7 @@ export const datasetBulkDealsQuery = graphql(`
     bulkSliceiceHasNextNext: bulkSliceice(
       first: 1
       skip: $nextNextSkip
+      where: { datasets_: { id: $datasetId } }
       orderBy: task__timestamp
       orderDirection: desc
     ) {
