@@ -174,13 +174,8 @@ export function SearcherBar({
         />
       </div>
 
-      <div
-        className={cn(
-          'mt-4 flex justify-center gap-4 sm:hidden',
-          isError && 'mt-10'
-        )}
-      >
-        <div className="flex justify-center">
+      <div className={cn('mt-4 flex justify-center gap-4', isError && 'mt-10')}>
+        <div className="flex justify-center sm:hidden">
           <Button variant="outline" onClick={handleSearch} disabled={isPending}>
             {isPending ? 'Searching...' : 'Search'}
           </Button>

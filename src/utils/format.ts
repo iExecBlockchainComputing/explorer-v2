@@ -1,14 +1,6 @@
 import { multiaddr } from '@multiformats/multiaddr';
 import { Buffer } from 'buffer';
 
-/**
- * Returns a unix timestamp (in seconds) for 14 days ago from now.
- * Used for recency filtering ("pertinent" mode).
- */
-export function getRecentFromTimestamp(days = 14): number {
-  return Math.floor(Date.now() / 1000) - days * 24 * 60 * 60;
-}
-
 export const multiaddrHexToHuman = (hexString: string): string => {
   if (hexString.substring(0, 2) !== '0x') return hexString;
   let res: string;
