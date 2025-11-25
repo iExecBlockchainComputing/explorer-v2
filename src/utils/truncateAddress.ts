@@ -1,6 +1,6 @@
 export function truncateAddress(
   address: string,
-  options: { startLen?: 8 | 10 | 12 | 15; endLen?: 0 | 2 | 8 } = {}
+  options: { startLen?: 8 | 10 | 12 | 15 | number; endLen?: 0 | 2 | 8 | number } = {}
 ): string {
   if (typeof address !== 'string' || address.length === 0) {
     return '';

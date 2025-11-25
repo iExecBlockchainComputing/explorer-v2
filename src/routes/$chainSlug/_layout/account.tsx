@@ -90,16 +90,19 @@ function RouteComponent() {
       return <ErrorAlert message="No data found for this address." />;
     }
     return (
-      <AddressTabsContent
-        addressAddress={userAddress}
-        address={account as any}
-        addressDetails={addressDetails}
-        addressOverview={addressOverview}
-        hasPastError={hasPastError}
-        isLoading={isLoading}
-        currentTab={addressCurrentTab}
-        setCurrentTab={setAddressCurrentTab}
-      />
+      <div className="flex flex-col gap-6">
+        <h1 className="text-2xl font-bold">Wallet Activity</h1>
+        <AddressTabsContent
+          addressAddress={userAddress}
+          address={account}
+          addressDetails={addressDetails}
+          addressOverview={addressOverview}
+          hasPastError={hasPastError}
+          isLoading={isLoading}
+          currentTab={addressCurrentTab}
+          setCurrentTab={setAddressCurrentTab}
+        />
+      </div>
     );
   }
 
@@ -113,7 +116,7 @@ function RouteComponent() {
   const tabLabels = tabs.map((tab) => tab.title);
   const [currentTab, setCurrentTab] = useTabParam('accountTab', tabLabels, 0);
 
-  const handleTabClick = (tab: any) => {
+  const handleTabClick = (tab) => {
     if (tab.action) {
       tab.action();
     } else {

@@ -171,13 +171,13 @@ export function ManageIexecAccount() {
   }
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="flex flex-col gap-6">
       <h1 className="text-2xl font-extrabold">Manage iExec Account</h1>
 
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div
           className={cn(
-            'border-intermediate w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
+            'w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 0 && 'border-primary'
           )}
         >
@@ -217,7 +217,7 @@ export function ManageIexecAccount() {
         />
         <div
           className={cn(
-            'border-intermediate w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
+            'w-full space-y-6 rounded-3xl border px-10 py-6 duration-200',
             currentTab === 1 && 'border-primary'
           )}
         >
@@ -272,7 +272,7 @@ export function ManageIexecAccount() {
           </div>
         )}
 
-        <div className="md:border-intermediate space-y-6 md:rounded-3xl md:border md:p-10">
+        <div className="space-y-6 border md:rounded-3xl md:p-10">
           <div className="space-y-4 md:space-y-1.5">
             <h2 className="md:font-anybody font-sans font-bold">
               <span className="bg-foreground text-background mr-4 inline-flex size-8 items-center justify-center rounded-full font-sans font-normal md:hidden">
