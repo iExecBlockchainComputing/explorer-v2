@@ -160,7 +160,7 @@ function AddressRoute() {
 
       <AddressTabsContent
         addressAddress={addressAddress}
-        address={address as any}
+        address={addressDetails}
         addressDetails={addressDetails}
         addressOverview={addressOverview}
         hasPastError={hasPastError}

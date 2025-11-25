@@ -8,8 +8,8 @@ import React from 'react';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
 import { useTabParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { Faucet } from '@/modules/account/Faucet_tmp';
-import { ManageIexecAccount } from '@/modules/account/ManageIexecAccount_tmp';
+import { Faucet } from '@/modules/account/Faucet';
+import { ManageIexecAccount } from '@/modules/account/ManageIexecAccount';
 import { AddressTabsContent } from '@/modules/addresses/address/AddressTabsContent';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
@@ -123,7 +123,7 @@ function RouteComponent() {
 
   return (
     <div className="mt-8 flex gap-28">
-      <div className="flex max-w-56 h-fit flex-col gap-4 rounded-2xl border px-6 py-8">
+      <div className="flex h-fit max-w-56 flex-col gap-4 rounded-2xl border px-6 py-8">
         {tabs.map((tab, index) => (
           <button
             key={tab.title}
