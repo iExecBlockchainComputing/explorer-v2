@@ -16,7 +16,6 @@ import { Route as ChainSlugLayoutRouteImport } from './routes/$chainSlug/_layout
 import { Route as ChainSlugLayoutIndexRouteImport } from './routes/$chainSlug/_layout/index'
 import { Route as ChainSlugLayoutWorkerpoolsRouteImport } from './routes/$chainSlug/_layout/workerpools'
 import { Route as ChainSlugLayoutTasksRouteImport } from './routes/$chainSlug/_layout/tasks'
-import { Route as ChainSlugLayoutFaucetRouteImport } from './routes/$chainSlug/_layout/faucet'
 import { Route as ChainSlugLayoutDealsRouteImport } from './routes/$chainSlug/_layout/deals'
 import { Route as ChainSlugLayoutDatasetsRouteImport } from './routes/$chainSlug/_layout/datasets'
 import { Route as ChainSlugLayoutAppsRouteImport } from './routes/$chainSlug/_layout/apps'
@@ -64,11 +63,6 @@ const ChainSlugLayoutWorkerpoolsRoute =
 const ChainSlugLayoutTasksRoute = ChainSlugLayoutTasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
-  getParentRoute: () => ChainSlugLayoutRoute,
-} as any)
-const ChainSlugLayoutFaucetRoute = ChainSlugLayoutFaucetRouteImport.update({
-  id: '/faucet',
-  path: '/faucet',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
 const ChainSlugLayoutDealsRoute = ChainSlugLayoutDealsRouteImport.update({
@@ -170,7 +164,6 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/apps': typeof ChainSlugLayoutAppsRoute
   '/$chainSlug/datasets': typeof ChainSlugLayoutDatasetsRoute
   '/$chainSlug/deals': typeof ChainSlugLayoutDealsRoute
-  '/$chainSlug/faucet': typeof ChainSlugLayoutFaucetRoute
   '/$chainSlug/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/': typeof ChainSlugLayoutIndexRoute
@@ -194,7 +187,6 @@ export interface FileRoutesByTo {
   '/$chainSlug/apps': typeof ChainSlugLayoutAppsRoute
   '/$chainSlug/datasets': typeof ChainSlugLayoutDatasetsRoute
   '/$chainSlug/deals': typeof ChainSlugLayoutDealsRoute
-  '/$chainSlug/faucet': typeof ChainSlugLayoutFaucetRoute
   '/$chainSlug/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/address/$addressAddress': typeof ChainSlugLayoutAddressAddressAddressRoute
@@ -219,7 +211,6 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/apps': typeof ChainSlugLayoutAppsRoute
   '/$chainSlug/_layout/datasets': typeof ChainSlugLayoutDatasetsRoute
   '/$chainSlug/_layout/deals': typeof ChainSlugLayoutDealsRoute
-  '/$chainSlug/_layout/faucet': typeof ChainSlugLayoutFaucetRoute
   '/$chainSlug/_layout/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/_layout/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/_layout/': typeof ChainSlugLayoutIndexRoute
@@ -245,7 +236,6 @@ export interface FileRouteTypes {
     | '/$chainSlug/apps'
     | '/$chainSlug/datasets'
     | '/$chainSlug/deals'
-    | '/$chainSlug/faucet'
     | '/$chainSlug/tasks'
     | '/$chainSlug/workerpools'
     | '/$chainSlug/'
@@ -269,7 +259,6 @@ export interface FileRouteTypes {
     | '/$chainSlug/apps'
     | '/$chainSlug/datasets'
     | '/$chainSlug/deals'
-    | '/$chainSlug/faucet'
     | '/$chainSlug/tasks'
     | '/$chainSlug/workerpools'
     | '/$chainSlug/address/$addressAddress'
@@ -293,7 +282,6 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/apps'
     | '/$chainSlug/_layout/datasets'
     | '/$chainSlug/_layout/deals'
-    | '/$chainSlug/_layout/faucet'
     | '/$chainSlug/_layout/tasks'
     | '/$chainSlug/_layout/workerpools'
     | '/$chainSlug/_layout/'
@@ -357,13 +345,6 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/$chainSlug/tasks'
       preLoaderRoute: typeof ChainSlugLayoutTasksRouteImport
-      parentRoute: typeof ChainSlugLayoutRoute
-    }
-    '/$chainSlug/_layout/faucet': {
-      id: '/$chainSlug/_layout/faucet'
-      path: '/faucet'
-      fullPath: '/$chainSlug/faucet'
-      preLoaderRoute: typeof ChainSlugLayoutFaucetRouteImport
       parentRoute: typeof ChainSlugLayoutRoute
     }
     '/$chainSlug/_layout/deals': {
@@ -487,7 +468,6 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutAppsRoute: typeof ChainSlugLayoutAppsRoute
   ChainSlugLayoutDatasetsRoute: typeof ChainSlugLayoutDatasetsRoute
   ChainSlugLayoutDealsRoute: typeof ChainSlugLayoutDealsRoute
-  ChainSlugLayoutFaucetRoute: typeof ChainSlugLayoutFaucetRoute
   ChainSlugLayoutTasksRoute: typeof ChainSlugLayoutTasksRoute
   ChainSlugLayoutWorkerpoolsRoute: typeof ChainSlugLayoutWorkerpoolsRoute
   ChainSlugLayoutIndexRoute: typeof ChainSlugLayoutIndexRoute
@@ -510,7 +490,6 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
   ChainSlugLayoutAppsRoute: ChainSlugLayoutAppsRoute,
   ChainSlugLayoutDatasetsRoute: ChainSlugLayoutDatasetsRoute,
   ChainSlugLayoutDealsRoute: ChainSlugLayoutDealsRoute,
-  ChainSlugLayoutFaucetRoute: ChainSlugLayoutFaucetRoute,
   ChainSlugLayoutTasksRoute: ChainSlugLayoutTasksRoute,
   ChainSlugLayoutWorkerpoolsRoute: ChainSlugLayoutWorkerpoolsRoute,
   ChainSlugLayoutIndexRoute: ChainSlugLayoutIndexRoute,

@@ -7,7 +7,6 @@ import {
   UserButton,
 } from '@clerk/clerk-react';
 import { useMutation } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useWatchAsset } from 'wagmi';
 import { ChainLink } from '@/components/ChainLink';
@@ -23,11 +22,7 @@ import { getBlockExplorerUrl } from '@/utils/chain.utils';
 import { nrlcToRlc } from '@/utils/nrlcToRlc';
 import wagmiNetworks from '@/utils/wagmiNetworks';
 
-export const Route = createFileRoute('/$chainSlug/_layout/faucet')({
-  component: FaucetRoute,
-});
-
-function FaucetRoute() {
+export function Faucet() {
   const { chainId, address: userAddress } = useUserStore();
   const { requestChainChange } = useChainSwitch();
   const { getToken, isSignedIn } = useAuth();
