@@ -5,7 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LogOut } from 'lucide-react';
 import React from 'react';
+import { ChainLink } from '@/components/ChainLink';
 import avatarStyles from '@/components/navbar/profile.module.css';
+import { Button } from '@/components/ui/button';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
 import { useTabParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
@@ -25,7 +27,7 @@ export const Route = createFileRoute('/$chainSlug/_layout/account')({
 });
 
 function RouteComponent() {
-  const { logout } = useLoginLogout();
+  const { logout, login } = useLoginLogout();
   const { address: userAddress, chainId } = useUserStore();
 
   // Nested wallet activity panel uses address tabs
@@ -87,7 +89,20 @@ function RouteComponent() {
     );
 
     if (!userAddress) {
-      return <ErrorAlert message="Connect wallet to view activity." />;
+      return (
+        <div className="mt-20 flex flex-col items-center justify-center gap-6 text-center">
+          <h1 className="text-2xl font-bold">You are not connected</h1>
+          <p className="text-muted-foreground max-w-sm">
+            To access the iExec Wallet Manager, please connect your wallet.
+          </p>
+          <div className="flex gap-4">
+            <Button variant="outline">
+              <ChainLink to="/">Go back home</ChainLink>
+            </Button>
+            <Button onClick={login}>Connect wallet</Button>
+          </div>
+        </div>
+      );
     }
     if (isError && error && !account) {
       return <ErrorAlert message="No data found for this address." />;
@@ -120,23 +135,28 @@ function RouteComponent() {
       label: <>iExec Account</>,
       component: ManageIexecAccount,
     },
+
     {
       titleText: 'Wallet Activity',
       label: <>Wallet Activity</>,
       component: WalletActivityPanel,
     },
-    {
-      titleText: 'Log out',
-      label: (
-        <>
-          <span className="hidden sm:inline">Log out</span>
-          <span className="inline-block">
-            <LogOut size={20} />
-          </span>
-        </>
-      ),
-      action: logout,
-    },
+    ...(userAddress
+      ? [
+          {
+            titleText: 'Log out',
+            label: (
+              <>
+                <span className="hidden sm:inline">Log out</span>
+                <span className="inline-block">
+                  <LogOut size={20} />
+                </span>
+              </>
+            ),
+            action: logout,
+          },
+        ]
+      : []),
   ];
 
   const tabLabels = tabs.map((tab) => tab.titleText);
@@ -154,17 +174,19 @@ function RouteComponent() {
   return (
     <div className="mt-8 grid gap-4 md:flex md:gap-10 lg:gap-20">
       <div className="top-4 h-fit space-y-4 self-start overflow-x-auto rounded-2xl border px-3 py-4 md:sticky md:top-8 md:max-w-56 md:px-6 md:py-8">
-        <div className="sticky left-0 inline-flex items-center gap-1">
-          <div
-            className={cn(
-              avatarStyles[avatarVisualBg],
-              'bg-background relative z-10 size-5 rounded-full bg-cover'
-            )}
-          />
-          <span className="text-primary text-md">
-            {truncateAddress(userAddress)}
-          </span>
-        </div>
+        {userAddress && (
+          <div className="sticky left-0 inline-flex items-center gap-1">
+            <div
+              className={cn(
+                avatarStyles[avatarVisualBg],
+                'bg-background relative z-10 size-5 rounded-full bg-cover'
+              )}
+            />
+            <span className="text-primary text-md">
+              {truncateAddress(userAddress)}
+            </span>
+          </div>
+        )}
         <div className="flex justify-between gap-2 md:flex-col md:gap-4">
           {tabs.map((tab, index) => (
             <button
