@@ -131,8 +131,8 @@ function RouteComponent() {
   const tabs = [
     { titleText: 'Faucet', label: <>Faucet</>, component: Faucet },
     {
-      titleText: 'iExec Account',
-      label: <>iExec Account</>,
+      titleText: 'Account',
+      label: <>Account</>,
       component: ManageIexecAccount,
     },
 

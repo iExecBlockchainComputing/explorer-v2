@@ -172,7 +172,7 @@ export function ManageIexecAccount() {
 
   return (
     <div className="flex flex-col gap-6">
-      <h1 className="text-2xl font-extrabold">iExec Account</h1>
+      <h1 className="text-2xl font-extrabold">Account</h1>
 
       <div className="mx-auto flex w-full max-w-5xl flex-col items-center justify-center gap-x-6 gap-y-4 md:flex-row">
         <div

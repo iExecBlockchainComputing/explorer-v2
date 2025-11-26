@@ -10,6 +10,7 @@ import { shadcn } from '@clerk/themes';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useWatchAsset } from 'wagmi';
+import { ChainLink } from '@/components/ChainLink';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -239,6 +240,16 @@ export function Faucet() {
                   View transaction on Arbiscan Sepolia ↗
                 </a>
               )}
+              <div className="inline">
+                Go to{' '}
+                <ChainLink
+                  to="/account?accountTab=Account"
+                  className="inline underline"
+                >
+                  Account
+                </ChainLink>{' '}
+                section to transfer faucet from your wallet to your account.
+              </div>
             </div>
           </div>
           <Button

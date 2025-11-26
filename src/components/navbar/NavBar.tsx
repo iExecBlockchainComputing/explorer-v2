@@ -69,7 +69,7 @@ export function Navbar() {
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <ChainLink to="/account?accountTab=Manage+iExec+Account">
-                    iExec Account
+                    Account
                   </ChainLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
@@ -142,7 +142,7 @@ export function Navbar() {
               asChild
               className="text-foreground justify-baseline px-3"
             >
-              <ChainLink to="/account">iExec Account</ChainLink>
+              <ChainLink to="/account">Account</ChainLink>
             </Button>
             <Button
               variant="link"
