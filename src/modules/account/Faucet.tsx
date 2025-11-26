@@ -1,4 +1,5 @@
 import { FAUCET_API_URL } from '@/config';
+import { cn } from '@/lib/utils';
 import {
   SignedIn,
   SignedOut,
@@ -100,7 +101,12 @@ export function Faucet() {
   });
 
   return (
-    <div className="grid max-w-xl gap-6 rounded-2xl border p-4 md:p-10">
+    <div
+      className={cn(
+        'grid max-w-xl gap-6 rounded-2xl border p-4 md:p-10',
+        !userAddress ? 'mx-auto' : ''
+      )}
+    >
       <h1 className="w-full text-center text-2xl font-extrabold">Faucet</h1>
       {isError && <ErrorAlert className="w-full" message={error?.message} />}
       {badChainId ? (

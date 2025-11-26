@@ -141,22 +141,18 @@ function RouteComponent() {
       label: <>Wallet Activity</>,
       component: WalletActivityPanel,
     },
-    ...(userAddress
-      ? [
-          {
-            titleText: 'Log out',
-            label: (
-              <>
-                <span className="hidden sm:inline">Log out</span>
-                <span className="inline-block">
-                  <LogOut size={20} />
-                </span>
-              </>
-            ),
-            action: logout,
-          },
-        ]
-      : []),
+    {
+      titleText: 'Log out',
+      label: (
+        <>
+          <span className="hidden sm:inline">Log out</span>
+          <span className="inline-block">
+            <LogOut size={20} />
+          </span>
+        </>
+      ),
+      action: logout,
+    },
   ];
 
   const tabLabels = tabs.map((tab) => tab.titleText);
@@ -173,8 +169,8 @@ function RouteComponent() {
 
   return (
     <div className="mt-8 grid gap-4 md:flex md:gap-10 lg:gap-20">
-      <div className="top-4 h-fit space-y-4 self-start overflow-x-auto rounded-2xl border px-3 py-4 md:sticky md:top-8 md:max-w-56 md:px-6 md:py-8">
-        {userAddress && (
+      {userAddress && (
+        <div className="top-4 h-fit space-y-4 self-start overflow-x-auto rounded-2xl border px-3 py-4 md:sticky md:top-8 md:max-w-56 md:px-6 md:py-8">
           <div className="sticky left-0 inline-flex items-center gap-1">
             <div
               className={cn(
@@ -186,22 +182,22 @@ function RouteComponent() {
               {truncateAddress(userAddress)}
             </span>
           </div>
-        )}
-        <div className="flex justify-between gap-2 md:flex-col md:gap-4">
-          {tabs.map((tab, index) => (
-            <button
-              key={tab.titleText}
-              onClick={() => handleTabClick(index)}
-              className={cn(
-                'text-muted-foreground flex items-center gap-2 rounded-md bg-transparent px-2 py-2 text-left whitespace-nowrap duration-200 md:px-4',
-                index === currentTab && 'bg-muted text-foreground'
-              )}
-            >
-              {tab.label}
-            </button>
-          ))}
+          <div className="flex justify-between gap-2 md:flex-col md:gap-4">
+            {tabs.map((tab, index) => (
+              <button
+                key={tab.titleText}
+                onClick={() => handleTabClick(index)}
+                className={cn(
+                  'text-muted-foreground flex items-center gap-2 rounded-md bg-transparent px-2 py-2 text-left whitespace-nowrap duration-200 md:px-4',
+                  index === currentTab && 'bg-muted text-foreground'
+                )}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div className="min-w-0 flex-1 overflow-x-auto">
         {tabs[currentTab].component
           ? React.createElement(tabs[currentTab].component)
