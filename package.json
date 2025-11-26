@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.51.0",
+    "@clerk/themes": "^2.4.40",
     "@fontsource-variable/anybody": "^5.2.6",
     "@fontsource-variable/mulish": "^5.2.6",
     "@fontsource/space-mono": "^5.2.8",
