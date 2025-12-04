@@ -12,7 +12,7 @@ import { useLoginLogout } from '@/hooks/useLoginLogout';
 import { useTabParam } from '@/hooks/usePageParam';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Faucet } from '@/modules/account/Faucet';
-import { ManageIexecAccount } from '@/modules/account/ManageIexecAccount';
+import { ManageIexecAccount } from '@/modules/account/ManageIexecAccount_tmp';
 import { AddressTabsContent } from '@/modules/addresses/address/AddressTabsContent';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
