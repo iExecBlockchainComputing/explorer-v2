@@ -18,7 +18,7 @@ import { Label } from '@/components/ui/label';
 import { useChainSwitch } from '@/hooks/useChainSwitch';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import useUserStore from '@/stores/useUser.store';
-import { getBlockExplorerUrl } from '@/utils/chain.utils';
+import { getBlockExplorerUrl, getChainFromId } from '@/utils/chain.utils';
 import { nrlcToRlc } from '@/utils/nrlcToRlc';
 import wagmiNetworks from '@/utils/wagmiNetworks';
 
@@ -138,6 +138,7 @@ export function Faucet() {
               </div>
               <SignedOut>
                 <SignIn
+                  fallbackRedirectUrl={`/${getChainFromId(chainId)?.slug}/account?accountTab=Faucet`}
                   appearance={{
                     theme: shadcn,
                     elements: {
