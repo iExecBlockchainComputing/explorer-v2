@@ -10,13 +10,13 @@ import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 import { getAdditionalPages } from '@/utils/format';
-import { appDealsQuery } from './appDealsQuery';
+import { datasetBulkDealsQuery } from './datasetBulkDealsQuery';
 
-function useAppDealsData({
-  appAddress,
+function useDatasetBulkDealsData({
+  datasetId,
   currentPage,
 }: {
-  appAddress: string;
+  datasetId: string;
   currentPage: number;
 }) {
   const { chainId } = useUserStore();
@@ -24,37 +24,40 @@ function useAppDealsData({
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
   const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
-  const queryKey = [chainId, 'app', 'deals', appAddress, currentPage];
+  const queryKey = [chainId, 'dataset', 'bulkDeals', datasetId, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
     {
       queryKey,
       queryFn: () =>
-        execute(appDealsQuery, chainId, {
+        execute(datasetBulkDealsQuery, chainId, {
           length: DETAIL_TABLE_LENGTH,
           skip,
           nextSkip,
           nextNextSkip,
-          appAddress,
+          datasetId,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
       placeholderData: createPlaceholderDataFnForQueryKey(queryKey),
     }
   );
 
-  const deals = data?.app?.deals ?? [];
+  const bulkDeals = data?.bulkSliceice?.map((slice) => slice.task?.deal) ?? [];
+  // 0 = only current, 1 = next, 2 = next+1
   const additionalPages = getAdditionalPages(
-    Boolean(data?.app?.dealsHasNext?.length),
-    Boolean(data?.app?.dealsHasNextNext?.length)
+    Boolean(data?.bulkSliceiceHasNext?.length),
+    Boolean(data?.bulkSliceiceHasNextNext?.length)
   );
 
-  const formattedDeal =
-    deals.map((deal) => ({
-      ...deal,
-      destination: `/deal/${deal.dealid}`,
-    })) ?? [];
+  const formattedBulkDeal =
+    bulkDeals
+      ?.filter((bulkDeal) => bulkDeal !== undefined)
+      .map((bulkDeal) => ({
+        ...bulkDeal,
+        destination: `/bulkDeal/${bulkDeal!.dealid}`,
+      })) ?? [];
 
   return {
-    data: formattedDeal,
+    data: formattedBulkDeal,
     isLoading,
     isRefetching,
     isError,
@@ -63,44 +66,44 @@ function useAppDealsData({
   };
 }
 
-export function AppDealsTable({
-  appAddress,
+export function DatasetBulkDealsTable({
+  datasetId,
   setLoading,
   setOutdated,
 }: {
-  appAddress: string;
+  datasetId: string;
   setLoading: (loading: boolean) => void;
   setOutdated: (outdated: boolean) => void;
 }) {
-  const [currentPage, setCurrentPage] = usePageParam('appDealsPage');
+  const [currentPage, setCurrentPage] = usePageParam('datasetBulkDealsPage');
   const {
-    data: deals,
+    data: bulkDeals,
     isError,
     isLoading,
     isRefetching,
     additionalPages,
     hasPastError,
-  } = useAppDealsData({ appAddress, currentPage: currentPage - 1 });
+  } = useDatasetBulkDealsData({ datasetId, currentPage: currentPage - 1 });
 
   useEffect(
     () => setLoading(isLoading || isRefetching),
     [isLoading, isRefetching, setLoading]
   );
   useEffect(
-    () => setOutdated(deals.length > 0 && isError),
-    [deals.length, isError, setOutdated]
+    () => setOutdated(bulkDeals.length > 0 && isError),
+    [bulkDeals.length, isError, setOutdated]
   );
 
-  const filteredColumns = columns.filter((col) => col.accessorKey !== 'app');
+  const filteredColumns = columns.filter((col) => col.accessorKey !== 'dealid');
 
   return (
     <div className="space-y-6">
-      {hasPastError && !deals.length ? (
-        <ErrorAlert message="An error occurred during app deals loading." />
+      {hasPastError && !bulkDeals.length ? (
+        <ErrorAlert message="An error occurred during dataset bulkDeals loading." />
       ) : (
         <DataTable
           columns={filteredColumns}
-          data={deals}
+          data={bulkDeals}
           tableLength={DETAIL_TABLE_LENGTH}
         />
       )}
