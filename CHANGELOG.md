@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.28.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.27.0...iexec-explorer-v1.28.0) (2025-12-03)
+
+
+### 🚀 Features
+
+* add bulk  ([#92](https://github.com/iExecBlockchainComputing/explorer-v2/issues/92)) ([e198fe7](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e198fe780db18f56ba3ee57caaa2330b22d53edd))
+* add orderBy for workerpools and apps ([#98](https://github.com/iExecBlockchainComputing/explorer-v2/issues/98)) ([6948bd0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/6948bd09310f76579bad91a9cce57b73aeba1cc8))
+* display human readable tags ([#95](https://github.com/iExecBlockchainComputing/explorer-v2/issues/95)) ([f0667b0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/f0667b06a5675622888d53fa2c6489198d39a04e))
+
+
+### 🐞 Bug Fixes
+
+* security hardening ([#100](https://github.com/iExecBlockchainComputing/explorer-v2/issues/100)) ([7177784](https://github.com/iExecBlockchainComputing/explorer-v2/commit/717778468a788670f70d19ab8cabd6a166ed1333))
+
 ## [1.27.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.26.0...iexec-explorer-v1.27.0) (2025-11-19)
 
 
