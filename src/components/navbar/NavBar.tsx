@@ -63,13 +63,13 @@ export function Navbar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem>
-                  <ChainLink to="/account?accountTab=Wallet+Activity">
-                    Wallet Activity
+                  <ChainLink to="/account?accountTab=Account">
+                    Account
                   </ChainLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <ChainLink to="/account?accountTab=Manage+iExec+Account">
-                    Account
+                  <ChainLink to="/account?accountTab=Wallet+Activity">
+                    Wallet Activity
                   </ChainLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
