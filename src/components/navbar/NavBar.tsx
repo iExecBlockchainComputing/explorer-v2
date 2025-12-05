@@ -68,7 +68,7 @@ export function Navbar() {
                   </ChainLink>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                  <ChainLink to="/account?accountTab=Manage+iExec+Account">
+                  <ChainLink to="/account?accountTab=Account">
                     Account
                   </ChainLink>
                 </DropdownMenuItem>
