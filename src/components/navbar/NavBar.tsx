@@ -1,13 +1,23 @@
-import { LogOut } from 'lucide-react';
+import { cn } from '@/lib/utils.ts';
+import { ArrowDown, LogOut } from 'lucide-react';
 import { useState } from 'react';
 import { useLoginLogout } from '@/hooks/useLoginLogout';
 import useUserStore from '@/stores/useUser.store';
+import { getAvatarVisualNumber } from '@/utils/getAvatarVisualNumber.ts';
+import { truncateAddress } from '@/utils/truncateAddress.ts';
 import iExecLogo from '../../assets/iexec-logo.svg';
 import { ChainLink } from '../ChainLink.tsx';
 import { ModeToggle } from '../ModeToggle.tsx';
 import { Button } from '../ui/button.tsx';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu.tsx';
 import { AddressChip } from './AddressChip.tsx';
 import { ChainSelector } from './ChainSelector.tsx';
+import avatarStyles from './profile.module.css';
 
 export function Navbar() {
   const { isConnected, address: userAddress } = useUserStore();
@@ -17,6 +27,10 @@ export function Navbar() {
     setMenuOpen((prevState) => !prevState);
   };
 
+  const avatarVisualBg = getAvatarVisualNumber({
+    address: userAddress!,
+  });
+
   return (
     <nav className="flex items-center justify-between py-6">
       <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
@@ -25,20 +39,8 @@ export function Navbar() {
       </ChainLink>
       <div className="mr-8 flex items-center gap-4 md:mr-0">
         <Button variant="link" asChild className="text-foreground -mr-4">
-          <ChainLink to="/faucet">Faucet</ChainLink>
+          <ChainLink to="/account?accountTab=Faucet">Faucet</ChainLink>
         </Button>
-        {isConnected && (
-          <div className="-mr-4 hidden md:flex">
-            <Button variant="link" asChild className="text-foreground">
-              <ChainLink to={`/address/${userAddress}?from=my_activity`}>
-                My activity
-              </ChainLink>
-            </Button>
-            <Button variant="link" asChild className="text-foreground">
-              <ChainLink to="/account">iExec Account</ChainLink>
-            </Button>
-          </div>
-        )}
         <span className="border-secondary h-9 border-l" />
         <div className="content hidden gap-4 md:flex">
           <ModeToggle />
@@ -46,15 +48,42 @@ export function Navbar() {
         </div>
         {isConnected ? (
           <div className="flex max-w-[1260px] items-center gap-2">
-            <AddressChip address={userAddress!} />
-
-            <button
-              type="button"
-              className="hover:drop-shadow-link-hover p-1"
-              onClick={() => logout()}
-            >
-              <LogOut size="20" />
-            </button>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-primary bg-popover flex items-center gap-2 rounded-lg px-2 py-2">
+                <div
+                  className={cn(
+                    avatarStyles[avatarVisualBg],
+                    'bg-background relative z-10 size-4 rounded-full bg-cover'
+                  )}
+                />
+                <span className="text-sm">
+                  {truncateAddress(userAddress!, { startLen: 5, endLen: 3 })}
+                </span>
+                <ArrowDown className="text-foreground" size={16} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem>
+                  <ChainLink to="/account?accountTab=Wallet+Activity">
+                    Wallet Activity
+                  </ChainLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <ChainLink to="/account?accountTab=Manage+iExec+Account">
+                    Account
+                  </ChainLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2"
+                    onClick={() => logout()}
+                  >
+                    Logout
+                    <LogOut size="20" />
+                  </button>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ) : (
           <Button onClick={login}>
@@ -112,8 +141,9 @@ export function Navbar() {
               variant="link"
               asChild
               className="text-foreground justify-baseline px-3"
+              onClick={handleMenuToggle}
             >
-              <ChainLink to="/account">iExec Account</ChainLink>
+              <ChainLink to="/account?accountTab=Faucet">Faucet</ChainLink>
             </Button>
             <ChainSelector className="w-full border-0" />
           </div>
