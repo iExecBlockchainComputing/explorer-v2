@@ -141,13 +141,7 @@ export function Navbar() {
               variant="link"
               asChild
               className="text-foreground justify-baseline px-3"
-            >
-              <ChainLink to="/account">Account</ChainLink>
-            </Button>
-            <Button
-              variant="link"
-              asChild
-              className="text-foreground justify-baseline px-3"
+              onClick={handleMenuToggle}
             >
               <ChainLink to="/account?accountTab=Faucet">Faucet</ChainLink>
             </Button>
