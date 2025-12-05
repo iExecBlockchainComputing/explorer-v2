@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.28.0...iexec-explorer-v1.29.0) (2025-12-05)
+
+
+### 🚀 Features
+
+* update account page to display faucet, activity and iexec account ([#99](https://github.com/iExecBlockchainComputing/explorer-v2/issues/99)) ([74e76bf](https://github.com/iExecBlockchainComputing/explorer-v2/commit/74e76bf971d20dcc59a67950697cc4782b7b4d87))
+
 ## [1.28.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.27.0...iexec-explorer-v1.28.0) (2025-12-03)
 
 
