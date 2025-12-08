@@ -151,7 +151,7 @@ export function ManageIexecAccount() {
     if (!bridge && currentTab === 2) {
       setCurrentTab(1);
     }
-  }, [chainId]);
+  }, [chainId, currentTab, setCurrentTab]);
 
   if (!userAddress) {
     return (
