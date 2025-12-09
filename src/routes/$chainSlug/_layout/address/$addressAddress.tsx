@@ -87,7 +87,7 @@ function AddressRoute() {
   const { chainId, address: userAddress } = useUserStore();
   const { addressAddress } = Route.useParams();
   const {
-    data: address,
+    data: account,
     isLoading,
     isRefetching,
     isError,
@@ -119,16 +119,18 @@ function AddressRoute() {
     }
   }, [userAddress, addressAddress, fromMyActivity, navigate, chainSlug]);
 
-  const addressDetails = address ? buildAddressDetails({ address }) : undefined;
-  const addressOverview = address
-    ? buildAddressOverview({ address })
+  const addressDetails = account
+    ? buildAddressDetails({ address: account })
+    : undefined;
+  const addressOverview = account
+    ? buildAddressOverview({ address: account })
     : undefined;
 
   if (!isValid) {
     return <ErrorAlert className="my-16" message="Invalid address." />;
   }
 
-  if (isError && error && address === null) {
+  if (isError && error && account === null) {
     return (
       <ErrorAlert className="my-16" message="No data found for this address." />
     );
@@ -142,7 +144,7 @@ function AddressRoute() {
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <AddressIcon size={24} />
             Address details
-            {!address && isError && (
+            {!account && isError && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
@@ -160,7 +162,7 @@ function AddressRoute() {
 
       <AddressTabsContent
         addressAddress={addressAddress}
-        address={addressDetails}
+        address={account ?? undefined}
         addressDetails={addressDetails}
         addressOverview={addressOverview}
         hasPastError={hasPastError}
