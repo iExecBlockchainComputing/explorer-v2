@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.29.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.1...iexec-explorer-v1.29.2) (2025-12-08)
+
+
+### 🐞 Bug Fixes
+
+* **deps:** upgrade react to 19.2.1 to patch CVE-2025-55182 ([#105](https://github.com/iExecBlockchainComputing/explorer-v2/issues/105)) ([54e7fdb](https://github.com/iExecBlockchainComputing/explorer-v2/commit/54e7fdb6e3bf69caaf885509de71974bbbe46949))
+
 ## [1.29.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.0...iexec-explorer-v1.29.1) (2025-12-05)
 
 
