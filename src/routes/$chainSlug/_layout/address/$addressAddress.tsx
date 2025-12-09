@@ -119,7 +119,9 @@ function AddressRoute() {
     }
   }, [userAddress, addressAddress, fromMyActivity, navigate, chainSlug]);
 
-  const addressDetails = account ? buildAddressDetails({ address: account }) : undefined;
+  const addressDetails = account
+    ? buildAddressDetails({ address: account })
+    : undefined;
   const addressOverview = account
     ? buildAddressOverview({ address: account })
     : undefined;
