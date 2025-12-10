@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.29.3](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.2...iexec-explorer-v1.29.3) (2025-12-10)
+
+
+### 🐞 Bug Fixes
+
+* missing address tabs ([#107](https://github.com/iExecBlockchainComputing/explorer-v2/issues/107)) ([ba78a1f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/ba78a1f065de508a2012eea78c249911da4c7991))
+* remove required login message in TaskRawData ([#108](https://github.com/iExecBlockchainComputing/explorer-v2/issues/108)) ([0664538](https://github.com/iExecBlockchainComputing/explorer-v2/commit/0664538ecc6a2bab413dde83b40fbb70365d6e3a))
+
 ## [1.29.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.1...iexec-explorer-v1.29.2) (2025-12-08)
 
 
