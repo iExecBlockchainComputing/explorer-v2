@@ -18,7 +18,7 @@ function SocialLinksItems({ className }: { className?: string }) {
     {
       href: 'https://twitter.com/iEx_ec',
       icon: <SiX size={16} />,
-      arialLabel: 'Twitter',
+      ariaLabel: 'Twitter',
     },
     {
       href: 'https://discord.gg/pbt9m98wnU',
