@@ -100,7 +100,7 @@ export function Navbar() {
 
       <div className="group pointer-events-none absolute inset-0 md:hidden">
         <label
-          className="group/checkbox top-8.5 pointer-events-auto fixed right-6 z-30 flex size-4 origin-center transform flex-col justify-between"
+          className="group/checkbox pointer-events-auto fixed top-8.5 right-6 z-30 flex size-4 origin-center transform flex-col justify-between"
           htmlFor="menu"
           onClick={handleMenuToggle}
         >
@@ -113,9 +113,9 @@ export function Navbar() {
             checked={isMenuOpen}
             readOnly
           />
-          <span className="bg-foreground w-4.5 pointer-events-none block h-0.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
-          <span className="bg-foreground w-4.5 pointer-events-none block h-0.5 origin-top-right transform rounded-full duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
-          <span className="bg-foreground w-4.5 pointer-events-none block h-0.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mt-[0.5px] group-has-[:checked]/checkbox:-rotate-45"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-top-right transform rounded-full duration-200 group-has-[:checked]/checkbox:scale-x-0"></span>
+          <span className="bg-foreground pointer-events-none block h-0.5 w-4.5 origin-right transform rounded-full duration-200 group-has-[:checked]/checkbox:mb-[0.5px] group-has-[:checked]/checkbox:rotate-45"></span>
         </label>
 
         <div className="border-secondary bg-background pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-200 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">

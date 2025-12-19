@@ -62,6 +62,7 @@ export function Tabs({
           left: `${indicatorStyle.left}px`,
           width: `${indicatorStyle.width}px`,
         }}
+        role="tablist"
       />
 
       {tabLabels.map((label, index) => {
@@ -73,7 +74,7 @@ export function Tabs({
             key={label}
             data-tab-index={index}
             variant="link"
-            role="radio"
+            role="tab"
             size={'none'}
             onClick={() => {
               if (!isDisabled) onTabChange(index);
