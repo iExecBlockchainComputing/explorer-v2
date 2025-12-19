@@ -154,6 +154,10 @@ export function SearcherBar({
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={isPending}
+          type="search"
+          role="searchbox"
+          aria-label="Search for addresses, deal IDs, task IDs, or transaction hashes"
+          aria-describedby={localError || error ? 'search-error' : undefined}
           className={cn(
             'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32',
@@ -164,7 +168,12 @@ export function SearcherBar({
           placeholder="Search address, deal id, task id, transaction hash..."
         />
         {(localError || error) && (
-          <p className="bg-danger text-danger-foreground border-danger-border absolute -bottom-8 rounded-full border px-4">
+          <p
+            id="search-error"
+            role="alert"
+            aria-live="polite"
+            className="bg-danger text-danger-foreground border-danger-border absolute -bottom-8 rounded-full border px-4"
+          >
             {localError ? localError.message : error?.message}
           </p>
         )}
@@ -174,14 +183,20 @@ export function SearcherBar({
         />
       </div>
 
-      <div
-        className={cn(
-          'mt-4 flex justify-center gap-4 sm:hidden',
-          isError && 'mt-10'
-        )}
-      >
-        <div className="flex justify-center">
-          <Button variant="outline" onClick={handleSearch} disabled={isPending}>
+      <div className={cn('mt-4 flex justify-center gap-4', isError && 'mt-10')}>
+        <div className="flex justify-center sm:sr-only">
+          <Button
+            variant="outline"
+            onClick={handleSearch}
+            disabled={isPending}
+            type="button"
+            aria-label={
+              isPending
+                ? 'Searching in progress'
+                : 'Search for the entered value'
+            }
+            tabIndex={0}
+          >
             {isPending ? 'Searching...' : 'Search'}
           </Button>
         </div>
