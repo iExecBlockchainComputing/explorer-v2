@@ -12,16 +12,18 @@ const CopyButton = ({
   displayText,
   buttonText,
   tooltipWithText = false,
+  tooltipText = 'Copy',
   className,
 }: {
   textToCopy: string;
   displayText?: string;
   buttonText?: string;
   tooltipWithText?: boolean;
+  tooltipText?: string;
   className?: string;
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
-  const [tooltipMessage, setTooltipMessage] = useState('Copy');
+  const [tooltipMessage, setTooltipMessage] = useState(tooltipText);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(textToCopy).then(() => {
@@ -35,7 +37,7 @@ const CopyButton = ({
     if (tooltipWithText && displayText) {
       setTooltipMessage(`Copy "${displayText}"`);
     } else {
-      setTooltipMessage('Copy');
+      setTooltipMessage(tooltipText);
     }
     setShowTooltip(true);
   };

@@ -33,20 +33,15 @@ export function ChainSyncManager() {
   // init store's chain from location (once at mount time)
   useEffect(() => {
     setChainId(INITIAL_CHAIN.id);
-  }, []);
-
-  // update store with user account's state
+  }, [setChainId]); // update store with user account's state
   useEffect(() => {
     setIsConnected(accountIsConnected);
     setAddress(accountAddress);
     if (accountChain?.id && chainId !== accountChain?.id) {
       setChainId(accountChain?.id);
     }
-    if (accountStatus === 'connected') {
-      initIExecSDKs({ connector: accountConnector });
-      return;
-    }
     cleanIExecSDKs();
+    initIExecSDKs({ connector: accountConnector, chainId });
   }, [
     accountAddress,
     accountIsConnected,

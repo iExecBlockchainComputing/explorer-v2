@@ -1,5 +1,62 @@
 # Changelog
 
+## [1.29.3](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.2...iexec-explorer-v1.29.3) (2025-12-10)
+
+
+### 🐞 Bug Fixes
+
+* missing address tabs ([#107](https://github.com/iExecBlockchainComputing/explorer-v2/issues/107)) ([ba78a1f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/ba78a1f065de508a2012eea78c249911da4c7991))
+* remove required login message in TaskRawData ([#108](https://github.com/iExecBlockchainComputing/explorer-v2/issues/108)) ([0664538](https://github.com/iExecBlockchainComputing/explorer-v2/commit/0664538ecc6a2bab413dde83b40fbb70365d6e3a))
+
+## [1.29.2](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.1...iexec-explorer-v1.29.2) (2025-12-08)
+
+
+### 🐞 Bug Fixes
+
+* **deps:** upgrade react to 19.2.1 to patch CVE-2025-55182 ([#105](https://github.com/iExecBlockchainComputing/explorer-v2/issues/105)) ([54e7fdb](https://github.com/iExecBlockchainComputing/explorer-v2/commit/54e7fdb6e3bf69caaf885509de71974bbbe46949))
+
+## [1.29.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.0...iexec-explorer-v1.29.1) (2025-12-05)
+
+
+### 🐞 Bug Fixes
+
+* update account link in navbar for clarity ([#102](https://github.com/iExecBlockchainComputing/explorer-v2/issues/102)) ([1a1afa0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/1a1afa028e9ed3ec493255528109a1d59b9f6ba5))
+
+## [1.29.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.28.0...iexec-explorer-v1.29.0) (2025-12-05)
+
+
+### 🚀 Features
+
+* update account page to display faucet, activity and iexec account ([#99](https://github.com/iExecBlockchainComputing/explorer-v2/issues/99)) ([74e76bf](https://github.com/iExecBlockchainComputing/explorer-v2/commit/74e76bf971d20dcc59a67950697cc4782b7b4d87))
+
+## [1.28.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.27.0...iexec-explorer-v1.28.0) (2025-12-03)
+
+
+### 🚀 Features
+
+* add bulk  ([#92](https://github.com/iExecBlockchainComputing/explorer-v2/issues/92)) ([e198fe7](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e198fe780db18f56ba3ee57caaa2330b22d53edd))
+* add orderBy for workerpools and apps ([#98](https://github.com/iExecBlockchainComputing/explorer-v2/issues/98)) ([6948bd0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/6948bd09310f76579bad91a9cce57b73aeba1cc8))
+* display human readable tags ([#95](https://github.com/iExecBlockchainComputing/explorer-v2/issues/95)) ([f0667b0](https://github.com/iExecBlockchainComputing/explorer-v2/commit/f0667b06a5675622888d53fa2c6489198d39a04e))
+
+
+### 🐞 Bug Fixes
+
+* security hardening ([#100](https://github.com/iExecBlockchainComputing/explorer-v2/issues/100)) ([7177784](https://github.com/iExecBlockchainComputing/explorer-v2/commit/717778468a788670f70d19ab8cabd6a166ed1333))
+
+## [1.27.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.26.0...iexec-explorer-v1.27.0) (2025-11-19)
+
+
+### 🚀 Features
+
+* add (datasets, apps, workerpools) access table and enhance pagination ([#88](https://github.com/iExecBlockchainComputing/explorer-v2/issues/88)) ([e6e7e01](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e6e7e01aa494009b9fad2d8756d9014eaa1aba92))
+* upgrade access feature ([#91](https://github.com/iExecBlockchainComputing/explorer-v2/issues/91)) ([5e08ad5](https://github.com/iExecBlockchainComputing/explorer-v2/commit/5e08ad5d11d2c53422c5036e3bdffbd84274dc7c))
+
+
+### 🐞 Bug Fixes
+
+* better address page error handling ([#90](https://github.com/iExecBlockchainComputing/explorer-v2/issues/90)) ([e48fb62](https://github.com/iExecBlockchainComputing/explorer-v2/commit/e48fb6220a93a8ace297d2c412765c11dfa53ae7))
+* update execution count display in deal details ([#93](https://github.com/iExecBlockchainComputing/explorer-v2/issues/93)) ([94f3195](https://github.com/iExecBlockchainComputing/explorer-v2/commit/94f31952bda8c5bc895dfabe591fad34def794d1))
+
 ## [1.26.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.25.0...iexec-explorer-v1.26.0) (2025-10-15)
 
 

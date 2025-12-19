@@ -142,7 +142,7 @@ function DatasetsRoute() {
     if (!isSchemaSearchOpen && filters.length > 0) {
       setIsSchemaSearchOpen(true);
     }
-  }, []);
+  }, [filters.length, isSchemaSearchOpen, setIsSchemaSearchOpen]);
 
   const handleAddFilter = (filter: SchemaFilter) => {
     const newFilters = [...filters, filter];

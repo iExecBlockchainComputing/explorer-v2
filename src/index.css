@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import '@clerk/themes/shadcn.css';
 
 /* @custom-variant dark (&:is(.dark *)); */
 @custom-variant dark (&:where(.dark, .dark *));
@@ -208,8 +209,8 @@
   --background: var(--color-white);
   --foreground: var(--color-grey-900);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card: var(--color-white);
+  --card-foreground: var(--color-grey-900);
 
   --popover: var(--color-grey-50);
   --popover-foreground: var(--color-grey-800);
@@ -246,8 +247,8 @@
   --background: var(--color-grey-900);
   --foreground: var(--color-grey-50);
 
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
+  --card: var(--color-grey-900);
+  --card-foreground: var(--color-grey-50);
 
   --popover: var(--color-grey-800);
   --popover-foreground: var(--color-grey-50);

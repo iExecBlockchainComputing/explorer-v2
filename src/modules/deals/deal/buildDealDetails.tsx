@@ -1,8 +1,9 @@
 import { DealQuery } from '@/graphql/poco/graphql';
 import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
-import Bytes from '@/modules/Bytes';
+import { Button } from '@/components/ui/button';
 import JsonBlock from '@/modules/JsonBlock';
+import Tags from '@/modules/Tags';
 import DealEvent from '@/modules/events/DealEvent';
 import { ClaimButton } from '@/modules/tasks/ClaimButton';
 import {
@@ -14,9 +15,11 @@ import { truncateAddress } from '@/utils/truncateAddress';
 export function buildDealDetails({
   deal,
   isConnected,
+  onSeeTasks,
 }: {
   deal: DealQuery['deal'];
   isConnected: boolean;
+  onSeeTasks: () => void;
 }) {
   if (!deal) {
     return {};
@@ -73,38 +76,8 @@ export function buildDealDetails({
       }),
     ...(deal.tag && {
       Tag: {
-        tooltip: (
-          <>
-            Indicates the execution environment type defined by iExec :
-            <ul className="list-inside list-disc">
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x0
-                </code>
-                : Standard
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x3
-                </code>
-                : SGX Scone
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x5
-                </code>
-                : SGX Gramine
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x9
-                </code>
-                : TDX
-              </li>
-            </ul>
-          </>
-        ),
-        value: <Bytes>{deal.tag}</Bytes>,
+        tooltip: <>Indicates the execution environment type defined by iExec</>,
+        value: <Tags>{deal.tag}</Tags>,
       },
     }),
     ...(deal.app && {
@@ -132,6 +105,21 @@ export function buildDealDetails({
         </div>
       ),
       'Dataset price': <p>{deal.datasetPrice}</p>,
+    }),
+    ...(deal.dataset === null && {
+      Dataset: (
+        <p>
+          Datasets bulk{' '}
+          <Button
+            variant="link"
+            size="none"
+            className="ml-1"
+            onClick={onSeeTasks}
+          >
+            (see tasks for details)
+          </Button>
+        </p>
+      ),
     }),
     ...(deal.workerpool && {
       Workerpool: (
@@ -181,13 +169,13 @@ export function buildDealDetails({
             <ul className="list-inside list-disc">
               <li>
                 <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0
+                  1
                 </code>
                 : single execution
               </li>
               <li>
                 <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  1
+                  {'>='}2
                 </code>
                 : replicated for consensus
               </li>

@@ -7,8 +7,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { truncateAddress } from '@/utils/truncateAddress';
 
-export function AccountBreadcrumbs() {
+type AccessBreadcrumbsProps = {
+  accessHash: string;
+};
+
+export function AccessBreadcrumbs({ accessHash }: AccessBreadcrumbsProps) {
   return (
     <Breadcrumb>
       <BreadcrumbList>
@@ -19,7 +24,10 @@ export function AccountBreadcrumbs() {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>Account</BreadcrumbPage>
+          <BreadcrumbPage>
+            Access{' '}
+            <span className="font-normal">{truncateAddress(accessHash)}</span>
+          </BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

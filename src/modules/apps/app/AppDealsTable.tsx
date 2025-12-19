@@ -9,6 +9,7 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { columns } from '@/modules/deals/dealsTable/columns';
 import useUserStore from '@/stores/useUser.store';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
+import { getAdditionalPages } from '@/utils/format';
 import { appDealsQuery } from './appDealsQuery';
 
 function useAppDealsData({
@@ -21,6 +22,7 @@ function useAppDealsData({
   const { chainId } = useUserStore();
   const skip = currentPage * DETAIL_TABLE_LENGTH;
   const nextSkip = skip + DETAIL_TABLE_LENGTH;
+  const nextNextSkip = skip + 2 * DETAIL_TABLE_LENGTH;
 
   const queryKey = [chainId, 'app', 'deals', appAddress, currentPage];
   const { data, isLoading, isRefetching, isError, errorUpdateCount } = useQuery(
@@ -31,6 +33,7 @@ function useAppDealsData({
           length: DETAIL_TABLE_LENGTH,
           skip,
           nextSkip,
+          nextNextSkip,
           appAddress,
         }),
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -39,8 +42,10 @@ function useAppDealsData({
   );
 
   const deals = data?.app?.deals ?? [];
-  const hasNextPage = (data?.app?.dealsHasNext?.length ?? 0) > 0;
-  const additionalPages = hasNextPage ? 1 : 0;
+  const additionalPages = getAdditionalPages(
+    Boolean(data?.app?.dealsHasNext?.length),
+    Boolean(data?.app?.dealsHasNextNext?.length)
+  );
 
   const formattedDeal =
     deals.map((deal) => ({

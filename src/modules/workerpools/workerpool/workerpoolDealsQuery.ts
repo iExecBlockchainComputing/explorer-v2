@@ -43,6 +43,9 @@ export const workerpoolDealsQuery = graphql(`
           catid: id
           workClockTimeRef
         }
+        bulk {
+          id
+        }
         startTime
         appPrice
         datasetPrice

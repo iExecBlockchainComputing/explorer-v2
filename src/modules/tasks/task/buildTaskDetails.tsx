@@ -3,6 +3,7 @@ import CopyButton from '@/components/CopyButton';
 import SmartLinkGroup from '@/components/SmartLinkGroup';
 import Bytes from '@/modules/Bytes';
 import JsonBlock from '@/modules/JsonBlock';
+import Tags from '@/modules/Tags';
 import TaskEvent from '@/modules/events/TaskEvent';
 import useUserStore from '@/stores/useUser.store';
 import { taskResultToObject } from '@/utils/format';
@@ -69,38 +70,8 @@ export function buildTaskDetails({ task }: { task: TaskQuery['task'] }) {
       }),
     ...(task.deal.tag && {
       Tag: {
-        tooltip: (
-          <>
-            Indicates the execution environment type defined by iExec :
-            <ul className="list-inside list-disc">
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x0
-                </code>
-                : Standard
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x3
-                </code>
-                : SGX Scone
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x5
-                </code>
-                : SGX Gramine
-              </li>
-              <li>
-                <code className="bg-primary-foreground text-primary -mx-1 rounded-sm px-1 py-px">
-                  0x9
-                </code>
-                : TDX
-              </li>
-            </ul>
-          </>
-        ),
-        value: <Bytes>{task.deal.tag}</Bytes>,
+        tooltip: <>Indicates the execution environment type defined by iExec</>,
+        value: <Tags>{task.deal.tag}</Tags>,
       },
     }),
     ...(task.deal.app && {

@@ -34,7 +34,9 @@ function useAddressAppsAccessData({
         const iexec = await getIExec();
 
         const { count, orders } = await iexec.orderbook.fetchAppOrderbook({
+          dataset: 'any',
           app: 'any',
+          workerpool: 'any',
           requester: addressAddress,
           page: apiBatch,
           pageSize,
@@ -52,10 +54,15 @@ function useAddressAppsAccessData({
     startIndexInBatch,
     startIndexInBatch + PREVIEW_TABLE_LENGTH
   );
+  const formattedAccess =
+    access.map((access) => ({
+      ...access,
+      destination: `/app/${access.order.app.toLowerCase()}`,
+    })) ?? [];
   const count = data?.count || 0;
 
   return {
-    data: access,
+    data: formattedAccess,
     totalCount: count,
     isLoading,
     isRefetching,

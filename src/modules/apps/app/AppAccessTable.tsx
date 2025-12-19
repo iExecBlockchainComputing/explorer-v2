@@ -21,7 +21,7 @@ function useAppAccessData({
 
   const pageSize = DETAIL_TABLE_LENGTH * 2;
 
-  // API returns min 10 items, but we display only 5 per page
+  // API returns min 10 items, but we display only 8 per page
   const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
   const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
 
@@ -33,7 +33,10 @@ function useAppAccessData({
         const iexec = await getIExec();
 
         const { count, orders } = await iexec.orderbook.fetchAppOrderbook({
+          dataset: 'any',
           app: appAddress,
+          workerpool: 'any',
+          requester: 'any',
           page: apiBatch,
           pageSize,
         });
@@ -48,10 +51,15 @@ function useAppAccessData({
     startIndexInBatch,
     startIndexInBatch + DETAIL_TABLE_LENGTH
   );
+  const formattedAccess =
+    access.map((access) => ({
+      ...access,
+      destination: `/access/app/${access.orderHash?.toLowerCase?.()}`,
+    })) ?? [];
   const count = data?.count || 0;
 
   return {
-    data: access,
+    data: formattedAccess,
     totalCount: count,
     isLoading,
     isRefetching,

@@ -8,26 +8,14 @@ import { useEffect } from 'react';
 import AddressIcon from '@/components/icons/AddressIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
-import { DetailsTable } from '@/modules/DetailsTable';
 import { ErrorAlert } from '@/modules/ErrorAlert';
-import { Tabs } from '@/modules/Tabs';
 import { AddressBreadcrumbs } from '@/modules/addresses/address/AddressBreadcrumbs';
-import { AddressAppsAccessTable } from '@/modules/addresses/address/access/AddressAppsAccessTable';
-import { AddressDatasetsAccessTable } from '@/modules/addresses/address/access/AddressDatasetsAccessTable';
-import { AddressWorkerpoolsAccessTable } from '@/modules/addresses/address/access/AddressWorkerpoolsAccessTable';
+import { AddressTabsContent } from '@/modules/addresses/address/AddressTabsContent';
 import { addressQuery } from '@/modules/addresses/address/addressQuery';
-import { AddressAppsTable } from '@/modules/addresses/address/apps/AddressAppsTable';
 import { buildAddressDetails } from '@/modules/addresses/address/buildAddressDetails';
 import { buildAddressOverview } from '@/modules/addresses/address/buildAddressOverview';
-import { AddressDatasetsTable } from '@/modules/addresses/address/datasets/AddressDatasetsTable';
-import { AddressBeneficiaryDealsTable } from '@/modules/addresses/address/requests/beneficiaryDeals/AddressBeneficiaryDealsTable';
-import { AddressRequestedDealsTable } from '@/modules/addresses/address/requests/requestedDeals/AddressRequestedDealsTable';
-import { AddressRequestedTasksTable } from '@/modules/addresses/address/requests/requestedTasks/AddressRequestedTasksTable';
-import { AddressWorkerpoolsTable } from '@/modules/addresses/address/workerpools/AddressWorkerpoolsTable';
-import { AddressContributionTable } from '@/modules/addresses/address/workers/beneficiaryDeals/addressContributionTable';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import useUserStore from '@/stores/useUser.store';
-import { NotFoundError } from '@/utils/NotFoundError';
 import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { createPlaceholderDataFnForQueryKey } from '@/utils/createPlaceholderDataFnForQueryKey';
 
@@ -49,9 +37,24 @@ function useAddressData(address: string, chainId: number) {
           length: TABLE_LENGTH,
           address,
         });
+
         if (!result?.account) {
-          throw new NotFoundError();
+          return {
+            account: {
+              address: address,
+              allApps: [],
+              allContributions: [],
+              allDatasets: [],
+              allDealBeneficiary: [],
+              allDealRequester: [],
+              allWorkerpools: [],
+              locked: '0',
+              score: '0',
+              staked: '0',
+            },
+          };
         }
+
         return result;
       },
       refetchInterval: TABLE_REFETCH_INTERVAL,
@@ -77,13 +80,14 @@ function AddressRoute() {
     'APPS',
     'DATASETS',
     'WORKERPOOLS',
-    'ACCESS',
+    'RECEIVED ACCESS',
+    'GRANTED ACCESS',
   ];
   const [currentTab, setCurrentTab] = useTabParam('addressTab', tabLabels, 0);
   const { chainId, address: userAddress } = useUserStore();
   const { addressAddress } = Route.useParams();
   const {
-    data: address,
+    data: account,
     isLoading,
     isRefetching,
     isError,
@@ -115,41 +119,18 @@ function AddressRoute() {
     }
   }, [userAddress, addressAddress, fromMyActivity, navigate, chainSlug]);
 
-  const addressDetails = address ? buildAddressDetails({ address }) : undefined;
-  const addressOverview = address
-    ? buildAddressOverview({ address })
+  const addressDetails = account
+    ? buildAddressDetails({ address: account })
     : undefined;
-
-  const disabledTabs: number[] = [];
-  const disabledReasons: Record<number, string> = {};
-
-  // TODO like for other tab we have to check REQUESTS
-
-  if (!address?.allContributions?.length) {
-    disabledTabs.push(2);
-    disabledReasons[2] = 'No contributions for this address.';
-  }
-
-  if (!address?.allApps?.length) {
-    disabledTabs.push(3);
-    disabledReasons[3] = 'No apps for this address.';
-  }
-
-  if (!address?.allDatasets?.length) {
-    disabledTabs.push(4);
-    disabledReasons[4] = 'No datasets for this address.';
-  }
-
-  if (!address?.allWorkerpools?.length) {
-    disabledTabs.push(5);
-    disabledReasons[5] = 'No workerpools for this address.';
-  }
+  const addressOverview = account
+    ? buildAddressOverview({ address: account })
+    : undefined;
 
   if (!isValid) {
     return <ErrorAlert className="my-16" message="Invalid address." />;
   }
 
-  if (isError && error instanceof NotFoundError) {
+  if (isError && error && account === null) {
     return (
       <ErrorAlert className="my-16" message="No data found for this address." />
     );
@@ -163,7 +144,7 @@ function AddressRoute() {
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <AddressIcon size={24} />
             Address details
-            {!address && isError && (
+            {!account && isError && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
@@ -179,73 +160,16 @@ function AddressRoute() {
         </div>
       </div>
 
-      {hasPastError && !addressOverview ? (
-        <ErrorAlert message="An error occurred during address details loading." />
-      ) : (
-        <DetailsTable details={addressOverview || {}} zebra={false} />
-      )}
-
-      <Tabs
+      <AddressTabsContent
+        addressAddress={addressAddress}
+        address={account ?? undefined}
+        addressDetails={addressDetails}
+        addressOverview={addressOverview}
+        hasPastError={hasPastError}
+        isLoading={isLoading}
         currentTab={currentTab}
-        onTabChange={setCurrentTab}
-        tabLabels={tabLabels}
-        disabledTabs={disabledTabs}
-        disabledReasons={disabledReasons}
+        setCurrentTab={setCurrentTab}
       />
-
-      <div>
-        {currentTab === 0 &&
-          (hasPastError && !addressDetails ? (
-            <ErrorAlert message="An error occurred during address details loading." />
-          ) : (
-            <DetailsTable details={addressDetails || {}} />
-          ))}
-        {currentTab === 1 && (
-          <>
-            <AddressRequestedTasksTable addressAddress={addressAddress} />
-            <AddressRequestedDealsTable addressAddress={addressAddress} />
-            <AddressBeneficiaryDealsTable addressAddress={addressAddress} />
-          </>
-        )}
-        {currentTab === 2 && (
-          <>
-            <p className="mb-8">
-              Contributions : {address?.allContributions.length}
-            </p>
-            <p className="mb-6">Score : {address?.score}</p>
-            <AddressContributionTable addressAddress={addressAddress} />
-          </>
-        )}
-        {currentTab === 3 && (
-          <>
-            <p className="mb-6">Deployed apps : {address?.allApps.length}</p>
-            <AddressAppsTable addressAddress={addressAddress} />
-          </>
-        )}
-        {currentTab === 4 && (
-          <>
-            <p className="mb-6">
-              Deployed datasets : {address?.allDatasets.length}
-            </p>
-            <AddressDatasetsTable addressAddress={addressAddress} />
-          </>
-        )}
-        {currentTab === 5 && (
-          <>
-            <p className="mb-6">
-              Deployed workerpools : {address?.allWorkerpools.length}
-            </p>
-            <AddressWorkerpoolsTable addressAddress={addressAddress} />
-          </>
-        )}
-        {currentTab === 6 && (
-          <>
-            <AddressAppsAccessTable addressAddress={addressAddress} />
-            <AddressDatasetsAccessTable addressAddress={addressAddress} />
-            <AddressWorkerpoolsAccessTable addressAddress={addressAddress} />
-          </>
-        )}
-      </div>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { execute } from '@/graphql/poco/execute';
 import { useQuery } from '@tanstack/react-query';
 import { createFileRoute } from '@tanstack/react-router';
 import { LoaderCircle } from 'lucide-react';
+import { useState } from 'react';
 import TaskIcon from '@/components/icons/TaskIcon';
 import { BackButton } from '@/components/ui/BackButton';
 import { useTabParam } from '@/hooks/usePageParam';
@@ -11,8 +12,10 @@ import { ErrorAlert } from '@/modules/ErrorAlert';
 import { Tabs } from '@/modules/Tabs';
 import { SearcherBar } from '@/modules/search/SearcherBar';
 import { TaskBreadcrumbs } from '@/modules/tasks/task/TaskBreadcrumbs';
+import { TaskDatasetsTable } from '@/modules/tasks/task/TaskDatasetsTable';
 import { TaskRawData } from '@/modules/tasks/task/TaskRawData';
 import { buildTaskDetails } from '@/modules/tasks/task/buildTaskDetails';
+import { taskDatasetsQuery } from '@/modules/tasks/task/taskDatasetsQuery';
 import { taskQuery } from '@/modules/tasks/task/taskQuery';
 import useUserStore from '@/stores/useUser.store';
 import { NotFoundError } from '@/utils/NotFoundError';
@@ -67,8 +70,33 @@ function TasksRoute() {
     isValid,
     error,
   } = useTaskData((taskId as string).toLowerCase(), chainId!);
-  const tabLabels = ['DETAILS', 'RAW DATA'];
+  const tabLabels = ['DETAILS', 'DATASETS', 'RAW DATA'];
   const [currentTab, setCurrentTab] = useTabParam('dealTab', tabLabels, 0);
+
+  const datasetsPresenceQueryKey = [
+    chainId,
+    'task',
+    'datasetsPresence',
+    taskId,
+  ];
+  const { data: datasetsPresence } = useQuery({
+    queryKey: datasetsPresenceQueryKey,
+    enabled: !!chainId && !!task && currentTab !== 1,
+    queryFn: () =>
+      execute(taskDatasetsQuery, chainId!, {
+        taskId: (taskId as string).toLowerCase(),
+        length: 1,
+        skip: 0,
+        nextSkip: 1,
+        nextNextSkip: 2,
+      }),
+    placeholderData: (prev) => prev,
+  });
+  const hasDatasets =
+    (datasetsPresence?.task?.bulkSlice?.datasets?.length || 0) > 0;
+
+  const [isLoadingChild, setIsLoadingChild] = useState(false);
+  const [isOutdatedChild, setIsOutdatedChild] = useState(false);
 
   const taskDetails = task ? buildTaskDetails({ task }) : undefined;
 
@@ -80,6 +108,9 @@ function TasksRoute() {
     return <ErrorAlert message="Task not found." />;
   }
 
+  const showOutdated = task && (isError || isOutdatedChild);
+  const showLoading = isLoading || isRefetching || isLoadingChild;
+
   return (
     <div className="mt-8 flex flex-col gap-6">
       <div className="mt-6 flex flex-col justify-between lg:flex-row">
@@ -88,14 +119,12 @@ function TasksRoute() {
           <h1 className="flex items-center gap-2 font-sans text-2xl font-extrabold">
             <TaskIcon size={24} />
             Task details
-            {!task && isError && (
+            {showOutdated && (
               <span className="text-muted-foreground text-sm font-light">
                 (outdated)
               </span>
             )}
-            {(isLoading || isRefetching) && (
-              <LoaderCircle className="animate-spin" />
-            )}
+            {showLoading && <LoaderCircle className="animate-spin" />}
           </h1>
           <div className="flex items-center gap-2">
             <BackButton />
@@ -108,6 +137,10 @@ function TasksRoute() {
         currentTab={currentTab}
         tabLabels={tabLabels}
         onTabChange={setCurrentTab}
+        disabledTabs={task && !hasDatasets ? [1] : []}
+        disabledReasons={
+          task && !hasDatasets ? { 1: 'No datasets bulk for this task' } : {}
+        }
       />
       <div>
         {currentTab === 0 &&
@@ -117,9 +150,18 @@ function TasksRoute() {
             <DetailsTable details={taskDetails || {}} />
           ))}
         {currentTab === 1 && (
+          <TaskDatasetsTable
+            taskId={taskId}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
+          />
+        )}
+        {currentTab === 2 && (
           <TaskRawData
             taskWorkerpoolId={task?.deal.workerpool.address}
             taskId={taskId}
+            setLoading={setIsLoadingChild}
+            setOutdated={setIsOutdatedChild}
           />
         )}
       </div>

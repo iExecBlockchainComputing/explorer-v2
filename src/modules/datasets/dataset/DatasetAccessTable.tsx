@@ -34,6 +34,9 @@ function useDatasetAccessData({
 
         const { count, orders } = await iexec.orderbook.fetchDatasetOrderbook({
           dataset: datasetAddress,
+          app: 'any',
+          workerpool: 'any',
+          requester: 'any',
           page: apiBatch,
           pageSize,
         });
@@ -49,10 +52,15 @@ function useDatasetAccessData({
     startIndexInBatch,
     startIndexInBatch + DETAIL_TABLE_LENGTH
   );
+  const formattedAccess =
+    access.map((access) => ({
+      ...access,
+      destination: `/access/dataset/${access.orderHash?.toLowerCase?.()}`,
+    })) ?? [];
   const count = data?.count || 0;
 
   return {
-    data: access,
+    data: formattedAccess,
     totalCount: count,
     isLoading,
     isRefetching,

@@ -1,8 +1,7 @@
 import { TABLE_REFETCH_INTERVAL } from '@/config';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
 import { getIExec } from '@/externals/iexecSdkClient';
-import { useLoginLogout } from '@/hooks/useLoginLogout';
 import { ErrorAlert } from '@/modules/ErrorAlert';
 import JsonBlock from '@/modules/JsonBlock';
 import useUserStore from '@/stores/useUser.store';
@@ -52,17 +51,30 @@ function useTaskRawData({
 export function TaskRawData({
   taskWorkerpoolId,
   taskId,
+  setLoading,
+  setOutdated,
 }: {
   taskWorkerpoolId?: string;
   taskId: string;
+  setLoading: (loading: boolean) => void;
+  setOutdated: (outdated: boolean) => void;
 }) {
   const {
     data: tasks,
     hasPastError,
     isLoading,
+    isRefetching,
+    isError,
   } = useTaskRawData({ taskWorkerpoolId, taskId });
-  const { address: userAddress } = useUserStore();
-  const { login } = useLoginLogout();
+
+  useEffect(
+    () => setLoading(isLoading || isRefetching),
+    [isLoading, isRefetching, setLoading]
+  );
+  useEffect(
+    () => setOutdated(tasks && !isLoading && isError),
+    [tasks, isLoading, isError, setOutdated]
+  );
 
   return hasPastError && (!tasks || !tasks.length) ? (
     <ErrorAlert
@@ -72,17 +84,7 @@ export function TaskRawData({
     />
   ) : (
     <div className="dark:bg-tooltip flex max-h-none min-h-60 rounded-3xl border bg-[#fafaff] p-6">
-      {!userAddress ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
-          <h1 className="text-2xl font-bold">You are not connected</h1>
-          <p className="text-muted-foreground max-w-sm">
-            To access task raw data please connect your wallet.
-          </p>
-          <div className="flex gap-4">
-            <Button onClick={login}>Connect wallet</Button>
-          </div>
-        </div>
-      ) : isLoading ? (
+      {isLoading ? (
         <p>Loading...</p>
       ) : (
         <JsonBlock className="w-full" collapsed={5}>

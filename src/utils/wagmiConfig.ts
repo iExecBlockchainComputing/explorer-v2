@@ -31,6 +31,7 @@ injectedWalletProvider.requestProviders();
 // Preserved wallet providers IDs
 const preservedId = [
   'io.metamask', // Metamask
+  'io.metamask.flask', // MetaMask Flask
   'com.coinbase.wallet', // Coinbase Wallet
   'com.brave.wallet', // Brave Wallet
   'walletConnect', // WalletConnect
@@ -65,7 +66,7 @@ const networks = Object.values(wagmiNetworks) as [
 ];
 
 export const wagmiAdapter = new WagmiAdapter({
-  networks: networks,
+  networks,
   multiInjectedProviderDiscovery: false,
   transports: Object.fromEntries(
     Object.values(wagmiNetworks).map((network) => [network.id, http()])
@@ -85,7 +86,7 @@ const featuredWalletIds = [
 
 createAppKit({
   adapters: [wagmiAdapter],
-  networks: networks,
+  networks,
   projectId,
   featuredWalletIds,
   features: {

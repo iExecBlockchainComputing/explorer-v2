@@ -21,7 +21,7 @@ function useWorkerpoolAccessData({
 
   const pageSize = DETAIL_TABLE_LENGTH * 2;
 
-  // API returns min 10 items, but we display only 5 per page
+  // API returns min 10 items, but we display only 8 per page
   const apiBatch = Math.floor((currentPage * DETAIL_TABLE_LENGTH) / pageSize);
   const startIndexInBatch = (currentPage * DETAIL_TABLE_LENGTH) % pageSize;
 
@@ -40,7 +40,10 @@ function useWorkerpoolAccessData({
 
         const { count, orders } =
           await iexec.orderbook.fetchWorkerpoolOrderbook({
+            dataset: 'any',
+            app: 'any',
             workerpool: workerpoolAddress,
+            requester: 'any',
             page: apiBatch,
             pageSize,
           });
@@ -57,10 +60,15 @@ function useWorkerpoolAccessData({
     startIndexInBatch,
     startIndexInBatch + DETAIL_TABLE_LENGTH
   );
+  const formattedAccess =
+    access.map((access) => ({
+      ...access,
+      destination: `/access/workerpool/${access.orderHash?.toLowerCase?.()}`,
+    })) ?? [];
   const count = data?.count || 0;
 
   return {
-    data: access,
+    data: formattedAccess,
     totalCount: count,
     isLoading,
     isRefetching,

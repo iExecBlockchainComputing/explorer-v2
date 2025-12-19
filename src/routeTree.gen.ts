@@ -16,7 +16,6 @@ import { Route as ChainSlugLayoutRouteImport } from './routes/$chainSlug/_layout
 import { Route as ChainSlugLayoutIndexRouteImport } from './routes/$chainSlug/_layout/index'
 import { Route as ChainSlugLayoutWorkerpoolsRouteImport } from './routes/$chainSlug/_layout/workerpools'
 import { Route as ChainSlugLayoutTasksRouteImport } from './routes/$chainSlug/_layout/tasks'
-import { Route as ChainSlugLayoutFaucetRouteImport } from './routes/$chainSlug/_layout/faucet'
 import { Route as ChainSlugLayoutDealsRouteImport } from './routes/$chainSlug/_layout/deals'
 import { Route as ChainSlugLayoutDatasetsRouteImport } from './routes/$chainSlug/_layout/datasets'
 import { Route as ChainSlugLayoutAppsRouteImport } from './routes/$chainSlug/_layout/apps'
@@ -30,6 +29,9 @@ import { Route as ChainSlugLayoutDealDealIdRouteImport } from './routes/$chainSl
 import { Route as ChainSlugLayoutDatasetDatasetAddressRouteImport } from './routes/$chainSlug/_layout/dataset/$datasetAddress'
 import { Route as ChainSlugLayoutAppAppAddressRouteImport } from './routes/$chainSlug/_layout/app/$appAddress'
 import { Route as ChainSlugLayoutAddressAddressAddressRouteImport } from './routes/$chainSlug/_layout/address/$addressAddress'
+import { Route as ChainSlugLayoutAccessWorkerpoolAccessHashRouteImport } from './routes/$chainSlug/_layout/access/workerpool/$accessHash'
+import { Route as ChainSlugLayoutAccessDatasetAccessHashRouteImport } from './routes/$chainSlug/_layout/access/dataset/$accessHash'
+import { Route as ChainSlugLayoutAccessAppAccessHashRouteImport } from './routes/$chainSlug/_layout/access/app/$accessHash'
 
 const ChainSlugRouteImport = createFileRoute('/$chainSlug')()
 
@@ -61,11 +63,6 @@ const ChainSlugLayoutWorkerpoolsRoute =
 const ChainSlugLayoutTasksRoute = ChainSlugLayoutTasksRouteImport.update({
   id: '/tasks',
   path: '/tasks',
-  getParentRoute: () => ChainSlugLayoutRoute,
-} as any)
-const ChainSlugLayoutFaucetRoute = ChainSlugLayoutFaucetRouteImport.update({
-  id: '/faucet',
-  path: '/faucet',
   getParentRoute: () => ChainSlugLayoutRoute,
 } as any)
 const ChainSlugLayoutDealsRoute = ChainSlugLayoutDealsRouteImport.update({
@@ -140,6 +137,24 @@ const ChainSlugLayoutAddressAddressAddressRoute =
     path: '/address/$addressAddress',
     getParentRoute: () => ChainSlugLayoutRoute,
   } as any)
+const ChainSlugLayoutAccessWorkerpoolAccessHashRoute =
+  ChainSlugLayoutAccessWorkerpoolAccessHashRouteImport.update({
+    id: '/access/workerpool/$accessHash',
+    path: '/access/workerpool/$accessHash',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+const ChainSlugLayoutAccessDatasetAccessHashRoute =
+  ChainSlugLayoutAccessDatasetAccessHashRouteImport.update({
+    id: '/access/dataset/$accessHash',
+    path: '/access/dataset/$accessHash',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
+const ChainSlugLayoutAccessAppAccessHashRoute =
+  ChainSlugLayoutAccessAppAccessHashRouteImport.update({
+    id: '/access/app/$accessHash',
+    path: '/access/app/$accessHash',
+    getParentRoute: () => ChainSlugLayoutRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -149,7 +164,6 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/apps': typeof ChainSlugLayoutAppsRoute
   '/$chainSlug/datasets': typeof ChainSlugLayoutDatasetsRoute
   '/$chainSlug/deals': typeof ChainSlugLayoutDealsRoute
-  '/$chainSlug/faucet': typeof ChainSlugLayoutFaucetRoute
   '/$chainSlug/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/': typeof ChainSlugLayoutIndexRoute
@@ -161,6 +175,9 @@ export interface FileRoutesByFullPath {
   '/$chainSlug/task/$taskId': typeof ChainSlugLayoutTaskTaskIdRoute
   '/$chainSlug/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
+  '/$chainSlug/access/app/$accessHash': typeof ChainSlugLayoutAccessAppAccessHashRoute
+  '/$chainSlug/access/dataset/$accessHash': typeof ChainSlugLayoutAccessDatasetAccessHashRoute
+  '/$chainSlug/access/workerpool/$accessHash': typeof ChainSlugLayoutAccessWorkerpoolAccessHashRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -170,7 +187,6 @@ export interface FileRoutesByTo {
   '/$chainSlug/apps': typeof ChainSlugLayoutAppsRoute
   '/$chainSlug/datasets': typeof ChainSlugLayoutDatasetsRoute
   '/$chainSlug/deals': typeof ChainSlugLayoutDealsRoute
-  '/$chainSlug/faucet': typeof ChainSlugLayoutFaucetRoute
   '/$chainSlug/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/address/$addressAddress': typeof ChainSlugLayoutAddressAddressAddressRoute
@@ -181,6 +197,9 @@ export interface FileRoutesByTo {
   '/$chainSlug/task/$taskId': typeof ChainSlugLayoutTaskTaskIdRoute
   '/$chainSlug/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
+  '/$chainSlug/access/app/$accessHash': typeof ChainSlugLayoutAccessAppAccessHashRoute
+  '/$chainSlug/access/dataset/$accessHash': typeof ChainSlugLayoutAccessDatasetAccessHashRoute
+  '/$chainSlug/access/workerpool/$accessHash': typeof ChainSlugLayoutAccessWorkerpoolAccessHashRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -192,7 +211,6 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/apps': typeof ChainSlugLayoutAppsRoute
   '/$chainSlug/_layout/datasets': typeof ChainSlugLayoutDatasetsRoute
   '/$chainSlug/_layout/deals': typeof ChainSlugLayoutDealsRoute
-  '/$chainSlug/_layout/faucet': typeof ChainSlugLayoutFaucetRoute
   '/$chainSlug/_layout/tasks': typeof ChainSlugLayoutTasksRoute
   '/$chainSlug/_layout/workerpools': typeof ChainSlugLayoutWorkerpoolsRoute
   '/$chainSlug/_layout/': typeof ChainSlugLayoutIndexRoute
@@ -204,6 +222,9 @@ export interface FileRoutesById {
   '/$chainSlug/_layout/task/$taskId': typeof ChainSlugLayoutTaskTaskIdRoute
   '/$chainSlug/_layout/tx/$txHash': typeof ChainSlugLayoutTxTxHashRoute
   '/$chainSlug/_layout/workerpool/$workerpoolAddress': typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
+  '/$chainSlug/_layout/access/app/$accessHash': typeof ChainSlugLayoutAccessAppAccessHashRoute
+  '/$chainSlug/_layout/access/dataset/$accessHash': typeof ChainSlugLayoutAccessDatasetAccessHashRoute
+  '/$chainSlug/_layout/access/workerpool/$accessHash': typeof ChainSlugLayoutAccessWorkerpoolAccessHashRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -215,7 +236,6 @@ export interface FileRouteTypes {
     | '/$chainSlug/apps'
     | '/$chainSlug/datasets'
     | '/$chainSlug/deals'
-    | '/$chainSlug/faucet'
     | '/$chainSlug/tasks'
     | '/$chainSlug/workerpools'
     | '/$chainSlug/'
@@ -227,6 +247,9 @@ export interface FileRouteTypes {
     | '/$chainSlug/task/$taskId'
     | '/$chainSlug/tx/$txHash'
     | '/$chainSlug/workerpool/$workerpoolAddress'
+    | '/$chainSlug/access/app/$accessHash'
+    | '/$chainSlug/access/dataset/$accessHash'
+    | '/$chainSlug/access/workerpool/$accessHash'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -236,7 +259,6 @@ export interface FileRouteTypes {
     | '/$chainSlug/apps'
     | '/$chainSlug/datasets'
     | '/$chainSlug/deals'
-    | '/$chainSlug/faucet'
     | '/$chainSlug/tasks'
     | '/$chainSlug/workerpools'
     | '/$chainSlug/address/$addressAddress'
@@ -247,6 +269,9 @@ export interface FileRouteTypes {
     | '/$chainSlug/task/$taskId'
     | '/$chainSlug/tx/$txHash'
     | '/$chainSlug/workerpool/$workerpoolAddress'
+    | '/$chainSlug/access/app/$accessHash'
+    | '/$chainSlug/access/dataset/$accessHash'
+    | '/$chainSlug/access/workerpool/$accessHash'
   id:
     | '__root__'
     | '/'
@@ -257,7 +282,6 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/apps'
     | '/$chainSlug/_layout/datasets'
     | '/$chainSlug/_layout/deals'
-    | '/$chainSlug/_layout/faucet'
     | '/$chainSlug/_layout/tasks'
     | '/$chainSlug/_layout/workerpools'
     | '/$chainSlug/_layout/'
@@ -269,6 +293,9 @@ export interface FileRouteTypes {
     | '/$chainSlug/_layout/task/$taskId'
     | '/$chainSlug/_layout/tx/$txHash'
     | '/$chainSlug/_layout/workerpool/$workerpoolAddress'
+    | '/$chainSlug/_layout/access/app/$accessHash'
+    | '/$chainSlug/_layout/access/dataset/$accessHash'
+    | '/$chainSlug/_layout/access/workerpool/$accessHash'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -318,13 +345,6 @@ declare module '@tanstack/react-router' {
       path: '/tasks'
       fullPath: '/$chainSlug/tasks'
       preLoaderRoute: typeof ChainSlugLayoutTasksRouteImport
-      parentRoute: typeof ChainSlugLayoutRoute
-    }
-    '/$chainSlug/_layout/faucet': {
-      id: '/$chainSlug/_layout/faucet'
-      path: '/faucet'
-      fullPath: '/$chainSlug/faucet'
-      preLoaderRoute: typeof ChainSlugLayoutFaucetRouteImport
       parentRoute: typeof ChainSlugLayoutRoute
     }
     '/$chainSlug/_layout/deals': {
@@ -418,6 +438,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChainSlugLayoutAddressAddressAddressRouteImport
       parentRoute: typeof ChainSlugLayoutRoute
     }
+    '/$chainSlug/_layout/access/workerpool/$accessHash': {
+      id: '/$chainSlug/_layout/access/workerpool/$accessHash'
+      path: '/access/workerpool/$accessHash'
+      fullPath: '/$chainSlug/access/workerpool/$accessHash'
+      preLoaderRoute: typeof ChainSlugLayoutAccessWorkerpoolAccessHashRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/access/dataset/$accessHash': {
+      id: '/$chainSlug/_layout/access/dataset/$accessHash'
+      path: '/access/dataset/$accessHash'
+      fullPath: '/$chainSlug/access/dataset/$accessHash'
+      preLoaderRoute: typeof ChainSlugLayoutAccessDatasetAccessHashRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
+    '/$chainSlug/_layout/access/app/$accessHash': {
+      id: '/$chainSlug/_layout/access/app/$accessHash'
+      path: '/access/app/$accessHash'
+      fullPath: '/$chainSlug/access/app/$accessHash'
+      preLoaderRoute: typeof ChainSlugLayoutAccessAppAccessHashRouteImport
+      parentRoute: typeof ChainSlugLayoutRoute
+    }
   }
 }
 
@@ -427,7 +468,6 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutAppsRoute: typeof ChainSlugLayoutAppsRoute
   ChainSlugLayoutDatasetsRoute: typeof ChainSlugLayoutDatasetsRoute
   ChainSlugLayoutDealsRoute: typeof ChainSlugLayoutDealsRoute
-  ChainSlugLayoutFaucetRoute: typeof ChainSlugLayoutFaucetRoute
   ChainSlugLayoutTasksRoute: typeof ChainSlugLayoutTasksRoute
   ChainSlugLayoutWorkerpoolsRoute: typeof ChainSlugLayoutWorkerpoolsRoute
   ChainSlugLayoutIndexRoute: typeof ChainSlugLayoutIndexRoute
@@ -439,6 +479,9 @@ interface ChainSlugLayoutRouteChildren {
   ChainSlugLayoutTaskTaskIdRoute: typeof ChainSlugLayoutTaskTaskIdRoute
   ChainSlugLayoutTxTxHashRoute: typeof ChainSlugLayoutTxTxHashRoute
   ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute: typeof ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute
+  ChainSlugLayoutAccessAppAccessHashRoute: typeof ChainSlugLayoutAccessAppAccessHashRoute
+  ChainSlugLayoutAccessDatasetAccessHashRoute: typeof ChainSlugLayoutAccessDatasetAccessHashRoute
+  ChainSlugLayoutAccessWorkerpoolAccessHashRoute: typeof ChainSlugLayoutAccessWorkerpoolAccessHashRoute
 }
 
 const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
@@ -447,7 +490,6 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
   ChainSlugLayoutAppsRoute: ChainSlugLayoutAppsRoute,
   ChainSlugLayoutDatasetsRoute: ChainSlugLayoutDatasetsRoute,
   ChainSlugLayoutDealsRoute: ChainSlugLayoutDealsRoute,
-  ChainSlugLayoutFaucetRoute: ChainSlugLayoutFaucetRoute,
   ChainSlugLayoutTasksRoute: ChainSlugLayoutTasksRoute,
   ChainSlugLayoutWorkerpoolsRoute: ChainSlugLayoutWorkerpoolsRoute,
   ChainSlugLayoutIndexRoute: ChainSlugLayoutIndexRoute,
@@ -462,6 +504,12 @@ const ChainSlugLayoutRouteChildren: ChainSlugLayoutRouteChildren = {
   ChainSlugLayoutTxTxHashRoute: ChainSlugLayoutTxTxHashRoute,
   ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute:
     ChainSlugLayoutWorkerpoolWorkerpoolAddressRoute,
+  ChainSlugLayoutAccessAppAccessHashRoute:
+    ChainSlugLayoutAccessAppAccessHashRoute,
+  ChainSlugLayoutAccessDatasetAccessHashRoute:
+    ChainSlugLayoutAccessDatasetAccessHashRoute,
+  ChainSlugLayoutAccessWorkerpoolAccessHashRoute:
+    ChainSlugLayoutAccessWorkerpoolAccessHashRoute,
 }
 
 const ChainSlugLayoutRouteWithChildren = ChainSlugLayoutRoute._addFileChildren(
