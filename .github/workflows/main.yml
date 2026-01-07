@@ -1,11 +1,18 @@
-name: main-ci
+name: 'CI - Lint, Build & Test'
 
 on:
+  workflow_dispatch:
   push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repo
@@ -20,8 +27,28 @@ jobs:
           npm -v
           npm ci --no-fund
 
+      - name: Generate GraphQL types
+        run: npm run codegen
+
       - name: Check Prettier
         run: npm run check-format
 
       - name: Lint
         run: npm run lint
+
+      - name: Build application
+        run: npm run build
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright Tests
+        run: npx playwright test
+
+      - name: Upload Playwright Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
