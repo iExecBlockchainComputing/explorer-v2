@@ -46,7 +46,6 @@ export function SchemaSearch({
   return (
     <div className="rounded-2xl border">
       <button
-        id="schema-search-button"
         aria-label="Toggle schema search filters"
         className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}
