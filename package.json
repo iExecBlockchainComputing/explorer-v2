@@ -15,7 +15,8 @@
     "watch:codegen": "npm run watch:codegen:poco",
     "codegen:poco": "graphql-codegen --config codegenPoco.ts",
     "codegen:dataprotector": "graphql-codegen --config codegenDataprotector.ts",
-    "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch"
+    "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch",
+    "test": "npx playwright test tests/"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.58.0",
@@ -69,6 +70,7 @@
     "@graphql-codegen/cli": "^6.1.0",
     "@graphql-codegen/schema-ast": "^5.0.0",
     "@parcel/watcher": "^2.5.1",
+    "@playwright/test": "^1.57.0",
     "@tanstack/router-plugin": "^1.140.0",
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@types/big.js": "^6.2.2",

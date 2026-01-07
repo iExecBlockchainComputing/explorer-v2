@@ -33,8 +33,12 @@ export function Navbar() {
 
   return (
     <nav className="flex items-center justify-between py-6">
-      <ChainLink to="/" className="-m-2 flex items-center gap-2 p-2 font-mono">
-        <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
+      <ChainLink
+        to="/"
+        aria-label="Home"
+        className="-m-2 flex items-center gap-2 p-2 font-mono"
+      >
+        <img src={iExecLogo} width="25" height="25" alt="" />
         <span className="hidden lg:block">iExec Explorer</span>
       </ChainLink>
       <div className="mr-8 flex items-center gap-4 md:mr-0">
@@ -76,6 +80,8 @@ export function Navbar() {
                   <button
                     type="button"
                     className="inline-flex items-center gap-2"
+                    id="logout-button"
+                    aria-label="Logout"
                     onClick={() => logout()}
                   >
                     Logout
@@ -103,6 +109,7 @@ export function Navbar() {
             className="absolute -inset-2 size-10 cursor-pointer appearance-none bg-transparent"
             name="menu"
             id="menu"
+            aria-label="Toggle navigation menu"
             checked={isMenuOpen}
             readOnly
           />
@@ -113,8 +120,13 @@ export function Navbar() {
 
         <div className="border-secondary bg-background pointer-events-auto fixed inset-y-0 left-0 z-10 flex w-full -translate-x-full flex-col overflow-auto rounded-r-3xl border-r px-6 pt-6 duration-200 group-has-[:checked]:translate-x-0 lg:w-[255px] lg:translate-x-0">
           <div className="-m-2 mr-6 flex items-center justify-between gap-2 py-2 pl-2">
-            <ChainLink to="/" className="font-mono" onClick={handleMenuToggle}>
-              <img src={iExecLogo} width="25" height="25" alt="iExec logo" />
+            <ChainLink
+              to="/"
+              aria-label="Home"
+              className="font-mono"
+              onClick={handleMenuToggle}
+            >
+              <img src={iExecLogo} width="25" height="25" alt="" />
             </ChainLink>
             {isConnected ? (
               <div className="flex max-w-[1260px] items-center gap-2">
@@ -122,6 +134,8 @@ export function Navbar() {
 
                 <button
                   type="button"
+                  id="logout-button"
+                  aria-label="Logout"
                   className="hover:drop-shadow-link-hover p-1"
                   onClick={() => logout()}
                 >
