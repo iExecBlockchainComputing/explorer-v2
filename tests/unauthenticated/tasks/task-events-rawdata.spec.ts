@@ -33,8 +33,10 @@ test.describe('Task Events and Raw Data', () => {
     
     // Check for connection requirement or raw data (like in deals)
     const connectionMessage = page.getByText(/You are not connected|To access task raw data/);
-    const jsonContent = page.locator('pre, code, .json, .raw-data')
-      .filter({ hasText: /\{.*\}|\[.*\]/ });
+    const rawJsonBlocks = page.locator('pre, code, .json, .raw-data');
+    const jsonContent = rawJsonBlocks
+      .filter({ hasText: '{' })
+      .or(page.locator('pre, code, .json, .raw-data').filter({ hasText: '[' }));
     
     const hasConnectionMessage = await connectionMessage.count() > 0;
     const hasJsonData = await jsonContent.count() > 0;
@@ -48,7 +50,7 @@ test.describe('Task Events and Raw Data', () => {
       // If connected, verify JSON data
       await expect(jsonContent.first()).toBeVisible();
       const jsonText = await jsonContent.first().textContent();
-      expect(jsonText).toMatch(/[\{\[]/); // Should start with { or [
+      expect(jsonText).toMatch(/^[[{]/); // Should start with { or [
     }
     
     // Test refresh functionality for raw data (implicit through tab navigation like deals)

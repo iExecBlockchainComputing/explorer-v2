@@ -220,9 +220,12 @@ test.describe('Dataset Advanced Filters', () => {
       expect(afterResetUrl).not.toBe(beforeResetUrl);
 
       // Check that we're back to unfiltered state
-      const unfilteredRows = page.getByRole('row').filter({ hasNot: page.getByRole('columnheader') });
+      const unfilteredRows = page
+        .getByRole('row')
+        .filter({ hasNot: page.getByRole('columnheader') });
       const unfilteredRowCount = await unfilteredRows.count();
-      console.log(`After reset results: ${unilteredRowCount}`);
+      console.log(`After reset results: ${unfilteredRowCount}`);
+      expect(unfilteredRowCount).toBeGreaterThan(0);
     }
 
     // 12. Test filter performance with large datasets

@@ -26,6 +26,8 @@ test.describe('Apps Table Structure and Data Display', () => {
     
     // Verify copy buttons are present for addresses
     const copyButtons = page.locator('button').filter({ hasText: '' });
-    // Note: Copy buttons exist but don't have visible text, they have icons
+    if ((await copyButtons.count()) > 0) {
+      await expect(copyButtons.first()).toBeVisible();
+    }
   });
 });

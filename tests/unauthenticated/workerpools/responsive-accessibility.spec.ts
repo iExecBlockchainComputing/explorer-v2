@@ -60,7 +60,10 @@ test.describe('Responsive Design and Accessibility', () => {
     
     // Verify mobile-specific UI adaptations
     const mobileElements = page.locator('.mobile-only, .sm\\:hidden, .md\\:hidden');
-    // These elements should be visible or properly handled on mobile
+    const mobileElementCount = await mobileElements.count();
+    if (mobileElementCount > 0) {
+      await expect(mobileElements.first()).toBeVisible();
+    }
     
     // Check that truncated content is properly displayed
     const truncatedText = page.getByText(/0x[a-fA-F0-9]{8}\.{3}/);
