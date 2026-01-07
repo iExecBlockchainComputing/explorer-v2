@@ -28,6 +28,9 @@ jobs:
           npm ci --no-fund
 
       - name: Generate GraphQL types
+        env:
+          VITE_POCO_SUBGRAPH_URL: ${{ secrets.VITE_POCO_SUBGRAPH_URL }}
+          VITE_DATAPROTECTOR_SUBGRAPH_URL: ${{ secrets.VITE_DATAPROTECTOR_SUBGRAPH_URL }}
         run: npm run codegen
 
       - name: Check Prettier
@@ -37,12 +40,24 @@ jobs:
         run: npm run lint
 
       - name: Build application
+        env:
+          VITE_POCO_SUBGRAPH_URL: ${{ secrets.VITE_POCO_SUBGRAPH_URL }}
+          VITE_DATAPROTECTOR_SUBGRAPH_URL: ${{ secrets.VITE_DATAPROTECTOR_SUBGRAPH_URL }}
+          VITE_REOWN_PROJECT_ID: ${{ secrets.VITE_REOWN_PROJECT_ID }}
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_FAUCET_API_URL: ${{ secrets.VITE_FAUCET_API_URL }}
         run: npm run build
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
       - name: Run Playwright Tests
+        env:
+          VITE_POCO_SUBGRAPH_URL: ${{ secrets.VITE_POCO_SUBGRAPH_URL }}
+          VITE_DATAPROTECTOR_SUBGRAPH_URL: ${{ secrets.VITE_DATAPROTECTOR_SUBGRAPH_URL }}
+          VITE_REOWN_PROJECT_ID: ${{ secrets.VITE_REOWN_PROJECT_ID }}
+          VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
+          VITE_FAUCET_API_URL: ${{ secrets.VITE_FAUCET_API_URL }}
         run: npx playwright test
 
       - name: Upload Playwright Report
