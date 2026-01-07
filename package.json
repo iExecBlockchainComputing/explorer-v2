@@ -15,7 +15,8 @@
     "watch:codegen": "npm run watch:codegen:poco",
     "codegen:poco": "graphql-codegen --config codegenPoco.ts",
     "codegen:dataprotector": "graphql-codegen --config codegenDataprotector.ts",
-    "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch"
+    "watch:codegen:poco": "graphql-codegen --config codegenPoco.ts --watch",
+    "test": "npx playwright test tests/"
   },
   "dependencies": {
     "@clerk/clerk-react": "^5.51.0",
