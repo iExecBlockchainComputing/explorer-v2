@@ -95,6 +95,7 @@ export const PaginatedNavigation = ({
         pages.push(1, 'ellipsis', currentPage, 'ellipsis', stableTotalPages);
       }
     } else {
+      // Desktop: full pagination logic
       pages.push(1);
 
       if (currentPage <= 3) {

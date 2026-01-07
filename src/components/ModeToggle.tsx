@@ -34,7 +34,7 @@ export function ModeToggle() {
             size="none"
             role="radio"
             aria-checked={selected}
-            aria-label={label}
+            aria-label={`Toggle ${label} mode`}
             title={label}
             className={cn(
               'text-foreground hover:bg-muted p-1',

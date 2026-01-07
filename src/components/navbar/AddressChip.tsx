@@ -42,6 +42,7 @@ export function AddressChip({ address }: { address: string }) {
           <Button
             className="dark:bg-popover bg-primary-foreground hover:bg-muted text-primary dark:text-brand duration-300"
             variant="secondary"
+            aria-label="Copy connected wallet address"
             onClick={handleCopy}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
