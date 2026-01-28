@@ -65,6 +65,8 @@ const CopyButton = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className="hover:before:bg-muted active:before:bg-secondary relative z-0 -mx-1 -my-1 flex items-center gap-1 px-1 py-1 transition-colors before:absolute before:inset-0 before:-z-10 before:rounded-lg before:duration-200 active:before:scale-x-[0.98] active:before:scale-y-[0.94]"
+              type="button"
+              aria-label="Copy"
             >
               {buttonText && <span className="mr-1 text-sm">{buttonText}</span>}
               <Copy className="size-4 flex-none" />

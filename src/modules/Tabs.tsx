@@ -62,6 +62,7 @@ export function Tabs({
           left: `${indicatorStyle.left}px`,
           width: `${indicatorStyle.width}px`,
         }}
+        role="tablist"
       />
 
       {tabLabels.map((label, index) => {
@@ -73,6 +74,8 @@ export function Tabs({
             key={label}
             data-tab-index={index}
             variant="link"
+            role="tab"
+            aria-selected={currentTab === index}
             size={'none'}
             onClick={() => {
               if (!isDisabled) onTabChange(index);

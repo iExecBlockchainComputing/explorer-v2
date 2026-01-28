@@ -46,6 +46,7 @@ export function SchemaSearch({
   return (
     <div className="rounded-2xl border">
       <button
+        aria-label="Toggle schema search filters"
         className={cn('flex w-full items-center gap-2 px-10 py-6 duration-200')}
         onClick={() => setIsOpen(!isOpen)}
       >
@@ -103,7 +104,11 @@ export function SchemaSearch({
                   >
                     <span className={cn('inline-block')}>{schema.path}</span>
                     <span className={cn('inline-block')}>: {schema.type}</span>
-                    <button onClick={() => onRemoveFilter(index)}>
+                    <button
+                      type="button"
+                      aria-label={`Remove filter ${schema.path} of type ${schema.type}`}
+                      onClick={() => onRemoveFilter(index)}
+                    >
                       <X className="ml-1" size={12} />
                     </button>
                   </span>
