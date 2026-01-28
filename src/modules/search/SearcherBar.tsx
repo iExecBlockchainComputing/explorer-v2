@@ -156,7 +156,6 @@ export function SearcherBar({
           onKeyDown={handleKeyDown}
           disabled={isPending}
           type="search"
-          role="searchbox"
           aria-label="Search for addresses, deal IDs, task IDs, or transaction hashes"
           aria-describedby={localError || error ? searchErrorId : undefined}
           className={cn(
@@ -196,7 +195,6 @@ export function SearcherBar({
                 ? 'Searching in progress'
                 : 'Search for the entered value'
             }
-            tabIndex={0}
           >
             {isPending ? 'Searching...' : 'Search'}
           </Button>
