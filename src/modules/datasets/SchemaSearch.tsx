@@ -106,7 +106,6 @@ export function SchemaSearch({
                     <span className={cn('inline-block')}>: {schema.type}</span>
                     <button
                       type="button"
-                      id={`remove-filter-${index}`}
                       aria-label={`Remove filter ${schema.path} of type ${schema.type}`}
                       onClick={() => onRemoveFilter(index)}
                     >

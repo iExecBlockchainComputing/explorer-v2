@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate, useParams } from '@tanstack/react-router';
 import { Search } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
@@ -20,6 +20,7 @@ export function SearcherBar({
   initialSearch?: string;
 }) {
   const { isConnected } = useUserStore();
+  const searchErrorId = useId();
   const [inputValue, setInputValue] = useState('');
   const [shake, setShake] = useState(false);
   const [errorCount, setErrorCount] = useState(0);
@@ -157,7 +158,7 @@ export function SearcherBar({
           type="search"
           role="searchbox"
           aria-label="Search for addresses, deal IDs, task IDs, or transaction hashes"
-          aria-describedby={localError || error ? 'search-error' : undefined}
+          aria-describedby={localError || error ? searchErrorId : undefined}
           className={cn(
             'bg-muted border-secondary w-full rounded-2xl py-5.5 pl-12 sm:py-6.5',
             isConnected && 'sm:pr-32',
@@ -169,7 +170,7 @@ export function SearcherBar({
         />
         {(localError || error) && (
           <p
-            id="search-error"
+            id={searchErrorId}
             role="alert"
             aria-live="polite"
             className="bg-danger text-danger-foreground border-danger-border absolute -bottom-8 rounded-full border px-4"
