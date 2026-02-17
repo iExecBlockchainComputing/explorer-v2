@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.30.0...iexec-explorer-v1.31.0) (2026-02-17)
+
+
+### 🚀 Features
+
+* add support for TDX ([#113](https://github.com/iExecBlockchainComputing/explorer-v2/issues/113)) ([3fd4b34](https://github.com/iExecBlockchainComputing/explorer-v2/commit/3fd4b342add57dde4930037764324eba108ef88a))
+
 ## [1.30.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.3...iexec-explorer-v1.30.0) (2026-01-28)
 
 
