@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.31.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.31.0...iexec-explorer-v1.31.1) (2026-02-18)
+
+
+### 🐞 Bug Fixes
+
+* don't display "Datasets bulk" on deals without dataset bulk ([#115](https://github.com/iExecBlockchainComputing/explorer-v2/issues/115)) ([7ba088f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/7ba088fac51aea22b0447b8faf734cb5977c810a))
+
 ## [1.31.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.30.0...iexec-explorer-v1.31.0) (2026-02-17)
 
 
