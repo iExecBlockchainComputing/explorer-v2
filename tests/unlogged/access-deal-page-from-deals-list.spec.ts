@@ -25,6 +25,5 @@ test.describe('Deal Details Page', () => {
 
     // Verify that the TASKS tab is visible
     await expect(page.getByRole('tab', { name: 'TASKS' })).toBeVisible();
-    await expect(page.getByRole('tab', { name: 'TASKS' })).toBeVisible();
   });
 });
