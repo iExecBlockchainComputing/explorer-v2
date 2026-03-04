@@ -75,6 +75,7 @@ export function Tabs({
             data-tab-index={index}
             variant="link"
             role="tab"
+            aria-selected={currentTab === index}
             size={'none'}
             onClick={() => {
               if (!isDisabled) onTabChange(index);

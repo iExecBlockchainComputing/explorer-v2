@@ -1,5 +1,26 @@
 # Changelog
 
+## [1.31.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.31.0...iexec-explorer-v1.31.1) (2026-02-18)
+
+
+### 🐞 Bug Fixes
+
+* don't display "Datasets bulk" on deals without dataset bulk ([#115](https://github.com/iExecBlockchainComputing/explorer-v2/issues/115)) ([7ba088f](https://github.com/iExecBlockchainComputing/explorer-v2/commit/7ba088fac51aea22b0447b8faf734cb5977c810a))
+
+## [1.31.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.30.0...iexec-explorer-v1.31.0) (2026-02-17)
+
+
+### 🚀 Features
+
+* add support for TDX ([#113](https://github.com/iExecBlockchainComputing/explorer-v2/issues/113)) ([3fd4b34](https://github.com/iExecBlockchainComputing/explorer-v2/commit/3fd4b342add57dde4930037764324eba108ef88a))
+
+## [1.30.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.3...iexec-explorer-v1.30.0) (2026-01-28)
+
+
+### 🚀 Features
+
+* better accessibility  ([#110](https://github.com/iExecBlockchainComputing/explorer-v2/issues/110)) ([50dd330](https://github.com/iExecBlockchainComputing/explorer-v2/commit/50dd330535dc0692cc4b9a1781cff6b91aaa37bd))
+
 ## [1.29.3](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.29.2...iexec-explorer-v1.29.3) (2025-12-10)
 
 

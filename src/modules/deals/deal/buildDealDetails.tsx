@@ -106,21 +106,22 @@ export function buildDealDetails({
       ),
       'Dataset price': <p>{deal.datasetPrice}</p>,
     }),
-    ...(deal.dataset === null && {
-      Dataset: (
-        <p>
-          Datasets bulk{' '}
-          <Button
-            variant="link"
-            size="none"
-            className="ml-1"
-            onClick={onSeeTasks}
-          >
-            (see tasks for details)
-          </Button>
-        </p>
-      ),
-    }),
+    ...(deal.dataset === null &&
+      deal.bulk && {
+        Dataset: (
+          <p>
+            Datasets bulk{' '}
+            <Button
+              variant="link"
+              size="none"
+              className="ml-1"
+              onClick={onSeeTasks}
+            >
+              (see tasks for details)
+            </Button>
+          </p>
+        ),
+      }),
     ...(deal.workerpool && {
       Workerpool: (
         <div className="flex flex-wrap items-center gap-1">

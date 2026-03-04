@@ -80,7 +80,6 @@ export function Navbar() {
                   <button
                     type="button"
                     className="inline-flex items-center gap-2"
-                    id="logout-button"
                     aria-label="Logout"
                     onClick={() => logout()}
                   >
@@ -134,7 +133,6 @@ export function Navbar() {
 
                 <button
                   type="button"
-                  id="logout-button"
                   aria-label="Logout"
                   className="hover:drop-shadow-link-hover p-1"
                   onClick={() => logout()}
