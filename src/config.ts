@@ -47,6 +47,7 @@ export const SUPPORTED_CHAINS = [
   },
   {
     id: 134,
+    deprecated: true,
     name: 'Bellecour',
     slug: 'bellecour',
     color: '#95A4FC',
