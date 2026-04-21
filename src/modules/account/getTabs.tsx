@@ -192,6 +192,7 @@ export function getTabs({
     },
   ].filter((tab, index) => {
     const chain = getChainFromId(chainId);
+    if (index === 0 && (!chain || chain.deprecated)) return false; // hide deposit if chain is deprecated
     if (index === 2 && (!chain || !chain.bridge)) return false;
     return true;
   });
