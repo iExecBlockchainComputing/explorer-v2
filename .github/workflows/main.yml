@@ -27,8 +27,8 @@ jobs:
 
       - name: Generate GraphQL types
         env:
-          VITE_POCO_SUBGRAPH_URL: ${{ secrets.VITE_POCO_SUBGRAPH_URL }}
-          VITE_DATAPROTECTOR_SUBGRAPH_URL: ${{ secrets.VITE_DATAPROTECTOR_SUBGRAPH_URL }}
+          CODEGEN_POCO_SUBGRAPH_URL: ${{ vars.CODEGEN_POCO_SUBGRAPH_URL }}
+          CODEGEN_DATAPROTECTOR_SUBGRAPH_URL: ${{ vars.CODEGEN_DATAPROTECTOR_SUBGRAPH_URL }}
         run: npm run codegen
 
       - name: Check Prettier
@@ -39,8 +39,6 @@ jobs:
 
       - name: Build application
         env:
-          VITE_POCO_SUBGRAPH_URL: ${{ secrets.VITE_POCO_SUBGRAPH_URL }}
-          VITE_DATAPROTECTOR_SUBGRAPH_URL: ${{ secrets.VITE_DATAPROTECTOR_SUBGRAPH_URL }}
           VITE_REOWN_PROJECT_ID: ${{ secrets.VITE_REOWN_PROJECT_ID }}
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_FAUCET_API_URL: ${{ secrets.VITE_FAUCET_API_URL }}
@@ -51,8 +49,6 @@ jobs:
 
       - name: Run Playwright Tests
         env:
-          VITE_POCO_SUBGRAPH_URL: ${{ secrets.VITE_POCO_SUBGRAPH_URL }}
-          VITE_DATAPROTECTOR_SUBGRAPH_URL: ${{ secrets.VITE_DATAPROTECTOR_SUBGRAPH_URL }}
           VITE_REOWN_PROJECT_ID: ${{ secrets.VITE_REOWN_PROJECT_ID }}
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_FAUCET_API_URL: ${{ secrets.VITE_FAUCET_API_URL }}

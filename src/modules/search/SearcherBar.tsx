@@ -6,7 +6,6 @@ import { Search } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
 import { isValidAddress, isValidId } from '@/utils/addressOrIdCheck';
 import { getChainFromId, getChainFromSlug } from '@/utils/chain.utils';
@@ -59,35 +58,21 @@ export function SearcherBar({
   const { mutate, mutateAsync, isPending, isError, error } = useMutation({
     mutationKey: ['search', inputValue],
     mutationFn: async (value: string) => {
-      const isValid =
-        isValidAddress(value) || isValidId(value) || value.endsWith('.eth'); // ENS
+      const isValid = isValidAddress(value) || isValidId(value);
 
       if (!isValid) {
         throw new Error('Invalid value');
       }
 
-      let resolvedValue = value;
-
-      if (value.endsWith('.eth')) {
-        const iexec = isConnected
-          ? await getIExec()
-          : getReadonlyIExec(chainId!);
-        const resolved = await iexec.ens.resolveName(value);
-        if (!resolved) {
-          throw new Error(`Fail to resolve ENS : ${value}`);
-        }
-        resolvedValue = resolved.toLowerCase();
-      }
-
       const result = await execute(searchQuery, chainId, {
-        search: resolvedValue,
+        search: value,
       });
 
       const isEmpty = Object.values(result).every((v) => v === null);
       if (isEmpty) {
         throw new Error('No data found');
       }
-      return { result, id: resolvedValue };
+      return { result, id: value };
     },
     onSuccess: (data) => {
       const chainSlug = getChainFromId(chainId)?.slug;

@@ -4,7 +4,7 @@
 
 ## Description
 
-**iExec Explorer** is a modern web app to explore the iExec protocol across multiple supported blockchains (Bellecour, Arbitrum Sepolia, etc.). It lets you search, browse, and analyze deals, tasks, apps, datasets, workerpools, transactions, and accounts, with an integrated wallet manager.
+**iExec Explorer** is a modern web app to explore the iExec protocol across multiple supported blockchains (Arbitrum, Arbitrum Sepolia, etc.). It lets you search, browse, and analyze deals, tasks, apps, datasets, workerpools, transactions, and accounts, with an integrated wallet manager.
 
 ## Main Features
 
@@ -77,7 +77,6 @@ npm run preview
 ## Links
 - [iExec Website](https://www.iex.ec/)
 - [iExec Docs](https://docs.iex.ec/)
-- [Blockscout Bellecour](https://blockscout-bellecour.iex.ec/)
 
 ## Contributing
 Contributions are welcome! Please open issues or pull requests.
