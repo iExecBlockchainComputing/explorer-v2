@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.32.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.31.1...iexec-explorer-v1.32.0) (2026-04-21)
+
+
+### 🚀 Features
+
+* add functional tests ([#111](https://github.com/iExecBlockchainComputing/explorer-v2/issues/111)) ([7bc923d](https://github.com/iExecBlockchainComputing/explorer-v2/commit/7bc923ddfbab6dce41a9c1bbdc8590cd210a5c4e))
+
+
+### 🐞 Bug Fixes
+
+* disable deposit on bellecour ([#118](https://github.com/iExecBlockchainComputing/explorer-v2/issues/118)) ([5504157](https://github.com/iExecBlockchainComputing/explorer-v2/commit/55041575ba436cf17edb49533b8bc9145ee86911))
+
 ## [1.31.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.31.0...iexec-explorer-v1.31.1) (2026-02-18)
 
 
