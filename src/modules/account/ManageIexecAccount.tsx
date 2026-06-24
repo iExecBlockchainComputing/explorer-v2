@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { formatRLC } from 'iexec/utils';
 import { ArrowRight, Check } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import { Stepper } from '@/components/Stepper';
 import IexecAccountIcon from '@/components/icons/IexecAccountIcon';
