@@ -144,15 +144,6 @@ export function ManageIexecAccount() {
   const [currentStep] = getStepState(currentTab);
   const token = getChainFromId(chainId)?.tokenSymbol;
 
-  useEffect(() => {
-    const chain = getChainFromId(chainId);
-    const bridge = chain?.bridge;
-
-    if (!bridge && currentTab === 2) {
-      setCurrentTab(1);
-    }
-  }, [chainId, currentTab, setCurrentTab]);
-
   if (!userAddress) {
     return (
       <div className="mt-20 flex flex-col items-center justify-center gap-6 text-center">
