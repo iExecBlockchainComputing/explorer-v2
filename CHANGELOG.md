@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.32.0...iexec-explorer-v2.0.0) (2026-06-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove bellecour network ([#119](https://github.com/iExecBlockchainComputing/explorer-v2/issues/119))
+
+### 🐞 Bug Fixes
+
+* remove bellecour network ([#119](https://github.com/iExecBlockchainComputing/explorer-v2/issues/119)) ([cffddae](https://github.com/iExecBlockchainComputing/explorer-v2/commit/cffddae7594380d1c706871d72222a2fb13ea1bc))
+
 ## [1.32.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.31.1...iexec-explorer-v1.32.0) (2026-04-21)
 
 
