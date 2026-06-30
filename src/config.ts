@@ -1,6 +1,5 @@
 import arbitrumSepoliaIcon from './assets/chain-icons/arbitrum-sepolia.svg';
-import iexecLogo from './assets/iexec-logo.svg';
-import { bellecour, arbitrumSepolia, arbitrum } from './utils/wagmiNetworks';
+import { arbitrumSepolia, arbitrum } from './utils/wagmiNetworks';
 
 export const LOCAL_STORAGE_PREFIX = 'Explorer';
 
@@ -44,25 +43,6 @@ export const SUPPORTED_CHAINS = [
     },
     wagmiNetwork: arbitrumSepolia,
     tokenSymbol: 'RLC',
-  },
-  {
-    id: 134,
-    deprecated: true,
-    name: 'Bellecour',
-    slug: 'bellecour',
-    color: '#95A4FC',
-    icon: iexecLogo,
-    blockExplorerUrl: 'https://blockscout-bellecour.iex.ec',
-    subgraphUrl: {
-      poco: 'https://thegraph.iex.ec/subgraphs/name/bellecour/poco-v5',
-      dataprotector:
-        'https://thegraph.iex.ec/subgraphs/name/bellecour/dataprotector-v2',
-    },
-    bridge: 'https://bridge-bellecour.iex.ec/',
-    bridgeInformation:
-      'Move your xRLC in your wallet between bellecour and Ethereum Mainnet with our bridge.',
-    wagmiNetwork: bellecour,
-    tokenSymbol: 'xRLC',
   },
 ];
 

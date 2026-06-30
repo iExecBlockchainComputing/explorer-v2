@@ -1,11 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { ExternalLink } from 'lucide-react';
 import CopyButton from '@/components/CopyButton';
 import { Button } from '@/components/ui/button';
-import { getIExec, getReadonlyIExec } from '@/externals/iexecSdkClient';
 import useUserStore from '@/stores/useUser.store';
-import { isValidAddress } from '@/utils/addressOrIdCheck';
 import { getBlockExplorerUrl, getChainFromId } from '@/utils/chain.utils';
 import { truncateAddress } from '@/utils/truncateAddress';
 import {
@@ -40,7 +37,7 @@ export default function SmartLinkGroup({
   isCurrentPage = false,
   showAddressOrIdAndLabel = false,
 }: SmartLinkGroupProps) {
-  const { chainId, isConnected } = useUserStore();
+  const { chainId } = useUserStore();
   const basePath = {
     deal: 'deal',
     task: 'task',
@@ -51,20 +48,6 @@ export default function SmartLinkGroup({
     transaction: 'tx',
     order: 'order',
   };
-
-  const { data: ens } = useQuery({
-    queryKey: ['ens', addressOrId],
-    queryFn: async () => {
-      const iexec = isConnected ? await getIExec() : getReadonlyIExec(chainId!);
-      const resolved = await iexec.ens.lookupAddress(addressOrId);
-      if (!resolved) {
-        return null;
-      }
-      return resolved;
-    },
-    enabled: !!chainId && isValidAddress(addressOrId),
-    staleTime: Infinity,
-  });
 
   const blockExplorerPath = {
     deal: `tx/${addressOrId}`,
@@ -91,7 +74,6 @@ export default function SmartLinkGroup({
                 : truncateAddress(addressOrId)) ?? addressOrId}
             </span>
             {showAddressOrIdAndLabel && label ? `(${label})` : ''}
-            {ens ? `(${ens})` : ''}
           </Link>
         </Button>
       ) : (
@@ -101,7 +83,6 @@ export default function SmartLinkGroup({
             {(label ? truncateAddress(label) : truncateAddress(addressOrId)) ??
               addressOrId}
           </span>
-          {ens ? `(${ens})` : ''}
         </div>
       )}
 

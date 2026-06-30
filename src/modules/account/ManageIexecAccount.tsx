@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { formatRLC } from 'iexec/utils';
 import { ArrowRight, Check } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChainLink } from '@/components/ChainLink';
 import { Stepper } from '@/components/Stepper';
 import IexecAccountIcon from '@/components/icons/IexecAccountIcon';
@@ -143,15 +143,6 @@ export function ManageIexecAccount() {
   };
   const [currentStep] = getStepState(currentTab);
   const token = getChainFromId(chainId)?.tokenSymbol;
-
-  useEffect(() => {
-    const chain = getChainFromId(chainId);
-    const bridge = chain?.bridge;
-
-    if (!bridge && currentTab === 2) {
-      setCurrentTab(1);
-    }
-  }, [chainId, currentTab, setCurrentTab]);
 
   if (!userAddress) {
     return (

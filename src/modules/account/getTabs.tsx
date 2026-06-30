@@ -1,7 +1,7 @@
 import { DefaultError } from '@tanstack/query-core';
 import { UseMutationResult } from '@tanstack/react-query';
 import { formatRLC } from 'iexec/utils';
-import { LoaderCircle, CheckCircle, ExternalLink } from 'lucide-react';
+import { LoaderCircle, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getChainFromId } from '@/utils/chain.utils';
@@ -174,26 +174,5 @@ export function getTabs({
         },
       ],
     },
-    {
-      title: `BRIDGE ${token}`,
-      longTitle: `Bridge your ${token} between chains`,
-      desc: getChainFromId(chainId)?.bridgeInformation,
-      content: (
-        <Button asChild>
-          <a
-            href={getChainFromId(chainId)?.bridge}
-            rel="noreferrer"
-            target="_blank"
-          >
-            Bridge <ExternalLink />
-          </a>
-        </Button>
-      ),
-    },
-  ].filter((tab, index) => {
-    const chain = getChainFromId(chainId);
-    if (index === 0 && (!chain || chain.deprecated)) return false; // hide deposit if chain is deprecated
-    if (index === 2 && (!chain || !chain.bridge)) return false;
-    return true;
-  });
+  ];
 }
