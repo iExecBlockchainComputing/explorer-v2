@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v2.0.0...iexec-explorer-v2.0.1) (2026-09-18)
+
+
+### 🧰 Other
+
+* remove Hotjar integration ([#121](https://github.com/iExecBlockchainComputing/explorer-v2/issues/121)) ([7105041](https://github.com/iExecBlockchainComputing/explorer-v2/commit/7105041c10b07fe770ee62704f6df05443dc63ee))
+
 ## [2.0.0](https://github.com/iExecBlockchainComputing/explorer-v2/compare/iexec-explorer-v1.32.0...iexec-explorer-v2.0.0) (2026-06-30)
 
 
